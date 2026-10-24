@@ -1,0 +1,20 @@
+[package]
+name = "sidged-verify"
+version = "0.2.0"
+edition = "2021"
+license = "Apache-2.0"
+publish = false
+description = "Static verifier for Sidged plan language v0 (SDG-L3)."
+
+[dependencies]
+# E6: plan expressions are CEL, not a Sidged dialect. This crate compiles
+# each expression and rejects comprehension macros. No host functions are
+# registered, so an expression cannot escape the plan's prior steps.
+cel = { version = "=0.15.0", default-features = false }
+cedar-policy = "4.13"
+serde_json = "1"
+sidged-record = { path = "../sidged-record" }
+sidged-grant = { path = "../sidged-grant" }
+sha2 = "0.10"
+base64 = "0.22"
+chrono = { version = "0.4", default-features = false, features = ["std", "clock"] }

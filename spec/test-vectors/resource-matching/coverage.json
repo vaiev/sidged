@@ -1,0 +1,405 @@
+{
+  "category": "resource-matching",
+  "description": "Whether a right resource covers a requested resource (SDG-L2 R9). Normative as of docs/specs/0002-grant.md.",
+  "vectors": [
+    {
+      "id": "resource.coverage.001",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "resource-covers",
+      "input": {
+        "right": "urn:x:a/b",
+        "resource": "urn:x:a/b"
+      },
+      "expected": {
+        "value": true
+      },
+      "status": "normative",
+      "note": "Equal strings"
+    },
+    {
+      "id": "resource.coverage.002",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "resource-covers",
+      "input": {
+        "right": "urn:x:a/*",
+        "resource": "urn:x:a/b"
+      },
+      "expected": {
+        "value": true
+      },
+      "status": "normative",
+      "note": "One segment below the wildcard prefix"
+    },
+    {
+      "id": "resource.coverage.003",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "resource-covers",
+      "input": {
+        "right": "urn:x:a/*",
+        "resource": "urn:x:a/b/c"
+      },
+      "expected": {
+        "value": true
+      },
+      "status": "normative",
+      "note": "Several segments below the wildcard prefix"
+    },
+    {
+      "id": "resource.coverage.004",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "resource-covers",
+      "input": {
+        "right": "urn:x:a/*",
+        "resource": "urn:x:a/*"
+      },
+      "expected": {
+        "value": true
+      },
+      "status": "normative",
+      "note": "Equal strings, including the wildcard"
+    },
+    {
+      "id": "resource.coverage.005",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "resource-covers",
+      "input": {
+        "right": "https://example.com/cal/*",
+        "resource": "https://example.com/cal/work"
+      },
+      "expected": {
+        "value": true
+      },
+      "status": "normative",
+      "note": "HTTPS resource below a wildcard"
+    },
+    {
+      "id": "resource.coverage.006",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "resource-covers",
+      "input": {
+        "right": "urn:x:a/*",
+        "resource": "urn:x:a"
+      },
+      "expected": {
+        "value": false
+      },
+      "status": "normative",
+      "note": "The prefix itself without a slash is not below it"
+    },
+    {
+      "id": "resource.coverage.007",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "resource-covers",
+      "input": {
+        "right": "urn:x:a/*",
+        "resource": "urn:x:a/"
+      },
+      "expected": {
+        "value": false
+      },
+      "status": "normative",
+      "note": "Empty remainder"
+    },
+    {
+      "id": "resource.coverage.008",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "resource-covers",
+      "input": {
+        "right": "urn:x:a/*",
+        "resource": "urn:x:ab"
+      },
+      "expected": {
+        "value": false
+      },
+      "status": "normative",
+      "note": "Shares characters but is not below the prefix"
+    },
+    {
+      "id": "resource.coverage.009",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "resource-covers",
+      "input": {
+        "right": "urn:x:a/*",
+        "resource": "urn:x:a//b"
+      },
+      "expected": {
+        "value": false
+      },
+      "status": "normative",
+      "note": "Empty segment in the remainder"
+    },
+    {
+      "id": "resource.coverage.010",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "resource-covers",
+      "input": {
+        "right": "urn:x:a/*",
+        "resource": "urn:x:a/./b"
+      },
+      "expected": {
+        "value": false
+      },
+      "status": "normative",
+      "note": "Dot segment in the remainder"
+    },
+    {
+      "id": "resource.coverage.011",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "resource-covers",
+      "input": {
+        "right": "urn:x:a/*",
+        "resource": "urn:x:a/../b"
+      },
+      "expected": {
+        "value": false
+      },
+      "status": "normative",
+      "note": "Dot-dot segment escaping the prefix"
+    },
+    {
+      "id": "resource.coverage.012",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "resource-covers",
+      "input": {
+        "right": "urn:x:a/*",
+        "resource": "urn:x:a/b/.."
+      },
+      "expected": {
+        "value": false
+      },
+      "status": "normative",
+      "note": "Trailing dot-dot segment"
+    },
+    {
+      "id": "resource.coverage.013",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "resource-covers",
+      "input": {
+        "right": "urn:x:a/*",
+        "resource": "urn:x:a/%2e%2e/b"
+      },
+      "expected": {
+        "value": false
+      },
+      "status": "normative",
+      "note": "Percent-encoded dot-dot segment"
+    },
+    {
+      "id": "resource.coverage.014",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "resource-covers",
+      "input": {
+        "right": "urn:x:a/*",
+        "resource": "urn:x:a/b%2Fc"
+      },
+      "expected": {
+        "value": false
+      },
+      "status": "normative",
+      "note": "Percent-encoded slash"
+    },
+    {
+      "id": "resource.coverage.015",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "resource-covers",
+      "input": {
+        "right": "urn:x:a/*",
+        "resource": "URN:X:A/b"
+      },
+      "expected": {
+        "value": false
+      },
+      "status": "normative",
+      "note": "No case normalisation"
+    },
+    {
+      "id": "resource.coverage.016",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "resource-covers",
+      "input": {
+        "right": "urn:x:a",
+        "resource": "urn:x:a/b"
+      },
+      "expected": {
+        "value": false
+      },
+      "status": "normative",
+      "note": "A resource without a wildcard covers only itself"
+    },
+    {
+      "id": "resource.coverage.017",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "resource-covers",
+      "input": {
+        "right": "urn:x:*",
+        "resource": "urn:x:a"
+      },
+      "expected": {
+        "value": false
+      },
+      "status": "normative",
+      "note": "A star that is not the final segment /* is literal"
+    },
+    {
+      "id": "resource.coverage.018",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "resource-covers",
+      "input": {
+        "right": "urn:x:*/b",
+        "resource": "urn:x:a/b"
+      },
+      "expected": {
+        "value": false
+      },
+      "status": "normative",
+      "note": "A star inside the resource is literal"
+    },
+    {
+      "id": "resource.coverage.019",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "resource-covers",
+      "input": {
+        "right": "urn:x:a/b",
+        "resource": "urn:x:a/b/"
+      },
+      "expected": {
+        "value": false
+      },
+      "status": "normative",
+      "note": "No trailing slash normalisation"
+    }
+  ]
+}

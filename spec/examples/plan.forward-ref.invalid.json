@@ -1,0 +1,17 @@
+{
+  "v": "0.1",
+  "steps": [
+    {
+      "id": "send",
+      "kind": "call",
+      "capability": "urn:sidged:capability:message.send",
+      "approval": true,
+      "args": { "body": { "ref": "later" } }
+    },
+    {
+      "id": "later",
+      "kind": "expr",
+      "expr": "true"
+    }
+  ]
+}

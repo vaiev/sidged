@@ -1,0 +1,36 @@
+{
+  "v": "0.1",
+  "form": "F2",
+  "sender_agent": "did:example:bob-homeserver#agent-calendar",
+  "sender_device": "did:example:bob-homeserver",
+  "aud": "did:example:alice-phone#agent-assistant",
+  "session": "sess-4b1d0e9a77",
+  "seq": 4,
+  "attestation_ref": null,
+  "intent": "sdg.refused",
+  "data": {
+    "v": "0.1",
+    "reason": "rate-limited",
+    "ref": {
+      "session": "sess-4b1d0e9a77",
+      "seq": 3,
+      "idem_key": "idem-2026-10-09-0001-a7c3"
+    },
+    "retry_after": "PT10M"
+  },
+  "payload_type": "application/vnd.sidged.refusal+json",
+  "residency": {
+    "tags": [],
+    "data_classes": []
+  },
+  "nonce": "Mn5Bv4Cx3Zl2Kj1Hg0Fd9Sa8",
+  "issued": "2026-10-09T08:10:02Z",
+  "expires": "2026-10-09T08:15:02Z",
+  "provenance": [],
+  "sig": {
+    "alg": "EdDSA",
+    "kid": "did:example:bob-homeserver#agent-calendar-key",
+    "canon": "jcs",
+    "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+  }
+}

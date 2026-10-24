@@ -1,0 +1,2331 @@
+{
+  "category": "slice",
+  "description": "Vertical slice (Sidged L4/L7/L5): a session record carried in a Sidged Envelope signed by the Core key, with one Privacy Gateway report per egress and an effective tier display rendered and signed by the Core. Signatures are real Ed25519 over jcs with the RFC 8032 test keys: rfc8032-test-1 is the Core key, rfc8032-test-2 a module key, rfc8032-test-3 the owner key.",
+  "vectors": [
+    {
+      "id": "slice.accept.001",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.3",
+          "section": "13",
+          "tag": "R0"
+        },
+        {
+          "doc": "L4",
+          "version": "0.3",
+          "section": "5",
+          "tag": "R0"
+        }
+      ],
+      "operation": "session-check",
+      "input": {
+        "envelope": {
+          "v": "0.1",
+          "form": "F1",
+          "sender_agent": "did:example:alice-phone#core",
+          "sender_device": "did:example:alice-phone",
+          "aud": "did:example:alice-laptop#agent-audit",
+          "session": "sess-slice-a001",
+          "seq": 1,
+          "attestation_ref": null,
+          "cap_token": {
+            "v": "0.1",
+            "id": "tok-sr-e-a001",
+            "iss": "did:example:alice",
+            "sub": "did:example:alice-phone#core",
+            "aud": "did:example:alice-laptop#agent-audit",
+            "iat": "2026-10-09T08:00:00Z",
+            "exp": "2026-10-09T09:00:00Z",
+            "cnf": {
+              "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+            },
+            "rights": [
+              {
+                "action": "notify.session-record",
+                "resource": "urn:example:audit:alice/*"
+              }
+            ],
+            "chain": [],
+            "sig": {
+              "alg": "EdDSA",
+              "kid": "did:example:alice#owner-key-1",
+              "canon": "jcs",
+              "value": "RNL7Xr9Gn6k1czHH-2jMaJ4hZQ2_tX_nrgjQI5n6HwuzSWcGKWrfzieU1zIlVs8bYwjYxr0g5byk1JYYKIsjBw"
+            }
+          },
+          "intent": "notify.session-record",
+          "data": {
+            "v": "0.1",
+            "session": "sess-slice-a001",
+            "core": {
+              "agent": "did:example:alice-phone#core",
+              "kid": "did:example:alice-phone#core-key"
+            },
+            "runtime_profile": "R1",
+            "hops": [
+              {
+                "peer": "did:example:bob-homeserver#agent-calendar",
+                "profile": "C1"
+              }
+            ],
+            "egress": [
+              {
+                "id": "egress-0001",
+                "provider": "did:example:search.example.net",
+                "provider_profile": "P1",
+                "payload_digest": {
+                  "alg": "sha-256",
+                  "value": "LmcJr42_581auy9xaSSEjlJ7RIbDDEUJsOSqgXGYczU"
+                },
+                "report": {
+                  "id": "report-0001",
+                  "payload_digest": {
+                    "alg": "sha-256",
+                    "value": "LmcJr42_581auy9xaSSEjlJ7RIbDDEUJsOSqgXGYczU"
+                  }
+                }
+              }
+            ],
+            "tier_display": {
+              "session": "sess-slice-a001",
+              "tier": 1,
+              "shows": [
+                "R1",
+                "C1",
+                "P1"
+              ],
+              "labels": [],
+              "rendered_at": "2026-10-09T08:10:00Z",
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice-phone#core-key",
+                "canon": "jcs",
+                "value": "wmY_f9A9ssgC8MQxe6TZi7EVBFa3rjyAFlcupc16q-w8MPKJ2gazyFDSPakiH-Nv8XU9h0xl8_vG8om4tMYXAg",
+                "signer": "did:example:alice-phone#core"
+              }
+            }
+          },
+          "payload_type": "application/vnd.sidged.session-record+json",
+          "residency": {
+            "tags": [],
+            "data_classes": []
+          },
+          "nonce": "NHaCV7EEg5XuLwVStbfrgUe3",
+          "issued": "2026-10-09T08:10:01Z",
+          "expires": "2026-10-09T08:15:01Z",
+          "provenance": [],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-phone#core-key",
+            "canon": "jcs",
+            "value": "GcOMlJWrgufZ7OER9gi1ckYDMo64nMfaZ3_p5VvMPcDVRG4StG129glsZ4ipXtdmZtO8TBuLNaZrBQQNal6KCg"
+          }
+        },
+        "core_kid": "did:example:alice-phone#core-key",
+        "public_key": "rfc8032-test-1"
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative",
+      "note": "R1 runtime, C1 hop, one P1 egress with its report; the Core shows tier 1 and every profile."
+    },
+    {
+      "id": "slice.accept.002",
+      "spec": [
+        {
+          "doc": "L5",
+          "version": "0.3",
+          "section": "21",
+          "tag": "R0"
+        },
+        {
+          "doc": "L7",
+          "version": "0.3",
+          "section": "13",
+          "tag": "R0"
+        }
+      ],
+      "operation": "session-check",
+      "input": {
+        "envelope": {
+          "v": "0.1",
+          "form": "F1",
+          "sender_agent": "did:example:alice-phone#core",
+          "sender_device": "did:example:alice-phone",
+          "aud": "did:example:alice-laptop#agent-audit",
+          "session": "sess-slice-a002",
+          "seq": 1,
+          "attestation_ref": null,
+          "cap_token": {
+            "v": "0.1",
+            "id": "tok-sr-e-a002",
+            "iss": "did:example:alice",
+            "sub": "did:example:alice-phone#core",
+            "aud": "did:example:alice-laptop#agent-audit",
+            "iat": "2026-10-09T08:00:00Z",
+            "exp": "2026-10-09T09:00:00Z",
+            "cnf": {
+              "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+            },
+            "rights": [
+              {
+                "action": "notify.session-record",
+                "resource": "urn:example:audit:alice/*"
+              }
+            ],
+            "chain": [],
+            "sig": {
+              "alg": "EdDSA",
+              "kid": "did:example:alice#owner-key-1",
+              "canon": "jcs",
+              "value": "5Mft21Adq_PnPWSGZKA331LUMjbMaqxHSgHNPNV2ci4APLUIBwmOewESLhnEQY_mzEEPp_AmYIEn2XS6EzV0AA"
+            }
+          },
+          "intent": "notify.session-record",
+          "data": {
+            "v": "0.1",
+            "session": "sess-slice-a002",
+            "core": {
+              "agent": "did:example:alice-phone#core",
+              "kid": "did:example:alice-phone#core-key"
+            },
+            "runtime_profile": "R0",
+            "hops": [],
+            "egress": [
+              {
+                "id": "egress-0002",
+                "provider": "did:example:search.example.net",
+                "provider_profile": "P1",
+                "payload_digest": {
+                  "alg": "sha-256",
+                  "value": "vd06bl2rWfoF-o-w14mjwq08mYLcxKNo89Vxn0If_ag"
+                },
+                "report": {
+                  "id": "report-0002",
+                  "payload_digest": {
+                    "alg": "sha-256",
+                    "value": "vd06bl2rWfoF-o-w14mjwq08mYLcxKNo89Vxn0If_ag"
+                  }
+                }
+              }
+            ],
+            "tier_display": {
+              "session": "sess-slice-a002",
+              "tier": 0,
+              "shows": [
+                "R0",
+                "P1"
+              ],
+              "labels": [
+                "prototype"
+              ],
+              "rendered_at": "2026-10-09T08:10:00Z",
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice-phone#core-key",
+                "canon": "jcs",
+                "value": "rSS7I8AQa9yDHN521biNaL3rldX6zQwX_JNJlo8YkrRLIMA4SkaQIxqYtnzs3y5WxAcZclt2znDj9CrN3cm9AQ",
+                "signer": "did:example:alice-phone#core"
+              }
+            }
+          },
+          "payload_type": "application/vnd.sidged.session-record+json",
+          "residency": {
+            "tags": [],
+            "data_classes": []
+          },
+          "nonce": "ad3Bf26DfyGPrXITpSvUluOl",
+          "issued": "2026-10-09T08:10:01Z",
+          "expires": "2026-10-09T08:15:01Z",
+          "provenance": [],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-phone#core-key",
+            "canon": "jcs",
+            "value": "33E7h4AtPgVWFM3oL6ETQcvG-pmzg5ZjaOaB2ORvBlXnTgvvInI0DbBjSR39zwZLP2wYCS5aRsNHMC5Tvx2NAA"
+          }
+        },
+        "core_kid": "did:example:alice-phone#core-key",
+        "public_key": "rfc8032-test-1"
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative",
+      "note": "R0 prototype calling a P1 provider: tier 0 with the prototype label."
+    },
+    {
+      "id": "slice.accept.003",
+      "spec": [
+        {
+          "doc": "L4",
+          "version": "0.3",
+          "section": "5",
+          "tag": "R0"
+        },
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "11"
+        }
+      ],
+      "operation": "session-check",
+      "input": {
+        "envelope": {
+          "v": "0.1",
+          "form": "F1",
+          "sender_agent": "did:example:alice-phone#core",
+          "sender_device": "did:example:alice-phone",
+          "aud": "did:example:alice-laptop#agent-audit",
+          "session": "sess-slice-a003",
+          "seq": 1,
+          "attestation_ref": null,
+          "cap_token": {
+            "v": "0.1",
+            "id": "tok-sr-e-a003",
+            "iss": "did:example:alice",
+            "sub": "did:example:alice-phone#core",
+            "aud": "did:example:alice-laptop#agent-audit",
+            "iat": "2026-10-09T08:00:00Z",
+            "exp": "2026-10-09T09:00:00Z",
+            "cnf": {
+              "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+            },
+            "rights": [
+              {
+                "action": "notify.session-record",
+                "resource": "urn:example:audit:alice/*"
+              }
+            ],
+            "chain": [],
+            "sig": {
+              "alg": "EdDSA",
+              "kid": "did:example:alice#owner-key-1",
+              "canon": "jcs",
+              "value": "5tG7KAZYpdHedugTv-TP8ylfGwQAA5weMtlz8yIA3rzrQ2KcXFdt5GgZ0wqf8sl1natOX7xFEWn_QcfKVgQNAA"
+            }
+          },
+          "intent": "notify.session-record",
+          "data": {
+            "v": "0.1",
+            "session": "sess-slice-a003",
+            "core": {
+              "agent": "did:example:alice-phone#core",
+              "kid": "did:example:alice-phone#core-key"
+            },
+            "runtime_profile": "R1",
+            "hops": [
+              {
+                "peer": "did:example:alice-thermostat",
+                "profile": "C0"
+              }
+            ],
+            "egress": [
+              {
+                "id": "egress-0003",
+                "provider": "did:example:search.example.net",
+                "provider_profile": "P1",
+                "payload_digest": {
+                  "alg": "sha-256",
+                  "value": "yXgR5Ddf2m60tGaT0gdS5tWEpOyKeRCiXFLwmYjC1Ms"
+                },
+                "report": {
+                  "id": "report-0003",
+                  "payload_digest": {
+                    "alg": "sha-256",
+                    "value": "yXgR5Ddf2m60tGaT0gdS5tWEpOyKeRCiXFLwmYjC1Ms"
+                  }
+                }
+              }
+            ],
+            "tier_display": {
+              "session": "sess-slice-a003",
+              "tier": 0,
+              "shows": [
+                "R1",
+                "C0",
+                "P1"
+              ],
+              "labels": [
+                "legacy",
+                "unattested"
+              ],
+              "rendered_at": "2026-10-09T08:10:00Z",
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice-phone#core-key",
+                "canon": "jcs",
+                "value": "ZbNGtiqQS1CwddZQYDUWB1q6Uu_xRr_IdCWq36bXKGzjx3mUN3GvjmggWsacXcC-KPojQhrij154T2dD4FFgDQ",
+                "signer": "did:example:alice-phone#core"
+              }
+            }
+          },
+          "payload_type": "application/vnd.sidged.session-record+json",
+          "residency": {
+            "tags": [],
+            "data_classes": []
+          },
+          "nonce": "I7Tyh2A4QLsWKLVY0ez1eIXD",
+          "issued": "2026-10-09T08:10:01Z",
+          "expires": "2026-10-09T08:15:01Z",
+          "provenance": [],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-phone#core-key",
+            "canon": "jcs",
+            "value": "vr329rYu9zW5ine5qY7dQvEGoPpcsYoQRLMbrLLp3HpFSNjXHFqlbPv-Ck-oobswA7mCcGyyb_YIJ4Iz18ZkBA"
+          }
+        },
+        "core_kid": "did:example:alice-phone#core-key",
+        "public_key": "rfc8032-test-1"
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative",
+      "note": "A C0 legacy hop lowers the effective tier to 0, and the Core shows C0."
+    },
+    {
+      "id": "slice.accept.004",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.3",
+          "section": "13",
+          "tag": "R0"
+        }
+      ],
+      "operation": "session-check",
+      "input": {
+        "envelope": {
+          "v": "0.1",
+          "form": "F1",
+          "sender_agent": "did:example:alice-phone#core",
+          "sender_device": "did:example:alice-phone",
+          "aud": "did:example:alice-laptop#agent-audit",
+          "session": "sess-slice-a004",
+          "seq": 1,
+          "attestation_ref": null,
+          "cap_token": {
+            "v": "0.1",
+            "id": "tok-sr-e-a004",
+            "iss": "did:example:alice",
+            "sub": "did:example:alice-phone#core",
+            "aud": "did:example:alice-laptop#agent-audit",
+            "iat": "2026-10-09T08:00:00Z",
+            "exp": "2026-10-09T09:00:00Z",
+            "cnf": {
+              "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+            },
+            "rights": [
+              {
+                "action": "notify.session-record",
+                "resource": "urn:example:audit:alice/*"
+              }
+            ],
+            "chain": [],
+            "sig": {
+              "alg": "EdDSA",
+              "kid": "did:example:alice#owner-key-1",
+              "canon": "jcs",
+              "value": "XXhATRhqwtf4AoQ05ftNpz-Xozsa7oeUxTB-A9K_4SHTGU600hX25EfMV2FqAtgiro96pn1BGTGMe6KzITuPCg"
+            }
+          },
+          "intent": "notify.session-record",
+          "data": {
+            "v": "0.1",
+            "session": "sess-slice-a004",
+            "core": {
+              "agent": "did:example:alice-phone#core",
+              "kid": "did:example:alice-phone#core-key"
+            },
+            "runtime_profile": "R1",
+            "hops": [],
+            "egress": [],
+            "tier_display": {
+              "session": "sess-slice-a004",
+              "tier": 1,
+              "shows": [
+                "R1"
+              ],
+              "labels": [],
+              "rendered_at": "2026-10-09T08:10:00Z",
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice-phone#core-key",
+                "canon": "jcs",
+                "value": "1mWxD5KoJtGZs4CF4AmBSt9VlhxJzTV-P2Zr3dkfAFeYFNk2p8wA8vjvE-2riiIFEwqETzcChTAgRlAXqHAxBQ",
+                "signer": "did:example:alice-phone#core"
+              }
+            }
+          },
+          "payload_type": "application/vnd.sidged.session-record+json",
+          "residency": {
+            "tags": [],
+            "data_classes": []
+          },
+          "nonce": "GXLDe7bzMowJm_eSAFbr614r",
+          "issued": "2026-10-09T08:10:01Z",
+          "expires": "2026-10-09T08:15:01Z",
+          "provenance": [],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-phone#core-key",
+            "canon": "jcs",
+            "value": "r845FpvSETSOM_RaJ0RAPcMZ0co4dc8Mq4SN9TKMh7opWDnixHMaqKZ0ZKM0z4-pBlpos-BTkfsPvFNJYxTnCQ"
+          }
+        },
+        "core_kid": "did:example:alice-phone#core-key",
+        "public_key": "rfc8032-test-1"
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative",
+      "note": "No egress, so no report is needed; tier 1 from the runtime alone."
+    },
+    {
+      "id": "slice.accept.005",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.3",
+          "section": "13",
+          "tag": "R0"
+        },
+        {
+          "doc": "L4",
+          "version": "0.3",
+          "section": "5",
+          "tag": "R0"
+        }
+      ],
+      "operation": "session-check",
+      "input": {
+        "envelope": {
+          "v": "0.1",
+          "form": "F1",
+          "sender_agent": "did:example:alice-phone#core",
+          "sender_device": "did:example:alice-phone",
+          "aud": "did:example:alice-laptop#agent-audit",
+          "session": "sess-slice-a005",
+          "seq": 1,
+          "attestation_ref": null,
+          "cap_token": {
+            "v": "0.1",
+            "id": "tok-sr-e-a005",
+            "iss": "did:example:alice",
+            "sub": "did:example:alice-phone#core",
+            "aud": "did:example:alice-laptop#agent-audit",
+            "iat": "2026-10-09T08:00:00Z",
+            "exp": "2026-10-09T09:00:00Z",
+            "cnf": {
+              "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+            },
+            "rights": [
+              {
+                "action": "notify.session-record",
+                "resource": "urn:example:audit:alice/*"
+              }
+            ],
+            "chain": [],
+            "sig": {
+              "alg": "EdDSA",
+              "kid": "did:example:alice#owner-key-1",
+              "canon": "jcs",
+              "value": "h2YoefetMUfpjcwL5ZbLSBeT2P9x5Bw7bLoaA1e7_qndnXsbEPwRaIRd0OyQcfvtLfdPw-lnZ3SSEqs9PIkqDg"
+            }
+          },
+          "intent": "notify.session-record",
+          "data": {
+            "v": "0.1",
+            "session": "sess-slice-a005",
+            "core": {
+              "agent": "did:example:alice-phone#core",
+              "kid": "did:example:alice-phone#core-key"
+            },
+            "runtime_profile": "R2",
+            "hops": [
+              {
+                "peer": "did:example:bob-homeserver#agent-calendar",
+                "profile": "C1"
+              }
+            ],
+            "egress": [
+              {
+                "id": "egress-0005",
+                "provider": "did:example:models.example.org",
+                "provider_profile": "P2",
+                "payload_digest": {
+                  "alg": "sha-256",
+                  "value": "7YotjgBwCNVYLMn8j3LDYfMraY3EJscGkQcqoY5b4cg"
+                },
+                "report": {
+                  "id": "report-0005",
+                  "payload_digest": {
+                    "alg": "sha-256",
+                    "value": "7YotjgBwCNVYLMn8j3LDYfMraY3EJscGkQcqoY5b4cg"
+                  }
+                }
+              },
+              {
+                "id": "egress-0006",
+                "provider": "did:example:search.example.net",
+                "provider_profile": "P0",
+                "payload_digest": {
+                  "alg": "sha-256",
+                  "value": "Wg0hO8t2UB_pbfmgpOTze1wwwrcXydLrMJdLcK9i9B0"
+                },
+                "report": {
+                  "id": "report-0006",
+                  "payload_digest": {
+                    "alg": "sha-256",
+                    "value": "Wg0hO8t2UB_pbfmgpOTze1wwwrcXydLrMJdLcK9i9B0"
+                  }
+                }
+              }
+            ],
+            "tier_display": {
+              "session": "sess-slice-a005",
+              "tier": 0,
+              "shows": [
+                "R2",
+                "C1",
+                "P2",
+                "P0"
+              ],
+              "labels": [],
+              "rendered_at": "2026-10-09T08:10:00Z",
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice-phone#core-key",
+                "canon": "jcs",
+                "value": "56FoKezt8O7NYOjXpTcPPlO2_tdWtc52YqumfWBe5u5mi5VNgZgJV7KGzQVnOZ58K-qFAlAAbM5CVn1ouCF3Dg",
+                "signer": "did:example:alice-phone#core"
+              }
+            }
+          },
+          "payload_type": "application/vnd.sidged.session-record+json",
+          "residency": {
+            "tags": [],
+            "data_classes": []
+          },
+          "nonce": "OeHVYmGFL9ag1XOjF2qfCaZS",
+          "issued": "2026-10-09T08:10:01Z",
+          "expires": "2026-10-09T08:15:01Z",
+          "provenance": [],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-phone#core-key",
+            "canon": "jcs",
+            "value": "r4rc_UHj1ErRWT-0meiskIpoDm0Y1vLdr783L783ApDxwq1-3obhglBdiZwm98w19o_tyjpF5HY6byh8Qkx_Aw"
+          }
+        },
+        "core_kid": "did:example:alice-phone#core-key",
+        "public_key": "rfc8032-test-1"
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative",
+      "note": "Two egresses, each with its own report; the P0 provider sets tier 0."
+    },
+    {
+      "id": "slice.egress-report.001",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.3",
+          "section": "13",
+          "tag": "R0"
+        }
+      ],
+      "operation": "session-check",
+      "input": {
+        "envelope": {
+          "v": "0.1",
+          "form": "F1",
+          "sender_agent": "did:example:alice-phone#core",
+          "sender_device": "did:example:alice-phone",
+          "aud": "did:example:alice-laptop#agent-audit",
+          "session": "sess-slice-e001",
+          "seq": 1,
+          "attestation_ref": null,
+          "cap_token": {
+            "v": "0.1",
+            "id": "tok-sr-e-e001",
+            "iss": "did:example:alice",
+            "sub": "did:example:alice-phone#core",
+            "aud": "did:example:alice-laptop#agent-audit",
+            "iat": "2026-10-09T08:00:00Z",
+            "exp": "2026-10-09T09:00:00Z",
+            "cnf": {
+              "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+            },
+            "rights": [
+              {
+                "action": "notify.session-record",
+                "resource": "urn:example:audit:alice/*"
+              }
+            ],
+            "chain": [],
+            "sig": {
+              "alg": "EdDSA",
+              "kid": "did:example:alice#owner-key-1",
+              "canon": "jcs",
+              "value": "34fEb8-XjK5MUYrm-Q2IZj29G3-zjjLn2vpRX7I4whUnWbYuPKhnvrizEks2udnGlLB5t332z2J2rXBGk4b3Bw"
+            }
+          },
+          "intent": "notify.session-record",
+          "data": {
+            "v": "0.1",
+            "session": "sess-slice-e001",
+            "core": {
+              "agent": "did:example:alice-phone#core",
+              "kid": "did:example:alice-phone#core-key"
+            },
+            "runtime_profile": "R1",
+            "hops": [],
+            "egress": [
+              {
+                "id": "egress-0011",
+                "provider": "did:example:search.example.net",
+                "provider_profile": "P1",
+                "payload_digest": {
+                  "alg": "sha-256",
+                  "value": "TZluoqZQixgcaca90gZMPOp5ETyaEWuQajW7tAV83oo"
+                }
+              }
+            ],
+            "tier_display": {
+              "session": "sess-slice-e001",
+              "tier": 1,
+              "shows": [
+                "R1",
+                "P1"
+              ],
+              "labels": [],
+              "rendered_at": "2026-10-09T08:10:00Z",
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice-phone#core-key",
+                "canon": "jcs",
+                "value": "1juk5KBwfG4mSU2Zs35nDeKeVV29qAyTBFG-BAzh1LcGlc-6nleiKNi39JGkvs5Fx2GdzBy0r7OZG5hmvTRSBw",
+                "signer": "did:example:alice-phone#core"
+              }
+            }
+          },
+          "payload_type": "application/vnd.sidged.session-record+json",
+          "residency": {
+            "tags": [],
+            "data_classes": []
+          },
+          "nonce": "KvpwKkrSROyUmbZ3M7Eu25M4",
+          "issued": "2026-10-09T08:10:01Z",
+          "expires": "2026-10-09T08:15:01Z",
+          "provenance": [],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-phone#core-key",
+            "canon": "jcs",
+            "value": "pEQXKfznlFPApBXOxpfkQgr0LeCnI1EAkGND7CIphQMm3WpOjXZxMSrLzMdy9WoMxmX80BDcAu4VHAkWQol2AA"
+          }
+        },
+        "core_kid": "did:example:alice-phone#core-key",
+        "public_key": "rfc8032-test-1"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "malformed"
+      },
+      "status": "normative",
+      "note": "An egress without a privacy report."
+    },
+    {
+      "id": "slice.egress-report.002",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.3",
+          "section": "13",
+          "tag": "R0"
+        }
+      ],
+      "operation": "session-check",
+      "input": {
+        "envelope": {
+          "v": "0.1",
+          "form": "F1",
+          "sender_agent": "did:example:alice-phone#core",
+          "sender_device": "did:example:alice-phone",
+          "aud": "did:example:alice-laptop#agent-audit",
+          "session": "sess-slice-e002",
+          "seq": 1,
+          "attestation_ref": null,
+          "cap_token": {
+            "v": "0.1",
+            "id": "tok-sr-e-e002",
+            "iss": "did:example:alice",
+            "sub": "did:example:alice-phone#core",
+            "aud": "did:example:alice-laptop#agent-audit",
+            "iat": "2026-10-09T08:00:00Z",
+            "exp": "2026-10-09T09:00:00Z",
+            "cnf": {
+              "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+            },
+            "rights": [
+              {
+                "action": "notify.session-record",
+                "resource": "urn:example:audit:alice/*"
+              }
+            ],
+            "chain": [],
+            "sig": {
+              "alg": "EdDSA",
+              "kid": "did:example:alice#owner-key-1",
+              "canon": "jcs",
+              "value": "55Sp9CCt6EGvgyvy7GNDKbnwPPcu6P0g9gCCg2lOoZme53i5mZu_xp7F4pdnnVadvMq1k7G5NGAe3WQr-6hXCg"
+            }
+          },
+          "intent": "notify.session-record",
+          "data": {
+            "v": "0.1",
+            "session": "sess-slice-e002",
+            "core": {
+              "agent": "did:example:alice-phone#core",
+              "kid": "did:example:alice-phone#core-key"
+            },
+            "runtime_profile": "R1",
+            "hops": [],
+            "egress": [
+              {
+                "id": "egress-0012",
+                "provider": "did:example:search.example.net",
+                "provider_profile": "P1",
+                "payload_digest": {
+                  "alg": "sha-256",
+                  "value": "lGfpuGZpud68riufnP4SzEkhQitS8Te9qDhbGnTQSys"
+                },
+                "report": {
+                  "id": "report-0012",
+                  "payload_digest": {
+                    "alg": "sha-256",
+                    "value": "723BPFQPWc2GH16DeqJ19ieNYuOsfl3X3cxPUX3UBX4"
+                  }
+                }
+              }
+            ],
+            "tier_display": {
+              "session": "sess-slice-e002",
+              "tier": 1,
+              "shows": [
+                "R1",
+                "P1"
+              ],
+              "labels": [],
+              "rendered_at": "2026-10-09T08:10:00Z",
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice-phone#core-key",
+                "canon": "jcs",
+                "value": "2md1Fhsc4WTOZQyMzibJV9aDfUGoLQTjO_nKy_SBwYww7Ro-WvK-mff_gsgkam06T2zOQx6kWjDaEYYhdHVXBg",
+                "signer": "did:example:alice-phone#core"
+              }
+            }
+          },
+          "payload_type": "application/vnd.sidged.session-record+json",
+          "residency": {
+            "tags": [],
+            "data_classes": []
+          },
+          "nonce": "GCh1wVYe0RiQB9VV-N32YTOn",
+          "issued": "2026-10-09T08:10:01Z",
+          "expires": "2026-10-09T08:15:01Z",
+          "provenance": [],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-phone#core-key",
+            "canon": "jcs",
+            "value": "Gq3S5SZyxz33x7xek3vSy5AQecbKkM2YvMbHOJyhAfctujp6eTEJ90ntPNTvwgXPokI-3U1xWEyVpoFi829BBw"
+          }
+        },
+        "core_kid": "did:example:alice-phone#core-key",
+        "public_key": "rfc8032-test-1"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "malformed"
+      },
+      "status": "normative",
+      "note": "The linked report covers a different payload, so this egress has no matching report."
+    },
+    {
+      "id": "slice.egress-report.003",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.3",
+          "section": "13",
+          "tag": "R0"
+        }
+      ],
+      "operation": "session-check",
+      "input": {
+        "envelope": {
+          "v": "0.1",
+          "form": "F1",
+          "sender_agent": "did:example:alice-phone#core",
+          "sender_device": "did:example:alice-phone",
+          "aud": "did:example:alice-laptop#agent-audit",
+          "session": "sess-slice-e003",
+          "seq": 1,
+          "attestation_ref": null,
+          "cap_token": {
+            "v": "0.1",
+            "id": "tok-sr-e-e003",
+            "iss": "did:example:alice",
+            "sub": "did:example:alice-phone#core",
+            "aud": "did:example:alice-laptop#agent-audit",
+            "iat": "2026-10-09T08:00:00Z",
+            "exp": "2026-10-09T09:00:00Z",
+            "cnf": {
+              "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+            },
+            "rights": [
+              {
+                "action": "notify.session-record",
+                "resource": "urn:example:audit:alice/*"
+              }
+            ],
+            "chain": [],
+            "sig": {
+              "alg": "EdDSA",
+              "kid": "did:example:alice#owner-key-1",
+              "canon": "jcs",
+              "value": "D-r6hgsE0d_pU7NwTseZA_3AFDdyXu4Y7uUnhM3GlL1YhGGM2gIxMEA-mfLAGSQ-fVJyTtF6nKNA8DnQBj3rDQ"
+            }
+          },
+          "intent": "notify.session-record",
+          "data": {
+            "v": "0.1",
+            "session": "sess-slice-e003",
+            "core": {
+              "agent": "did:example:alice-phone#core",
+              "kid": "did:example:alice-phone#core-key"
+            },
+            "runtime_profile": "R1",
+            "hops": [],
+            "egress": [
+              {
+                "id": "egress-0013",
+                "provider": "did:example:search.example.net",
+                "provider_profile": "P1",
+                "payload_digest": {
+                  "alg": "sha-256",
+                  "value": "_MLauiUR_GHVV9jeC5WDpMXKBc1-3FzYWbPemm9xpZY"
+                },
+                "report": {
+                  "id": "report-0013",
+                  "payload_digest": {
+                    "alg": "sha-256",
+                    "value": "_MLauiUR_GHVV9jeC5WDpMXKBc1-3FzYWbPemm9xpZY"
+                  }
+                }
+              },
+              {
+                "id": "egress-0014",
+                "provider": "did:example:models.example.org",
+                "provider_profile": "P1",
+                "payload_digest": {
+                  "alg": "sha-256",
+                  "value": "pE5y0P1Z8hL-R5FwwVhsE6iLxTmH4SS5s6EGxF3HcHA"
+                }
+              }
+            ],
+            "tier_display": {
+              "session": "sess-slice-e003",
+              "tier": 1,
+              "shows": [
+                "R1",
+                "P1"
+              ],
+              "labels": [],
+              "rendered_at": "2026-10-09T08:10:00Z",
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice-phone#core-key",
+                "canon": "jcs",
+                "value": "GF7sqiMh_nrKaeG27yWfETa5ZfCE63jKyNzD2txKbw8lrdt1xcKohJLGvRtjlXmV6xf1B7zhuJKIzyH79a4ABA",
+                "signer": "did:example:alice-phone#core"
+              }
+            }
+          },
+          "payload_type": "application/vnd.sidged.session-record+json",
+          "residency": {
+            "tags": [],
+            "data_classes": []
+          },
+          "nonce": "At6EKNKpQuGyT-QZm9OMLfcD",
+          "issued": "2026-10-09T08:10:01Z",
+          "expires": "2026-10-09T08:15:01Z",
+          "provenance": [],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-phone#core-key",
+            "canon": "jcs",
+            "value": "EKrRpD5VwYNcMq_PsC1taZ8EryZeRAtTok4zUpo0MM7FUukOkwifjKGqVTQkSuJmJju_tOm23GK2mMoS_RCdAg"
+          }
+        },
+        "core_kid": "did:example:alice-phone#core-key",
+        "public_key": "rfc8032-test-1"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "malformed"
+      },
+      "status": "normative",
+      "note": "Two egresses, the second without a report."
+    },
+    {
+      "id": "slice.tier-display.001",
+      "spec": [
+        {
+          "doc": "L4",
+          "version": "0.3",
+          "section": "5",
+          "tag": "R0"
+        }
+      ],
+      "operation": "session-check",
+      "input": {
+        "envelope": {
+          "v": "0.1",
+          "form": "F1",
+          "sender_agent": "did:example:alice-phone#core",
+          "sender_device": "did:example:alice-phone",
+          "aud": "did:example:alice-laptop#agent-audit",
+          "session": "sess-slice-t001",
+          "seq": 1,
+          "attestation_ref": null,
+          "cap_token": {
+            "v": "0.1",
+            "id": "tok-sr-e-t001",
+            "iss": "did:example:alice",
+            "sub": "did:example:alice-phone#core",
+            "aud": "did:example:alice-laptop#agent-audit",
+            "iat": "2026-10-09T08:00:00Z",
+            "exp": "2026-10-09T09:00:00Z",
+            "cnf": {
+              "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+            },
+            "rights": [
+              {
+                "action": "notify.session-record",
+                "resource": "urn:example:audit:alice/*"
+              }
+            ],
+            "chain": [],
+            "sig": {
+              "alg": "EdDSA",
+              "kid": "did:example:alice#owner-key-1",
+              "canon": "jcs",
+              "value": "EeANAfNmg4yIzWnxpQjRAdOFBwGsbVfj6lWKkVfKJuek0vDfW15tYkm1xmjyvNO8NwRYm4vrHef761Yq6sZiAg"
+            }
+          },
+          "intent": "notify.session-record",
+          "data": {
+            "v": "0.1",
+            "session": "sess-slice-t001",
+            "core": {
+              "agent": "did:example:alice-phone#core",
+              "kid": "did:example:alice-phone#core-key"
+            },
+            "runtime_profile": "R1",
+            "hops": [],
+            "egress": [
+              {
+                "id": "egress-0021",
+                "provider": "did:example:search.example.net",
+                "provider_profile": "P1",
+                "payload_digest": {
+                  "alg": "sha-256",
+                  "value": "IF4I4snYQ4b5Fp3MJhzKRTOUqHfG9r_WbcCndwB2J-8"
+                },
+                "report": {
+                  "id": "report-0021",
+                  "payload_digest": {
+                    "alg": "sha-256",
+                    "value": "IF4I4snYQ4b5Fp3MJhzKRTOUqHfG9r_WbcCndwB2J-8"
+                  }
+                }
+              }
+            ]
+          },
+          "payload_type": "application/vnd.sidged.session-record+json",
+          "residency": {
+            "tags": [],
+            "data_classes": []
+          },
+          "nonce": "jCrs8j57rPW2MHo0xGJjyeqy",
+          "issued": "2026-10-09T08:10:01Z",
+          "expires": "2026-10-09T08:15:01Z",
+          "provenance": [],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-phone#core-key",
+            "canon": "jcs",
+            "value": "ypYQAjdG2i8-w-W0gf67kF7taTXTpi1HhfEcTX8mlzEZ8yqEg8sV7ftlhPiAwo0clD_Jyg81Uw2pHil9AizRCQ"
+          }
+        },
+        "core_kid": "did:example:alice-phone#core-key",
+        "public_key": "rfc8032-test-1"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "malformed"
+      },
+      "status": "normative",
+      "note": "The tier display is missing: the tier was hidden."
+    },
+    {
+      "id": "slice.tier-display.002",
+      "spec": [
+        {
+          "doc": "L4",
+          "version": "0.3",
+          "section": "5",
+          "tag": "R0"
+        }
+      ],
+      "operation": "session-check",
+      "input": {
+        "envelope": {
+          "v": "0.1",
+          "form": "F1",
+          "sender_agent": "did:example:alice-phone#core",
+          "sender_device": "did:example:alice-phone",
+          "aud": "did:example:alice-laptop#agent-audit",
+          "session": "sess-slice-t002",
+          "seq": 1,
+          "attestation_ref": null,
+          "cap_token": {
+            "v": "0.1",
+            "id": "tok-sr-e-t002",
+            "iss": "did:example:alice",
+            "sub": "did:example:alice-phone#core",
+            "aud": "did:example:alice-laptop#agent-audit",
+            "iat": "2026-10-09T08:00:00Z",
+            "exp": "2026-10-09T09:00:00Z",
+            "cnf": {
+              "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+            },
+            "rights": [
+              {
+                "action": "notify.session-record",
+                "resource": "urn:example:audit:alice/*"
+              }
+            ],
+            "chain": [],
+            "sig": {
+              "alg": "EdDSA",
+              "kid": "did:example:alice#owner-key-1",
+              "canon": "jcs",
+              "value": "PIW9bH5ZzTpwemOOEXcfJg8eLe2OlDzDkBUxh8zmZpNnWZCW1rv1giAiaSOoLKA4XyWGxs3dIn3o3V1yTh50Cg"
+            }
+          },
+          "intent": "notify.session-record",
+          "data": {
+            "v": "0.1",
+            "session": "sess-slice-t002",
+            "core": {
+              "agent": "did:example:alice-phone#core",
+              "kid": "did:example:alice-phone#core-key"
+            },
+            "runtime_profile": "R1",
+            "hops": [],
+            "egress": [
+              {
+                "id": "egress-0022",
+                "provider": "did:example:search.example.net",
+                "provider_profile": "P1",
+                "payload_digest": {
+                  "alg": "sha-256",
+                  "value": "cvF8xjR1hjqivZj33tihr2M0lIw3ZsCIXFKHmHJDlGE"
+                },
+                "report": {
+                  "id": "report-0022",
+                  "payload_digest": {
+                    "alg": "sha-256",
+                    "value": "cvF8xjR1hjqivZj33tihr2M0lIw3ZsCIXFKHmHJDlGE"
+                  }
+                }
+              }
+            ],
+            "tier_display": {
+              "session": "sess-slice-t002",
+              "tier": 1,
+              "shows": [
+                "R1",
+                "P1"
+              ],
+              "labels": [],
+              "rendered_at": "2026-10-09T08:10:00Z",
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice-phone#module-weather-key",
+                "canon": "jcs",
+                "value": "XeKt0FYwYMXKkJgRq3YRb4db91baRALh2Ihc84-InkCycF5KnvllkqD3KAGLCY0NDFPFiwVt0EJBjDq8F2ETAg",
+                "signer": "did:example:alice-phone#module-weather"
+              }
+            }
+          },
+          "payload_type": "application/vnd.sidged.session-record+json",
+          "residency": {
+            "tags": [],
+            "data_classes": []
+          },
+          "nonce": "rCC_S1T8Fhnr_U39AAuA-lWu",
+          "issued": "2026-10-09T08:10:01Z",
+          "expires": "2026-10-09T08:15:01Z",
+          "provenance": [],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-phone#core-key",
+            "canon": "jcs",
+            "value": "3gbmwHgWz7Rg8lp6nAK5TXAO_7VIlr7JeWEr9KYrlueE3Qis29PLH196mnDg7k85dcFTZYcNvpL5s6H_3ML_BQ"
+          }
+        },
+        "core_kid": "did:example:alice-phone#core-key",
+        "public_key": "rfc8032-test-1"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "bad-signature"
+      },
+      "status": "normative",
+      "note": "The tier display was rendered and signed by a module, not the Core."
+    },
+    {
+      "id": "slice.tier-display.003",
+      "spec": [
+        {
+          "doc": "L4",
+          "version": "0.3",
+          "section": "5",
+          "tag": "R0"
+        }
+      ],
+      "operation": "session-check",
+      "requires": [
+        "EdDSA",
+        "jcs"
+      ],
+      "input": {
+        "envelope": {
+          "v": "0.1",
+          "form": "F1",
+          "sender_agent": "did:example:alice-phone#core",
+          "sender_device": "did:example:alice-phone",
+          "aud": "did:example:alice-laptop#agent-audit",
+          "session": "sess-slice-t003",
+          "seq": 1,
+          "attestation_ref": null,
+          "cap_token": {
+            "v": "0.1",
+            "id": "tok-sr-e-t003",
+            "iss": "did:example:alice",
+            "sub": "did:example:alice-phone#core",
+            "aud": "did:example:alice-laptop#agent-audit",
+            "iat": "2026-10-09T08:00:00Z",
+            "exp": "2026-10-09T09:00:00Z",
+            "cnf": {
+              "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+            },
+            "rights": [
+              {
+                "action": "notify.session-record",
+                "resource": "urn:example:audit:alice/*"
+              }
+            ],
+            "chain": [],
+            "sig": {
+              "alg": "EdDSA",
+              "kid": "did:example:alice#owner-key-1",
+              "canon": "jcs",
+              "value": "M8oYme6AkvHrXL0wy_K-hI2PWzoFkhqUfbZZDS3Nw6XL-_lBWrlJ8npU5nXG1KyooIrW6NT7VghP4p93z-NvCA"
+            }
+          },
+          "intent": "notify.session-record",
+          "data": {
+            "v": "0.1",
+            "session": "sess-slice-t003",
+            "core": {
+              "agent": "did:example:alice-phone#core",
+              "kid": "did:example:alice-phone#core-key"
+            },
+            "runtime_profile": "R1",
+            "hops": [],
+            "egress": [
+              {
+                "id": "egress-0023",
+                "provider": "did:example:search.example.net",
+                "provider_profile": "P1",
+                "payload_digest": {
+                  "alg": "sha-256",
+                  "value": "CB0e6uSNbkGapybOZdCX8b73FYCHagjGJF5x9iRSKuk"
+                },
+                "report": {
+                  "id": "report-0023",
+                  "payload_digest": {
+                    "alg": "sha-256",
+                    "value": "CB0e6uSNbkGapybOZdCX8b73FYCHagjGJF5x9iRSKuk"
+                  }
+                }
+              }
+            ],
+            "tier_display": {
+              "session": "sess-slice-t003",
+              "tier": 1,
+              "shows": [
+                "R1",
+                "P1"
+              ],
+              "labels": [],
+              "rendered_at": "2026-10-09T08:10:00Z",
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice-phone#core-key",
+                "canon": "jcs",
+                "value": "LyVEQJirXBvmYi6hV1wUNwwMAQqMrRaCV3azRgcBpqVj5Qy8ugM3dnRYkCp_XMUYU6rEZaDjYcwaWAun2DHmBg",
+                "signer": "did:example:alice-phone#core"
+              }
+            }
+          },
+          "payload_type": "application/vnd.sidged.session-record+json",
+          "residency": {
+            "tags": [],
+            "data_classes": []
+          },
+          "nonce": "MZ69N_EGLPLtzgETJh-kNuWQ",
+          "issued": "2026-10-09T08:10:01Z",
+          "expires": "2026-10-09T08:15:01Z",
+          "provenance": [],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-phone#core-key",
+            "canon": "jcs",
+            "value": "d9kyKu-JMfhAzKwgiVu_mcAUhHB4eljvwJrXqVNbg415_sV86-s1m35mPUTr46bztNAYFdQJj1M05juPyqb6Dw"
+          }
+        },
+        "core_kid": "did:example:alice-phone#core-key",
+        "public_key": "rfc8032-test-1"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "bad-signature"
+      },
+      "status": "normative",
+      "note": "A module forged a display that names the Core key; only signature verification catches it."
+    },
+    {
+      "id": "slice.tier-display.004",
+      "spec": [
+        {
+          "doc": "L4",
+          "version": "0.3",
+          "section": "5",
+          "tag": "R0"
+        },
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "11"
+        }
+      ],
+      "operation": "session-check",
+      "input": {
+        "envelope": {
+          "v": "0.1",
+          "form": "F1",
+          "sender_agent": "did:example:alice-phone#core",
+          "sender_device": "did:example:alice-phone",
+          "aud": "did:example:alice-laptop#agent-audit",
+          "session": "sess-slice-t004",
+          "seq": 1,
+          "attestation_ref": null,
+          "cap_token": {
+            "v": "0.1",
+            "id": "tok-sr-e-t004",
+            "iss": "did:example:alice",
+            "sub": "did:example:alice-phone#core",
+            "aud": "did:example:alice-laptop#agent-audit",
+            "iat": "2026-10-09T08:00:00Z",
+            "exp": "2026-10-09T09:00:00Z",
+            "cnf": {
+              "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+            },
+            "rights": [
+              {
+                "action": "notify.session-record",
+                "resource": "urn:example:audit:alice/*"
+              }
+            ],
+            "chain": [],
+            "sig": {
+              "alg": "EdDSA",
+              "kid": "did:example:alice#owner-key-1",
+              "canon": "jcs",
+              "value": "Lkn5BP13uuFAGhwpHpcABUYtPqEqMD2T4-ve2wheOBb59OVjxkmKZ9Mx3yKIrGXPsfRw6iaYU0bFsj1u7N-0CA"
+            }
+          },
+          "intent": "notify.session-record",
+          "data": {
+            "v": "0.1",
+            "session": "sess-slice-t004",
+            "core": {
+              "agent": "did:example:alice-phone#core",
+              "kid": "did:example:alice-phone#core-key"
+            },
+            "runtime_profile": "R1",
+            "hops": [
+              {
+                "peer": "did:example:alice-thermostat",
+                "profile": "C0"
+              }
+            ],
+            "egress": [
+              {
+                "id": "egress-0024",
+                "provider": "did:example:search.example.net",
+                "provider_profile": "P1",
+                "payload_digest": {
+                  "alg": "sha-256",
+                  "value": "P694NPwW2q-nMmXHo1EAx6VJ6NvJfWksRtWVaKEomF0"
+                },
+                "report": {
+                  "id": "report-0024",
+                  "payload_digest": {
+                    "alg": "sha-256",
+                    "value": "P694NPwW2q-nMmXHo1EAx6VJ6NvJfWksRtWVaKEomF0"
+                  }
+                }
+              }
+            ],
+            "tier_display": {
+              "session": "sess-slice-t004",
+              "tier": 1,
+              "shows": [
+                "R1",
+                "C0",
+                "P1"
+              ],
+              "labels": [],
+              "rendered_at": "2026-10-09T08:10:00Z",
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice-phone#core-key",
+                "canon": "jcs",
+                "value": "b6wcQsMFU8IzF2LRseZgYUBSwa8MxVnxavM61YIXIo1dtyP3RKue727uFhz_PfFtnrzMrzOdZ152dg8I8YyhAA",
+                "signer": "did:example:alice-phone#core"
+              }
+            }
+          },
+          "payload_type": "application/vnd.sidged.session-record+json",
+          "residency": {
+            "tags": [],
+            "data_classes": []
+          },
+          "nonce": "lm2hvOjsRR-FhY6fDHBnaS0-",
+          "issued": "2026-10-09T08:10:01Z",
+          "expires": "2026-10-09T08:15:01Z",
+          "provenance": [],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-phone#core-key",
+            "canon": "jcs",
+            "value": "csOl8hXcsAVoEYwXjHme55vrrwsApbjg8hypJT0lsBEsmO1qK9HlcWxV-H-OcE_wtosJS9nBWSeHYLOnbHt5DQ"
+          }
+        },
+        "core_kid": "did:example:alice-phone#core-key",
+        "public_key": "rfc8032-test-1"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "malformed"
+      },
+      "status": "normative",
+      "note": "A C0 hop is shown but the displayed tier is 1, higher than the effective tier 0."
+    },
+    {
+      "id": "slice.tier-display.005",
+      "spec": [
+        {
+          "doc": "L4",
+          "version": "0.3",
+          "section": "5",
+          "tag": "R0"
+        },
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "11"
+        }
+      ],
+      "operation": "session-check",
+      "input": {
+        "envelope": {
+          "v": "0.1",
+          "form": "F1",
+          "sender_agent": "did:example:alice-phone#core",
+          "sender_device": "did:example:alice-phone",
+          "aud": "did:example:alice-laptop#agent-audit",
+          "session": "sess-slice-t005",
+          "seq": 1,
+          "attestation_ref": null,
+          "cap_token": {
+            "v": "0.1",
+            "id": "tok-sr-e-t005",
+            "iss": "did:example:alice",
+            "sub": "did:example:alice-phone#core",
+            "aud": "did:example:alice-laptop#agent-audit",
+            "iat": "2026-10-09T08:00:00Z",
+            "exp": "2026-10-09T09:00:00Z",
+            "cnf": {
+              "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+            },
+            "rights": [
+              {
+                "action": "notify.session-record",
+                "resource": "urn:example:audit:alice/*"
+              }
+            ],
+            "chain": [],
+            "sig": {
+              "alg": "EdDSA",
+              "kid": "did:example:alice#owner-key-1",
+              "canon": "jcs",
+              "value": "mDA2UwHtukLW2Sh-OUjaOZofpF1ciyCYPYWGJFo6aip2EFLzTuoIdoXyF_5fCEyrFf7KYRLN8W_BG9frqnLiBg"
+            }
+          },
+          "intent": "notify.session-record",
+          "data": {
+            "v": "0.1",
+            "session": "sess-slice-t005",
+            "core": {
+              "agent": "did:example:alice-phone#core",
+              "kid": "did:example:alice-phone#core-key"
+            },
+            "runtime_profile": "R1",
+            "hops": [
+              {
+                "peer": "did:example:alice-thermostat",
+                "profile": "C0"
+              }
+            ],
+            "egress": [
+              {
+                "id": "egress-0025",
+                "provider": "did:example:search.example.net",
+                "provider_profile": "P1",
+                "payload_digest": {
+                  "alg": "sha-256",
+                  "value": "Lc-1PC5lxfaID9RurTLa2KSx_5QwbCvfy9YVH6bgw3E"
+                },
+                "report": {
+                  "id": "report-0025",
+                  "payload_digest": {
+                    "alg": "sha-256",
+                    "value": "Lc-1PC5lxfaID9RurTLa2KSx_5QwbCvfy9YVH6bgw3E"
+                  }
+                }
+              }
+            ],
+            "tier_display": {
+              "session": "sess-slice-t005",
+              "tier": 0,
+              "shows": [
+                "R1",
+                "P1"
+              ],
+              "labels": [],
+              "rendered_at": "2026-10-09T08:10:00Z",
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice-phone#core-key",
+                "canon": "jcs",
+                "value": "PJZBNKJZd-SPaTMxivQOqQNsyOzIcEm8rxBY_9zFr6EdVo0kbKuOa5A51qVAuDLue7-C0eovGE8QLx0Kx4j0CQ",
+                "signer": "did:example:alice-phone#core"
+              }
+            }
+          },
+          "payload_type": "application/vnd.sidged.session-record+json",
+          "residency": {
+            "tags": [],
+            "data_classes": []
+          },
+          "nonce": "w7DmLlphI34EAvRs5pahjGq2",
+          "issued": "2026-10-09T08:10:01Z",
+          "expires": "2026-10-09T08:15:01Z",
+          "provenance": [],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-phone#core-key",
+            "canon": "jcs",
+            "value": "ILDCER6yolrpnjAacjywI449yMZUKcrFmttEyuSFV3asWIdqitVXdJLmWzK5zv9jj4BjdfF70P-v87AFZJeMDA"
+          }
+        },
+        "core_kid": "did:example:alice-phone#core-key",
+        "public_key": "rfc8032-test-1"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "malformed"
+      },
+      "status": "normative",
+      "note": "The display hides the C0 hop."
+    },
+    {
+      "id": "slice.tier-display.006",
+      "spec": [
+        {
+          "doc": "L5",
+          "version": "0.3",
+          "section": "21",
+          "tag": "R0"
+        },
+        {
+          "doc": "L4",
+          "version": "0.3",
+          "section": "5",
+          "tag": "R0"
+        },
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "11"
+        }
+      ],
+      "operation": "session-check",
+      "input": {
+        "envelope": {
+          "v": "0.1",
+          "form": "F1",
+          "sender_agent": "did:example:alice-phone#core",
+          "sender_device": "did:example:alice-phone",
+          "aud": "did:example:alice-laptop#agent-audit",
+          "session": "sess-slice-t006",
+          "seq": 1,
+          "attestation_ref": null,
+          "cap_token": {
+            "v": "0.1",
+            "id": "tok-sr-e-t006",
+            "iss": "did:example:alice",
+            "sub": "did:example:alice-phone#core",
+            "aud": "did:example:alice-laptop#agent-audit",
+            "iat": "2026-10-09T08:00:00Z",
+            "exp": "2026-10-09T09:00:00Z",
+            "cnf": {
+              "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+            },
+            "rights": [
+              {
+                "action": "notify.session-record",
+                "resource": "urn:example:audit:alice/*"
+              }
+            ],
+            "chain": [],
+            "sig": {
+              "alg": "EdDSA",
+              "kid": "did:example:alice#owner-key-1",
+              "canon": "jcs",
+              "value": "kch4n9LCOLHRo5Af9q6KAOVI1jC-aplieuHG4l7B0pFaFmSEauynNr7bypHY-vgCjr6DlT9b7S0jzVQ5pHppBQ"
+            }
+          },
+          "intent": "notify.session-record",
+          "data": {
+            "v": "0.1",
+            "session": "sess-slice-t006",
+            "core": {
+              "agent": "did:example:alice-phone#core",
+              "kid": "did:example:alice-phone#core-key"
+            },
+            "runtime_profile": "R0",
+            "hops": [],
+            "egress": [
+              {
+                "id": "egress-0026",
+                "provider": "did:example:models.example.org",
+                "provider_profile": "P2",
+                "payload_digest": {
+                  "alg": "sha-256",
+                  "value": "PeBrS7ykcNN59NX3XBwR_i2JEsxdyHF76aKbfM9AGTs"
+                },
+                "report": {
+                  "id": "report-0026",
+                  "payload_digest": {
+                    "alg": "sha-256",
+                    "value": "PeBrS7ykcNN59NX3XBwR_i2JEsxdyHF76aKbfM9AGTs"
+                  }
+                }
+              }
+            ],
+            "tier_display": {
+              "session": "sess-slice-t006",
+              "tier": 2,
+              "shows": [
+                "R0",
+                "P2"
+              ],
+              "labels": [
+                "prototype"
+              ],
+              "rendered_at": "2026-10-09T08:10:00Z",
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice-phone#core-key",
+                "canon": "jcs",
+                "value": "afgRAeT1IPsbuS1L7BkLVf-Vuv3EVd_PbvvgrZ0TJ0KOg3e9XCKJ0AHg3qRZon0IbKdP4UANo2aAt2yvyo5zCg",
+                "signer": "did:example:alice-phone#core"
+              }
+            }
+          },
+          "payload_type": "application/vnd.sidged.session-record+json",
+          "residency": {
+            "tags": [],
+            "data_classes": []
+          },
+          "nonce": "b6Bhvg8vj5pz8peulcn1zW4j",
+          "issued": "2026-10-09T08:10:01Z",
+          "expires": "2026-10-09T08:15:01Z",
+          "provenance": [],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-phone#core-key",
+            "canon": "jcs",
+            "value": "xW63244EsDivEnOa3oC8ACd-EhuqiAmQK4MB_IuFDUDFQHN_vF6_jcihHdxAXCJn-LtQSrGS_omHGQ7L09AvDg"
+          }
+        },
+        "core_kid": "did:example:alice-phone#core-key",
+        "public_key": "rfc8032-test-1"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "malformed"
+      },
+      "status": "normative",
+      "note": "An R0 prototype shows tier 2 from a P2 provider; R0 caps the effective tier at 0."
+    },
+    {
+      "id": "slice.tier-display.007",
+      "spec": [
+        {
+          "doc": "L4",
+          "version": "0.3",
+          "section": "5",
+          "tag": "R0"
+        }
+      ],
+      "operation": "session-check",
+      "input": {
+        "envelope": {
+          "v": "0.1",
+          "form": "F1",
+          "sender_agent": "did:example:alice-phone#core",
+          "sender_device": "did:example:alice-phone",
+          "aud": "did:example:alice-laptop#agent-audit",
+          "session": "sess-slice-t007",
+          "seq": 1,
+          "attestation_ref": null,
+          "cap_token": {
+            "v": "0.1",
+            "id": "tok-sr-e-t007",
+            "iss": "did:example:alice",
+            "sub": "did:example:alice-phone#core",
+            "aud": "did:example:alice-laptop#agent-audit",
+            "iat": "2026-10-09T08:00:00Z",
+            "exp": "2026-10-09T09:00:00Z",
+            "cnf": {
+              "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+            },
+            "rights": [
+              {
+                "action": "notify.session-record",
+                "resource": "urn:example:audit:alice/*"
+              }
+            ],
+            "chain": [],
+            "sig": {
+              "alg": "EdDSA",
+              "kid": "did:example:alice#owner-key-1",
+              "canon": "jcs",
+              "value": "xpXhBQDUmYjH1Yz1prJAy9vjFlSi-961EJK5ldXI7p3S7kvsR4HURFI4VAqsmqryZ6g4v0_7mlJheDm9XMAACw"
+            }
+          },
+          "intent": "notify.session-record",
+          "data": {
+            "v": "0.1",
+            "session": "sess-slice-t007",
+            "core": {
+              "agent": "did:example:alice-phone#core",
+              "kid": "did:example:alice-phone#core-key"
+            },
+            "runtime_profile": "R1",
+            "hops": [],
+            "egress": [
+              {
+                "id": "egress-0027",
+                "provider": "did:example:search.example.net",
+                "provider_profile": "P1",
+                "payload_digest": {
+                  "alg": "sha-256",
+                  "value": "xzV_sE7P5vDOw9Mrlh475UF9a0QIu2NY0VDC4C-MCxQ"
+                },
+                "report": {
+                  "id": "report-0027",
+                  "payload_digest": {
+                    "alg": "sha-256",
+                    "value": "xzV_sE7P5vDOw9Mrlh475UF9a0QIu2NY0VDC4C-MCxQ"
+                  }
+                }
+              }
+            ],
+            "tier_display": {
+              "session": "sess-slice-a001",
+              "tier": 1,
+              "shows": [
+                "R1",
+                "P1"
+              ],
+              "labels": [],
+              "rendered_at": "2026-10-09T08:10:00Z",
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice-phone#core-key",
+                "canon": "jcs",
+                "value": "nsvEusbZa4MjIZGF6iwmi8SjEaf7bm6c-Axc70Ptw6sK0t-Ha9flAzo359qGqlSV7Pk1DWXSgsO6IIY4YLKPDA",
+                "signer": "did:example:alice-phone#core"
+              }
+            }
+          },
+          "payload_type": "application/vnd.sidged.session-record+json",
+          "residency": {
+            "tags": [],
+            "data_classes": []
+          },
+          "nonce": "Cw2Q-DntbmZnESc0D1arAoRR",
+          "issued": "2026-10-09T08:10:01Z",
+          "expires": "2026-10-09T08:15:01Z",
+          "provenance": [],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-phone#core-key",
+            "canon": "jcs",
+            "value": "8b0pcMqxFXUb5XnItAJy-IA7CcfvoM2gv_wh5u-ktycCxbKOa4TP18aByrPBu78M67ndYvnZ_CPLZzxhoTjPCw"
+          }
+        },
+        "core_kid": "did:example:alice-phone#core-key",
+        "public_key": "rfc8032-test-1"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "malformed"
+      },
+      "status": "normative",
+      "note": "The display was rendered for another session."
+    },
+    {
+      "id": "slice.tier-display.008",
+      "spec": [
+        {
+          "doc": "L4",
+          "version": "0.3",
+          "section": "5",
+          "tag": "R0"
+        },
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "11"
+        }
+      ],
+      "operation": "session-check",
+      "input": {
+        "envelope": {
+          "v": "0.1",
+          "form": "F1",
+          "sender_agent": "did:example:alice-phone#core",
+          "sender_device": "did:example:alice-phone",
+          "aud": "did:example:alice-laptop#agent-audit",
+          "session": "sess-slice-t008",
+          "seq": 1,
+          "attestation_ref": null,
+          "cap_token": {
+            "v": "0.1",
+            "id": "tok-sr-e-t008",
+            "iss": "did:example:alice",
+            "sub": "did:example:alice-phone#core",
+            "aud": "did:example:alice-laptop#agent-audit",
+            "iat": "2026-10-09T08:00:00Z",
+            "exp": "2026-10-09T09:00:00Z",
+            "cnf": {
+              "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+            },
+            "rights": [
+              {
+                "action": "notify.session-record",
+                "resource": "urn:example:audit:alice/*"
+              }
+            ],
+            "chain": [],
+            "sig": {
+              "alg": "EdDSA",
+              "kid": "did:example:alice#owner-key-1",
+              "canon": "jcs",
+              "value": "aNBT0x_Jxhpv4QTxmJgUVdM6K5GLJQ6L42Z4irvCgvDOUYUopnSJM6kAHbTlLX_FVES06wb9ZJHDjGWa85O2CA"
+            }
+          },
+          "intent": "notify.session-record",
+          "data": {
+            "v": "0.1",
+            "session": "sess-slice-t008",
+            "core": {
+              "agent": "did:example:alice-phone#core",
+              "kid": "did:example:alice-phone#core-key"
+            },
+            "runtime_profile": "R1",
+            "hops": [],
+            "egress": [
+              {
+                "id": "egress-0028",
+                "provider": "did:example:search.example.net",
+                "provider_profile": "P0",
+                "payload_digest": {
+                  "alg": "sha-256",
+                  "value": "VbPTzRizABtkY0tEfB1qvGzwguxxA6rCVH08iB0w3kA"
+                },
+                "report": {
+                  "id": "report-0028",
+                  "payload_digest": {
+                    "alg": "sha-256",
+                    "value": "VbPTzRizABtkY0tEfB1qvGzwguxxA6rCVH08iB0w3kA"
+                  }
+                }
+              }
+            ],
+            "tier_display": {
+              "session": "sess-slice-t008",
+              "tier": 0,
+              "shows": [
+                "R1"
+              ],
+              "labels": [],
+              "rendered_at": "2026-10-09T08:10:00Z",
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice-phone#core-key",
+                "canon": "jcs",
+                "value": "E497EyIPQ7O3ek-COEPM611bNY7BHnrkbQlGrk2AV_sj7pCzO2YMvniKi346LdUgbstKvu7umfoVfkG6XEQUDg",
+                "signer": "did:example:alice-phone#core"
+              }
+            }
+          },
+          "payload_type": "application/vnd.sidged.session-record+json",
+          "residency": {
+            "tags": [],
+            "data_classes": []
+          },
+          "nonce": "LCM5iT-ghIiXJJrDaigRmevw",
+          "issued": "2026-10-09T08:10:01Z",
+          "expires": "2026-10-09T08:15:01Z",
+          "provenance": [],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-phone#core-key",
+            "canon": "jcs",
+            "value": "1QwN_4Ai_ZJejenlTF6hLSMbF0IadRbQ1DR1PucZRvQRxH66ecURVePdK0-fPLUX7S-qj-VZVU0whDp3OH_VAw"
+          }
+        },
+        "core_kid": "did:example:alice-phone#core-key",
+        "public_key": "rfc8032-test-1"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "malformed"
+      },
+      "status": "normative",
+      "note": "The display hides the P0 provider."
+    },
+    {
+      "id": "slice.prototype.001",
+      "spec": [
+        {
+          "doc": "L5",
+          "version": "0.3",
+          "section": "21",
+          "tag": "R0"
+        }
+      ],
+      "operation": "session-check",
+      "input": {
+        "envelope": {
+          "v": "0.1",
+          "form": "F1",
+          "sender_agent": "did:example:alice-phone#core",
+          "sender_device": "did:example:alice-phone",
+          "aud": "did:example:alice-laptop#agent-audit",
+          "session": "sess-slice-p001",
+          "seq": 1,
+          "attestation_ref": null,
+          "cap_token": {
+            "v": "0.1",
+            "id": "tok-sr-e-p001",
+            "iss": "did:example:alice",
+            "sub": "did:example:alice-phone#core",
+            "aud": "did:example:alice-laptop#agent-audit",
+            "iat": "2026-10-09T08:00:00Z",
+            "exp": "2026-10-09T09:00:00Z",
+            "cnf": {
+              "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+            },
+            "rights": [
+              {
+                "action": "notify.session-record",
+                "resource": "urn:example:audit:alice/*"
+              }
+            ],
+            "chain": [],
+            "sig": {
+              "alg": "EdDSA",
+              "kid": "did:example:alice#owner-key-1",
+              "canon": "jcs",
+              "value": "Kw1o4G2XnxGUdafAeAfkq_6BNSGVftgdtW6teJiLuQXb1lbq289EBtT7QzPBcxJbqvVnXG8grD0KiX7EfzlxAQ"
+            }
+          },
+          "intent": "notify.session-record",
+          "data": {
+            "v": "0.1",
+            "session": "sess-slice-p001",
+            "core": {
+              "agent": "did:example:alice-phone#core",
+              "kid": "did:example:alice-phone#core-key"
+            },
+            "runtime_profile": "R0",
+            "hops": [],
+            "egress": [
+              {
+                "id": "egress-0031",
+                "provider": "did:example:search.example.net",
+                "provider_profile": "P1",
+                "payload_digest": {
+                  "alg": "sha-256",
+                  "value": "qQa3PJ09IdEE0EEzfzl1mS21pBKZc1Jpu7ea9O63jec"
+                },
+                "report": {
+                  "id": "report-0031",
+                  "payload_digest": {
+                    "alg": "sha-256",
+                    "value": "qQa3PJ09IdEE0EEzfzl1mS21pBKZc1Jpu7ea9O63jec"
+                  }
+                }
+              }
+            ],
+            "tier_display": {
+              "session": "sess-slice-p001",
+              "tier": 0,
+              "shows": [
+                "R0",
+                "P1"
+              ],
+              "labels": [],
+              "rendered_at": "2026-10-09T08:10:00Z",
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice-phone#core-key",
+                "canon": "jcs",
+                "value": "o46EQJqDTt4NqFwDuKIuIEk32gw0p9E5sgenzfgbvyXsm6ZvprnnBW72nY0GB4tZLUTt7EsiAWMJ_nhQbTSrAg",
+                "signer": "did:example:alice-phone#core"
+              }
+            }
+          },
+          "payload_type": "application/vnd.sidged.session-record+json",
+          "residency": {
+            "tags": [],
+            "data_classes": []
+          },
+          "nonce": "-j_1RGwBx_MnMjq5GZ_8PDql",
+          "issued": "2026-10-09T08:10:01Z",
+          "expires": "2026-10-09T08:15:01Z",
+          "provenance": [],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-phone#core-key",
+            "canon": "jcs",
+            "value": "_0wJFZibIR3TIqu_BAuXRVjHXvSRolXkuJgjMMCNviEgBaSg-syOWg-dDHoWS5AN7feNOoh8Xnx58pplTPbqCA"
+          }
+        },
+        "core_kid": "did:example:alice-phone#core-key",
+        "public_key": "rfc8032-test-1"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "malformed"
+      },
+      "status": "normative",
+      "note": "An R0 runtime without the prototype label."
+    },
+    {
+      "id": "slice.envelope.001",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.3",
+          "section": "13",
+          "tag": "R0"
+        },
+        {
+          "doc": "L6",
+          "version": "0.1",
+          "section": "A5.1",
+          "tag": "C1"
+        }
+      ],
+      "operation": "session-check",
+      "input": {
+        "envelope": {
+          "v": "0.1",
+          "form": "F1",
+          "sender_agent": "did:example:alice-phone#core",
+          "sender_device": "did:example:alice-phone",
+          "aud": "did:example:alice-laptop#agent-audit",
+          "session": "sess-slice-n001",
+          "seq": 1,
+          "attestation_ref": null,
+          "cap_token": {
+            "v": "0.1",
+            "id": "tok-sr-e-n001",
+            "iss": "did:example:alice",
+            "sub": "did:example:alice-phone#core",
+            "aud": "did:example:alice-laptop#agent-audit",
+            "iat": "2026-10-09T08:00:00Z",
+            "exp": "2026-10-09T09:00:00Z",
+            "cnf": {
+              "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+            },
+            "rights": [
+              {
+                "action": "notify.session-record",
+                "resource": "urn:example:audit:alice/*"
+              }
+            ],
+            "chain": [],
+            "sig": {
+              "alg": "EdDSA",
+              "kid": "did:example:alice#owner-key-1",
+              "canon": "jcs",
+              "value": "g8GPveItXFuHYM0QHdyknWeOoQgEHDBuuCWu41TMTKyIQw3TG7_NXWfp-71spHKALxnTuQvJdFLDupgj3THWCA"
+            }
+          },
+          "intent": "notify.session-record",
+          "data": {
+            "v": "0.1",
+            "session": "sess-slice-n001",
+            "core": {
+              "agent": "did:example:alice-phone#core",
+              "kid": "did:example:alice-phone#core-key"
+            },
+            "runtime_profile": "R1",
+            "hops": [],
+            "egress": [
+              {
+                "id": "egress-0041",
+                "provider": "did:example:search.example.net",
+                "provider_profile": "P1",
+                "payload_digest": {
+                  "alg": "sha-256",
+                  "value": "E9nBtuekq3awpMFBNhL1nOx7clxTl1ICuC5zg6OJxNg"
+                },
+                "report": {
+                  "id": "report-0041",
+                  "payload_digest": {
+                    "alg": "sha-256",
+                    "value": "E9nBtuekq3awpMFBNhL1nOx7clxTl1ICuC5zg6OJxNg"
+                  }
+                }
+              }
+            ],
+            "tier_display": {
+              "session": "sess-slice-n001",
+              "tier": 1,
+              "shows": [
+                "R1",
+                "P1"
+              ],
+              "labels": [],
+              "rendered_at": "2026-10-09T08:10:00Z",
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice-phone#core-key",
+                "canon": "jcs",
+                "value": "IWwMFQ9MymaMDWYe-2WASZOD6kzEVjKUDrpurz-G5nn6mhpjgv2g84Q9JgXZj2PWdoBqe7_SN_4VrG5-ErBzAg",
+                "signer": "did:example:alice-phone#core"
+              }
+            }
+          },
+          "payload_type": "application/vnd.sidged.session-record+json",
+          "residency": {
+            "tags": [],
+            "data_classes": []
+          },
+          "nonce": "mBe__5XxFc1lj8LvZP139JFd",
+          "issued": "2026-10-09T08:10:01Z",
+          "expires": "2026-10-09T08:15:01Z",
+          "provenance": [],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-phone#module-weather-key",
+            "canon": "jcs",
+            "value": "_84tYHyg4XhzxD88UajfK6QPNszfVdhn4TYclU23ldkOYeOZzLp2TPe41odL2cPVYmmMhlmBXHZI5m05kvXoCg"
+          }
+        },
+        "core_kid": "did:example:alice-phone#core-key",
+        "public_key": "rfc8032-test-1"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "bad-signature"
+      },
+      "status": "normative",
+      "note": "The session record envelope is signed by a module key, not the Core key."
+    },
+    {
+      "id": "slice.envelope.002",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.3",
+          "section": "13",
+          "tag": "R0"
+        },
+        {
+          "doc": "L6",
+          "version": "0.1",
+          "section": "A5.1",
+          "tag": "C1"
+        }
+      ],
+      "operation": "session-check",
+      "requires": [
+        "EdDSA",
+        "jcs"
+      ],
+      "input": {
+        "envelope": {
+          "v": "0.1",
+          "form": "F1",
+          "sender_agent": "did:example:alice-phone#core",
+          "sender_device": "did:example:alice-phone",
+          "aud": "did:example:alice-laptop#agent-audit",
+          "session": "sess-slice-n002",
+          "seq": 1,
+          "attestation_ref": null,
+          "cap_token": {
+            "v": "0.1",
+            "id": "tok-sr-e-n002",
+            "iss": "did:example:alice",
+            "sub": "did:example:alice-phone#core",
+            "aud": "did:example:alice-laptop#agent-audit",
+            "iat": "2026-10-09T08:00:00Z",
+            "exp": "2026-10-09T09:00:00Z",
+            "cnf": {
+              "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+            },
+            "rights": [
+              {
+                "action": "notify.session-record",
+                "resource": "urn:example:audit:alice/*"
+              }
+            ],
+            "chain": [],
+            "sig": {
+              "alg": "EdDSA",
+              "kid": "did:example:alice#owner-key-1",
+              "canon": "jcs",
+              "value": "pp0QiooNnaTAW6St0YE_u8NCap9FXd1yJ9_3tROSIzY8Vhpcocmq8E-gMBvySaWkdzdqklbNAQhzgKTfsbBFBQ"
+            }
+          },
+          "intent": "notify.session-record",
+          "data": {
+            "v": "0.1",
+            "session": "sess-slice-n002",
+            "core": {
+              "agent": "did:example:alice-phone#core",
+              "kid": "did:example:alice-phone#core-key"
+            },
+            "runtime_profile": "R1",
+            "hops": [],
+            "egress": [
+              {
+                "id": "egress-0042",
+                "provider": "did:example:search.example.net",
+                "provider_profile": "P1",
+                "payload_digest": {
+                  "alg": "sha-256",
+                  "value": "eQTFzG7BGaPUgIUuq8rJBeIyQhPVNOfDTHjJAxb8udg"
+                },
+                "report": {
+                  "id": "report-0042",
+                  "payload_digest": {
+                    "alg": "sha-256",
+                    "value": "eQTFzG7BGaPUgIUuq8rJBeIyQhPVNOfDTHjJAxb8udg"
+                  }
+                }
+              }
+            ],
+            "tier_display": {
+              "session": "sess-slice-n002",
+              "tier": 1,
+              "shows": [
+                "R1",
+                "P1"
+              ],
+              "labels": [],
+              "rendered_at": "2026-10-09T08:10:00Z",
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice-phone#core-key",
+                "canon": "jcs",
+                "value": "tO-MrRZCK_cpU4eJFSQLwxMSR25tsSsYKZ-rDrfwVEToJxodx4IFtrq4zazkdkNLokqjiPY1n0uiTGYxc4TTDA",
+                "signer": "did:example:alice-phone#core"
+              }
+            }
+          },
+          "payload_type": "application/vnd.sidged.session-record+json",
+          "residency": {
+            "tags": [],
+            "data_classes": []
+          },
+          "nonce": "ekMzXLbZd5jhdfRmTGpLGvtL",
+          "issued": "2026-10-09T08:10:01Z",
+          "expires": "2026-10-09T08:15:01Z",
+          "provenance": [],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-phone#core-key",
+            "canon": "jcs",
+            "value": "sMk7oqRyWDJ9_9BQ-5DdMRJAU-RtzrwD9OUnPbUzron2XVVu1U237_jb0lW4SlARAL9SHc8bv0s6vyEs8dKqAw"
+          }
+        },
+        "core_kid": "did:example:alice-phone#core-key",
+        "public_key": "rfc8032-test-1"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "bad-signature"
+      },
+      "status": "normative",
+      "note": "The envelope names the Core key but was signed with a module key."
+    }
+  ]
+}

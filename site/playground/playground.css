@@ -1,0 +1,25 @@
+/* Copyright 2026 VAIEV
+ * SPDX-License-Identifier: Apache-2.0
+ * Playground layout on top of @vaiev/ui v4 and the Sidged theme (/assets). Content flat and
+ * tonal; the nav pill is the one glass layer. Only layout lives here. */
+body { margin: 0; }
+.vv-nav__bar { max-width: 560px; }
+.vv-nav__bar .vv-btn--text { text-decoration: none; }
+.pg-head { display: grid; gap: var(--vv-space-3); padding-block: var(--vv-space-12) var(--vv-space-8); max-width: calc(52rem + 2 * var(--vv-layout-margin)); }
+.pg-over { color: var(--sdg-sodium-300); }
+.pg-main { display: grid; gap: var(--vv-layout-gutter); align-items: start; }
+@media (min-width: 960px) { .pg-main { grid-template-columns: 1fr 1fr; } }
+.pg-pane { gap: var(--vv-space-5); }
+.pg-pane textarea { font-family: var(--vv-font-mono); font-size: 0.85rem; line-height: 1.5; }
+.pg-actions { display: flex; flex-wrap: wrap; gap: var(--vv-space-3); align-items: center; }
+#verdict:empty { display: none; }
+#verdict { font-weight: 500; }
+.pg-output {
+  margin: 0; padding: var(--vv-space-4); border-radius: var(--vv-shape-sm); max-height: 60vh; overflow: auto;
+  white-space: pre-wrap; word-break: break-word; font: 400 0.82rem/1.5 var(--vv-font-mono);
+  background: var(--vv-color-surface-container-lowest); color: var(--vv-color-on-surface-variant);
+}
+.pg-output:empty { display: none; }
+.pg-prim { margin-bottom: var(--vv-space-2); }
+.pg-foot { padding-block: var(--vv-space-12) max(var(--vv-space-8), env(safe-area-inset-bottom)); }
+.pg-foot a { color: var(--vv-color-primary); }

@@ -1,0 +1,33 @@
+{
+  "v": "0.1",
+  "form": "F1",
+  "sender_agent": "did:example:alice-phone#agent-assistant",
+  "sender_device": "did:example:alice-phone",
+  "aud": "did:example:alice-laptop",
+  "session": "pair-91c2d7aa10",
+  "seq": 0,
+  "attestation_ref": null,
+  "intent": "sdg.pairing.request",
+  "residency": {
+    "tags": [],
+    "data_classes": []
+  },
+  "nonce": "Zx8Yw7Vu6Ts5Rq4Po3Nm2Lk1",
+  "issued": "2026-10-09T07:59:00Z",
+  "expires": "2026-10-09T08:04:00Z",
+  "data": {
+    "forms": [
+      "F1",
+      "F4"
+    ],
+    "sas_commitment": "b3Jhbmdlcy1hbmQtbGVtb25z"
+  },
+  "payload_type": "application/vnd.sidged.pairing+json",
+  "provenance": [],
+  "sig": {
+    "alg": "EdDSA",
+    "kid": "did:example:alice-phone#agent-assistant-key",
+    "canon": "jcs",
+    "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+  }
+}

@@ -1,0 +1,149 @@
+{
+  "about": "Shared by local-training/tests/test_linguist.py and runtime/sidged-cli/src/linguist.rs: the compact (v0.2, 0017 L3a) prompt bytes and the envelope the Core derives from a compact proposal must match exactly. The user prompt is the one of linguist-prompt.json.",
+  "prompt": {
+    "utterance": "Erinner mi morn am achti a de Zahnarzttermin",
+    "intent_ids": [
+      "timer.set",
+      "task.summarize",
+      "scheduling.remind",
+      "messaging.send",
+      "task.note"
+    ],
+    "system": "You are Sidged Model -1, the companion linguist. Read one utterance in English, German or Swiss German and reply with exactly one JSON object and nothing else, with the keys v, lang, intent, missing, slots. v is 0.2. lang is en, de or gsw. intent is one catalog intent, or null when none fits. missing lists the required slots (marked *) the utterance does not give, before you write slots; it is empty when intent is null. slots holds only the values the utterance gives, never a slot listed in missing, in canonical English; names, quoted text, file names and slots described as verbatim stay as written. When the utterance asks for one thing and then another, put the first in intent and slots and each further one, in order, in then as objects with intent and slots; only pairs listed under Compositions may follow each other, and a slot the earlier result gives is left out. Your reply is a proposal: the Sidged Core re-checks it against the catalog and asks for what is missing. Never add other keys.",
+    "user": "Catalog:\n- timer.set | Start a countdown timer | route edge-local | classes - | template Start a timer for {duration} | slots duration*: How long the timer runs.; label: What the timer is for, if named.\n- task.summarize | Summarize a document | route swarm-worker | classes documents.text | template Summarize {source} | slots source*: Document, file or text to summarize.\n- scheduling.remind | Set a reminder | route edge-local | classes calendar.events | template Remind me about {subject} {time} | slots subject*: What to be reminded of.; time*: When the reminder fires, as said (the Core resolves it).\n- messaging.send | Write and send a message | route edge-local | classes communications.content, contacts.name | template Send a message to {recipient} about {topic} | slots recipient*: Person, group or address that receives the message.; topic*: What the message is about, as said (without the preposition).\n- task.note | Write down a note | route edge-local | classes documents.text | template Save a note: {content} | slots content*: Text of the note, kept verbatim.\nCompositions:\n- task.summarize then messaging.send | the earlier result gives topic\nUtterance: Erinner mi morn am achti a de Zahnarzttermin"
+  },
+  "proposals": [
+    {
+      "utterance": "Erinner mi morn am achti a de Zahnarzttermin",
+      "proposal": {
+        "v": "0.2",
+        "lang": "gsw",
+        "intent": "scheduling.remind",
+        "missing": [],
+        "slots": {
+          "subject": "the dentist appointment",
+          "time": "morn am achti"
+        }
+      },
+      "expected": {
+        "v": "0.1",
+        "lang": "gsw",
+        "intent": "scheduling.remind",
+        "slots": {
+          "subject": "the dentist appointment",
+          "time": "morn am achti"
+        },
+        "missing_slots": [],
+        "clarification_needed": false,
+        "clarification_question_local": null,
+        "canonical_intent_en": "Remind me about the dentist appointment morn am achti",
+        "suggested_route": "edge-local",
+        "required_data_classes": [
+          "calendar.events"
+        ]
+      }
+    },
+    {
+      "utterance": "Remind me about the laundry",
+      "proposal": {
+        "v": "0.2",
+        "lang": "en",
+        "intent": "scheduling.remind",
+        "missing": [
+          "time"
+        ],
+        "slots": {
+          "subject": "the laundry"
+        }
+      },
+      "expected": {
+        "v": "0.1",
+        "lang": "en",
+        "intent": "scheduling.remind",
+        "slots": {
+          "subject": "the laundry"
+        },
+        "missing_slots": [
+          "time"
+        ],
+        "clarification_needed": true,
+        "clarification_question_local": "When should I remind you?",
+        "canonical_intent_en": "Remind me about the laundry <time>",
+        "suggested_route": "clarify",
+        "required_data_classes": [
+          "calendar.events"
+        ]
+      }
+    },
+    {
+      "utterance": "Fass protokoll.docx zäme und schick's em Marco",
+      "proposal": {
+        "v": "0.2",
+        "lang": "gsw",
+        "intent": "task.summarize",
+        "missing": [],
+        "slots": {
+          "source": "protokoll.docx"
+        },
+        "then": [
+          {
+            "intent": "messaging.send",
+            "slots": {
+              "recipient": "Marco"
+            }
+          }
+        ]
+      },
+      "expected": {
+        "v": "0.1",
+        "lang": "gsw",
+        "intent": "task.summarize",
+        "slots": {
+          "source": "protokoll.docx"
+        },
+        "missing_slots": [],
+        "clarification_needed": false,
+        "clarification_question_local": null,
+        "canonical_intent_en": "Summarize protokoll.docx",
+        "suggested_route": "swarm-worker",
+        "required_data_classes": [
+          "documents.text",
+          "communications.content",
+          "contacts.name"
+        ],
+        "then": [
+          {
+            "intent": "messaging.send",
+            "slots": {
+              "recipient": "Marco"
+            },
+            "missing_slots": [],
+            "canonical_intent_en": "Send a message to Marco about the previous result"
+          }
+        ]
+      }
+    },
+    {
+      "utterance": "isch scho guet so",
+      "proposal": {
+        "v": "0.2",
+        "lang": "gsw",
+        "intent": null,
+        "missing": [],
+        "slots": {}
+      },
+      "expected": {
+        "v": "0.1",
+        "lang": "gsw",
+        "intent": null,
+        "slots": {},
+        "missing_slots": [],
+        "clarification_needed": true,
+        "clarification_question_local": "Was genau söll ich mache?",
+        "canonical_intent_en": null,
+        "suggested_route": "clarify",
+        "required_data_classes": []
+      }
+    }
+  ]
+}

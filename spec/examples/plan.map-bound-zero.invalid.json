@@ -1,0 +1,19 @@
+{
+  "v": "0.1",
+  "steps": [
+    {
+      "id": "slots",
+      "kind": "expr",
+      "expr": "true"
+    },
+    {
+      "id": "each",
+      "kind": "map",
+      "over": { "ref": "slots" },
+      "bound": 0,
+      "capability": "urn:sidged:capability:message.send",
+      "approval": true,
+      "args": { "body": { "item": true } }
+    }
+  ]
+}

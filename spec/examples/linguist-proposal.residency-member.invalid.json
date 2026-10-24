@@ -1,0 +1,13 @@
+{
+  "v": "0.2",
+  "lang": "en",
+  "intent": "scheduling.remind",
+  "missing": [],
+  "slots": {
+    "subject": "the dentist appointment",
+    "time": "tomorrow at 08:00"
+  },
+  "residency": [
+    "CH"
+  ]
+}

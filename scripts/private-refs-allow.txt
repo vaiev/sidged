@@ -1,0 +1,4 @@
+# Allowlist for scripts/check-no-private-refs.sh: genuine non-references only.
+# One entry per line: path:text  -- reason. A hit in <path> is allowed when its
+# line contains <text>.
+demo/ch-residency/public/index.html:solid #333;  -- CSS colour, not an issue

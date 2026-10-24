@@ -1,0 +1,125 @@
+{
+  "category": "signatures",
+  "description": "Producing sig.value for canon jcs (Sidged L6) with the RFC 8032 test keys. Ed25519 signatures are deterministic, so the expected base64url value is exact.",
+  "vectors": [
+    {
+      "id": "signature.sign.001",
+      "spec": [
+        {
+          "doc": "L6",
+          "version": "0.1",
+          "section": "A5.1",
+          "tag": "C1"
+        }
+      ],
+      "operation": "sign",
+      "requires": [
+        "EdDSA",
+        "jcs"
+      ],
+      "input": {
+        "object": {
+          "v": "0.1",
+          "form": "F2",
+          "sender_agent": "did:example:bob-homeserver#agent-calendar",
+          "sender_device": "did:example:bob-homeserver",
+          "aud": "did:example:alice-phone#agent-assistant",
+          "session": "sess-4b1d0e9a77",
+          "seq": 4,
+          "attestation_ref": null,
+          "intent": "sdg.refused",
+          "data": {
+            "v": "0.1",
+            "reason": "rate-limited",
+            "ref": {
+              "session": "sess-4b1d0e9a77",
+              "seq": 3,
+              "idem_key": "idem-2026-10-09-0001-a7c3"
+            },
+            "retry_after": "PT10M"
+          },
+          "payload_type": "application/vnd.sidged.refusal+json",
+          "residency": {
+            "tags": [],
+            "data_classes": []
+          },
+          "nonce": "Mn5Bv4Cx3Zl2Kj1Hg0Fd9Sa8",
+          "issued": "2026-10-09T08:10:02Z",
+          "expires": "2026-10-09T08:15:02Z",
+          "provenance": [],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:bob-homeserver#agent-calendar-key",
+            "canon": "jcs",
+            "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+          }
+        },
+        "key": "rfc8032-test-1",
+        "canon": "jcs"
+      },
+      "expected": {
+        "value": "_0ZpEgNnbENUhbgUL4CaN-b_-xNrte3w4TluvZKU8IJDCI7te-XaDIFojymv4TnftmlijvjNkQ245MJ7xGkxDg"
+      },
+      "status": "normative",
+      "note": "Refusal example signed with test key 1. Ed25519 is deterministic, so sig.value is fixed"
+    },
+    {
+      "id": "signature.sign.002",
+      "spec": [
+        {
+          "doc": "L6",
+          "version": "0.1",
+          "section": "A5.1",
+          "tag": "C1"
+        }
+      ],
+      "operation": "sign",
+      "requires": [
+        "EdDSA",
+        "jcs"
+      ],
+      "input": {
+        "object": {
+          "v": "0.1",
+          "form": "F1",
+          "sender_agent": "did:example:alice-phone#agent-assistant",
+          "sender_device": "did:example:alice-phone",
+          "aud": "did:example:alice-laptop",
+          "session": "pair-91c2d7aa10",
+          "seq": 0,
+          "attestation_ref": null,
+          "intent": "sdg.pairing.request",
+          "residency": {
+            "tags": [],
+            "data_classes": []
+          },
+          "nonce": "Zx8Yw7Vu6Ts5Rq4Po3Nm2Lk1",
+          "issued": "2026-10-09T07:59:00Z",
+          "expires": "2026-10-09T08:04:00Z",
+          "data": {
+            "forms": [
+              "F1",
+              "F4"
+            ],
+            "sas_commitment": "b3Jhbmdlcy1hbmQtbGVtb25z"
+          },
+          "payload_type": "application/vnd.sidged.pairing+json",
+          "provenance": [],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-phone#agent-assistant-key",
+            "canon": "jcs",
+            "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+          }
+        },
+        "key": "rfc8032-test-2",
+        "canon": "jcs"
+      },
+      "expected": {
+        "value": "AvOZvCXeMMCghoMuSZdk3NCc3WgpkYz7CHgfgxwWrVtKQj-KUqrNs2-l33grCImDNfxCfZWTfywPh5aRCC3aAw"
+      },
+      "status": "normative",
+      "note": "Pairing example signed with test key 2. Ed25519 is deterministic, so sig.value is fixed"
+    }
+  ]
+}

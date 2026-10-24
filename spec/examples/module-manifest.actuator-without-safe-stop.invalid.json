@@ -1,0 +1,70 @@
+{
+  "v": "0.1",
+  "id": "urn:example:module:robot-arm",
+  "name": "Desk Robot Arm",
+  "version": "1.0.0",
+  "kind": "hardware",
+  "publisher": {
+    "id": "did:example:openmodules-collective",
+    "name": "Example Open Modules Collective",
+    "contact": "https://modules.example.org/contact"
+  },
+  "compat": {
+    "runtime": ">=0.3",
+    "min_profile": "R2"
+  },
+  "capabilities": {
+    "provides": [
+      "robot.arm.move",
+      "robot.arm.grip"
+    ],
+    "requires": []
+  },
+  "permissions": [
+    {
+      "capability": "robot.arm.move",
+      "consequential": true,
+      "reason": "Moves a physical arm."
+    }
+  ],
+  "data_classes": [],
+  "egress": [],
+  "resources": {
+    "hardware": [
+      "usb",
+      "robot.arm"
+    ],
+    "network": false
+  },
+  "hardware": {
+    "type": "robot.arm",
+    "functions": [
+      "robot.arm.move",
+      "robot.arm.grip"
+    ],
+    "performance_class": "standard",
+    "safety": {
+      "actuator": true,
+      "hardware_stop": true,
+      "standards": [
+        "ISO 10218"
+      ]
+    },
+    "attested": false
+  },
+  "sbom": {
+    "format": "cyclonedx",
+    "uri": "https://modules.example.org/robot-arm/1.0.0/sbom.cdx.json",
+    "digest": {
+      "alg": "sha-256",
+      "value": "c2FmZS1zdG9wLWV4YW1wbGUtZGlnZXN0LXZhbHVl"
+    }
+  },
+  "sig": {
+    "alg": "EdDSA",
+    "kid": "did:example:openmodules-collective#release-key-2026",
+    "canon": "jcs",
+    "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy",
+    "signer": "did:example:openmodules-collective"
+  }
+}

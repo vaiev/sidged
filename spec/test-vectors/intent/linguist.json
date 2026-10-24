@@ -1,0 +1,2327 @@
+{
+  "category": "intent",
+  "description": "Intent linguist boundary (0017): reply verification and derivation (L1-L7), intent plans (PL1-PL5), spoken times and durations (X6). Catalog: runtime/sidged-cli/assets/intent-catalog.json; capabilities: the default capability catalog; flow policy: default-flow.",
+  "vectors": [
+    {
+      "id": "intent.linguist.001",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "L2"
+        }
+      ],
+      "operation": "linguist-verify",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "utterance": "Schrib Lea wäg em Znacht am Friitig",
+        "reply": {
+          "v": "0.1",
+          "lang": "gsw",
+          "intent": "messaging.send",
+          "slots": {
+            "recipient": "Lea",
+            "topic": "Znacht am Friitig"
+          },
+          "missing_slots": [],
+          "clarification_needed": false,
+          "clarification_question_local": null,
+          "canonical_intent_en": null,
+          "suggested_route": "edge-local",
+          "required_data_classes": []
+        }
+      },
+      "expected": {
+        "value": {
+          "envelope": {
+            "v": "0.1",
+            "lang": "gsw",
+            "intent": "messaging.send",
+            "slots": {
+              "recipient": "Lea",
+              "topic": "Znacht am Friitig"
+            },
+            "missing_slots": [],
+            "clarification_needed": false,
+            "clarification_question_local": null,
+            "canonical_intent_en": "Send a message to Lea about Znacht am Friitig",
+            "suggested_route": "edge-local",
+            "required_data_classes": [
+              "communications.content",
+              "contacts.name"
+            ]
+          },
+          "corrections": [
+            "canonical_intent_en-corrected",
+            "required_data_classes-corrected"
+          ]
+        }
+      },
+      "status": "normative",
+      "note": "a complete proposal: the Core derives every member but lang, intent and slots"
+    },
+    {
+      "id": "intent.linguist.002",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "L2"
+        }
+      ],
+      "operation": "linguist-verify",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "utterance": "Schrib Lea",
+        "reply": {
+          "v": "0.1",
+          "lang": "gsw",
+          "intent": "messaging.send",
+          "slots": {
+            "recipient": "Lea"
+          },
+          "missing_slots": [],
+          "clarification_needed": false,
+          "clarification_question_local": null,
+          "canonical_intent_en": null,
+          "suggested_route": "edge-local",
+          "required_data_classes": []
+        }
+      },
+      "expected": {
+        "value": {
+          "envelope": {
+            "v": "0.1",
+            "lang": "gsw",
+            "intent": "messaging.send",
+            "slots": {
+              "recipient": "Lea"
+            },
+            "missing_slots": [
+              "topic"
+            ],
+            "clarification_needed": true,
+            "clarification_question_local": "Um was söll's i de Nachricht gah?",
+            "canonical_intent_en": "Send a message to Lea about <topic>",
+            "suggested_route": "clarify",
+            "required_data_classes": [
+              "communications.content",
+              "contacts.name"
+            ]
+          },
+          "corrections": [
+            "missing_slots-corrected",
+            "clarification_needed-corrected",
+            "clarification_question_local-corrected",
+            "canonical_intent_en-corrected",
+            "suggested_route-corrected",
+            "required_data_classes-corrected"
+          ]
+        }
+      },
+      "status": "normative",
+      "note": "a proposal that claims no clarification while a required slot is missing is corrected"
+    },
+    {
+      "id": "intent.linguist.003",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "L3"
+        }
+      ],
+      "operation": "linguist-verify",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "utterance": "Schrib Lea wäg em Znacht am Friitig",
+        "reply": {
+          "v": "0.1",
+          "lang": "gsw",
+          "intent": "messaging.send",
+          "slots": {
+            "recipient": "Lea",
+            "topic": "Znacht am Friitig"
+          },
+          "missing_slots": [],
+          "clarification_needed": false,
+          "clarification_question_local": null,
+          "canonical_intent_en": null,
+          "suggested_route": "edge-local",
+          "required_data_classes": [],
+          "residency": [
+            "CH"
+          ]
+        }
+      },
+      "expected": {
+        "result": "refuse"
+      },
+      "status": "normative",
+      "note": "a member outside the envelope (residency) refuses the proposal"
+    },
+    {
+      "id": "intent.linguist.004",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "L3"
+        }
+      ],
+      "operation": "linguist-verify",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "utterance": "Schrib Lea wäg em Znacht am Friitig",
+        "reply": {
+          "v": "0.1",
+          "lang": "gsw",
+          "intent": "messaging.send",
+          "slots": {
+            "recipient": "Lea",
+            "topic": "Znacht am Friitig"
+          },
+          "missing_slots": [],
+          "clarification_needed": false,
+          "clarification_question_local": null,
+          "canonical_intent_en": null,
+          "suggested_route": "edge-local",
+          "required_data_classes": [],
+          "approval": true
+        }
+      },
+      "expected": {
+        "result": "refuse"
+      },
+      "status": "normative",
+      "note": "approval is not an envelope member"
+    },
+    {
+      "id": "intent.linguist.005",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "L3"
+        }
+      ],
+      "operation": "linguist-verify",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "utterance": "Schrib Lea wäg em Znacht am Friitig",
+        "reply": {
+          "v": "0.1",
+          "lang": "gsw",
+          "intent": "messaging.send",
+          "slots": {
+            "recipient": "Lea",
+            "topic": "Znacht am Friitig"
+          },
+          "missing_slots": [],
+          "clarification_needed": false,
+          "clarification_question_local": null,
+          "canonical_intent_en": null,
+          "suggested_route": "edge-local"
+        }
+      },
+      "expected": {
+        "result": "refuse"
+      },
+      "status": "normative",
+      "note": "a missing member refuses the proposal"
+    },
+    {
+      "id": "intent.linguist.006",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "L3"
+        }
+      ],
+      "operation": "linguist-verify",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "utterance": "Schrib Lea wäg em Znacht am Friitig",
+        "reply": {
+          "v": "0.1",
+          "lang": "gsw",
+          "intent": "messaging.send",
+          "slots": [
+            "Lea"
+          ],
+          "missing_slots": [],
+          "clarification_needed": false,
+          "clarification_question_local": null,
+          "canonical_intent_en": null,
+          "suggested_route": "edge-local",
+          "required_data_classes": []
+        }
+      },
+      "expected": {
+        "result": "refuse"
+      },
+      "status": "normative",
+      "note": "slots that are not an object refuse the proposal"
+    },
+    {
+      "id": "intent.linguist.007",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "L3"
+        }
+      ],
+      "operation": "linguist-verify",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "utterance": "Schrib Lea wäg em Znacht am Friitig",
+        "reply": {
+          "v": "0.1",
+          "lang": "fr",
+          "intent": "messaging.send",
+          "slots": {
+            "recipient": "Lea",
+            "topic": "Znacht am Friitig"
+          },
+          "missing_slots": [],
+          "clarification_needed": false,
+          "clarification_question_local": null,
+          "canonical_intent_en": null,
+          "suggested_route": "edge-local",
+          "required_data_classes": []
+        }
+      },
+      "expected": {
+        "result": "refuse"
+      },
+      "status": "normative",
+      "note": "a locale outside the catalog refuses the proposal"
+    },
+    {
+      "id": "intent.linguist.008",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "L3"
+        }
+      ],
+      "operation": "linguist-verify",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "utterance": "Schrib Lea wäg em Znacht am Friitig",
+        "reply_text": "Sure! Here is the envelope: {\"intent\": \"messaging.send\"}"
+      },
+      "expected": {
+        "result": "refuse"
+      },
+      "status": "normative",
+      "note": "a reply that is not JSON is refused"
+    },
+    {
+      "id": "intent.linguist.009",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "L4"
+        }
+      ],
+      "operation": "linguist-verify",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "utterance": "Schrib Lea wäg em Znacht am Friitig",
+        "reply": {
+          "v": "0.1",
+          "lang": "gsw",
+          "intent": "payment.send",
+          "slots": {
+            "recipient": "Lea",
+            "topic": "Znacht am Friitig"
+          },
+          "missing_slots": [],
+          "clarification_needed": false,
+          "clarification_question_local": null,
+          "canonical_intent_en": null,
+          "suggested_route": "edge-local",
+          "required_data_classes": []
+        }
+      },
+      "expected": {
+        "value": {
+          "envelope": {
+            "v": "0.1",
+            "lang": "gsw",
+            "intent": null,
+            "slots": {},
+            "missing_slots": [],
+            "clarification_needed": true,
+            "clarification_question_local": "Was genau söll ich mache?",
+            "canonical_intent_en": null,
+            "suggested_route": "clarify",
+            "required_data_classes": []
+          },
+          "corrections": [
+            "intent-unknown:payment.send",
+            "slots-without-intent",
+            "clarification_needed-corrected",
+            "clarification_question_local-corrected",
+            "suggested_route-corrected"
+          ]
+        }
+      },
+      "status": "normative",
+      "note": "an unknown intent becomes null and asks the unknown-intent question"
+    },
+    {
+      "id": "intent.linguist.010",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "L4"
+        }
+      ],
+      "operation": "linguist-verify",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "utterance": "Schrib Lea wäg em Znacht am Friitig",
+        "reply": {
+          "v": "0.1",
+          "lang": "gsw",
+          "intent": "messaging.send",
+          "slots": {
+            "recipient": "Lea",
+            "topic": "Znacht am Friitig",
+            "urgency": "high"
+          },
+          "missing_slots": [],
+          "clarification_needed": false,
+          "clarification_question_local": null,
+          "canonical_intent_en": null,
+          "suggested_route": "edge-local",
+          "required_data_classes": []
+        }
+      },
+      "expected": {
+        "value": {
+          "envelope": {
+            "v": "0.1",
+            "lang": "gsw",
+            "intent": "messaging.send",
+            "slots": {
+              "recipient": "Lea",
+              "topic": "Znacht am Friitig"
+            },
+            "missing_slots": [],
+            "clarification_needed": false,
+            "clarification_question_local": null,
+            "canonical_intent_en": "Send a message to Lea about Znacht am Friitig",
+            "suggested_route": "edge-local",
+            "required_data_classes": [
+              "communications.content",
+              "contacts.name"
+            ]
+          },
+          "corrections": [
+            "slot-unknown:urgency",
+            "canonical_intent_en-corrected",
+            "required_data_classes-corrected"
+          ]
+        }
+      },
+      "status": "normative",
+      "note": "an undeclared slot is dropped"
+    },
+    {
+      "id": "intent.linguist.011",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "L4"
+        }
+      ],
+      "operation": "linguist-verify",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "utterance": "Schrib Lea wäg em Znacht am Friitig",
+        "reply": {
+          "v": "0.1",
+          "lang": "gsw",
+          "intent": "messaging.send",
+          "slots": {
+            "recipient": "Lea",
+            "topic": "   "
+          },
+          "missing_slots": [],
+          "clarification_needed": false,
+          "clarification_question_local": null,
+          "canonical_intent_en": null,
+          "suggested_route": "edge-local",
+          "required_data_classes": []
+        }
+      },
+      "expected": {
+        "value": {
+          "envelope": {
+            "v": "0.1",
+            "lang": "gsw",
+            "intent": "messaging.send",
+            "slots": {
+              "recipient": "Lea"
+            },
+            "missing_slots": [
+              "topic"
+            ],
+            "clarification_needed": true,
+            "clarification_question_local": "Um was söll's i de Nachricht gah?",
+            "canonical_intent_en": "Send a message to Lea about <topic>",
+            "suggested_route": "clarify",
+            "required_data_classes": [
+              "communications.content",
+              "contacts.name"
+            ]
+          },
+          "corrections": [
+            "slot-value-refused:topic",
+            "missing_slots-corrected",
+            "clarification_needed-corrected",
+            "clarification_question_local-corrected",
+            "canonical_intent_en-corrected",
+            "suggested_route-corrected",
+            "required_data_classes-corrected"
+          ]
+        }
+      },
+      "status": "normative",
+      "note": "an empty slot is dropped and counts as missing"
+    },
+    {
+      "id": "intent.linguist.012",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "L4"
+        }
+      ],
+      "operation": "linguist-verify",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "utterance": "Notier: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "reply": {
+          "v": "0.1",
+          "lang": "en",
+          "intent": "task.note",
+          "slots": {
+            "content": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          "missing_slots": [],
+          "clarification_needed": false,
+          "clarification_question_local": null,
+          "canonical_intent_en": null,
+          "suggested_route": "edge-local",
+          "required_data_classes": []
+        }
+      },
+      "expected": {
+        "value": {
+          "envelope": {
+            "v": "0.1",
+            "lang": "en",
+            "intent": "task.note",
+            "slots": {},
+            "missing_slots": [
+              "content"
+            ],
+            "clarification_needed": true,
+            "clarification_question_local": "What should the note say?",
+            "canonical_intent_en": "Save a note: <content>",
+            "suggested_route": "clarify",
+            "required_data_classes": [
+              "documents.text"
+            ]
+          },
+          "corrections": [
+            "slot-value-refused:content",
+            "missing_slots-corrected",
+            "clarification_needed-corrected",
+            "clarification_question_local-corrected",
+            "canonical_intent_en-corrected",
+            "suggested_route-corrected",
+            "required_data_classes-corrected"
+          ]
+        }
+      },
+      "status": "normative",
+      "note": "a slot longer than 512 characters is dropped"
+    },
+    {
+      "id": "intent.linguist.013",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "L4"
+        }
+      ],
+      "operation": "linguist-verify",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "utterance": "Notier: Milch\u0007",
+        "reply": {
+          "v": "0.1",
+          "lang": "de",
+          "intent": "task.note",
+          "slots": {
+            "content": "Milch\u0007"
+          },
+          "missing_slots": [],
+          "clarification_needed": false,
+          "clarification_question_local": null,
+          "canonical_intent_en": null,
+          "suggested_route": "edge-local",
+          "required_data_classes": []
+        }
+      },
+      "expected": {
+        "value": {
+          "envelope": {
+            "v": "0.1",
+            "lang": "de",
+            "intent": "task.note",
+            "slots": {},
+            "missing_slots": [
+              "content"
+            ],
+            "clarification_needed": true,
+            "clarification_question_local": "Was soll in der Notiz stehen?",
+            "canonical_intent_en": "Save a note: <content>",
+            "suggested_route": "clarify",
+            "required_data_classes": [
+              "documents.text"
+            ]
+          },
+          "corrections": [
+            "slot-value-refused:content",
+            "missing_slots-corrected",
+            "clarification_needed-corrected",
+            "clarification_question_local-corrected",
+            "canonical_intent_en-corrected",
+            "suggested_route-corrected",
+            "required_data_classes-corrected"
+          ]
+        }
+      },
+      "status": "normative",
+      "note": "a slot with a control character is dropped"
+    },
+    {
+      "id": "intent.linguist.014",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "L7"
+        }
+      ],
+      "operation": "linguist-verify",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "utterance": "Schrib Lea wäg em Znacht am Friitig",
+        "reply": {
+          "v": "0.1",
+          "lang": "gsw",
+          "intent": "messaging.send",
+          "slots": {
+            "recipient": "Lena",
+            "topic": "Znacht am Friitig"
+          },
+          "missing_slots": [],
+          "clarification_needed": false,
+          "clarification_question_local": null,
+          "canonical_intent_en": null,
+          "suggested_route": "edge-local",
+          "required_data_classes": []
+        }
+      },
+      "expected": {
+        "value": {
+          "envelope": {
+            "v": "0.1",
+            "lang": "gsw",
+            "intent": "messaging.send",
+            "slots": {
+              "topic": "Znacht am Friitig"
+            },
+            "missing_slots": [
+              "recipient"
+            ],
+            "clarification_needed": true,
+            "clarification_question_local": "Wem söll ich d Nachricht schicke?",
+            "canonical_intent_en": "Send a message to <recipient> about Znacht am Friitig",
+            "suggested_route": "clarify",
+            "required_data_classes": [
+              "communications.content",
+              "contacts.name"
+            ]
+          },
+          "corrections": [
+            "slot-ungrounded:recipient",
+            "missing_slots-corrected",
+            "clarification_needed-corrected",
+            "clarification_question_local-corrected",
+            "canonical_intent_en-corrected",
+            "suggested_route-corrected",
+            "required_data_classes-corrected"
+          ]
+        }
+      },
+      "status": "normative",
+      "note": "a verbatim value that does not occur in the utterance is dropped (slot-ungrounded)"
+    },
+    {
+      "id": "intent.linguist.015",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "L7"
+        }
+      ],
+      "operation": "linguist-verify",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "utterance": "schrib LEA wäg em znacht  am friitig",
+        "reply": {
+          "v": "0.1",
+          "lang": "gsw",
+          "intent": "messaging.send",
+          "slots": {
+            "recipient": "Lea",
+            "topic": "Znacht am Friitig"
+          },
+          "missing_slots": [],
+          "clarification_needed": false,
+          "clarification_question_local": null,
+          "canonical_intent_en": null,
+          "suggested_route": "edge-local",
+          "required_data_classes": []
+        }
+      },
+      "expected": {
+        "value": {
+          "envelope": {
+            "v": "0.1",
+            "lang": "gsw",
+            "intent": "messaging.send",
+            "slots": {
+              "recipient": "Lea",
+              "topic": "Znacht am Friitig"
+            },
+            "missing_slots": [],
+            "clarification_needed": false,
+            "clarification_question_local": null,
+            "canonical_intent_en": "Send a message to Lea about Znacht am Friitig",
+            "suggested_route": "edge-local",
+            "required_data_classes": [
+              "communications.content",
+              "contacts.name"
+            ]
+          },
+          "corrections": [
+            "canonical_intent_en-corrected",
+            "required_data_classes-corrected"
+          ]
+        }
+      },
+      "status": "normative",
+      "note": "grounding ignores case and spacing"
+    },
+    {
+      "id": "intent.linguist.016",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "L7"
+        },
+        {
+          "doc": "0017",
+          "section": "X6"
+        }
+      ],
+      "operation": "linguist-verify",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "utterance": "Erinner mi morn am füfi a d Stüürerklärig",
+        "reply": {
+          "v": "0.1",
+          "lang": "gsw",
+          "intent": "scheduling.remind",
+          "slots": {
+            "subject": "Stüürerklärig",
+            "time": "tomorrow at 05:00"
+          },
+          "missing_slots": [],
+          "clarification_needed": false,
+          "clarification_question_local": null,
+          "canonical_intent_en": null,
+          "suggested_route": "edge-local",
+          "required_data_classes": []
+        }
+      },
+      "expected": {
+        "value": {
+          "envelope": {
+            "v": "0.1",
+            "lang": "gsw",
+            "intent": "scheduling.remind",
+            "slots": {
+              "subject": "Stüürerklärig"
+            },
+            "missing_slots": [
+              "time"
+            ],
+            "clarification_needed": true,
+            "clarification_question_local": "Wänn söll ich di erinnere?",
+            "canonical_intent_en": "Remind me about Stüürerklärig <time>",
+            "suggested_route": "clarify",
+            "required_data_classes": [
+              "calendar.events"
+            ]
+          },
+          "corrections": [
+            "slot-ungrounded:time",
+            "missing_slots-corrected",
+            "clarification_needed-corrected",
+            "clarification_question_local-corrected",
+            "canonical_intent_en-corrected",
+            "suggested_route-corrected",
+            "required_data_classes-corrected"
+          ]
+        }
+      },
+      "status": "normative",
+      "note": "a translated time is not in the utterance and is dropped; the time words stay verbatim"
+    },
+    {
+      "id": "intent.linguist.017",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "L2"
+        }
+      ],
+      "operation": "linguist-verify",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "utterance": "Bstell mr e Pizza",
+        "reply": {
+          "v": "0.1",
+          "lang": "gsw",
+          "intent": null,
+          "slots": {},
+          "missing_slots": [],
+          "clarification_needed": false,
+          "clarification_question_local": null,
+          "canonical_intent_en": null,
+          "suggested_route": "edge-local",
+          "required_data_classes": []
+        }
+      },
+      "expected": {
+        "value": {
+          "envelope": {
+            "v": "0.1",
+            "lang": "gsw",
+            "intent": null,
+            "slots": {},
+            "missing_slots": [],
+            "clarification_needed": true,
+            "clarification_question_local": "Was genau söll ich mache?",
+            "canonical_intent_en": null,
+            "suggested_route": "clarify",
+            "required_data_classes": []
+          },
+          "corrections": [
+            "clarification_needed-corrected",
+            "clarification_question_local-corrected",
+            "suggested_route-corrected"
+          ]
+        }
+      },
+      "status": "normative",
+      "note": "no intent: the unknown-intent question and route clarify"
+    },
+    {
+      "id": "intent.linguist.018",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "L4"
+        }
+      ],
+      "operation": "linguist-verify",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "utterance": "Bstell mr e Pizza",
+        "reply": {
+          "v": "0.1",
+          "lang": "gsw",
+          "intent": null,
+          "slots": {
+            "item": "Pizza"
+          },
+          "missing_slots": [],
+          "clarification_needed": false,
+          "clarification_question_local": null,
+          "canonical_intent_en": null,
+          "suggested_route": "edge-local",
+          "required_data_classes": []
+        }
+      },
+      "expected": {
+        "value": {
+          "envelope": {
+            "v": "0.1",
+            "lang": "gsw",
+            "intent": null,
+            "slots": {},
+            "missing_slots": [],
+            "clarification_needed": true,
+            "clarification_question_local": "Was genau söll ich mache?",
+            "canonical_intent_en": null,
+            "suggested_route": "clarify",
+            "required_data_classes": []
+          },
+          "corrections": [
+            "slots-without-intent",
+            "clarification_needed-corrected",
+            "clarification_question_local-corrected",
+            "suggested_route-corrected"
+          ]
+        }
+      },
+      "status": "normative",
+      "note": "slots without an intent are dropped"
+    },
+    {
+      "id": "intent.linguist.019",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "L5"
+        },
+        {
+          "doc": "0017",
+          "section": "L2"
+        }
+      ],
+      "operation": "linguist-verify",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "utterance": "Fing mr d Feriefötteli im Ordner Fotos",
+        "reply": {
+          "v": "0.1",
+          "lang": "gsw",
+          "intent": "files.find",
+          "slots": {
+            "query": "Feriefötteli",
+            "folder": "Fotos"
+          },
+          "missing_slots": [],
+          "clarification_needed": false,
+          "clarification_question_local": null,
+          "canonical_intent_en": null,
+          "suggested_route": "edge-local",
+          "required_data_classes": []
+        }
+      },
+      "expected": {
+        "value": {
+          "envelope": {
+            "v": "0.1",
+            "lang": "gsw",
+            "intent": "files.find",
+            "slots": {
+              "query": "Feriefötteli",
+              "folder": "Fotos"
+            },
+            "missing_slots": [],
+            "clarification_needed": false,
+            "clarification_question_local": null,
+            "canonical_intent_en": "Find files matching Feriefötteli (folder: Fotos)",
+            "suggested_route": "edge-local",
+            "required_data_classes": [
+              "documents.metadata"
+            ]
+          },
+          "corrections": [
+            "canonical_intent_en-corrected",
+            "required_data_classes-corrected"
+          ]
+        }
+      },
+      "status": "normative",
+      "note": "optional slots not in the template are appended to the canonical intent"
+    },
+    {
+      "id": "intent.linguist.020",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "K1"
+        },
+        {
+          "doc": "0017",
+          "section": "K3"
+        }
+      ],
+      "operation": "linguist-verify",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "utterance": "Fass protokoll.docx zäme und schick's em Marco",
+        "reply": {
+          "v": "0.1",
+          "lang": "gsw",
+          "intent": "task.summarize",
+          "slots": {
+            "source": "protokoll.docx"
+          },
+          "missing_slots": [],
+          "clarification_needed": false,
+          "clarification_question_local": null,
+          "canonical_intent_en": null,
+          "suggested_route": "edge-local",
+          "required_data_classes": [],
+          "then": [
+            {
+              "intent": "messaging.send",
+              "slots": {
+                "recipient": "Marco"
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "value": {
+          "envelope": {
+            "v": "0.1",
+            "lang": "gsw",
+            "intent": "task.summarize",
+            "slots": {
+              "source": "protokoll.docx"
+            },
+            "missing_slots": [],
+            "clarification_needed": false,
+            "clarification_question_local": null,
+            "canonical_intent_en": "Summarize protokoll.docx",
+            "suggested_route": "swarm-worker",
+            "required_data_classes": [
+              "documents.text",
+              "communications.content",
+              "contacts.name"
+            ],
+            "then": [
+              {
+                "intent": "messaging.send",
+                "slots": {
+                  "recipient": "Marco"
+                },
+                "missing_slots": [],
+                "canonical_intent_en": "Send a message to Marco about the previous result"
+              }
+            ]
+          },
+          "corrections": [
+            "canonical_intent_en-corrected",
+            "suggested_route-corrected",
+            "required_data_classes-corrected"
+          ]
+        }
+      },
+      "status": "normative",
+      "note": "a declared composition: the earlier result satisfies the topic, nothing is missing"
+    },
+    {
+      "id": "intent.linguist.021",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "K2"
+        }
+      ],
+      "operation": "linguist-verify",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "utterance": "Timer zäh Minute und schrib em Marco",
+        "reply": {
+          "v": "0.1",
+          "lang": "gsw",
+          "intent": "timer.set",
+          "slots": {
+            "duration": "10 minutes"
+          },
+          "missing_slots": [],
+          "clarification_needed": false,
+          "clarification_question_local": null,
+          "canonical_intent_en": null,
+          "suggested_route": "edge-local",
+          "required_data_classes": [],
+          "then": [
+            {
+              "intent": "messaging.send",
+              "slots": {
+                "recipient": "Marco"
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "value": {
+          "envelope": {
+            "v": "0.1",
+            "lang": "gsw",
+            "intent": "timer.set",
+            "slots": {
+              "duration": "10 minutes"
+            },
+            "missing_slots": [],
+            "clarification_needed": false,
+            "clarification_question_local": null,
+            "canonical_intent_en": "Start a timer for 10 minutes",
+            "suggested_route": "edge-local",
+            "required_data_classes": []
+          },
+          "corrections": [
+            "composition-undeclared",
+            "canonical_intent_en-corrected"
+          ]
+        }
+      },
+      "status": "normative",
+      "note": "an undeclared pair drops the follow-up; the first intent stays"
+    },
+    {
+      "id": "intent.linguist.022",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "K1"
+        },
+        {
+          "doc": "0017",
+          "section": "K3"
+        }
+      ],
+      "operation": "linguist-verify",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "utterance": "Fass protokoll.docx zäme und schick's em Marco",
+        "reply": {
+          "v": "0.1",
+          "lang": "gsw",
+          "intent": "task.summarize",
+          "slots": {
+            "source": "protokoll.docx"
+          },
+          "missing_slots": [],
+          "clarification_needed": false,
+          "clarification_question_local": null,
+          "canonical_intent_en": null,
+          "suggested_route": "edge-local",
+          "required_data_classes": [],
+          "then": [
+            {
+              "intent": "messaging.send",
+              "slots": {
+                "recipient": "Mario"
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "value": {
+          "envelope": {
+            "v": "0.1",
+            "lang": "gsw",
+            "intent": "task.summarize",
+            "slots": {
+              "source": "protokoll.docx"
+            },
+            "missing_slots": [],
+            "clarification_needed": true,
+            "clarification_question_local": "Wem söll ich d Nachricht schicke?",
+            "canonical_intent_en": "Summarize protokoll.docx",
+            "suggested_route": "clarify",
+            "required_data_classes": [
+              "documents.text",
+              "communications.content",
+              "contacts.name"
+            ],
+            "then": [
+              {
+                "intent": "messaging.send",
+                "slots": {},
+                "missing_slots": [
+                  "recipient"
+                ],
+                "canonical_intent_en": "Send a message to <recipient> about the previous result"
+              }
+            ]
+          },
+          "corrections": [
+            "then[0].slot-ungrounded:recipient",
+            "clarification_needed-corrected",
+            "clarification_question_local-corrected",
+            "canonical_intent_en-corrected",
+            "suggested_route-corrected",
+            "required_data_classes-corrected"
+          ]
+        }
+      },
+      "status": "normative",
+      "note": "an ungrounded follow-up slot is dropped with its then[0]. prefix and asked for"
+    },
+    {
+      "id": "intent.linguist.023",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "L3"
+        }
+      ],
+      "operation": "linguist-verify",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "utterance": "Fass protokoll.docx zäme und schick's em Marco",
+        "reply": {
+          "v": "0.1",
+          "lang": "gsw",
+          "intent": "task.summarize",
+          "slots": {
+            "source": "protokoll.docx"
+          },
+          "missing_slots": [],
+          "clarification_needed": false,
+          "clarification_question_local": null,
+          "canonical_intent_en": null,
+          "suggested_route": "edge-local",
+          "required_data_classes": [],
+          "then": {
+            "intent": "messaging.send",
+            "slots": {}
+          }
+        }
+      },
+      "expected": {
+        "result": "refuse"
+      },
+      "status": "normative",
+      "note": "then that is not an array refuses the reply"
+    },
+    {
+      "id": "intent.linguist.024",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "L3"
+        },
+        {
+          "doc": "0017",
+          "section": "K1"
+        }
+      ],
+      "operation": "linguist-verify",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "utterance": "Fass protokoll.docx zäme und schick's em Marco",
+        "reply": {
+          "v": "0.1",
+          "lang": "gsw",
+          "intent": "task.summarize",
+          "slots": {
+            "source": "protokoll.docx"
+          },
+          "missing_slots": [],
+          "clarification_needed": false,
+          "clarification_question_local": null,
+          "canonical_intent_en": null,
+          "suggested_route": "edge-local",
+          "required_data_classes": [],
+          "then": [
+            {
+              "intent": "messaging.send",
+              "slots": {
+                "recipient": "Marco"
+              }
+            },
+            {
+              "intent": "messaging.send",
+              "slots": {
+                "recipient": "Marco"
+              }
+            },
+            {
+              "intent": "messaging.send",
+              "slots": {
+                "recipient": "Marco"
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "result": "refuse"
+      },
+      "status": "normative",
+      "note": "more than two follow-ups refuse the reply"
+    },
+    {
+      "id": "intent.linguist.025",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "K2"
+        }
+      ],
+      "operation": "linguist-verify",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "utterance": "Fass protokoll.docx zäme und schick's em Marco",
+        "reply": {
+          "v": "0.1",
+          "lang": "gsw",
+          "intent": "task.summarize",
+          "slots": {
+            "source": "protokoll.docx"
+          },
+          "missing_slots": [],
+          "clarification_needed": false,
+          "clarification_question_local": null,
+          "canonical_intent_en": null,
+          "suggested_route": "edge-local",
+          "required_data_classes": [],
+          "then": [
+            {
+              "intent": null,
+              "slots": {}
+            }
+          ]
+        }
+      },
+      "expected": {
+        "value": {
+          "envelope": {
+            "v": "0.1",
+            "lang": "gsw",
+            "intent": "task.summarize",
+            "slots": {
+              "source": "protokoll.docx"
+            },
+            "missing_slots": [],
+            "clarification_needed": false,
+            "clarification_question_local": null,
+            "canonical_intent_en": "Summarize protokoll.docx",
+            "suggested_route": "swarm-worker",
+            "required_data_classes": [
+              "documents.text"
+            ]
+          },
+          "corrections": [
+            "composition-undeclared",
+            "canonical_intent_en-corrected",
+            "suggested_route-corrected",
+            "required_data_classes-corrected"
+          ]
+        }
+      },
+      "status": "normative",
+      "note": "a follow-up with a null intent drops it"
+    },
+    {
+      "id": "intent.plan.002",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "PL1"
+        }
+      ],
+      "operation": "intent-plan",
+      "requires": [
+        "intent",
+        "cedar"
+      ],
+      "input": {
+        "utterance": "Schrib Lea",
+        "reply": {
+          "v": "0.1",
+          "lang": "gsw",
+          "intent": "messaging.send",
+          "slots": {
+            "recipient": "Lea"
+          },
+          "missing_slots": [],
+          "clarification_needed": false,
+          "clarification_question_local": null,
+          "canonical_intent_en": null,
+          "suggested_route": "edge-local",
+          "required_data_classes": []
+        }
+      },
+      "expected": {
+        "value": {
+          "verdict": "refuse",
+          "stage": "intent"
+        }
+      },
+      "status": "normative",
+      "note": "a clarification-needed intent is not planned"
+    },
+    {
+      "id": "intent.plan.003",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "PL3"
+        }
+      ],
+      "operation": "intent-plan",
+      "requires": [
+        "intent",
+        "cedar"
+      ],
+      "input": {
+        "utterance": "Schrib Lea wäg em Znacht am Friitig",
+        "reply": {
+          "v": "0.1",
+          "lang": "gsw",
+          "intent": "messaging.send",
+          "slots": {
+            "recipient": "Lea",
+            "topic": "Znacht am Friitig"
+          },
+          "missing_slots": [],
+          "clarification_needed": false,
+          "clarification_question_local": null,
+          "canonical_intent_en": null,
+          "suggested_route": "edge-local",
+          "required_data_classes": []
+        },
+        "plan": {
+          "v": "0.1",
+          "goal": "x",
+          "steps": [
+            {
+              "id": "send",
+              "kind": "call",
+              "capability": "urn:sidged:capability:message.send",
+              "approval": true,
+              "args": {
+                "to": {
+                  "lit": "Lea"
+                },
+                "body": {
+                  "lit": "Dinner is cancelled"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "value": {
+          "verdict": "refuse",
+          "stage": "grounding"
+        }
+      },
+      "status": "normative",
+      "note": "a planner literal that is not a verified slot value is refused (grounding)"
+    },
+    {
+      "id": "intent.plan.004",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "PL3"
+        }
+      ],
+      "operation": "intent-plan",
+      "requires": [
+        "intent",
+        "cedar"
+      ],
+      "input": {
+        "utterance": "Schrib Lea wäg em Znacht am Friitig",
+        "reply": {
+          "v": "0.1",
+          "lang": "gsw",
+          "intent": "messaging.send",
+          "slots": {
+            "recipient": "Lea",
+            "topic": "Znacht am Friitig"
+          },
+          "missing_slots": [],
+          "clarification_needed": false,
+          "clarification_question_local": null,
+          "canonical_intent_en": null,
+          "suggested_route": "edge-local",
+          "required_data_classes": []
+        },
+        "plan": {
+          "v": "0.1",
+          "goal": "x",
+          "steps": [
+            {
+              "id": "send",
+              "kind": "call",
+              "capability": "urn:sidged:capability:message.send",
+              "approval": true,
+              "args": {
+                "to": {
+                  "lit": "Lea"
+                },
+                "body": {
+                  "lit": "Znacht am Friitig"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "value": {
+          "verdict": "accept",
+          "plan_digest": "18-dm0LgOEpIQfQHj20saQiMI5cHWsXtLVGzYzdWayM"
+        }
+      },
+      "status": "normative",
+      "note": "literals from verified slots are grounded"
+    },
+    {
+      "id": "intent.plan.005",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "PL2"
+        }
+      ],
+      "operation": "intent-plan",
+      "requires": [
+        "intent",
+        "cedar"
+      ],
+      "input": {
+        "utterance": "Schrib Lea wäg em Znacht am Friitig",
+        "reply": {
+          "v": "0.1",
+          "lang": "gsw",
+          "intent": "messaging.send",
+          "slots": {
+            "recipient": "Lea",
+            "topic": "Znacht am Friitig"
+          },
+          "missing_slots": [],
+          "clarification_needed": false,
+          "clarification_question_local": null,
+          "canonical_intent_en": null,
+          "suggested_route": "edge-local",
+          "required_data_classes": []
+        },
+        "plan": {
+          "v": "0.1",
+          "steps": [
+            {
+              "id": "q",
+              "kind": "call",
+              "capability": "urn:sidged:capability:web.search",
+              "approval": true,
+              "args": {
+                "query": {
+                  "lit": "Lea"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "value": {
+          "verdict": "refuse",
+          "stage": "bound"
+        }
+      },
+      "status": "normative",
+      "note": "a capability the intent does not name is refused (bound)"
+    },
+    {
+      "id": "intent.plan.006",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "PL4"
+        }
+      ],
+      "operation": "intent-plan",
+      "requires": [
+        "intent",
+        "cedar"
+      ],
+      "input": {
+        "utterance": "Schrib Lea wäg em Znacht am Friitig",
+        "reply": {
+          "v": "0.1",
+          "lang": "gsw",
+          "intent": "messaging.send",
+          "slots": {
+            "recipient": "Lea",
+            "topic": "Znacht am Friitig"
+          },
+          "missing_slots": [],
+          "clarification_needed": false,
+          "clarification_question_local": null,
+          "canonical_intent_en": null,
+          "suggested_route": "edge-local",
+          "required_data_classes": []
+        },
+        "plan": {
+          "v": "0.1",
+          "steps": [
+            {
+              "id": "send",
+              "kind": "call",
+              "capability": "urn:sidged:capability:message.send",
+              "approval": true,
+              "args": {
+                "to": {
+                  "lit": "Lea"
+                },
+                "body": {
+                  "lit": "Lea"
+                },
+                "cc": {
+                  "lit": "Lea"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "value": {
+          "verdict": "refuse",
+          "stage": "schema"
+        }
+      },
+      "status": "normative",
+      "note": "an argument outside the input schema is refused"
+    },
+    {
+      "id": "intent.plan.007",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "PL4"
+        }
+      ],
+      "operation": "intent-plan",
+      "requires": [
+        "intent",
+        "cedar"
+      ],
+      "input": {
+        "utterance": "Schrib Lea wäg em Znacht am Friitig",
+        "reply": {
+          "v": "0.1",
+          "lang": "gsw",
+          "intent": "messaging.send",
+          "slots": {
+            "recipient": "Lea",
+            "topic": "Znacht am Friitig"
+          },
+          "missing_slots": [],
+          "clarification_needed": false,
+          "clarification_question_local": null,
+          "canonical_intent_en": null,
+          "suggested_route": "edge-local",
+          "required_data_classes": []
+        },
+        "plan": {
+          "v": "0.1",
+          "steps": [
+            {
+              "id": "send",
+              "kind": "call",
+              "capability": "urn:sidged:capability:message.send",
+              "approval": true,
+              "args": {
+                "to": {
+                  "lit": "Lea"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "value": {
+          "verdict": "refuse",
+          "stage": "schema"
+        }
+      },
+      "status": "normative",
+      "note": "a required argument that is missing is refused"
+    },
+    {
+      "id": "intent.plan.008",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "PL5"
+        }
+      ],
+      "operation": "intent-plan",
+      "requires": [
+        "intent",
+        "cedar"
+      ],
+      "input": {
+        "utterance": "Schrib Lea wäg em Znacht am Friitig",
+        "reply": {
+          "v": "0.1",
+          "lang": "gsw",
+          "intent": "messaging.send",
+          "slots": {
+            "recipient": "Lea",
+            "topic": "Znacht am Friitig"
+          },
+          "missing_slots": [],
+          "clarification_needed": false,
+          "clarification_question_local": null,
+          "canonical_intent_en": null,
+          "suggested_route": "edge-local",
+          "required_data_classes": []
+        },
+        "plan": {
+          "v": "0.1",
+          "steps": [
+            {
+              "id": "send",
+              "kind": "call",
+              "capability": "urn:sidged:capability:message.send",
+              "args": {
+                "to": {
+                  "lit": "Lea"
+                },
+                "body": {
+                  "lit": "Znacht am Friitig"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "value": {
+          "verdict": "refuse",
+          "stage": "verifier"
+        }
+      },
+      "status": "normative",
+      "note": "a consequential step without approval is refused by the verifier"
+    },
+    {
+      "id": "intent.plan.010",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "K5"
+        }
+      ],
+      "operation": "intent-plan",
+      "requires": [
+        "intent",
+        "cedar"
+      ],
+      "input": {
+        "utterance": "Fass protokoll.docx zäme und schick's em Marco",
+        "reply": {
+          "v": "0.1",
+          "lang": "gsw",
+          "intent": "task.summarize",
+          "slots": {
+            "source": "protokoll.docx"
+          },
+          "missing_slots": [],
+          "clarification_needed": false,
+          "clarification_question_local": null,
+          "canonical_intent_en": null,
+          "suggested_route": "edge-local",
+          "required_data_classes": [],
+          "then": [
+            {
+              "intent": "messaging.send",
+              "slots": {
+                "recipient": "Marco"
+              }
+            }
+          ]
+        },
+        "plan": {
+          "v": "0.1",
+          "steps": [
+            {
+              "id": "read",
+              "kind": "call",
+              "capability": "urn:sidged:capability:workspace.read",
+              "args": {
+                "path": {
+                  "lit": "protokoll.docx"
+                }
+              }
+            },
+            {
+              "id": "send",
+              "kind": "call",
+              "capability": "urn:sidged:capability:message.send",
+              "approval": true,
+              "args": {
+                "to": {
+                  "lit": "Marco"
+                },
+                "body": {
+                  "ref": "read"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "value": {
+          "verdict": "accept",
+          "plan_digest": "Z_DIxVrV_TbeiR_Kv4pW9krDKa-F7mX9W-DZ4nDJ6_4"
+        }
+      },
+      "status": "normative",
+      "note": "a planner plan for a composition may use every intent's capabilities and slots"
+    },
+    {
+      "id": "intent.plan.011",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "K5"
+        }
+      ],
+      "operation": "intent-plan",
+      "requires": [
+        "intent",
+        "cedar"
+      ],
+      "input": {
+        "utterance": "Fass protokoll.docx zäme und schick's em Marco",
+        "reply": {
+          "v": "0.1",
+          "lang": "gsw",
+          "intent": "task.summarize",
+          "slots": {
+            "source": "protokoll.docx"
+          },
+          "missing_slots": [],
+          "clarification_needed": false,
+          "clarification_question_local": null,
+          "canonical_intent_en": null,
+          "suggested_route": "edge-local",
+          "required_data_classes": [],
+          "then": [
+            {
+              "intent": "messaging.send",
+              "slots": {
+                "recipient": "Marco"
+              }
+            }
+          ]
+        },
+        "plan": {
+          "v": "0.1",
+          "steps": [
+            {
+              "id": "q",
+              "kind": "call",
+              "capability": "urn:sidged:capability:web.search",
+              "approval": true,
+              "args": {
+                "query": {
+                  "lit": "Marco"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "value": {
+          "verdict": "refuse",
+          "stage": "bound"
+        }
+      },
+      "status": "normative",
+      "note": "a composition is still bound: a capability no intent names is refused"
+    },
+    {
+      "id": "intent.plan.012",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "PL2"
+        },
+        {
+          "doc": "0017",
+          "section": "PL3"
+        },
+        {
+          "doc": "0017",
+          "section": "PL4"
+        },
+        {
+          "doc": "0017",
+          "section": "PL5"
+        }
+      ],
+      "operation": "intent-plan",
+      "requires": [
+        "intent",
+        "cedar"
+      ],
+      "input": {
+        "utterance": "Schrib Lea wäg em Znacht am Friitig",
+        "reply": {
+          "v": "0.1",
+          "lang": "gsw",
+          "intent": "messaging.send",
+          "slots": {
+            "recipient": "Lea",
+            "topic": "Znacht am Friitig"
+          },
+          "missing_slots": [],
+          "clarification_needed": false,
+          "clarification_question_local": null,
+          "canonical_intent_en": null,
+          "suggested_route": "edge-local",
+          "required_data_classes": []
+        }
+      },
+      "expected": {
+        "value": {
+          "verdict": "accept",
+          "plan_digest": "v_WqKDEU-yp5iPgip_I7nF3EhU-cCPf40kgFZXkvYiw"
+        }
+      },
+      "status": "normative",
+      "note": "the catalog plan for a complete intent passes every check; replaces intent.plan.001: the catalog's refs to one output member name it with field (0003 R4a)"
+    },
+    {
+      "id": "intent.plan.013",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "K4"
+        },
+        {
+          "doc": "0017",
+          "section": "K5"
+        }
+      ],
+      "operation": "intent-plan",
+      "requires": [
+        "intent",
+        "cedar"
+      ],
+      "input": {
+        "utterance": "Fass protokoll.docx zäme und schick's em Marco",
+        "reply": {
+          "v": "0.1",
+          "lang": "gsw",
+          "intent": "task.summarize",
+          "slots": {
+            "source": "protokoll.docx"
+          },
+          "missing_slots": [],
+          "clarification_needed": false,
+          "clarification_question_local": null,
+          "canonical_intent_en": null,
+          "suggested_route": "edge-local",
+          "required_data_classes": [],
+          "then": [
+            {
+              "intent": "messaging.send",
+              "slots": {
+                "recipient": "Marco"
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "value": {
+          "verdict": "accept",
+          "plan_digest": "8dNebz3hfqntW5dpDvNeuShRlqOVNi--4Ic1cI3D-J8"
+        }
+      },
+      "status": "normative",
+      "note": "the chained plan: read, summary, then the send whose body is the summary; replaces intent.plan.009: the catalog's refs to one output member name it with field (0003 R4a)"
+    },
+    {
+      "id": "intent.time.001",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "X6"
+        }
+      ],
+      "operation": "time-resolve",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "text": "morn am füfi",
+        "now": "2026-10-20T17:30:00Z",
+        "tz": "Europe/Zurich"
+      },
+      "expected": {
+        "value": "2026-10-21T17:00:00+02:00"
+      },
+      "status": "normative",
+      "note": "tomorrow at five in Swiss German, afternoon reading of 1 to 6"
+    },
+    {
+      "id": "intent.time.002",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "X6"
+        }
+      ],
+      "operation": "time-resolve",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "text": "in 10 Minuten",
+        "now": "2026-10-20T17:30:00Z",
+        "tz": "Europe/Zurich"
+      },
+      "expected": {
+        "value": "2026-10-20T19:40:00+02:00"
+      },
+      "status": "normative",
+      "note": "relative minutes need no clock reading"
+    },
+    {
+      "id": "intent.time.003",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "X6"
+        }
+      ],
+      "operation": "time-resolve",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "text": "halb 8",
+        "now": "2026-10-20T07:00:00Z",
+        "tz": "Europe/Zurich"
+      },
+      "expected": {
+        "value": "2026-10-20T19:30:00+02:00"
+      },
+      "status": "normative",
+      "note": "half eight is 7:30 in German; 07:30 has passed, so 19:30"
+    },
+    {
+      "id": "intent.time.004",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "X6"
+        }
+      ],
+      "operation": "time-resolve",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "text": "morn am 9i",
+        "now": "2026-10-24T20:00:00Z",
+        "tz": "Europe/Zurich"
+      },
+      "expected": {
+        "value": "2026-10-25T09:00:00+01:00"
+      },
+      "status": "normative",
+      "note": "across the end of daylight saving time (2026-10-25)"
+    },
+    {
+      "id": "intent.time.005",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "X6"
+        }
+      ],
+      "operation": "time-resolve",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "text": "hüt am 7i",
+        "now": "2026-10-20T17:30:00Z",
+        "tz": "Europe/Zurich"
+      },
+      "expected": {
+        "value": null
+      },
+      "status": "normative",
+      "note": "a named day whose times have both passed (07:00 and 19:00 at 19:30) is refused"
+    },
+    {
+      "id": "intent.time.006",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "X6"
+        }
+      ],
+      "operation": "time-resolve",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "text": "übermorn bim Zmittag",
+        "now": "2026-10-20T17:30:00Z",
+        "tz": "Europe/Zurich"
+      },
+      "expected": {
+        "value": null
+      },
+      "status": "normative",
+      "note": "words outside the lexicon are refused, not guessed"
+    },
+    {
+      "id": "intent.time.007",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "X6"
+        }
+      ],
+      "operation": "time-resolve",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "text": "am Mäntigmorge",
+        "now": "2026-10-21T10:00:00Z",
+        "tz": "Europe/Zurich"
+      },
+      "expected": {
+        "value": "2026-10-26T09:00:00+01:00"
+      },
+      "status": "normative",
+      "note": "a weekday with a part of day"
+    },
+    {
+      "id": "intent.time.008",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "X6"
+        }
+      ],
+      "operation": "time-resolve",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "text": "tomorrow at 5pm",
+        "now": "2026-10-20T17:30:00Z",
+        "tz": "America/New_York"
+      },
+      "expected": {
+        "value": "2026-10-21T17:00:00-04:00"
+      },
+      "status": "normative",
+      "note": "English with pm"
+    },
+    {
+      "id": "intent.duration.001",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "X6"
+        }
+      ],
+      "operation": "duration-read",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "text": "e haubi Stund"
+      },
+      "expected": {
+        "value": 1800
+      },
+      "status": "normative",
+      "note": "Bernese half hour"
+    },
+    {
+      "id": "intent.duration.002",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "X6"
+        }
+      ],
+      "operation": "duration-read",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "text": "1 Stunde und 30 Minuten"
+      },
+      "expected": {
+        "value": 5400
+      },
+      "status": "normative",
+      "note": "German sum"
+    },
+    {
+      "id": "intent.duration.003",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "X6"
+        }
+      ],
+      "operation": "duration-read",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "text": "PT1H30M"
+      },
+      "expected": {
+        "value": 5400
+      },
+      "status": "normative",
+      "note": "ISO 8601"
+    },
+    {
+      "id": "intent.duration.004",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "X6"
+        }
+      ],
+      "operation": "duration-read",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "text": "ten minutes"
+      },
+      "expected": {
+        "value": 600
+      },
+      "status": "normative",
+      "note": "English"
+    },
+    {
+      "id": "intent.duration.005",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "X6"
+        }
+      ],
+      "operation": "duration-read",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "text": "zwo Fortnights"
+      },
+      "expected": {
+        "value": null
+      },
+      "status": "normative",
+      "note": "unknown unit is refused"
+    },
+    {
+      "id": "intent.duration.006",
+      "spec": [
+        {
+          "doc": "0017",
+          "section": "X6"
+        }
+      ],
+      "operation": "duration-read",
+      "requires": [
+        "intent"
+      ],
+      "input": {
+        "text": "zäh Minute"
+      },
+      "expected": {
+        "value": 600
+      },
+      "status": "normative",
+      "note": "Swiss German number word"
+    }
+  ]
+}

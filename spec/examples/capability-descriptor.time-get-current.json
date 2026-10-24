@@ -1,0 +1,53 @@
+{
+  "v": "0.1",
+  "id": "urn:sidged:capability:get_current_time",
+  "title": "Get current time",
+  "description": "Get current time in a specific timezone. Source: mcp-server-time tool get_current_time.",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "timezone": {
+        "type": "string",
+        "description": "IANA timezone name (e.g., 'America/New_York', 'Europe/London'). Use the host local timezone if the user gives none."
+      }
+    },
+    "required": [
+      "timezone"
+    ]
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "timezone": {
+        "type": "string"
+      },
+      "datetime": {
+        "type": "string"
+      },
+      "day_of_week": {
+        "type": "string"
+      },
+      "is_dst": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "timezone",
+      "datetime",
+      "day_of_week",
+      "is_dst"
+    ],
+    "additionalProperties": false
+  },
+  "effects": [
+    "read"
+  ],
+  "data_classes": [],
+  "residency": {
+    "tags": []
+  },
+  "cost": {
+    "class": "free"
+  },
+  "consequential": false
+}

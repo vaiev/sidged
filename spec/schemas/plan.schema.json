@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sidged.com/spec/schemas/plan.schema.json",
+  "title": "Sidged plan (v0.1)",
+  "description": "A verifiable plan of capability calls, CEL expressions, and bounded maps (SDG-L3). Status: Draft v0.1. Normative rules are in docs/specs/0003-plan.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["v", "steps"],
+  "properties": {
+    "v": { "$ref": "common.schema.json#/$defs/schemaVersion" },
+    "goal": { "type": "string", "maxLength": 256 },
+    "budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["max"],
+      "properties": {
+        "max": { "$ref": "common.schema.json#/$defs/money" }
+      }
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 32,
+      "items": { "$ref": "#/$defs/step" }
+    }
+  },
+  "$defs": {
+    "stepId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]{0,31}$"
+    },
+    "outputMember": {
+      "description": "A property the referenced capability's output_schema declares (SDG-L3 R4a).",
+      "type": "string",
+      "pattern": "^[A-Za-z_][A-Za-z0-9_]{0,63}$"
+    },
+    "capabilityId": {
+      "type": "string",
+      "pattern": "^urn:sidged:capability:[A-Za-z0-9._-]{1,128}$"
+    },
+    "arg": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["lit"],
+          "properties": {
+            "lit": { "type": ["string", "number", "boolean", "null"] }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["ref"],
+          "properties": {
+            "ref": { "$ref": "#/$defs/stepId" },
+            "field": { "$ref": "#/$defs/outputMember" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["item"],
+          "properties": {
+            "item": { "const": true }
+          }
+        }
+      ]
+    },
+    "over": {
+      "description": "A map's source: an earlier step's whole output (SDG-L3 R6); field is only for arguments (R4a).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ref"],
+      "properties": {
+        "ref": { "$ref": "#/$defs/stepId" }
+      }
+    },
+    "step": {
+      "type": "object",
+      "required": ["id", "kind"],
+      "properties": {
+        "id": { "$ref": "#/$defs/stepId" },
+        "kind": { "enum": ["call", "expr", "map"] },
+        "capability": { "$ref": "#/$defs/capabilityId" },
+        "approval": { "type": "boolean" },
+        "args": {
+          "type": "object",
+          "maxProperties": 16,
+          "additionalProperties": { "$ref": "#/$defs/arg" }
+        },
+        "expr": { "type": "string", "minLength": 1, "maxLength": 1024 },
+        "over": { "$ref": "#/$defs/over" },
+        "bound": { "type": "integer", "minimum": 1, "maximum": 32 }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "kind": { "const": "call" } }, "required": ["kind"] },
+          "then": { "required": ["capability", "args"], "not": { "anyOf": [{ "required": ["expr"] }, { "required": ["over"] }, { "required": ["bound"] }] } }
+        },
+        {
+          "if": { "properties": { "kind": { "const": "expr" } }, "required": ["kind"] },
+          "then": { "required": ["expr"], "not": { "anyOf": [{ "required": ["capability"] }, { "required": ["args"] }, { "required": ["over"] }, { "required": ["bound"] }, { "required": ["approval"] }] } }
+        },
+        {
+          "if": { "properties": { "kind": { "const": "map" } }, "required": ["kind"] },
+          "then": { "required": ["over", "bound", "capability", "args"], "not": { "required": ["expr"] } }
+        }
+      ],
+      "unevaluatedProperties": false
+    }
+  }
+}

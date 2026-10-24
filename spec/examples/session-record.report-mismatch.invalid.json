@@ -1,0 +1,45 @@
+{
+  "v": "0.1",
+  "session": "sess-slice-e002",
+  "core": {
+    "agent": "did:example:alice-phone#core",
+    "kid": "did:example:alice-phone#core-key"
+  },
+  "runtime_profile": "R1",
+  "hops": [],
+  "egress": [
+    {
+      "id": "egress-0012",
+      "provider": "did:example:search.example.net",
+      "provider_profile": "P1",
+      "payload_digest": {
+        "alg": "sha-256",
+        "value": "lGfpuGZpud68riufnP4SzEkhQitS8Te9qDhbGnTQSys"
+      },
+      "report": {
+        "id": "report-0012",
+        "payload_digest": {
+          "alg": "sha-256",
+          "value": "723BPFQPWc2GH16DeqJ19ieNYuOsfl3X3cxPUX3UBX4"
+        }
+      }
+    }
+  ],
+  "tier_display": {
+    "session": "sess-slice-e002",
+    "tier": 1,
+    "shows": [
+      "R1",
+      "P1"
+    ],
+    "labels": [],
+    "rendered_at": "2026-10-09T08:10:00Z",
+    "sig": {
+      "alg": "EdDSA",
+      "kid": "did:example:alice-phone#core-key",
+      "canon": "jcs",
+      "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy",
+      "signer": "did:example:alice-phone#core"
+    }
+  }
+}

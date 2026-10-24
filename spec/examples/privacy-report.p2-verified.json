@@ -1,0 +1,76 @@
+{
+  "v": "0.1",
+  "id": "pr-2026-10-09-0920-07",
+  "call_at": "2026-10-09T09:20:11+02:00",
+  "agent": "did:example:alice-phone#agent-assistant",
+  "provider": {
+    "id": "https://models.example.net",
+    "name": "Example Models",
+    "manifest_version": "14"
+  },
+  "provider_profile": {
+    "claimed": "P2",
+    "effective": "P2",
+    "verified": true
+  },
+  "effective_tier": 2,
+  "gateway_mode": "verified-provider",
+  "relay": {
+    "used": true,
+    "type": "ohttp",
+    "id": "https://relay.example.net"
+  },
+  "network_identity": "relay",
+  "account": {
+    "mode": "anonymous",
+    "linkable": false,
+    "credential": "privacy-pass"
+  },
+  "sent": {
+    "data_classes": [
+      "documents.text"
+    ],
+    "fields": [
+      "prompt",
+      "document_excerpt"
+    ],
+    "bytes": 4810
+  },
+  "redacted": {
+    "data_classes": [
+      "contacts.email"
+    ],
+    "fields": [
+      "sender_email"
+    ]
+  },
+  "minimisation": {
+    "steps": [
+      "context-selection",
+      "redaction",
+      "tracking-strip",
+      "header-strip",
+      "no-persistent-id",
+      "fresh-credential",
+      "relay"
+    ],
+    "payload_digest": {
+      "alg": "sha-256",
+      "value": "Lx2Kp0Wq8Ft7Ns1Bz4Vr6Uy3Hd9Jc5Ma0Ge2Ok8Ti4Q"
+    }
+  },
+  "residency": {
+    "tags": [
+      "CH-EU"
+    ],
+    "provider_region": "CH"
+  },
+  "retention": {
+    "declared": "PT0S"
+  },
+  "model": {
+    "name": "example-large",
+    "version": "2026-08",
+    "region": "CH"
+  }
+}

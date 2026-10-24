@@ -1,0 +1,175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sidged.com/spec/schemas/capability-descriptor.schema.json",
+  "title": "Sidged capability descriptor (v0.1)",
+  "description": "Protocol-neutral description of one capability (SDG-L1). It declares arguments, result shape, effects, data classes, residency, cost, and whether a call is consequential. It is not a grant. Status: Draft v0.1.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "v",
+    "id",
+    "title",
+    "input_schema",
+    "effects",
+    "data_classes",
+    "consequential"
+  ],
+  "properties": {
+    "v": {
+      "$ref": "common.schema.json#/$defs/schemaVersion"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^urn:sidged:capability:[A-Za-z0-9._-]{1,128}$",
+      "description": "Capability identifier (SDG-L1 R1)."
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 4096
+    },
+    "input_schema": {
+      "type": "object",
+      "description": "JSON Schema 2020-12 for arguments. type, when present, is object (SDG-L1 R4)."
+    },
+    "output_schema": {
+      "type": "object",
+      "description": "JSON Schema 2020-12 for a successful result (SDG-L1 R5)."
+    },
+    "effects": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "read",
+          "write",
+          "delete",
+          "execute",
+          "egress"
+        ]
+      },
+      "description": "Effect codes from registries/effects.md (SDG-L1 R6)."
+    },
+    "data_classes": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "common.schema.json#/$defs/dataClass"
+      },
+      "description": "Data classes touched by the capability. Empty when no personal data is involved (SDG-L1 R7, R10)."
+    },
+    "residency": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tags"
+      ],
+      "properties": {
+        "tags": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "common.schema.json#/$defs/residencyTag"
+          }
+        }
+      },
+      "description": "Residency tags (SDG-L1 R8 v0.2). Missing or empty tags fail closed at egress; a publisher that sets no limit uses the single tag unrestricted. Required with at least one tag when effects include egress."
+    },
+    "cost": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "class"
+      ],
+      "properties": {
+        "class": {
+          "enum": [
+            "free",
+            "metered"
+          ]
+        },
+        "max": {
+          "$ref": "common.schema.json#/$defs/money"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "class": {
+                "const": "metered"
+              }
+            },
+            "required": [
+              "class"
+            ]
+          },
+          "then": {
+            "required": [
+              "max"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "class": {
+                "const": "free"
+              }
+            },
+            "required": [
+              "class"
+            ]
+          },
+          "then": {
+            "not": {
+              "required": [
+                "max"
+              ]
+            }
+          }
+        }
+      ],
+      "description": "Upper bound on cost (SDG-L1 R11)."
+    },
+    "consequential": {
+      "type": "boolean",
+      "description": "True when a call needs Trusted UI approval. Required true for delete, execute, and egress (SDG-L1 R9)."
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "effects": {
+            "contains": {
+              "const": "egress"
+            }
+          }
+        },
+        "required": [
+          "effects"
+        ]
+      },
+      "then": {
+        "required": [
+          "residency"
+        ],
+        "properties": {
+          "residency": {
+            "properties": {
+              "tags": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

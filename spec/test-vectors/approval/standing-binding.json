@@ -1,0 +1,275 @@
+{
+  "category": "approval",
+  "description": "Hosted approval transport binding (spec 0004 R9, R9b; 0007 R8s): only an answer that echoes the request's matching scope_digest creates a standing approval.",
+  "vectors": [
+    {
+      "id": "approval.standing.001",
+      "spec": [
+        {
+          "doc": "L4",
+          "version": "0.1",
+          "section": "R9b"
+        }
+      ],
+      "operation": "approval-binding",
+      "input": {
+        "request": {
+          "step": "s1",
+          "capability": "planner",
+          "args_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "nonce": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "plan_digest": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "scope": {
+            "standing": true,
+            "provider": "infomaniak",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "a762d88ab6f4a4555fdbf17850cb192c1ebb7bbd31b40cbaf853665c00bb967e"
+        },
+        "line": "approve roenu s1 planner aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc a762d88ab6f4a4555fdbf17850cb192c1ebb7bbd31b40cbaf853665c00bb967e"
+      },
+      "expected": {
+        "value": {
+          "approved": true,
+          "standing": true
+        }
+      },
+      "status": "normative",
+      "note": "answer echoes the matching scope_digest: standing approval"
+    },
+    {
+      "id": "approval.standing.002",
+      "spec": [
+        {
+          "doc": "L4",
+          "version": "0.1",
+          "section": "R9b"
+        }
+      ],
+      "operation": "approval-binding",
+      "input": {
+        "request": {
+          "step": "s1",
+          "capability": "planner",
+          "args_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "nonce": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "plan_digest": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "scope": {
+            "standing": true,
+            "provider": "infomaniak",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "a762d88ab6f4a4555fdbf17850cb192c1ebb7bbd31b40cbaf853665c00bb967e"
+        },
+        "line": "approve roenu s1 planner aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+      },
+      "expected": {
+        "value": {
+          "approved": true,
+          "standing": false
+        }
+      },
+      "status": "normative",
+      "note": "answer without scope_digest: single-call approval only"
+    },
+    {
+      "id": "approval.standing.003",
+      "spec": [
+        {
+          "doc": "L4",
+          "version": "0.1",
+          "section": "R9b"
+        }
+      ],
+      "operation": "approval-binding",
+      "input": {
+        "request": {
+          "step": "s1",
+          "capability": "planner",
+          "args_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "nonce": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "plan_digest": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "scope": {
+            "standing": true,
+            "provider": "infomaniak",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "a762d88ab6f4a4555fdbf17850cb192c1ebb7bbd31b40cbaf853665c00bb967e"
+        },
+        "line": "approve roenu s1 planner aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc 0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "expected": {
+        "value": {
+          "approved": true,
+          "standing": false
+        }
+      },
+      "status": "normative",
+      "note": "answer with another scope_digest: single-call approval only"
+    },
+    {
+      "id": "approval.standing.004",
+      "spec": [
+        {
+          "doc": "L4",
+          "version": "0.1",
+          "section": "R9b"
+        }
+      ],
+      "operation": "approval-binding",
+      "input": {
+        "request": {
+          "step": "s1",
+          "capability": "planner",
+          "args_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "nonce": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "plan_digest": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "scope": {
+            "standing": true,
+            "provider": "infomaniak",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "1111111111111111111111111111111111111111111111111111111111111111"
+        },
+        "line": "approve roenu s1 planner aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc 1111111111111111111111111111111111111111111111111111111111111111"
+      },
+      "expected": {
+        "value": {
+          "approved": true,
+          "standing": false
+        }
+      },
+      "status": "normative",
+      "note": "request scope_digest does not match its scope: never standing"
+    },
+    {
+      "id": "approval.standing.005",
+      "spec": [
+        {
+          "doc": "L4",
+          "version": "0.1",
+          "section": "R9b"
+        }
+      ],
+      "operation": "approval-binding",
+      "input": {
+        "request": {
+          "step": "s1",
+          "capability": "planner",
+          "args_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "nonce": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "plan_digest": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+        },
+        "line": "approve roenu s1 planner aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc a762d88ab6f4a4555fdbf17850cb192c1ebb7bbd31b40cbaf853665c00bb967e"
+      },
+      "expected": {
+        "value": {
+          "approved": true,
+          "standing": false
+        }
+      },
+      "status": "normative",
+      "note": "plain step request (no scope) with an extra digest: single call"
+    },
+    {
+      "id": "approval.standing.006",
+      "spec": [
+        {
+          "doc": "L4",
+          "version": "0.1",
+          "section": "R9b"
+        }
+      ],
+      "operation": "approval-binding",
+      "input": {
+        "request": {
+          "step": "s1",
+          "capability": "planner",
+          "args_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "nonce": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "plan_digest": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "scope": {
+            "standing": true,
+            "provider": "infomaniak",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "a762d88ab6f4a4555fdbf17850cb192c1ebb7bbd31b40cbaf853665c00bb967e"
+        },
+        "line": "approve roenu s1 planner aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc a762d88ab6f4a4555fdbf17850cb192c1ebb7bbd31b40cbaf853665c00bb967e"
+      },
+      "expected": {
+        "value": {
+          "approved": false,
+          "standing": false
+        }
+      },
+      "status": "normative",
+      "note": "wrong nonce: not approved"
+    },
+    {
+      "id": "approval.standing.007",
+      "spec": [
+        {
+          "doc": "L4",
+          "version": "0.1",
+          "section": "R9b"
+        }
+      ],
+      "operation": "approval-binding",
+      "input": {
+        "request": {
+          "step": "s1",
+          "capability": "planner",
+          "args_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "nonce": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "plan_digest": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "scope": {
+            "standing": true,
+            "provider": "infomaniak",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "a762d88ab6f4a4555fdbf17850cb192c1ebb7bbd31b40cbaf853665c00bb967e"
+        },
+        "line": "deny roenu s1 planner aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc a762d88ab6f4a4555fdbf17850cb192c1ebb7bbd31b40cbaf853665c00bb967e"
+      },
+      "expected": {
+        "value": {
+          "approved": false,
+          "standing": false
+        }
+      },
+      "status": "normative",
+      "note": "deny line: not approved"
+    }
+  ]
+}

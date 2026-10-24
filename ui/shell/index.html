@@ -1,0 +1,94 @@
+<!doctype html>
+<!-- Copyright 2026 VAIEV. SPDX-License-Identifier: Apache-2.0 -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; script-src 'self'; font-src 'self'; img-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sidged · offline shell</title>
+  <link rel="stylesheet" href="shell.css">
+  <script src="shell.js" defer></script>
+</head>
+<body data-theme="dark">
+  <header class="vv-nav">
+    <nav class="vv-nav__bar vv-glass" aria-label="Sidged">
+      <span class="vv-brand">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5l4.5 14L12 7l4.5 12L21 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+        Sidged
+      </span>
+      <div class="vv-tabs" role="tablist">
+        <button class="vv-tab-btn" role="tab" id="tab-personal" aria-controls="view-personal" aria-selected="true">Personal Intelligence</button>
+        <button class="vv-tab-btn" role="tab" id="tab-system" aria-controls="view-system" aria-selected="false" tabindex="-1">System</button>
+      </div>
+      <span class="vv-chip vv-chip--primary vv-mono vv-countdown" title="CountdownWidget">no deadline</span>
+      <button class="vv-icon-btn" id="theme" type="button" aria-label="Light or dark theme">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z" fill="currentColor"/></svg>
+      </button>
+    </nav>
+  </header>
+
+  <main class="vv-layout">
+    <div>
+      <section class="vv-panel" id="view-personal" role="tabpanel" aria-labelledby="tab-personal">
+        <p class="vv-overline">Personal Intelligence</p>
+        <h1>What should happen?</h1>
+        <div class="vv-row">
+          <label class="vv-visually-hidden" for="intent">Intent</label>
+          <input class="vv-field" id="intent" type="text" placeholder="Intent" disabled>
+        </div>
+        <div class="vv-chips" aria-label="Examples">
+          <button class="vv-chip" type="button" disabled>Tasks with a deadline</button>
+          <button class="vv-chip" type="button" disabled>Note</button>
+          <button class="vv-chip" type="button" disabled>Website content</button>
+        </div>
+        <p class="vv-note vv-note--warning">Not available in this build: there is no specified Core API transport for a GUI yet, so this page cannot send an intent to the Core. Use <code>sidged-tui</code> in a terminal, or open a Core-emitted view file below.</p>
+        <div class="vv-row">
+          <button class="vv-btn" id="open-view" type="button">Open Core view file</button>
+          <label class="vv-visually-hidden" for="view-file">Core view file</label>
+          <input id="view-file" type="file" accept=".json,application/json" hidden>
+        </div>
+        <div class="vv-card vv-card--outlined" id="surface-card">
+          <p class="vv-overline">Surface</p>
+          <p class="vv-muted" id="surface-status">No view yet. Views appear here only from the Core.</p>
+          <div id="surface-content"></div>
+        </div>
+      </section>
+
+      <section class="vv-panel" id="view-system" role="tabpanel" aria-labelledby="tab-system" hidden>
+        <p class="vv-overline">System</p>
+        <h1>Settings and status</h1>
+        <div class="vv-card">
+          <h2>Provider and credentials</h2>
+          <p class="vv-muted">Configured in a terminal with <code>sidged init</code>. This page shows no key and no key status.</p>
+        </div>
+        <div class="vv-card">
+          <h2>Approvals</h2>
+          <p class="vv-muted">Approvals happen only on the Core approval socket, from a separate approver session (0004 R9). This page has no approval controls.</p>
+        </div>
+        <div class="vv-card">
+          <h2>Local mode</h2>
+          <p class="vv-muted">Not available in this build: the status comes from the Core once a Core API exists. Local mode is set at start (<code>--local</code>) and cannot be switched off here.</p>
+        </div>
+        <div class="vv-card">
+          <h2>Nodes</h2>
+          <p class="vv-muted">Not available in this build.</p>
+        </div>
+      </section>
+    </div>
+
+    <aside class="vv-panel" aria-labelledby="audit-title">
+      <p class="vv-overline">Audit log</p>
+      <h2 id="audit-title">Read a local audit log file</h2>
+      <div class="vv-row">
+        <button class="vv-btn" id="open-log" type="button">Open audit log file</button>
+        <label class="vv-visually-hidden" for="log-file">Audit log file</label>
+        <input id="log-file" type="file" accept=".log,text/plain" hidden>
+      </div>
+      <p class="vv-note">Not verified here. Verify signatures and the hash chain with <code>sidged log verify &lt;file&gt; --public &lt;hex&gt;</code>.</p>
+      <p class="vv-muted" id="log-status" role="status">No file opened.</p>
+      <ul class="vv-audit-list" id="log-entries"></ul>
+    </aside>
+  </main>
+</body>
+</html>

@@ -1,0 +1,123 @@
+# Copyright 2026 VAIEV
+# SPDX-License-Identifier: Apache-2.0
+# Rust CI for the v1 DoD (V1 spec section 4, item 4): cargo test, clippy and
+# gitleaks. The JSON Schema check (spec/validate/validate.py + unittest) runs in
+# validate.yml on the same triggers and is not duplicated here.
+name: Rust CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+# GitHub-hosted runners only: this public repository never runs pull requests from forks
+# on a self-hosted runner. No incremental cache, line tables only (the test profile
+# inherits dev). Release builds (musl) are unaffected.
+env:
+  CARGO_INCREMENTAL: "0"
+  CARGO_PROFILE_DEV_DEBUG: line-tables-only
+
+concurrency:
+  group: rust-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  rust:
+    name: test and clippy
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      # build.rs embeds this in `sidged --version`: the PR head commit, not the
+      # synthetic merge commit; github.sha on push.
+      SIDGED_GIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # Check out exactly the commit SIDGED_GIT_SHA names (not the merge ref).
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      # rustup honours rust-toolchain.toml when present; otherwise stable.
+      - name: Install toolchain
+        run: |
+          rustup show active-toolchain || rustup toolchain install stable --profile minimal
+          rustup component add clippy
+      - name: cargo test --workspace
+        run: cargo test --manifest-path runtime/Cargo.toml --workspace --locked
+      - name: cargo clippy -D warnings
+        run: cargo clippy --manifest-path runtime/Cargo.toml --workspace --all-targets --locked -- -D warnings
+      - name: cargo test sidged-cli sidged-guard --features experimental
+        run: cargo test --manifest-path runtime/Cargo.toml -p sidged-cli -p sidged-guard --features experimental --locked
+      # Companion core only: the Tauri shell needs WebKitGTK/Android toolchains, the core does not.
+      - name: companion core test and clippy
+        run: |
+          cargo test --manifest-path companion/Cargo.toml -p sidged-companion-core --locked
+          cargo clippy --manifest-path companion/Cargo.toml -p sidged-companion-core --all-targets --locked -- -D warnings
+      - name: companion canvas static checks
+        run: bash scripts/tests/companion_ui_check.sh
+      # Native tests of the sidged.com verifier module (the wasm32 build runs in build-sidged-site.sh).
+      - name: site verifier test and clippy
+        run: |
+          cargo test --manifest-path site/Cargo.toml --locked
+          cargo clippy --manifest-path site/Cargo.toml --all-targets --locked -- -D warnings
+
+  gitleaks:
+    name: gitleaks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      GITLEAKS_VERSION: 8.30.1
+      GITLEAKS_SHA256: 551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # Check out exactly the commit SIDGED_GIT_SHA names (not the merge ref).
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      # Pinned release binary with checksum; no third-party action or licence key.
+      - name: Install gitleaks
+        run: |
+          tarball="gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          curl -sSfL -o "$tarball" "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/${tarball}"
+          echo "${GITLEAKS_SHA256}  ${tarball}" | sha256sum -c -
+          tar -xzf "$tarball" gitleaks
+      # Scans only the commits this PR or push adds, so new secrets block.
+      # Existing findings on main are triaged separately (see PR description).
+      - name: Scan new commits (uses .gitleaks.toml)
+        env:
+          EVENT: ${{ github.event_name }}
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD: ${{ github.event.pull_request.head.sha }}
+          PUSH_BEFORE: ${{ github.event.before }}
+          PUSH_AFTER: ${{ github.sha }}
+          PUSH_FORCED: ${{ github.event.forced }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          set -euo pipefail
+          if [ "$EVENT" = pull_request ]; then
+            base="$PR_BASE"; head="$PR_HEAD"
+          else
+            head="$PUSH_AFTER"
+            if [ "$PUSH_FORCED" != true ] && [ -n "$PUSH_BEFORE" ] \
+               && [ -n "${PUSH_BEFORE//0/}" ] \
+               && git cat-file -e "${PUSH_BEFORE}^{commit}" 2>/dev/null \
+               && git merge-base --is-ancestor "$PUSH_BEFORE" "$head"; then
+              base="$PUSH_BEFORE"
+            else
+              # New branch, force push or unreachable "before": scan everything
+              # the branch adds over the default branch (merge-base).
+              git fetch --no-tags origin "+refs/heads/${DEFAULT_BRANCH}:refs/remotes/origin/${DEFAULT_BRANCH}"
+              base=$(git merge-base "origin/${DEFAULT_BRANCH}" "$head") || {
+                echo "::error::no merge-base with ${DEFAULT_BRANCH}; refusing to scan a partial range"; exit 1; }
+            fi
+          fi
+          # Fail closed: both ends must be real commits.
+          if ! git cat-file -e "${base}^{commit}" || ! git cat-file -e "${head}^{commit}"; then
+            echo "::error::scan range ${base}..${head} not resolvable"; exit 1
+          fi
+          echo "gitleaks range: ${base}..${head}"
+          ./gitleaks git --redact --verbose --exit-code 1 --log-opts="-m ${base}..${head}" .
+

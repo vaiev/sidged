@@ -1,0 +1,76 @@
+{
+  "tools": [
+    {
+      "name": "app.comment.read",
+      "inputSchema": { "type": "object", "properties": { "id": { "type": "string" } }, "required": ["id"] },
+      "_meta": {
+        "io.sidged/capability": {
+          "v": "0.1",
+          "id": "urn:sidged:capability:app.comment.read",
+          "title": "Read a comment",
+          "description": "Read one comment on the test app.",
+          "input_schema": { "type": "object", "properties": { "id": { "type": "string" } }, "required": ["id"] },
+          "effects": ["read"],
+          "data_classes": ["communications.content"],
+          "residency": { "tags": ["CH"] },
+          "cost": { "class": "free" },
+          "consequential": false
+        }
+      }
+    },
+    {
+      "name": "guard.moderate",
+      "inputSchema": { "type": "object", "properties": { "comment": { "type": "string" } }, "required": ["comment"] },
+      "_meta": {
+        "io.sidged/capability": {
+          "v": "0.1",
+          "id": "urn:sidged:capability:guard.moderate",
+          "title": "Moderate a comment",
+          "description": "Decide whether a comment may stay.",
+          "input_schema": { "type": "object", "properties": { "comment": { "type": "string" } }, "required": ["comment"] },
+          "effects": ["execute"],
+          "data_classes": ["communications.content"],
+          "residency": { "tags": ["CH"] },
+          "cost": { "class": "free" },
+          "consequential": true
+        }
+      }
+    },
+    {
+      "name": "guard.monitor",
+      "inputSchema": { "type": "object", "properties": {} },
+      "_meta": {
+        "io.sidged/capability": {
+          "v": "0.1",
+          "id": "urn:sidged:capability:guard.monitor",
+          "title": "Monitor the desk",
+          "description": "Record that the desk was watched.",
+          "input_schema": { "type": "object", "properties": {} },
+          "effects": ["read"],
+          "data_classes": ["usage.activity"],
+          "residency": { "tags": ["CH"] },
+          "cost": { "class": "free" },
+          "consequential": false
+        }
+      }
+    },
+    {
+      "name": "model.complete",
+      "inputSchema": { "type": "object", "properties": { "prompt": { "type": "string" } }, "required": ["prompt"] },
+      "_meta": {
+        "io.sidged/capability": {
+          "v": "0.1",
+          "id": "urn:sidged:capability:model.complete",
+          "title": "Complete with the CH model",
+          "description": "Send the minimised prompt to the configured model provider.",
+          "input_schema": { "type": "object", "properties": { "prompt": { "type": "string" } }, "required": ["prompt"] },
+          "effects": ["egress"],
+          "data_classes": ["communications.content"],
+          "residency": { "tags": ["CH"] },
+          "cost": { "class": "free" },
+          "consequential": true
+        }
+      }
+    }
+  ]
+}

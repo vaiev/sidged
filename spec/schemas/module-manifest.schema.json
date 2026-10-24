@@ -1,0 +1,554 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sidged.com/spec/schemas/module-manifest.schema.json",
+  "title": "Sidged Module Manifest (v0.1)",
+  "description": "Signed manifest that every module ships with (Sidged L0). It declares identity and publisher, version, compatibility range (runtime version and conformance profile), capabilities provided and required, permissions, data classes accessed, egress destinations and residency needs, resource and hardware needs, and an SBOM reference. Model modules identify their weights by hash (Sidged L0); hardware modules carry a capability descriptor (Sidged L8); actuator modules declare safe-stop behaviour (Sidged L8); legacy adapters carry the legacy and unattested labels (Sidged L0, Sidged L6). Installation requires owner consent to the permissions, and any later expansion needs consent again. Status: Draft, not for implementation.",
+  "type": "object",
+  "required": [
+    "v",
+    "id",
+    "name",
+    "version",
+    "kind",
+    "publisher",
+    "compat",
+    "capabilities",
+    "permissions",
+    "data_classes",
+    "egress",
+    "resources",
+    "sbom",
+    "sig"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "v": {
+      "$ref": "common.schema.json#/$defs/schemaVersion"
+    },
+    "id": {
+      "description": "Stable module identifier (URI).",
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "version": {
+      "description": "Semantic Versioning 2.0.0 version.",
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$"
+    },
+    "kind": {
+      "description": "Module kind (Sidged L5, section 3, section 4). hardware: installed or attached hardware discovered by the runtime, described by a capability descriptor. device-adapter: software that connects to an external device or device API through its own protocol.",
+      "enum": [
+        "feature",
+        "function",
+        "model",
+        "device-adapter",
+        "hardware",
+        "ui-kit",
+        "legacy-adapter"
+      ]
+    },
+    "publisher": {
+      "type": "object",
+      "required": [
+        "id",
+        "name"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/$defs/identifier"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "contact": {
+          "$ref": "common.schema.json#/$defs/uri"
+        }
+      }
+    },
+    "compat": {
+      "description": "Compatibility range.",
+      "type": "object",
+      "required": [
+        "runtime",
+        "min_profile"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "runtime": {
+          "description": "Supported Sidged L5 standard versions (Sidged L0).",
+          "$ref": "common.schema.json#/$defs/runtimeRange"
+        },
+        "min_profile": {
+          "description": "Lowest runtime conformance profile the module is designed for.",
+          "$ref": "common.schema.json#/$defs/runtimeProfile"
+        }
+      }
+    },
+    "capabilities": {
+      "type": "object",
+      "required": [
+        "provides",
+        "requires"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "provides": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/capabilityRef"
+          },
+          "uniqueItems": true
+        },
+        "requires": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/capabilityRef"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "permissions": {
+      "description": "Permissions the owner consents to at installation. Access beyond this list is denied and logged (Sidged L0).",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/permission"
+      },
+      "maxItems": 256
+    },
+    "data_classes": {
+      "description": "Data classes the module accesses.",
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/dataClass"
+      },
+      "uniqueItems": true
+    },
+    "egress": {
+      "description": "Egress destinations and residency needs. An empty list declares that the module sends nothing off the device.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/egressDestination"
+      },
+      "maxItems": 64
+    },
+    "resources": {
+      "description": "Resource and hardware needs.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "memory_mb": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "storage_mb": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "accelerators": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "gpu",
+              "npu",
+              "tpu",
+              "dsp"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "hardware": {
+          "description": "Hardware capability types the module needs (for example camera, microphone, gps).",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_.-]*$"
+          },
+          "uniqueItems": true
+        },
+        "network": {
+          "type": "boolean",
+          "description": "Whether the module needs network access at all."
+        }
+      }
+    },
+    "model": {
+      "description": "Required for kind model: weights identified by cryptographic hash, verified by the Core before loading (Sidged L0).",
+      "type": "object",
+      "required": [
+        "weights"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "format": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "weights": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "path",
+              "digest"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024
+              },
+              "digest": {
+                "$ref": "common.schema.json#/$defs/digest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "hardware": {
+      "description": "Required for kind hardware: capability descriptor (Sidged L8).",
+      "$ref": "#/$defs/capabilityDescriptor"
+    },
+    "legacy": {
+      "description": "Required for kind legacy-adapter (Sidged L6).",
+      "type": "object",
+      "required": [
+        "method",
+        "labels"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "method": {
+          "description": "Method 1 app, 2 os, 3 shim, 4 proxy, 5 human.",
+          "enum": [
+            "app",
+            "os",
+            "shim",
+            "proxy",
+            "human"
+          ]
+        },
+        "labels": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/trustLabel"
+          },
+          "uniqueItems": true,
+          "allOf": [
+            {
+              "contains": {
+                "const": "legacy"
+              }
+            },
+            {
+              "contains": {
+                "const": "unattested"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "sbom": {
+      "description": "SBOM reference (SPDX or CycloneDX), REQUIRED at R1 (Sidged L0, section 17).",
+      "type": "object",
+      "required": [
+        "format",
+        "uri",
+        "digest"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "format": {
+          "enum": [
+            "spdx",
+            "cyclonedx"
+          ]
+        },
+        "uri": {
+          "$ref": "common.schema.json#/$defs/uri"
+        },
+        "digest": {
+          "$ref": "common.schema.json#/$defs/digest"
+        }
+      }
+    },
+    "provenance": {
+      "description": "Build provenance (RECOMMENDED at R3, Sidged L0), for example a SLSA provenance attestation.",
+      "type": "object",
+      "required": [
+        "uri",
+        "digest"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "maxLength": 256
+        },
+        "uri": {
+          "$ref": "common.schema.json#/$defs/uri"
+        },
+        "digest": {
+          "$ref": "common.schema.json#/$defs/digest"
+        },
+        "reproducible": {
+          "type": "boolean"
+        }
+      }
+    },
+    "ext": {
+      "$ref": "common.schema.json#/$defs/ext"
+    },
+    "sig": {
+      "description": "Manifest signature (Sidged L6). signer is required so the Core can show who signed (Sidged L0). Modules installed from outside the owner's chosen registries, including self-signed ones, are labelled sideloaded by the Core, not by the manifest.",
+      "allOf": [
+        {
+          "$ref": "common.schema.json#/$defs/signature"
+        },
+        {
+          "required": [
+            "signer"
+          ]
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "model"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "model"
+        ]
+      },
+      "else": {
+        "not": {
+          "required": [
+            "model"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "hardware"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "hardware"
+        ]
+      },
+      "else": {
+        "not": {
+          "required": [
+            "hardware"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "legacy-adapter"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "legacy"
+        ]
+      },
+      "else": {
+        "not": {
+          "required": [
+            "legacy"
+          ]
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "capabilityRef": {
+      "description": "Capability name, MCP-compatible.",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_-]*(\\.[a-z0-9_-]+)*$",
+      "maxLength": 128
+    },
+    "permission": {
+      "type": "object",
+      "required": [
+        "capability",
+        "consequential",
+        "reason"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "capability": {
+          "$ref": "#/$defs/capabilityRef"
+        },
+        "scope": {
+          "description": "Resource scope as a URI; a trailing /* covers everything below.",
+          "type": "string",
+          "maxLength": 2048
+        },
+        "consequential": {
+          "description": "Whether using this permission is a consequential action (Sidged L5). Consequential actions still need approval (Sidged L5).",
+          "type": "boolean"
+        },
+        "reason": {
+          "description": "Plain-language reason shown to the owner at consent.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      }
+    },
+    "egressDestination": {
+      "type": "object",
+      "required": [
+        "destination",
+        "purpose",
+        "data_classes",
+        "residency"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "destination": {
+          "description": "Destination identity or URL.",
+          "$ref": "common.schema.json#/$defs/uri"
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "data_classes": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/dataClass"
+          },
+          "uniqueItems": true
+        },
+        "residency": {
+          "description": "Residency tags the destination honours. Empty if the destination makes no residency claim, in which case tagged data cannot be sent there (fail closed).",
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/residencyTag"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "capabilityDescriptor": {
+      "description": "Hardware capability descriptor: type, functions, performance class, safety constraints, and whether it is attested (Sidged L8).",
+      "type": "object",
+      "required": [
+        "type",
+        "functions",
+        "performance_class",
+        "safety",
+        "attested"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_.-]*$",
+          "description": "Hardware type. No registered vocabulary yet (schemas/OPEN-QUESTIONS.md)."
+        },
+        "functions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/capabilityRef"
+          },
+          "uniqueItems": true
+        },
+        "performance_class": {
+          "description": "Performance class (Sidged L8): constrained (microcontrollers, simple sensors), standard (typical consumer device), high (dedicated accelerators or industrial hardware).",
+          "enum": [
+            "constrained",
+            "standard",
+            "high"
+          ]
+        },
+        "safety": {
+          "type": "object",
+          "required": [
+            "actuator"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "actuator": {
+              "type": "boolean"
+            },
+            "safe_stop": {
+              "description": "Declared safe-stop behaviour. Required for actuators (Sidged L8).",
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000
+            },
+            "hardware_stop": {
+              "type": "boolean"
+            },
+            "standards": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 64
+              }
+            },
+            "constraints": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 500
+              }
+            }
+          },
+          "if": {
+            "properties": {
+              "actuator": {
+                "const": true
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "safe_stop"
+            ]
+          }
+        },
+        "attested": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

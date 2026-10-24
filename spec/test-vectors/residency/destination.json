@@ -1,0 +1,471 @@
+{
+  "category": "residency",
+  "description": "Residency gate at egress (spec 0001 R8 v0.2): missing or empty tags fail closed, GLOBAL only with an explicit unrestricted declaration, CH/EU/CH-EU never reach GLOBAL, unknown destinations always refused.",
+  "vectors": [
+    {
+      "id": "residency.destination.001",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.2",
+          "section": "R8"
+        }
+      ],
+      "operation": "residency-destination",
+      "input": {
+        "destination": "CH"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "residency-unsupported"
+      },
+      "status": "normative",
+      "note": "missing residency fails closed"
+    },
+    {
+      "id": "residency.destination.002",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.2",
+          "section": "R8"
+        }
+      ],
+      "operation": "residency-destination",
+      "input": {
+        "tags": [],
+        "destination": "CH"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "residency-unsupported"
+      },
+      "status": "normative",
+      "note": "empty tags fail closed"
+    },
+    {
+      "id": "residency.destination.003",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.2",
+          "section": "R8"
+        }
+      ],
+      "operation": "residency-destination",
+      "input": {
+        "tags": [],
+        "destination": "GLOBAL"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "residency-unsupported"
+      },
+      "status": "normative",
+      "note": "empty tags never authorize GLOBAL"
+    },
+    {
+      "id": "residency.destination.004",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.2",
+          "section": "R8"
+        }
+      ],
+      "operation": "residency-destination",
+      "input": {
+        "tags": [
+          "unrestricted"
+        ],
+        "destination": "CH"
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative",
+      "note": "explicit unrestricted"
+    },
+    {
+      "id": "residency.destination.005",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.2",
+          "section": "R8"
+        }
+      ],
+      "operation": "residency-destination",
+      "input": {
+        "tags": [
+          "unrestricted"
+        ],
+        "destination": "EU"
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative"
+    },
+    {
+      "id": "residency.destination.006",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.2",
+          "section": "R8"
+        }
+      ],
+      "operation": "residency-destination",
+      "input": {
+        "tags": [
+          "unrestricted"
+        ],
+        "destination": "GLOBAL"
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative",
+      "note": "GLOBAL only with explicit unrestricted"
+    },
+    {
+      "id": "residency.destination.007",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.2",
+          "section": "R8"
+        }
+      ],
+      "operation": "residency-destination",
+      "input": {
+        "tags": [
+          "unrestricted"
+        ],
+        "destination": "unknown"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "residency-unsupported"
+      },
+      "status": "normative",
+      "note": "unknown destination always refused"
+    },
+    {
+      "id": "residency.destination.008",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.2",
+          "section": "R8"
+        }
+      ],
+      "operation": "residency-destination",
+      "input": {
+        "tags": [
+          "CH"
+        ],
+        "destination": "CH"
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative"
+    },
+    {
+      "id": "residency.destination.009",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.2",
+          "section": "R8"
+        }
+      ],
+      "operation": "residency-destination",
+      "input": {
+        "tags": [
+          "CH"
+        ],
+        "destination": "EU"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "residency-unsupported"
+      },
+      "status": "normative"
+    },
+    {
+      "id": "residency.destination.010",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.2",
+          "section": "R8"
+        }
+      ],
+      "operation": "residency-destination",
+      "input": {
+        "tags": [
+          "CH"
+        ],
+        "destination": "GLOBAL"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "residency-unsupported"
+      },
+      "status": "normative",
+      "note": "CH -> GLOBAL denied"
+    },
+    {
+      "id": "residency.destination.011",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.2",
+          "section": "R8"
+        }
+      ],
+      "operation": "residency-destination",
+      "input": {
+        "tags": [
+          "EU"
+        ],
+        "destination": "EU"
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative"
+    },
+    {
+      "id": "residency.destination.012",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.2",
+          "section": "R8"
+        }
+      ],
+      "operation": "residency-destination",
+      "input": {
+        "tags": [
+          "EU"
+        ],
+        "destination": "GLOBAL"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "residency-unsupported"
+      },
+      "status": "normative",
+      "note": "EU -> GLOBAL denied"
+    },
+    {
+      "id": "residency.destination.013",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.2",
+          "section": "R8"
+        }
+      ],
+      "operation": "residency-destination",
+      "input": {
+        "tags": [
+          "CH-EU"
+        ],
+        "destination": "CH"
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative"
+    },
+    {
+      "id": "residency.destination.014",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.2",
+          "section": "R8"
+        }
+      ],
+      "operation": "residency-destination",
+      "input": {
+        "tags": [
+          "CH-EU"
+        ],
+        "destination": "EU"
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative"
+    },
+    {
+      "id": "residency.destination.015",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.2",
+          "section": "R8"
+        }
+      ],
+      "operation": "residency-destination",
+      "input": {
+        "tags": [
+          "CH-EU"
+        ],
+        "destination": "GLOBAL"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "residency-unsupported"
+      },
+      "status": "normative",
+      "note": "CH-EU -> GLOBAL denied"
+    },
+    {
+      "id": "residency.destination.016",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.2",
+          "section": "R8"
+        }
+      ],
+      "operation": "residency-destination",
+      "input": {
+        "tags": [
+          "CH",
+          "CH-EU"
+        ],
+        "destination": "CH"
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative",
+      "note": "intersection"
+    },
+    {
+      "id": "residency.destination.017",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.2",
+          "section": "R8"
+        }
+      ],
+      "operation": "residency-destination",
+      "input": {
+        "tags": [
+          "CH",
+          "EU"
+        ],
+        "destination": "CH"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "residency-unsupported"
+      },
+      "status": "normative",
+      "note": "empty intersection is nowhere"
+    },
+    {
+      "id": "residency.destination.018",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.2",
+          "section": "R8"
+        }
+      ],
+      "operation": "residency-destination",
+      "input": {
+        "tags": [
+          "unrestricted",
+          "CH"
+        ],
+        "destination": "CH"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "malformed"
+      },
+      "status": "normative",
+      "note": "unrestricted must be the only tag"
+    },
+    {
+      "id": "residency.destination.019",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.2",
+          "section": "R8"
+        }
+      ],
+      "operation": "residency-destination",
+      "input": {
+        "tags": [
+          "ch"
+        ],
+        "destination": "CH"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "residency-unknown-tag"
+      },
+      "status": "normative",
+      "note": "unrecognised tag"
+    },
+    {
+      "id": "residency.destination.020",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.2",
+          "section": "R8"
+        }
+      ],
+      "operation": "residency-destination",
+      "input": {
+        "tags": [
+          "x-home-only"
+        ],
+        "destination": "CH"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "residency-unknown-tag"
+      },
+      "status": "normative",
+      "note": "owner tag without an owner mapping is not allowed"
+    },
+    {
+      "id": "residency.destination.021",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.2",
+          "section": "R8"
+        }
+      ],
+      "operation": "residency-destination",
+      "input": {
+        "tags": [
+          "CH"
+        ],
+        "destination": "unknown"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "residency-unsupported"
+      },
+      "status": "normative",
+      "note": "unknown destination"
+    }
+  ]
+}

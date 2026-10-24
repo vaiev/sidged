@@ -1,0 +1,297 @@
+/* Copyright 2026 VAIEV
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Sidged offline UI shell. Tokens follow vaiev/ui commit 0bb03ba; see TOKENS-SOURCE.md.
+ * Content is flat (tonal surfaces, no shadows); only the floating control
+ * bar is glass (0000 L4, 0004 R7). No font is downloaded: IBM Plex is used
+ * only when it is installed locally, otherwise the system stack. */
+
+:root {
+  --vv-color-primary: #A81C55;
+  --vv-color-on-primary: #FFFFFF;
+  --vv-color-primary-container: #FFDCE8;
+  --vv-color-on-primary-container: #560928;
+  --vv-color-secondary-container: #E5E9F2;
+  --vv-color-surface: #FAFAFC;
+  --vv-color-surface-container-lowest: #FFFFFF;
+  --vv-color-surface-container-low: #F4F5F8;
+  --vv-color-surface-container: #EFF1F5;
+  --vv-color-surface-container-high: #E9EBF0;
+  --vv-color-surface-container-highest: #E2E5EB;
+  --vv-color-on-surface: #12141A;
+  --vv-color-on-surface-variant: #5A606E;
+  --vv-color-outline: #767A85;
+  --vv-color-outline-variant: #DCDEE3;
+  --vv-color-error: #B0212A;
+  --vv-color-error-container: #FDECEC;
+  --vv-color-success: #0B7643;
+  --vv-color-success-container: #E7F4EC;
+  --vv-color-warning: #975C16;
+  --vv-color-warning-container: #FBF1E3;
+  --vv-glass-tint: rgb(250 250 252 / 0.74);
+
+  --vv-shape-xs: 8px;
+  --vv-shape-sm: 12px;
+  --vv-shape-md: 16px;
+  --vv-shape-lg: 24px;
+  --vv-shape-xl: 32px;
+  --vv-shape-full: 9999px;
+  --vv-shape-pressed: 12px;
+  --vv-motion-short: 150ms;
+  --vv-motion-medium: 250ms;
+  --vv-motion-long: 400ms;
+  --vv-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --vv-touch-target: 48px;
+
+  --vv-font-sans: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --vv-font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --vv-color-primary: #FF8CB8;
+  --vv-color-on-primary: #560928;
+  --vv-color-primary-container: #820F40;
+  --vv-color-on-primary-container: #FFDCE8;
+  --vv-color-secondary-container: #262A34;
+  --vv-color-surface: #101218;
+  --vv-color-surface-container-lowest: #0B0C10;
+  --vv-color-surface-container-low: #16181E;
+  --vv-color-surface-container: #191B22;
+  --vv-color-surface-container-high: #20232B;
+  --vv-color-surface-container-highest: #282A31;
+  --vv-color-on-surface: #F7F7F8;
+  --vv-color-on-surface-variant: #A8ACB8;
+  --vv-color-outline: #8A8E9A;
+  --vv-color-outline-variant: #3F424C;
+  --vv-color-error: #F2716C;
+  --vv-color-error-container: #6B1B1E;
+  --vv-color-success: #6CD092;
+  --vv-color-success-container: #134A2C;
+  --vv-color-warning: #F0BE67;
+  --vv-color-warning-container: #4A3410;
+  --vv-glass-tint: rgb(16 18 24 / 0.72);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; }
+
+body {
+  min-height: 100vh;
+  background: var(--vv-color-surface);
+  color: var(--vv-color-on-surface);
+  font-family: var(--vv-font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+[hidden] { display: none !important; }
+
+code, .vv-mono { font-family: var(--vv-font-mono); }
+
+/* The single floating control layer. */
+.vv-nav {
+  position: sticky;
+  top: 12px;
+  z-index: 10;
+  margin: 12px auto 0;
+  max-width: 1200px;
+  width: calc(100% - 24px);
+}
+.vv-nav__bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 8px;
+}
+.vv-glass {
+  background: var(--vv-glass-tint);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border-radius: var(--vv-shape-full);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.18), 0 8px 24px rgb(0 0 0 / 0.18);
+}
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  .vv-glass {
+    background: var(--vv-color-surface-container-high);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+    outline: 1px solid var(--vv-color-outline);
+  }
+}
+
+/* Brand lockup on a solid pill, never on glass directly. */
+.vv-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: var(--vv-touch-target);
+  padding: 0 16px;
+  border-radius: var(--vv-shape-full);
+  background: var(--vv-color-surface-container-lowest);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.vv-brand svg { width: 24px; height: 24px; }
+
+.vv-tabs { display: flex; gap: 4px; flex: 1; }
+.vv-tab-btn {
+  min-height: var(--vv-touch-target);
+  min-width: var(--vv-touch-target);
+  padding: 0 16px;
+  border: 0;
+  border-radius: var(--vv-shape-full);
+  background: transparent;
+  color: var(--vv-color-on-surface-variant);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.vv-tab-btn[aria-selected="true"] {
+  background: var(--vv-color-secondary-container);
+  color: var(--vv-color-on-surface);
+}
+
+.vv-icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: var(--vv-touch-target);
+  height: var(--vv-touch-target);
+  border: 0;
+  border-radius: var(--vv-shape-full);
+  background: transparent;
+  color: var(--vv-color-on-surface);
+  cursor: pointer;
+}
+.vv-icon-btn svg { width: 24px; height: 24px; }
+
+/* Flat content. */
+.vv-layout {
+  display: grid;
+  gap: 16px;
+  max-width: 1200px;
+  margin: 16px auto 32px;
+  padding: 0 12px;
+}
+@media (min-width: 840px) {
+  .vv-layout { grid-template-columns: 1.38fr 0.62fr; }
+}
+.vv-panel {
+  background: var(--vv-color-surface-container-low);
+  border-radius: var(--vv-shape-xl);
+  padding: 24px;
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+.vv-card {
+  background: var(--vv-color-surface-container);
+  border-radius: var(--vv-shape-lg);
+  padding: 16px;
+}
+.vv-card--high { background: var(--vv-color-surface-container-high); }
+.vv-card--outlined {
+  background: transparent;
+  border: 1px solid var(--vv-color-outline-variant);
+}
+.vv-overline {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--vv-color-on-surface-variant);
+}
+h1, h2, h3 { margin: 0; line-height: 1.25; }
+h1 { font-size: 24px; }
+h2 { font-size: 18px; }
+p { margin: 0; }
+.vv-muted { color: var(--vv-color-on-surface-variant); }
+
+.vv-note {
+  border-left: 4px solid var(--vv-color-outline);
+  border-radius: var(--vv-shape-xs);
+  padding: 12px 16px;
+  background: var(--vv-color-surface-container-high);
+}
+/* Status colour on the border only; text stays on-surface. The dark
+ * error/error-container pair from the token source is 4.08:1, below AA for
+ * text (see TOKENS-SOURCE.md). */
+.vv-note--success { border-color: var(--vv-color-success); background: var(--vv-color-success-container); color: var(--vv-color-on-surface); }
+.vv-note--warning { border-color: var(--vv-color-warning); background: var(--vv-color-warning-container); color: var(--vv-color-on-surface); }
+.vv-note--error { border-color: var(--vv-color-error); background: var(--vv-color-error-container); color: var(--vv-color-on-surface); }
+
+.vv-btn {
+  min-height: var(--vv-touch-target);
+  padding: 0 24px;
+  border: 0;
+  border-radius: var(--vv-shape-full);
+  background: var(--vv-color-primary);
+  color: var(--vv-color-on-primary);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-radius var(--vv-motion-short) var(--vv-ease-standard);
+}
+.vv-btn:active { border-radius: var(--vv-shape-pressed); }
+.vv-btn--tonal { background: var(--vv-color-secondary-container); color: var(--vv-color-on-surface); }
+.vv-btn--outlined { background: transparent; color: var(--vv-color-on-surface); border: 1px solid var(--vv-color-outline); }
+.vv-btn:disabled, .vv-chip:disabled, .vv-field:disabled { cursor: not-allowed; opacity: 0.6; }
+
+.vv-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.vv-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--vv-touch-target);
+  padding: 0 16px;
+  border-radius: var(--vv-shape-sm);
+  border: 1px solid var(--vv-color-outline);
+  background: transparent;
+  color: var(--vv-color-on-surface);
+  font: inherit;
+}
+.vv-chip.vv-mono { font-family: var(--vv-font-mono); }
+.vv-countdown { border-radius: var(--vv-shape-full); }
+.vv-chip--primary { background: var(--vv-color-primary-container); color: var(--vv-color-on-primary-container); border-color: transparent; }
+
+.vv-field {
+  width: 100%;
+  min-height: var(--vv-touch-target);
+  padding: 0 16px;
+  border-radius: var(--vv-shape-sm);
+  border: 1px solid var(--vv-color-outline);
+  background: var(--vv-color-surface-container-lowest);
+  color: var(--vv-color-on-surface);
+  font: inherit;
+}
+.vv-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+.vv-audit-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.vv-audit-entry {
+  font-family: var(--vv-font-mono);
+  font-size: 13px;
+  background: var(--vv-color-surface-container);
+  border-radius: var(--vv-shape-sm);
+  padding: 8px 12px;
+  overflow-wrap: anywhere;
+}
+.vv-audit-entry--deny { border-left: 4px solid var(--vv-color-error); }
+
+:focus-visible { outline: 3px solid var(--vv-color-primary); outline-offset: 2px; }
+
+.vv-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}

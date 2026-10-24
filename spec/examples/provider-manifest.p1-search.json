@@ -1,0 +1,86 @@
+{
+  "v": "0.1",
+  "provider": {
+    "id": "https://search.example.com",
+    "name": "Example Search",
+    "contact": "mailto:privacy@search.example.com"
+  },
+  "manifest_version": 3,
+  "published": "2026-10-01T00:00:00Z",
+  "profile_claim": {
+    "profile": "P1",
+    "basis": "self-assessment",
+    "against": "Sidged L7 draft v0.1",
+    "self_assessment": "https://search.example.com/sidged/self-assessment-p1.html"
+  },
+  "models": [],
+  "model_identity": {
+    "carrier": "header",
+    "header": "Sidged-Model"
+  },
+  "tools": [
+    "search.web"
+  ],
+  "pricing": [
+    {
+      "item": "search.web",
+      "unit": "request",
+      "price": {
+        "amount": "0.002",
+        "currency": "EUR"
+      }
+    }
+  ],
+  "accepted_credentials": [
+    "none",
+    "api-key"
+  ],
+  "anonymous_mode": true,
+  "identified_mode": {
+    "offered": true,
+    "linking": "Requests sent with an API key are linked to that key for billing for 30 days."
+  },
+  "training": {
+    "no_training": true,
+    "no_profiling": true
+  },
+  "retention": {
+    "content_window": "PT24H",
+    "purpose": [
+      "abuse-handling"
+    ],
+    "logs_exclude_content": true,
+    "logs_no_persistent_ids": true
+  },
+  "tracking": {
+    "no_tracking": true,
+    "accepts_relays": true,
+    "no_response_identifiers": true
+  },
+  "regions": [
+    "DE",
+    "NL"
+  ],
+  "residency_support": [
+    "EU"
+  ],
+  "envelope": {
+    "accepted": false
+  },
+  "ohttp": {
+    "supported": false
+  },
+  "attestation": {
+    "confidential_computing": false,
+    "endpoints": []
+  },
+  "transparency": {},
+  "planned_changes": [],
+  "sig": {
+    "alg": "EdDSA",
+    "kid": "https://search.example.com#manifest-key-2026",
+    "canon": "jcs",
+    "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy",
+    "signer": "https://search.example.com"
+  }
+}

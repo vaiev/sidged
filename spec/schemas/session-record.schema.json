@@ -1,0 +1,206 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sidged.com/spec/schemas/session-record.schema.json",
+  "title": "Sidged Session Record (v0.1)",
+  "description": "Record of one session that the Core writes and signs (Sidged L4, section 13, section 21). It is carried as data of a Sidged Envelope signed by the Core key, with payload_type application/vnd.sidged.session-record+json. It links every egress to its Privacy Gateway report and holds the effective tier display that the Core rendered, signed by the Core key. spec/validate checks what JSON Schema cannot: each report matches its egress, the display belongs to the session and is signed by the Core key named in core, the display shows every runtime, hop, and provider profile of the session, the displayed tier is not higher than the lowest of them, and an R0 session carries the prototype label. Status: Draft, not for implementation.",
+  "type": "object",
+  "required": [
+    "v",
+    "session",
+    "core",
+    "runtime_profile",
+    "hops",
+    "egress",
+    "tier_display"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "v": {
+      "$ref": "common.schema.json#/$defs/schemaVersion"
+    },
+    "session": {
+      "description": "Session identifier, as in the envelope session member.",
+      "$ref": "#/$defs/sessionId"
+    },
+    "core": {
+      "description": "The Core that rendered the display: its agent identity and the identifier of its signing key.",
+      "type": "object",
+      "required": [
+        "agent",
+        "kid"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "agent": {
+          "$ref": "common.schema.json#/$defs/identifier"
+        },
+        "kid": {
+          "$ref": "common.schema.json#/$defs/identifier"
+        }
+      }
+    },
+    "runtime_profile": {
+      "description": "Runtime profile the runtime claims (Sidged L5). R0 is the prototype profile.",
+      "$ref": "#/$defs/runtimeProfile"
+    },
+    "hops": {
+      "description": "Communication hops of the session with their profiles. C0 is a legacy hop (Sidged L6). Empty if the session had no hop.",
+      "type": "array",
+      "maxItems": 32,
+      "items": {
+        "type": "object",
+        "required": [
+          "peer",
+          "profile"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "peer": {
+            "$ref": "common.schema.json#/$defs/identifier"
+          },
+          "profile": {
+            "$ref": "common.schema.json#/$defs/communicationProfile"
+          }
+        }
+      }
+    },
+    "egress": {
+      "description": "Every egress of the session (Sidged L5), each with the link to its Privacy Gateway report (Sidged L7). Empty if no data left the device.",
+      "type": "array",
+      "maxItems": 256,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "provider",
+          "provider_profile",
+          "payload_digest",
+          "report"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/localId"
+          },
+          "provider": {
+            "$ref": "common.schema.json#/$defs/identifier"
+          },
+          "provider_profile": {
+            "description": "Effective provider profile used for this egress (Sidged L7, Sidged L7): P0 unless verified.",
+            "$ref": "common.schema.json#/$defs/providerProfile"
+          },
+          "payload_digest": {
+            "description": "Hash of the exact outbound payload, as logged by the Gateway.",
+            "$ref": "common.schema.json#/$defs/digest"
+          },
+          "report": {
+            "description": "Link to the privacy report of this egress: its id and its minimisation.payload_digest, which must equal the egress payload_digest.",
+            "type": "object",
+            "required": [
+              "id",
+              "payload_digest"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "$ref": "#/$defs/localId"
+              },
+              "payload_digest": {
+                "$ref": "common.schema.json#/$defs/digest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "tier_display": {
+      "description": "What the Core showed the user as the effective tier, signed by the Core key over the canonical form of this object without sig (Sidged L6).",
+      "type": "object",
+      "required": [
+        "session",
+        "tier",
+        "shows",
+        "labels",
+        "rendered_at",
+        "sig"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "session": {
+          "$ref": "#/$defs/sessionId"
+        },
+        "tier": {
+          "description": "Effective tier shown, 0 to 3. Must not be higher than the lowest tier of the runtime, every hop, and every provider.",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "shows": {
+          "description": "Every profile of the session as shown next to the tier, so that a C0 hop or a P0 provider is visible.",
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/runtimeProfile"
+              },
+              {
+                "$ref": "common.schema.json#/$defs/communicationProfile"
+              },
+              {
+                "$ref": "common.schema.json#/$defs/providerProfile"
+              }
+            ]
+          }
+        },
+        "labels": {
+          "description": "Labels shown with the tier. prototype is required for an R0 runtime and is shown as 'prototype, not for production'.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "anyOf": [
+              {
+                "const": "prototype"
+              },
+              {
+                "$ref": "common.schema.json#/$defs/trustLabel"
+              }
+            ]
+          }
+        },
+        "rendered_at": {
+          "$ref": "common.schema.json#/$defs/timestamp"
+        },
+        "sig": {
+          "$ref": "common.schema.json#/$defs/signature"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "runtimeProfile": {
+      "description": "R0 (prototype) or a runtime conformance profile.",
+      "anyOf": [
+        {
+          "const": "R0"
+        },
+        {
+          "$ref": "common.schema.json#/$defs/runtimeProfile"
+        }
+      ]
+    },
+    "sessionId": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "localId": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    }
+  }
+}

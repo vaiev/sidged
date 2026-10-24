@@ -1,0 +1,11 @@
+{
+  "v": "0.2",
+  "lang": "gsw",
+  "intent": "scheduling.remind",
+  "missing": [
+    "time"
+  ],
+  "slots": {
+    "subject": "the dentist appointment"
+  }
+}

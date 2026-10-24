@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sidged.com/spec/schemas/refusal.schema.json",
+  "title": "Sidged Refusal (v0.1)",
+  "description": "Standard machine-readable refusal (Sidged L6; Sidged L7, section 9). Sent as the data of an envelope with intent sdg.refused and payload_type application/vnd.sidged.refusal+json, or, by a provider without envelope support, as an HTTP response body with that media type. A refusal carries a reason code and references to the refused message, never free text, so it cannot include memory, Adaptation Profile data, or other content not already in the request. Status: Draft, not for implementation.",
+  "type": "object",
+  "required": [
+    "v",
+    "reason"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "v": {
+      "$ref": "common.schema.json#/$defs/schemaVersion"
+    },
+    "reason": {
+      "$ref": "common.schema.json#/$defs/refusalReason"
+    },
+    "ref": {
+      "description": "Identifies the refused message using values the requester already sent.",
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "session": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9._:-]+$"
+        },
+        "seq": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "nonce": {
+          "$ref": "common.schema.json#/$defs/nonce"
+        },
+        "idem_key": {
+          "type": "string",
+          "minLength": 16,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9._:-]+$"
+        }
+      }
+    },
+    "retry_after": {
+      "description": "Earliest sensible retry, as an ISO 8601 duration (for rate-limited, budget-exceeded, unavailable).",
+      "$ref": "common.schema.json#/$defs/duration"
+    },
+    "requires": {
+      "description": "What would make the request acceptable, without revealing policy content.",
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "runtime_profile": {
+          "$ref": "common.schema.json#/$defs/runtimeProfile"
+        },
+        "communication_profile": {
+          "$ref": "common.schema.json#/$defs/communicationProfile"
+        },
+        "provider_profile": {
+          "$ref": "common.schema.json#/$defs/providerProfile"
+        },
+        "versions": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/versionString"
+          },
+          "uniqueItems": true
+        },
+        "residency": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/residencyTag"
+          },
+          "uniqueItems": true
+        },
+        "proof": {
+          "enum": [
+            "fresh-credential",
+            "proof-of-work",
+            "reduced-quota"
+          ]
+        }
+      }
+    },
+    "ext": {
+      "$ref": "common.schema.json#/$defs/ext"
+    }
+  }
+}

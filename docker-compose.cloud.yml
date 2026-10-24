@@ -1,0 +1,25 @@
+# Copyright 2026 VAIEV
+# SPDX-License-Identifier: Apache-2.0
+#
+# Cloud opt-in override: local mode off, the egress network and the
+# provider key as a file-based secret, for control only. Place the key first
+# (owner = control uid 65532, mode 0400; checked):
+#   scripts/compose-init.sh --secret /path/to/xai.key
+#   podman compose -f docker-compose.yml -f docker-compose.cloud.yml up
+services:
+  control:
+    environment:
+      SIDGED_LOCAL: "0"
+      SIDGED_API_KEY_FILE: /run/secrets/xai_api_key
+    networks: [edges, model, egress]
+    secrets:
+      - source: xai_api_key
+        target: xai_api_key
+
+networks:
+  # Control only: the Core's Privacy Gateway is the sole egress path.
+  egress: {}
+
+secrets:
+  xai_api_key:
+    file: ${SIDGED_XAI_API_KEY_FILE:-./secrets/xai_api_key}

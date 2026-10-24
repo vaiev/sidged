@@ -1,0 +1,306 @@
+{
+  "category": "residency",
+  "description": "Where tagged data may go (Sidged L7): tags combine by intersection, an empty list sets no restriction, unknown tags fail closed. Regions: CH (Switzerland) and EU (EU and EEA member states); value \"any\" means unrestricted.",
+  "vectors": [
+    {
+      "id": "residency.regions.001",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.3",
+          "section": "11",
+          "tag": "R2"
+        },
+        {
+          "doc": "L6",
+          "version": "0.1",
+          "section": "A5",
+          "tag": "C1"
+        }
+      ],
+      "operation": "residency-regions",
+      "input": {
+        "tags": []
+      },
+      "expected": {
+        "value": "any"
+      },
+      "status": "normative",
+      "note": "Empty list: no residency restriction set"
+    },
+    {
+      "id": "residency.regions.002",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.3",
+          "section": "11",
+          "tag": "R2"
+        }
+      ],
+      "operation": "residency-regions",
+      "input": {
+        "tags": [
+          "CH"
+        ]
+      },
+      "expected": {
+        "value": [
+          "CH"
+        ]
+      },
+      "status": "normative",
+      "note": "Switzerland only"
+    },
+    {
+      "id": "residency.regions.003",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.3",
+          "section": "11",
+          "tag": "R2"
+        }
+      ],
+      "operation": "residency-regions",
+      "input": {
+        "tags": [
+          "EU"
+        ]
+      },
+      "expected": {
+        "value": [
+          "EU"
+        ]
+      },
+      "status": "normative",
+      "note": "EU and EEA only"
+    },
+    {
+      "id": "residency.regions.004",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.3",
+          "section": "11",
+          "tag": "R2"
+        }
+      ],
+      "operation": "residency-regions",
+      "input": {
+        "tags": [
+          "CH-EU"
+        ]
+      },
+      "expected": {
+        "value": [
+          "CH",
+          "EU"
+        ]
+      },
+      "status": "normative",
+      "note": "Switzerland or EU and EEA"
+    },
+    {
+      "id": "residency.regions.005",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.3",
+          "section": "11",
+          "tag": "R2"
+        }
+      ],
+      "operation": "residency-regions",
+      "input": {
+        "tags": [
+          "CH",
+          "EU"
+        ]
+      },
+      "expected": {
+        "value": []
+      },
+      "status": "normative",
+      "note": "Intersection of CH and EU allows nowhere"
+    },
+    {
+      "id": "residency.regions.006",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.3",
+          "section": "11",
+          "tag": "R2"
+        }
+      ],
+      "operation": "residency-regions",
+      "input": {
+        "tags": [
+          "CH",
+          "CH-EU"
+        ]
+      },
+      "expected": {
+        "value": [
+          "CH"
+        ]
+      },
+      "status": "normative",
+      "note": "Intersection narrows CH-EU to CH"
+    },
+    {
+      "id": "residency.regions.007",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.3",
+          "section": "11",
+          "tag": "R2"
+        }
+      ],
+      "operation": "residency-regions",
+      "input": {
+        "tags": [
+          "EU",
+          "CH-EU"
+        ]
+      },
+      "expected": {
+        "value": [
+          "EU"
+        ]
+      },
+      "status": "normative",
+      "note": "Intersection narrows CH-EU to EU"
+    },
+    {
+      "id": "residency.regions.008",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.3",
+          "section": "11",
+          "tag": "R2"
+        }
+      ],
+      "operation": "residency-regions",
+      "input": {
+        "tags": [
+          "x-unknown"
+        ]
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "residency-unknown-tag"
+      },
+      "status": "normative",
+      "note": "Owner tag this runtime does not know: fail closed"
+    },
+    {
+      "id": "residency.regions.009",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.3",
+          "section": "11",
+          "tag": "R2"
+        }
+      ],
+      "operation": "residency-regions",
+      "input": {
+        "tags": [
+          "CH",
+          "x-unknown"
+        ]
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "residency-unknown-tag"
+      },
+      "status": "normative",
+      "note": "One unknown tag fails the whole list"
+    },
+    {
+      "id": "residency.regions.010",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.3",
+          "section": "11",
+          "tag": "R2"
+        }
+      ],
+      "operation": "residency-regions",
+      "input": {
+        "tags": [
+          "x-home",
+          "CH-EU"
+        ],
+        "owner_tags": {
+          "x-home": [
+            "CH"
+          ]
+        }
+      },
+      "expected": {
+        "value": [
+          "CH"
+        ]
+      },
+      "status": "normative",
+      "note": "Known owner tag intersected with a standard tag"
+    },
+    {
+      "id": "residency.regions.011",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.3",
+          "section": "11",
+          "tag": "R2"
+        }
+      ],
+      "operation": "residency-regions",
+      "input": {
+        "tags": [
+          "x-home",
+          "EU"
+        ],
+        "owner_tags": {
+          "x-home": [
+            "CH"
+          ]
+        }
+      },
+      "expected": {
+        "value": []
+      },
+      "status": "normative",
+      "note": "Known owner tag with an empty intersection"
+    },
+    {
+      "id": "residency.regions.012",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.3",
+          "section": "11",
+          "tag": "R2"
+        }
+      ],
+      "operation": "residency-regions",
+      "input": {
+        "tags": [
+          "ch"
+        ]
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "residency-unknown-tag"
+      },
+      "status": "normative",
+      "note": "Tags are case-sensitive"
+    }
+  ]
+}

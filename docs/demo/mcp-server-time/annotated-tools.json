@@ -1,0 +1,184 @@
+{
+  "source": {
+    "repository": "https://github.com/modelcontextprotocol/servers",
+    "path": "src/time/src/mcp_server_time/server.py",
+    "server_name": "mcp-time",
+    "retrieved": "2026-10-14"
+  },
+  "tools": [
+    {
+      "name": "get_current_time",
+      "description": "Get current time in a specific timezone",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "timezone": {
+            "type": "string",
+            "description": "IANA timezone name (e.g., 'America/New_York', 'Europe/London'). Use the host local timezone if the user gives none."
+          }
+        },
+        "required": [
+          "timezone"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "_meta": {
+        "io.sidged/capability": {
+          "v": "0.1",
+          "id": "urn:sidged:capability:get_current_time",
+          "title": "Get current time",
+          "description": "Get current time in a specific timezone. Source: mcp-server-time tool get_current_time.",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "timezone": {
+                "type": "string",
+                "description": "IANA timezone name (e.g., 'America/New_York', 'Europe/London'). Use the host local timezone if the user gives none."
+              }
+            },
+            "required": [
+              "timezone"
+            ]
+          },
+          "output_schema": {
+            "type": "object",
+            "properties": {
+              "timezone": {
+                "type": "string"
+              },
+              "datetime": {
+                "type": "string"
+              },
+              "day_of_week": {
+                "type": "string"
+              },
+              "is_dst": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "timezone",
+              "datetime",
+              "day_of_week",
+              "is_dst"
+            ],
+            "additionalProperties": false
+          },
+          "effects": [
+            "read"
+          ],
+          "data_classes": [],
+          "residency": {
+            "tags": [
+              "unrestricted"
+            ]
+          },
+          "cost": {
+            "class": "free"
+          },
+          "consequential": false
+        }
+      }
+    },
+    {
+      "name": "convert_time",
+      "description": "Convert time between timezones",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "source_timezone": {
+            "type": "string",
+            "description": "Source IANA timezone name (e.g., 'America/New_York', 'Europe/London')."
+          },
+          "time": {
+            "type": "string",
+            "description": "Time to convert in 24-hour format (HH:MM)."
+          },
+          "target_timezone": {
+            "type": "string",
+            "description": "Target IANA timezone name (e.g., 'Asia/Tokyo', 'America/Los_Angeles')."
+          }
+        },
+        "required": [
+          "source_timezone",
+          "time",
+          "target_timezone"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "_meta": {
+        "io.sidged/capability": {
+          "v": "0.1",
+          "id": "urn:sidged:capability:convert_time",
+          "title": "Convert time",
+          "description": "Convert time between timezones. Source: mcp-server-time tool convert_time.",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "source_timezone": {
+                "type": "string",
+                "description": "Source IANA timezone name (e.g., 'America/New_York', 'Europe/London')."
+              },
+              "time": {
+                "type": "string",
+                "description": "Time to convert in 24-hour format (HH:MM)."
+              },
+              "target_timezone": {
+                "type": "string",
+                "description": "Target IANA timezone name (e.g., 'Asia/Tokyo', 'America/Los_Angeles')."
+              }
+            },
+            "required": [
+              "source_timezone",
+              "time",
+              "target_timezone"
+            ]
+          },
+          "output_schema": {
+            "type": "object",
+            "properties": {
+              "source": {
+                "type": "object"
+              },
+              "target": {
+                "type": "object"
+              },
+              "time_difference": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "source",
+              "target",
+              "time_difference"
+            ],
+            "additionalProperties": false
+          },
+          "effects": [
+            "read"
+          ],
+          "data_classes": [],
+          "residency": {
+            "tags": [
+              "unrestricted"
+            ]
+          },
+          "cost": {
+            "class": "free"
+          },
+          "consequential": false
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "v": "0.1",
+  "lang": "en",
+  "intent": "timer.set",
+  "slots": {
+    "duration": "5 minutes"
+  },
+  "missing_slots": [],
+  "clarification_needed": false,
+  "clarification_question_local": null,
+  "canonical_intent_en": "Start a timer for 5 minutes",
+  "suggested_route": "edge-local",
+  "required_data_classes": []
+}

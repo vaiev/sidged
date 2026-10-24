@@ -1,0 +1,60 @@
+# Copyright 2026 VAIEV
+# SPDX-License-Identifier: Apache-2.0
+#
+# One guard run of the scenario /var/lib/sidged/scenarios/<instance>.
+# Template only: it is installed but never enabled (there is no [Install]
+# section). Start a run explicitly:  sudo systemctl start sidged-run@<name>
+#
+# Default profile: local mode (0007 R2, Inv. 7). No network namespace access,
+# AF_UNIX only, no IP traffic, no approval channel (0004 R9: local mode has
+# none; consequential steps are denied). For the egress profile see
+# sidged-run@.service.d/egress.conf.example.
+#
+# The Core runs as the dedicated system user `sidged` (0004 R9c: a stable core
+# uid that owns the approval directory; not DynamicUser, not the login user).
+
+[Unit]
+Description=Sidged guard run (%i)
+Documentation=file:/usr/local/share/sidged/README-host.md
+
+[Service]
+Type=oneshot
+User=sidged
+Group=sidged
+Environment=SIDGED_LOCAL=1
+ExecStart=/usr/local/bin/sidged guard /var/lib/sidged/scenarios/%i --local --keys /var/lib/sidged/keys --log /var/lib/sidged/audit/%i.log --log-key /var/lib/sidged/log-key/issuer.key
+
+StateDirectory=sidged
+StateDirectoryMode=0700
+UMask=0077
+
+# Privileges
+NoNewPrivileges=yes
+CapabilityBoundingSet=
+AmbientCapabilities=
+RestrictSUIDSGID=yes
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+RestrictNamespaces=yes
+RemoveIPC=yes
+
+# File system
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectControlGroups=yes
+ProtectClock=yes
+ProtectHostname=yes
+
+# Network: local profile has none.
+PrivateNetwork=yes
+RestrictAddressFamilies=AF_UNIX
+IPAddressDeny=any
+
+# System calls
+SystemCallArchitectures=native
+SystemCallFilter=@system-service

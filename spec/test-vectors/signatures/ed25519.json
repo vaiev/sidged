@@ -1,0 +1,72 @@
+{
+  "category": "signatures",
+  "description": "Ed25519 known-answer tests copied from RFC 8032 section 7.1, so an implementation can check its primitive and key handling before the Sidged vectors below.",
+  "vectors": [
+    {
+      "id": "signature.ed25519.001",
+      "spec": [
+        {
+          "doc": "RFC 8032",
+          "section": "7.1"
+        }
+      ],
+      "operation": "ed25519-sign",
+      "requires": [
+        "EdDSA"
+      ],
+      "input": {
+        "key": "rfc8032-test-1",
+        "message_hex": ""
+      },
+      "expected": {
+        "value": "e5564300c360ac729086e2cc806e828a84877f1eb8e5d974d873e065224901555fb8821590a33bacc61e39701cf9b46bd25bf5f0595bbe24655141438e7a100b"
+      },
+      "status": "normative",
+      "note": "TEST 1 from RFC 8032 section 7.1, copied unchanged"
+    },
+    {
+      "id": "signature.ed25519.002",
+      "spec": [
+        {
+          "doc": "RFC 8032",
+          "section": "7.1"
+        }
+      ],
+      "operation": "ed25519-sign",
+      "requires": [
+        "EdDSA"
+      ],
+      "input": {
+        "key": "rfc8032-test-2",
+        "message_hex": "72"
+      },
+      "expected": {
+        "value": "92a009a9f0d4cab8720e820b5f642540a2b27b5416503f8fb3762223ebdb69da085ac1e43e15996e458f3613d0f11d8c387b2eaeb4302aeeb00d291612bb0c00"
+      },
+      "status": "normative",
+      "note": "TEST 2 from RFC 8032 section 7.1, copied unchanged"
+    },
+    {
+      "id": "signature.ed25519.003",
+      "spec": [
+        {
+          "doc": "RFC 8032",
+          "section": "7.1"
+        }
+      ],
+      "operation": "ed25519-sign",
+      "requires": [
+        "EdDSA"
+      ],
+      "input": {
+        "key": "rfc8032-test-3",
+        "message_hex": "af82"
+      },
+      "expected": {
+        "value": "6291d657deec24024827e69c3abe01a30ce548a284743a445e3680d7db5ac3ac18ff9b538d16f290ae67f760984dc6594a7c15e9716ed28dc027beceea1ec40a"
+      },
+      "status": "normative",
+      "note": "TEST 3 from RFC 8032 section 7.1, copied unchanged"
+    }
+  ]
+}

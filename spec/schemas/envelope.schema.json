@@ -1,0 +1,423 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sidged.com/spec/schemas/envelope.schema.json",
+  "title": "Sidged Envelope (v0.1)",
+  "description": "Common signed message structure for Sidged communication (Sidged L6). Every message except F5 advertisements (Sidged L6) and F7 media frames after stream setup (Sidged L6) uses it. Requested actions go in instructions; content goes in data, which is always untrusted and never grants authority (Sidged L6). Receivers MUST reject envelopes that are unsigned, expired, replayed, not addressed to them (aud), out of sequence beyond the configured window, or of an unknown major version; this schema checks structure only, and freshness, replay, and signature checks are the receiver's job. Unknown members outside ext are rejected (fail closed, Sidged L6). Status: Draft, not for implementation.",
+  "type": "object",
+  "required": [
+    "v",
+    "form",
+    "sender_agent",
+    "sender_device",
+    "aud",
+    "session",
+    "seq",
+    "attestation_ref",
+    "intent",
+    "residency",
+    "nonce",
+    "issued",
+    "expires",
+    "provenance",
+    "sig"
+  ],
+  "properties": {
+    "v": {
+      "description": "Schema version (Sidged L6).",
+      "$ref": "common.schema.json#/$defs/schemaVersion"
+    },
+    "form": {
+      "description": "Communication form (Sidged L6). F5 is excluded because discovery advertisements are not envelopes; the form of an advertisement is recorded in the advertisement itself.",
+      "enum": [
+        "F1",
+        "F2",
+        "F3",
+        "F4",
+        "F6",
+        "F7",
+        "F8",
+        "F9"
+      ]
+    },
+    "sender_agent": {
+      "description": "Agent identity (Sidged L6).",
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "sender_device": {
+      "description": "Device identity (Sidged L6).",
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "aud": {
+      "description": "Exactly one intended recipient: an agent, device, or provider identity, or the identifier of an MLS group the sender belongs to (Sidged L6).",
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "session": {
+      "description": "Session or conversation identifier.",
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "seq": {
+      "description": "Sequence number within the session (Sidged L6).",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 18446744073709551615
+    },
+    "attestation_ref": {
+      "description": "Reference to the device's attestation or profile claim. Always present; null unless the session was negotiated at C3, where it MUST NOT be null (Sidged L6). The negotiated profile is bound to the session by the signed negotiation transcript (Sidged L6), so the receiver checks this, not the schema.",
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "common.schema.json#/$defs/uri"
+        }
+      ]
+    },
+    "cap_token": {
+      "description": "Capability token authorising this message (Sidged L2). Required on every envelope except pairing messages (sdg.pairing.*) and refusals (sdg.refused). Either a Sidged capability token, or another attenuable token format wrapped with its format name; the receiver MUST verify attenuation for that format natively or refuse with unsupported-token-format.",
+      "oneOf": [
+        {
+          "$ref": "capability-token.schema.json"
+        },
+        {
+          "type": "object",
+          "required": [
+            "format",
+            "token"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "format": {
+              "description": "Registered name of an attenuable token format.",
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9.+-]*$",
+              "not": {
+                "const": "sdg-cap"
+              }
+            },
+            "token": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      ]
+    },
+    "intent": {
+      "description": "Declared purpose from registries/intents.md (Sidged L6).",
+      "$ref": "common.schema.json#/$defs/intent"
+    },
+    "instructions": {
+      "description": "Requested action, structured. Authenticated only by the envelope signature (sig); there is no separate signature (Sidged L6).",
+      "type": "object",
+      "required": [
+        "action"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "description": "Capability or action name.",
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]*(\\.[a-z0-9_-]+)*$",
+          "maxLength": 128
+        },
+        "resource": {
+          "description": "Target resource URI.",
+          "$ref": "common.schema.json#/$defs/uri"
+        },
+        "params": {
+          "description": "Typed parameters for the action (MCP-compatible).",
+          "type": "object"
+        },
+        "consequential": {
+          "description": "Sender's declaration that the action is consequential (Sidged L5). The receiver decides independently; a false value never skips approval.",
+          "type": "boolean"
+        }
+      }
+    },
+    "data": {
+      "description": "Payload content. Always untrusted data. The receiving Core MUST NOT grant authority based on anything inside data (Sidged L6)."
+    },
+    "payload_type": {
+      "description": "Media type (RFC 6838) or schema URI of data. Required when data is present.",
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 255
+    },
+    "residency": {
+      "description": "Residency tags (Sidged L7) and data classes (registries/data-classes.md) of the content. Several tags combine by intersection: the content may only go where every tag allows. An empty tags list means the owner set no residency restriction for this content; all other egress rules still apply.",
+      "type": "object",
+      "required": [
+        "tags",
+        "data_classes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "tags": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/residencyTag"
+          },
+          "uniqueItems": true,
+          "maxItems": 16
+        },
+        "data_classes": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/dataClass"
+          },
+          "uniqueItems": true,
+          "maxItems": 64
+        }
+      }
+    },
+    "idem_key": {
+      "description": "Idempotency key; receivers execute each idem_key at most once (Sidged L6). Required whenever instructions is present (Sidged L6); MAY be used on other messages.",
+      "type": "string",
+      "minLength": 16,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "nonce": {
+      "$ref": "common.schema.json#/$defs/nonce"
+    },
+    "issued": {
+      "$ref": "common.schema.json#/$defs/timestamp"
+    },
+    "expires": {
+      "description": "Expiry; store-and-forward queues MUST respect it (Sidged L6). Must be later than issued (checked by spec/validate).",
+      "$ref": "common.schema.json#/$defs/timestamp"
+    },
+    "provenance": {
+      "description": "Chain of prior hops, oldest first (Sidged L6): senders, delegators, proxies, relays, and legacy endpoints. Empty if there is no prior hop. Legacy endpoints carry their legacy and unattested labels here (Sidged L6).",
+      "type": "array",
+      "maxItems": 32,
+      "items": {
+        "$ref": "#/$defs/hop"
+      }
+    },
+    "model_ref": {
+      "description": "Which agent and model produced the content (Sidged L6; Sidged L7). Required when a model produced content.",
+      "$ref": "#/$defs/modelRef"
+    },
+    "ext": {
+      "$ref": "common.schema.json#/$defs/ext"
+    },
+    "sig": {
+      "description": "Signature by the sending agent key over the canonical form of the envelope without sig.",
+      "$ref": "common.schema.json#/$defs/signature"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "required": [
+          "data"
+        ]
+      },
+      "then": {
+        "required": [
+          "payload_type"
+        ]
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "payload_type"
+        ]
+      },
+      "then": {
+        "required": [
+          "data"
+        ]
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "instructions"
+        ]
+      },
+      "then": {
+        "required": [
+          "idem_key"
+        ]
+      }
+    },
+    {
+      "description": "Pairing messages and refusals may omit cap_token and never carry instructions (Sidged L6). Every other envelope carries cap_token.",
+      "if": {
+        "properties": {
+          "intent": {
+            "pattern": "^sdg\\.(pairing\\.|refused$)"
+          }
+        },
+        "required": [
+          "intent"
+        ]
+      },
+      "then": {
+        "not": {
+          "required": [
+            "instructions"
+          ]
+        }
+      },
+      "else": {
+        "required": [
+          "cap_token"
+        ]
+      }
+    },
+    {
+      "description": "A refusal carries a refusal object as data (Sidged L6).",
+      "if": {
+        "properties": {
+          "intent": {
+            "const": "sdg.refused"
+          }
+        },
+        "required": [
+          "intent"
+        ]
+      },
+      "then": {
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "payload_type": {
+            "const": "application/vnd.sidged.refusal+json"
+          },
+          "data": {
+            "$ref": "refusal.schema.json"
+          }
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false,
+  "$defs": {
+    "hop": {
+      "type": "object",
+      "required": [
+        "role",
+        "id"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "role": {
+          "description": "origin: an earlier sender whose message is being forwarded. delegator: a runtime that delegated the task (F6). proxy: a runtime translating for a legacy endpoint (Method 4). relay / store-and-forward: infrastructure (F8, F9). legacy-endpoint: the legacy endpoint behind a proxy or adapter.",
+          "enum": [
+            "origin",
+            "delegator",
+            "proxy",
+            "relay",
+            "store-and-forward",
+            "legacy-endpoint"
+          ]
+        },
+        "id": {
+          "$ref": "common.schema.json#/$defs/identifier"
+        },
+        "device": {
+          "$ref": "common.schema.json#/$defs/identifier"
+        },
+        "method": {
+          "description": "Legacy compatibility method used at this hop (Sidged L6).",
+          "enum": [
+            "app",
+            "os",
+            "shim",
+            "proxy",
+            "human"
+          ]
+        },
+        "labels": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/trustLabel"
+          },
+          "uniqueItems": true
+        },
+        "at": {
+          "$ref": "common.schema.json#/$defs/timestamp"
+        }
+      },
+      "allOf": [
+        {
+          "description": "Sidged L6: every legacy endpoint is labelled legacy and unattested in the envelope.",
+          "if": {
+            "properties": {
+              "role": {
+                "const": "legacy-endpoint"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "labels"
+            ],
+            "properties": {
+              "labels": {
+                "allOf": [
+                  {
+                    "contains": {
+                      "const": "legacy"
+                    }
+                  },
+                  {
+                    "contains": {
+                      "const": "unattested"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "modelRef": {
+      "type": "object",
+      "required": [
+        "agent",
+        "model",
+        "version"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "agent": {
+          "$ref": "common.schema.json#/$defs/identifier"
+        },
+        "model": {
+          "description": "Model name.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "provider": {
+          "description": "Provider identity, or absent for local inference.",
+          "$ref": "common.schema.json#/$defs/identifier"
+        },
+        "region": {
+          "description": "Region where the model ran (ISO 3166-1 alpha-2 country code or provider region name).",
+          "type": "string",
+          "maxLength": 64
+        },
+        "weights_digest": {
+          "description": "Hash of the model weights for local models (Sidged L0).",
+          "$ref": "common.schema.json#/$defs/digest"
+        }
+      }
+    }
+  }
+}

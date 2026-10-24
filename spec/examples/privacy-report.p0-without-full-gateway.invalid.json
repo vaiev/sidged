@@ -1,0 +1,71 @@
+{
+  "v": "0.1",
+  "id": "pr-2026-10-09-0815-01",
+  "call_at": "2026-10-09T08:15:02+02:00",
+  "agent": "did:example:alice-phone#agent-assistant",
+  "provider": {
+    "id": "https://search.example.com",
+    "name": "Example Search"
+  },
+  "provider_profile": {
+    "claimed": null,
+    "effective": "P0",
+    "verified": false
+  },
+  "effective_tier": 0,
+  "gateway_mode": "verified-provider",
+  "relay": {
+    "used": true,
+    "type": "ohttp",
+    "id": "https://relay.example.net"
+  },
+  "network_identity": "relay",
+  "account": {
+    "mode": "anonymous",
+    "linkable": false
+  },
+  "sent": {
+    "data_classes": [
+      "query.general"
+    ],
+    "fields": [
+      "query"
+    ],
+    "bytes": 212
+  },
+  "redacted": {
+    "data_classes": [
+      "contacts.name",
+      "location.precise"
+    ],
+    "fields": [
+      "user_name",
+      "home_address"
+    ],
+    "pseudonymised": [
+      "friend_name"
+    ]
+  },
+  "minimisation": {
+    "steps": [
+      "context-selection",
+      "redaction",
+      "pseudonymisation",
+      "tracking-strip",
+      "header-strip",
+      "no-persistent-id",
+      "relay"
+    ],
+    "payload_digest": {
+      "alg": "sha-256",
+      "value": "3q2-7wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "egress_log_ref": "egress/2026-10-09/000412"
+  },
+  "residency": {
+    "tags": []
+  },
+  "retention": {
+    "declared": "undeclared"
+  }
+}

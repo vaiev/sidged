@@ -1,0 +1,370 @@
+{
+  "category": "signatures",
+  "description": "Verification of jcs signatures (Sidged L6) with the RFC 8032 section 7.1 test keys. public_key names a key in keys/rfc8032-test-keys.json; checking that the key belongs to the expected signer is out of scope here.",
+  "vectors": [
+    {
+      "id": "signature.verify.001",
+      "spec": [
+        {
+          "doc": "L6",
+          "version": "0.1",
+          "section": "A5.1",
+          "tag": "C1"
+        }
+      ],
+      "operation": "verify",
+      "requires": [
+        "EdDSA",
+        "jcs"
+      ],
+      "input": {
+        "object": {
+          "v": "0.1",
+          "form": "F2",
+          "sender_agent": "did:example:bob-homeserver#agent-calendar",
+          "sender_device": "did:example:bob-homeserver",
+          "aud": "did:example:alice-phone#agent-assistant",
+          "session": "sess-4b1d0e9a77",
+          "seq": 4,
+          "attestation_ref": null,
+          "intent": "sdg.refused",
+          "data": {
+            "v": "0.1",
+            "reason": "rate-limited",
+            "ref": {
+              "session": "sess-4b1d0e9a77",
+              "seq": 3,
+              "idem_key": "idem-2026-10-09-0001-a7c3"
+            },
+            "retry_after": "PT10M"
+          },
+          "payload_type": "application/vnd.sidged.refusal+json",
+          "residency": {
+            "tags": [],
+            "data_classes": []
+          },
+          "nonce": "Mn5Bv4Cx3Zl2Kj1Hg0Fd9Sa8",
+          "issued": "2026-10-09T08:10:02Z",
+          "expires": "2026-10-09T08:15:02Z",
+          "provenance": [],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "urn:example:test-key:rfc8032-test-1",
+            "canon": "jcs",
+            "value": "_0ZpEgNnbENUhbgUL4CaN-b_-xNrte3w4TluvZKU8IJDCI7te-XaDIFojymv4TnftmlijvjNkQ245MJ7xGkxDg"
+          }
+        },
+        "public_key": "rfc8032-test-1"
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative",
+      "note": "Refusal envelope signed with RFC 8032 test key 1"
+    },
+    {
+      "id": "signature.verify.002",
+      "spec": [
+        {
+          "doc": "L6",
+          "version": "0.1",
+          "section": "A5.1",
+          "tag": "C1"
+        }
+      ],
+      "operation": "verify",
+      "requires": [
+        "EdDSA",
+        "jcs"
+      ],
+      "input": {
+        "object": {
+          "v": "0.1",
+          "form": "F2",
+          "sender_agent": "did:example:bob-homeserver#agent-calendar",
+          "sender_device": "did:example:bob-homeserver",
+          "aud": "did:example:alice-phone#agent-assistant",
+          "session": "sess-4b1d0e9a77",
+          "seq": 5,
+          "attestation_ref": null,
+          "intent": "sdg.refused",
+          "data": {
+            "v": "0.1",
+            "reason": "rate-limited",
+            "ref": {
+              "session": "sess-4b1d0e9a77",
+              "seq": 3,
+              "idem_key": "idem-2026-10-09-0001-a7c3"
+            },
+            "retry_after": "PT10M"
+          },
+          "payload_type": "application/vnd.sidged.refusal+json",
+          "residency": {
+            "tags": [],
+            "data_classes": []
+          },
+          "nonce": "Mn5Bv4Cx3Zl2Kj1Hg0Fd9Sa8",
+          "issued": "2026-10-09T08:10:02Z",
+          "expires": "2026-10-09T08:15:02Z",
+          "provenance": [],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "urn:example:test-key:rfc8032-test-1",
+            "canon": "jcs",
+            "value": "Ma96Ya8cpi3wG53FvvgrPBABhgge6ul2U6yKCt9Vo3UOZbBynFnEq2sHXpboUqLiRRg1nKRvVPRHktNK9JhQDA"
+          }
+        },
+        "public_key": "rfc8032-test-1"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "bad-signature"
+      },
+      "status": "normative",
+      "note": "seq changed after signing"
+    },
+    {
+      "id": "signature.verify.003",
+      "spec": [
+        {
+          "doc": "L6",
+          "version": "0.1",
+          "section": "A5.1",
+          "tag": "C1"
+        }
+      ],
+      "operation": "verify",
+      "requires": [
+        "EdDSA",
+        "jcs"
+      ],
+      "input": {
+        "object": {
+          "v": "0.1",
+          "form": "F2",
+          "sender_agent": "did:example:bob-homeserver#agent-calendar",
+          "sender_device": "did:example:bob-homeserver",
+          "aud": "did:example:alice-phone#agent-assistant",
+          "session": "sess-4b1d0e9a77",
+          "seq": 4,
+          "attestation_ref": null,
+          "intent": "sdg.refused",
+          "data": {
+            "v": "0.1",
+            "reason": "rate-limited",
+            "ref": {
+              "session": "sess-4b1d0e9a77",
+              "seq": 3,
+              "idem_key": "idem-2026-10-09-0001-a7c3"
+            },
+            "retry_after": "PT10M"
+          },
+          "payload_type": "application/vnd.sidged.refusal+json",
+          "residency": {
+            "tags": [],
+            "data_classes": []
+          },
+          "nonce": "Mn5Bv4Cx3Zl2Kj1Hg0Fd9Sa8",
+          "issued": "2026-10-09T08:10:02Z",
+          "expires": "2026-10-09T08:15:02Z",
+          "provenance": [],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "urn:example:test-key:rfc8032-test-1",
+            "canon": "jcs",
+            "value": "MK96Ya8cpi3wG53FvvgrPBABhgge6ul2U6yKCt9Vo3UOZbBynFnEq2sHXpboUqLiRRg1nKRvVPRHktNK9JhQDA"
+          }
+        },
+        "public_key": "rfc8032-test-1"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "bad-signature"
+      },
+      "status": "normative",
+      "note": "One bit of the signature flipped"
+    },
+    {
+      "id": "signature.verify.004",
+      "spec": [
+        {
+          "doc": "L6",
+          "version": "0.1",
+          "section": "A5.1",
+          "tag": "C1"
+        }
+      ],
+      "operation": "verify",
+      "requires": [
+        "EdDSA",
+        "jcs"
+      ],
+      "input": {
+        "object": {
+          "v": "0.1",
+          "form": "F2",
+          "sender_agent": "did:example:bob-homeserver#agent-calendar",
+          "sender_device": "did:example:bob-homeserver",
+          "aud": "did:example:alice-phone#agent-assistant",
+          "session": "sess-4b1d0e9a77",
+          "seq": 4,
+          "attestation_ref": null,
+          "intent": "sdg.refused",
+          "data": {
+            "v": "0.1",
+            "reason": "rate-limited",
+            "ref": {
+              "session": "sess-4b1d0e9a77",
+              "seq": 3,
+              "idem_key": "idem-2026-10-09-0001-a7c3"
+            },
+            "retry_after": "PT10M"
+          },
+          "payload_type": "application/vnd.sidged.refusal+json",
+          "residency": {
+            "tags": [],
+            "data_classes": []
+          },
+          "nonce": "Mn5Bv4Cx3Zl2Kj1Hg0Fd9Sa8",
+          "issued": "2026-10-09T08:10:02Z",
+          "expires": "2026-10-09T08:15:02Z",
+          "provenance": [],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "urn:example:test-key:rfc8032-test-1",
+            "canon": "jcs",
+            "value": "_0ZpEgNnbENUhbgUL4CaN-b_-xNrte3w4TluvZKU8IJDCI7te-XaDIFojymv4TnftmlijvjNkQ245MJ7xGkxDg"
+          }
+        },
+        "public_key": "rfc8032-test-2"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "bad-signature"
+      },
+      "status": "normative",
+      "note": "Verified with a different public key"
+    },
+    {
+      "id": "signature.verify.005",
+      "spec": [
+        {
+          "doc": "L6",
+          "version": "0.1",
+          "section": "A5.1",
+          "tag": "C1"
+        }
+      ],
+      "operation": "verify",
+      "requires": [
+        "EdDSA",
+        "jcs"
+      ],
+      "input": {
+        "object": {
+          "v": "0.1",
+          "form": "F2",
+          "sender_agent": "did:example:bob-homeserver#agent-calendar",
+          "sender_device": "did:example:bob-homeserver",
+          "aud": "did:example:alice-phone#agent-assistant",
+          "session": "sess-4b1d0e9a77",
+          "seq": 4,
+          "attestation_ref": null,
+          "intent": "sdg.refused",
+          "data": {
+            "v": "0.1",
+            "reason": "rate-limited",
+            "ref": {
+              "session": "sess-4b1d0e9a77",
+              "seq": 3,
+              "idem_key": "idem-2026-10-09-0001-a7c3"
+            },
+            "retry_after": "PT10M"
+          },
+          "payload_type": "application/vnd.sidged.refusal+json",
+          "residency": {
+            "tags": [],
+            "data_classes": []
+          },
+          "nonce": "Mn5Bv4Cx3Zl2Kj1Hg0Fd9Sa8",
+          "issued": "2026-10-09T08:10:02Z",
+          "expires": "2026-10-09T08:15:02Z",
+          "provenance": [],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "urn:example:test-key:rfc8032-test-1",
+            "canon": "jcs",
+            "value": "cqun3pkeeFpVTsj653UQTiXbcao1lwbNXQOrb1_UjjEkbcz6HIrTF_5lUzVZqgn9tGH3ip_4bFM3FAPfttPiBQ"
+          }
+        },
+        "public_key": "rfc8032-test-1"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "bad-signature"
+      },
+      "status": "normative",
+      "note": "Signed over the object with sig included instead of removed"
+    },
+    {
+      "id": "signature.verify.006",
+      "spec": [
+        {
+          "doc": "L6",
+          "version": "0.1",
+          "section": "A5.1",
+          "tag": "C1"
+        }
+      ],
+      "operation": "verify",
+      "requires": [
+        "EdDSA",
+        "jcs"
+      ],
+      "input": {
+        "object": {
+          "v": "0.1",
+          "form": "F2",
+          "sender_agent": "did:example:bob-homeserver#agent-calendar",
+          "sender_device": "did:example:bob-homeserver",
+          "aud": "did:example:alice-phone#agent-assistant",
+          "session": "sess-4b1d0e9a77",
+          "seq": 4,
+          "attestation_ref": null,
+          "intent": "sdg.refused",
+          "data": {
+            "v": "0.1",
+            "reason": "rate-limited",
+            "ref": {
+              "session": "sess-4b1d0e9a77",
+              "seq": 3,
+              "idem_key": "idem-2026-10-09-0001-a7c3"
+            },
+            "retry_after": "PT10M"
+          },
+          "payload_type": "application/vnd.sidged.refusal+json",
+          "residency": {
+            "tags": [],
+            "data_classes": []
+          },
+          "nonce": "Mn5Bv4Cx3Zl2Kj1Hg0Fd9Sa8",
+          "issued": "2026-10-09T08:10:02Z",
+          "expires": "2026-10-09T08:15:02Z",
+          "provenance": [],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "urn:example:other-kid",
+            "canon": "jcs",
+            "value": "_0ZpEgNnbENUhbgUL4CaN-b_-xNrte3w4TluvZKU8IJDCI7te-XaDIFojymv4TnftmlijvjNkQ245MJ7xGkxDg"
+          }
+        },
+        "public_key": "rfc8032-test-1"
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative",
+      "note": "kid is inside sig, so it is not part of the signing input; key trust is checked separately"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "v": "0.1",
+  "about": "Word forms the node reads in a time slot (en, de, gsw incl. Bernese, Basel and Zurich forms) and resolves to an absolute time in the node's time zone. A time is either relative ('in' + a duration from duration-lexicon.json) or a set of parts: a day or weekday, a part of the day, and a clock time ('am füfi', 'halbi nüni' = 8:30, 'viertel ab drü' = 3:15, '14:30'). A weekday may be joined with a part of the day ('Mäntigmorge'). Anything else is refused. Every form is lowercase and belongs to exactly one entry.",
+  "relative": {
+    "in": ["in", "i", "within"],
+    "in_one": ["ines", "inere", "innere", "imene", "inre"]
+  },
+  "days": {
+    "0": ["hüt", "hütt", "hit", "heute", "today"],
+    "1": ["morn", "moorn", "tomorrow"],
+    "2": ["übermorn", "übermorge", "übermorgen", "iibermorn"]
+  },
+  "tomorrow_or_morning": ["morge", "morgen", "morgä"],
+  "weekdays": {
+    "0": ["mäntig", "mändig", "mänti", "määntig", "montag", "monday", "mon"],
+    "1": ["zischtig", "ziischtig", "dienstag", "tuesday", "tue"],
+    "2": ["mittwuch", "mittwoch", "mittwuche", "wednesday", "wed"],
+    "3": ["donnschtig", "dunnschtig", "dunschtig", "donnstig", "donnerstag", "thursday", "thu"],
+    "4": ["fritig", "friitig", "frytig", "freitag", "friday", "fri"],
+    "5": ["samschtig", "samstig", "samstag", "saturday", "sat"],
+    "6": ["sunntig", "sunndig", "sonntag", "sunday", "sun"]
+  },
+  "parts": {
+    "morning": {"hour": 9, "forms": ["morning", "vormittag", "vormittaag", "vormitag", "früeh", "früe", "früh", "zmorge", "zmorgä", "morgens"]},
+    "noon": {"hour": 12, "forms": ["noon", "mittag", "mitag", "zmittag", "midday", "mittags"]},
+    "afternoon": {"hour": 15, "forms": ["afternoon", "namittag", "namitag", "nachmittag", "nomidaag", "nomittag", "nami", "nachmittags"]},
+    "evening": {"hour": 19, "forms": ["evening", "abend", "abe", "aabe", "aabä", "abig", "oobe", "obe", "znacht", "abends"]},
+    "night": {"hour": 21, "forms": ["night", "nacht", "tonight", "nachts"]}
+  },
+  "hours": {
+    "1": ["one", "eins", "eis", "eisi", "ais"],
+    "2": ["two", "zwei", "zwöi", "zwoi", "zwo", "zwai", "zwöii"],
+    "3": ["three", "drei", "drü", "drüü", "drai"],
+    "4": ["four", "vier", "vieri", "viäri"],
+    "5": ["five", "fünf", "füf", "füfi", "föifi", "foifi", "füüfi", "fünfi"],
+    "6": ["six", "sechs", "sächs", "sächsi", "sechsi"],
+    "7": ["seven", "sieben", "sibe", "sibni", "siebni", "sibeni"],
+    "8": ["eight", "acht", "achti"],
+    "9": ["nine", "neun", "nün", "nüni", "nüüni", "neuni"],
+    "10": ["ten", "zehn", "zäh", "zäni", "zähni", "zächni"],
+    "11": ["eleven", "elf", "elfi", "eufi", "euf"],
+    "12": ["twelve", "zwölf", "zwölfi", "zwöufi", "zwöuf"]
+  },
+  "half": ["halb", "halbi", "halbe", "haub", "haubi"],
+  "half_past": ["half"],
+  "quarter": ["viertel", "viertu", "vierteli", "quarter"],
+  "past": ["ab", "nach", "past", "after", "über"],
+  "to": ["vor", "vorem", "to", "before"],
+  "meridiem": {"am": ["am", "a.m."], "pm": ["pm", "p.m."]},
+  "clock_suffix": ["uhr", "o'clock", "oclock", "h"],
+  "fillers": ["later", "speter", "spöter", "später", "a", "am", "um", "at", "on", "the", "this", "z", "ds", "s", "d", "dr", "de", "i", "ir", "in", "of", "uf", "vo", "next", "nächst", "nächschte", "nächschti", "nächsti", "nächsten"]
+}

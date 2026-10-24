@@ -1,0 +1,19 @@
+{
+  "description": "RFC 8032 section 7.1 TEST 1024 and TEST SHA(abc) key pairs. Published test keys: never use them as real keys; the runtime refuses their public keys and the release checks scan for these seeds.",
+  "keys": [
+    {
+      "name": "rfc8032-test-1024",
+      "rfc_test": "TEST 1024",
+      "algorithm": "Ed25519",
+      "secret_key_hex": "f5e5767cf153319517630f226876b86c8160cc583bc013744c6bf255f5cc0ee5",
+      "public_key_hex": "278117fc144c72340f67d0f2316e8386ceffbf2b2428c9c51fef7c597f1d426e"
+    },
+    {
+      "name": "rfc8032-test-sha-abc",
+      "rfc_test": "TEST SHA(abc)",
+      "algorithm": "Ed25519",
+      "secret_key_hex": "833fe62409237b9d62ec77587520911e9a759cec1d19755b7da901b96dca3d42",
+      "public_key_hex": "ec172b93ad5e563bf4932c70e1245034c35467ef2efd4d64ebf819683467e2bf"
+    }
+  ]
+}

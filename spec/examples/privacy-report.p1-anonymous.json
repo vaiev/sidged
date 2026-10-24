@@ -1,0 +1,68 @@
+{
+  "v": "0.1",
+  "id": "pr-2026-10-09-1105-02",
+  "call_at": "2026-10-09T11:05:42+02:00",
+  "agent": "did:example:alice-phone#agent-assistant",
+  "provider": {
+    "id": "https://search.example.com",
+    "name": "Example Search",
+    "manifest_version": "3"
+  },
+  "provider_profile": {
+    "claimed": "P1",
+    "effective": "P1",
+    "verified": true
+  },
+  "effective_tier": 1,
+  "gateway_mode": "verified-provider",
+  "relay": {
+    "used": true,
+    "type": "masque",
+    "id": "https://relay.example.net"
+  },
+  "network_identity": "relay",
+  "account": {
+    "mode": "anonymous",
+    "linkable": false
+  },
+  "sent": {
+    "data_classes": [
+      "query.general"
+    ],
+    "fields": [
+      "query"
+    ],
+    "bytes": 212
+  },
+  "redacted": {
+    "data_classes": [
+      "contacts.name"
+    ],
+    "fields": [
+      "person_name"
+    ]
+  },
+  "minimisation": {
+    "steps": [
+      "context-selection",
+      "redaction",
+      "tracking-strip",
+      "header-strip",
+      "no-persistent-id",
+      "relay"
+    ],
+    "payload_digest": {
+      "alg": "sha-256",
+      "value": "Q7mVt2Hc9Lp4Xw0Ra6Kd1Ns8Ej3Bf5Yu2Gi7Oz4Ta0M"
+    }
+  },
+  "residency": {
+    "tags": [
+      "EU"
+    ],
+    "provider_region": "DE"
+  },
+  "retention": {
+    "declared": "PT24H"
+  }
+}

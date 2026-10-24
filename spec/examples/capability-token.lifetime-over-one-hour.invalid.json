@@ -1,0 +1,43 @@
+{
+  "v": "0.1",
+  "id": "tok-7f3a9c2e1b",
+  "iss": "did:example:alice",
+  "sub": "did:example:alice-homeserver#agent-planner",
+  "aud": "did:example:bob-homeserver#agent-calendar",
+  "iat": "2026-10-09T08:00:00Z",
+  "exp": "2026-10-09T11:00:00Z",
+  "cnf": {
+    "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+  },
+  "rights": [
+    {
+      "action": "calendar.propose_meeting",
+      "resource": "urn:example:calendar:bob/*",
+      "constraints": {
+        "max_uses": 5,
+        "data_classes": [
+          "calendar.availability",
+          "contacts.name"
+        ]
+      }
+    },
+    {
+      "action": "calendar.read_availability",
+      "resource": "urn:example:calendar:bob/*"
+    }
+  ],
+  "budget": {
+    "messages": 50,
+    "money": {
+      "amount": "0.00",
+      "currency": "CHF"
+    }
+  },
+  "chain": [],
+  "sig": {
+    "alg": "EdDSA",
+    "kid": "did:example:alice#owner-key-1",
+    "canon": "jcs",
+    "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+  }
+}

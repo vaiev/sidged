@@ -1,0 +1,235 @@
+{
+  "category": "signatures",
+  "description": "Signing input for canon jcs (Sidged L6): the RFC 8785 canonical JSON of the object with its sig member removed, as a UTF-8 string.",
+  "vectors": [
+    {
+      "id": "signature.jcs-input.001",
+      "spec": [
+        {
+          "doc": "L6",
+          "version": "0.1",
+          "section": "A5.1",
+          "tag": "C1"
+        },
+        {
+          "doc": "RFC 8785",
+          "section": "3.2"
+        }
+      ],
+      "operation": "jcs-signing-input",
+      "requires": [
+        "jcs"
+      ],
+      "input": {
+        "object": {
+          "b": 1,
+          "a": "x",
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "k",
+            "canon": "jcs",
+            "value": "v"
+          }
+        }
+      },
+      "expected": {
+        "value": "{\"a\":\"x\",\"b\":1}"
+      },
+      "status": "normative",
+      "note": "sig is removed and members are sorted"
+    },
+    {
+      "id": "signature.jcs-input.002",
+      "spec": [
+        {
+          "doc": "L6",
+          "version": "0.1",
+          "section": "A5.1",
+          "tag": "C1"
+        },
+        {
+          "doc": "RFC 8785",
+          "section": "3.2"
+        }
+      ],
+      "operation": "jcs-signing-input",
+      "requires": [
+        "jcs"
+      ],
+      "input": {
+        "object": {
+          "z": [
+            3,
+            1,
+            2
+          ],
+          "a": {
+            "d": true,
+            "c": null
+          }
+        }
+      },
+      "expected": {
+        "value": "{\"a\":{\"c\":null,\"d\":true},\"z\":[3,1,2]}"
+      },
+      "status": "normative",
+      "note": "Arrays keep their order; nested members are sorted"
+    },
+    {
+      "id": "signature.jcs-input.003",
+      "spec": [
+        {
+          "doc": "L6",
+          "version": "0.1",
+          "section": "A5.1",
+          "tag": "C1"
+        },
+        {
+          "doc": "RFC 8785",
+          "section": "3.2"
+        }
+      ],
+      "operation": "jcs-signing-input",
+      "requires": [
+        "jcs"
+      ],
+      "input": {
+        "object": {
+          "note": "Grüezi, 10 €",
+          "path": "a/b",
+          "quote": "say \"hi\"\n"
+        }
+      },
+      "expected": {
+        "value": "{\"note\":\"Grüezi, 10 €\",\"path\":\"a/b\",\"quote\":\"say \\\"hi\\\"\\n\"}"
+      },
+      "status": "normative",
+      "note": "Non-ASCII characters are not escaped; quote and newline are; slash is not"
+    },
+    {
+      "id": "signature.jcs-input.004",
+      "spec": [
+        {
+          "doc": "L6",
+          "version": "0.1",
+          "section": "A5.1",
+          "tag": "C1"
+        },
+        {
+          "doc": "RFC 8785",
+          "section": "3.2"
+        }
+      ],
+      "operation": "jcs-signing-input",
+      "requires": [
+        "jcs"
+      ],
+      "input": {
+        "object": {
+          "ﬁ": 1,
+          "😀": 2,
+          "B": 3,
+          "a": 4
+        }
+      },
+      "expected": {
+        "value": "{\"B\":3,\"a\":4,\"😀\":2,\"ﬁ\":1}"
+      },
+      "status": "normative",
+      "note": "Members sort by UTF-16 code units, so U+1F600 comes before U+FB01"
+    },
+    {
+      "id": "signature.jcs-input.005",
+      "spec": [
+        {
+          "doc": "L6",
+          "version": "0.1",
+          "section": "A5.1",
+          "tag": "C1"
+        },
+        {
+          "doc": "RFC 8785",
+          "section": "3.2"
+        }
+      ],
+      "operation": "jcs-signing-input",
+      "requires": [
+        "jcs"
+      ],
+      "input": {
+        "object": {
+          "seq": 0,
+          "n": -42,
+          "big": 9007199254740991
+        }
+      },
+      "expected": {
+        "value": "{\"big\":9007199254740991,\"n\":-42,\"seq\":0}"
+      },
+      "status": "normative",
+      "note": "Integers in I-JSON range as plain decimals"
+    },
+    {
+      "id": "signature.jcs-input.006",
+      "spec": [
+        {
+          "doc": "L6",
+          "version": "0.1",
+          "section": "A5.1",
+          "tag": "C1"
+        },
+        {
+          "doc": "RFC 8785",
+          "section": "3.2"
+        }
+      ],
+      "operation": "jcs-signing-input",
+      "requires": [
+        "jcs"
+      ],
+      "input": {
+        "object": {
+          "v": "0.1",
+          "form": "F2",
+          "sender_agent": "did:example:bob-homeserver#agent-calendar",
+          "sender_device": "did:example:bob-homeserver",
+          "aud": "did:example:alice-phone#agent-assistant",
+          "session": "sess-4b1d0e9a77",
+          "seq": 4,
+          "attestation_ref": null,
+          "intent": "sdg.refused",
+          "data": {
+            "v": "0.1",
+            "reason": "rate-limited",
+            "ref": {
+              "session": "sess-4b1d0e9a77",
+              "seq": 3,
+              "idem_key": "idem-2026-10-09-0001-a7c3"
+            },
+            "retry_after": "PT10M"
+          },
+          "payload_type": "application/vnd.sidged.refusal+json",
+          "residency": {
+            "tags": [],
+            "data_classes": []
+          },
+          "nonce": "Mn5Bv4Cx3Zl2Kj1Hg0Fd9Sa8",
+          "issued": "2026-10-09T08:10:02Z",
+          "expires": "2026-10-09T08:15:02Z",
+          "provenance": [],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:bob-homeserver#agent-calendar-key",
+            "canon": "jcs",
+            "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+          }
+        }
+      },
+      "expected": {
+        "value": "{\"attestation_ref\":null,\"aud\":\"did:example:alice-phone#agent-assistant\",\"data\":{\"reason\":\"rate-limited\",\"ref\":{\"idem_key\":\"idem-2026-10-09-0001-a7c3\",\"seq\":3,\"session\":\"sess-4b1d0e9a77\"},\"retry_after\":\"PT10M\",\"v\":\"0.1\"},\"expires\":\"2026-10-09T08:15:02Z\",\"form\":\"F2\",\"intent\":\"sdg.refused\",\"issued\":\"2026-10-09T08:10:02Z\",\"nonce\":\"Mn5Bv4Cx3Zl2Kj1Hg0Fd9Sa8\",\"payload_type\":\"application/vnd.sidged.refusal+json\",\"provenance\":[],\"residency\":{\"data_classes\":[],\"tags\":[]},\"sender_agent\":\"did:example:bob-homeserver#agent-calendar\",\"sender_device\":\"did:example:bob-homeserver\",\"seq\":4,\"session\":\"sess-4b1d0e9a77\",\"v\":\"0.1\"}"
+      },
+      "status": "normative",
+      "note": "Signing input of the refusal example (all of sig removed)"
+    }
+  ]
+}

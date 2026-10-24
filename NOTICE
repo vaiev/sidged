@@ -1,0 +1,24 @@
+Sidged
+Copyright 2026 Sidged Contributors
+
+This repository adapts draft specification text, JSON Schemas, registries,
+examples, conformance test vectors, and a validator from:
+
+    Selfkin standards
+    https://github.com/selfkin/standards
+    Commit d2e9f58246709afff42ab0880e41dc608bc98747
+    Copyright 2026 The Selfkin Standards contributors
+    Cited by that project as roenu (https://github.com/roenudev)
+
+Specification text in this repository is licensed under CC BY 4.0
+(see LICENSE). Code, including the Rust runtime, JSON Schemas, examples,
+test vectors, and the validator, is licensed under the Apache License,
+Version 2.0 (see LICENSE-CODE).
+
+Identifier and schema lineage:
+
+- The namespace is urn:sidged:, the prefix is sdg.*, the capability token
+  format is sdg-cap, and media types use application/vnd.sidged.*.
+- Layer specifications use identifiers SDG-L0 through SDG-L8.
+- Schema $id values are published under https://sidged.com/spec/schemas/.
+- The conformance test-vector suite version is 0.3.0.

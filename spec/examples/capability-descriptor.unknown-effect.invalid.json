@@ -1,0 +1,14 @@
+{
+  "v": "0.1",
+  "id": "urn:sidged:capability:ping",
+  "title": "Ping",
+  "input_schema": {
+    "type": "object",
+    "additionalProperties": false
+  },
+  "effects": [
+    "observe"
+  ],
+  "data_classes": [],
+  "consequential": false
+}

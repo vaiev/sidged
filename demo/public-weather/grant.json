@@ -1,0 +1,23 @@
+{
+  "id": "public-weather-demo",
+  "issuer_key": "keys/issuer.key",
+  "holder_key": "keys/holder.key",
+  "rights": [
+    {
+      "action": "weather.lookup",
+      "resource": "urn:sidged:capability:weather.lookup"
+    },
+    {
+      "action": "model.complete",
+      "resource": "urn:sidged:capability:model.complete"
+    },
+    {
+      "action": "write",
+      "resource": "urn:sidged:record:x-public/weather"
+    },
+    {
+      "action": "read",
+      "resource": "urn:sidged:record:x-public/weather"
+    }
+  ]
+}

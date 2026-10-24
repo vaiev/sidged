@@ -1,0 +1,111 @@
+# Copyright 2026 The Selfkin Standards contributors
+# Copyright 2026 VAIEV
+# SPDX-License-Identifier: Apache-2.0
+# Provenance: adapted from https://github.com/selfkin/standards (see NOTICE).
+name: Validate schemas and examples
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+# GitHub-hosted runners only (see rust-ci.yml): no incremental cache, line tables only
+# (the test profile inherits dev). Release builds (musl) are unaffected.
+env:
+  CARGO_INCREMENTAL: "0"
+  CARGO_PROFILE_DEV_DEBUG: line-tables-only
+
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      # System python3 in a per-job venv; pinned requirements, no tool cache.
+      - name: Install dependencies
+        run: |
+          python3 -m venv "$RUNNER_TEMP/venv"
+          echo "$RUNNER_TEMP/venv/bin" >> "$GITHUB_PATH"
+          "$RUNNER_TEMP/venv/bin/pip" install -r spec/validate/requirements.txt
+      - name: Validate examples
+        run: python spec/validate/validate.py --quiet
+      - name: Run tests
+        run: python -m unittest discover -s spec/validate -v
+      - name: No private issue references
+        run: |
+          bash scripts/check-no-private-refs.sh
+          bash scripts/tests/private_refs_check.sh
+
+  rust:
+    name: runtime crates
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: dtolnay/rust-toolchain@b725eda525362e7cf34af9a7243cac1e3f01a7ec # stable
+        with:
+          toolchain: stable
+      # The local-mode no-socket tests (0004 R9) need strace (SIDGED_REQUIRE_STRACE).
+      - name: Install strace
+        run: |
+          command -v strace || { sudo apt-get update -qq && sudo apt-get install -y -qq strace; }
+          command -v strace
+      - name: Test the runtime crates
+        env:
+          SIDGED_REQUIRE_STRACE: "1"
+        run: cargo test --manifest-path runtime/Cargo.toml --locked
+
+  musl:
+    name: static musl binary
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: dtolnay/rust-toolchain@b725eda525362e7cf34af9a7243cac1e3f01a7ec # stable
+        with:
+          toolchain: stable
+          targets: x86_64-unknown-linux-musl
+      - name: Install musl tools
+        run: |
+          command -v musl-gcc || { sudo apt-get update -qq && sudo apt-get install -y -qq musl-tools; }
+          command -v musl-gcc
+      - name: Build the static sidged binary
+        run: cargo build --manifest-path runtime/Cargo.toml --locked --release --target x86_64-unknown-linux-musl -p sidged-guard
+      - name: The binary is statically linked
+        run: ldd runtime/target/x86_64-unknown-linux-musl/release/sidged | grep -q 'statically linked'
+
+  dco:
+    name: DCO sign-off
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Every commit is signed off
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          status=0
+          for sha in $(git rev-list "$BASE_SHA..$HEAD_SHA"); do
+            if ! git log -1 --format=%B "$sha" | grep -q '^Signed-off-by: '; then
+              echo "Commit $sha has no Signed-off-by line"; status=1
+            fi
+          done
+          exit $status

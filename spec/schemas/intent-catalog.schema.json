@@ -1,0 +1,329 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sidged.com/spec/schemas/intent-catalog.schema.json",
+  "title": "Sidged intent catalog (v0.1)",
+  "description": "Generic catalog of user intents read by the companion linguist (Model -1) and by the Core. Each intent declares its slots as a JSON Schema 2020-12 object, a canonical English template, the capabilities it needs, its data classes, and its route. The linguist only proposes an intent and slot values; the Core re-derives missing slots, the clarification question, the route, and the data classes from this catalog. Not a grant. Status: Draft v0.1.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "v",
+    "locales",
+    "unknown_intent_ask",
+    "intents"
+  ],
+  "properties": {
+    "v": {
+      "$ref": "common.schema.json#/$defs/schemaVersion"
+    },
+    "locales": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/locale"
+      },
+      "description": "Languages the catalog speaks. Every localized text carries one entry per locale."
+    },
+    "unknown_intent_ask": {
+      "$ref": "#/$defs/localized",
+      "description": "Question asked when no catalog intent fits the utterance."
+    },
+    "intents": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/intent"
+      }
+    },
+    "compositions": {
+      "type": "array",
+      "maxItems": 64,
+      "description": "Declared compositions (0017 §2c): which intent may follow which in one utterance, which required slots of the follow-up the earlier result satisfies, and which follow-up plan steps the earlier plan's steps replace.",
+      "items": {
+        "$ref": "#/$defs/composition"
+      }
+    }
+  },
+  "$defs": {
+    "locale": {
+      "type": "string",
+      "pattern": "^[a-z]{2,3}(-[A-Z]{2})?$",
+      "description": "BCP 47 language tag, language and optional region only (gsw is Swiss German)."
+    },
+    "localized": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "$ref": "#/$defs/locale"
+      },
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 256
+      }
+    },
+    "intentId": {
+      "type": "string",
+      "maxLength": 128,
+      "pattern": "^[a-z][a-z0-9_-]*(\\.[a-z][a-z0-9_-]*)+$"
+    },
+    "slotName": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]{0,63}$"
+    },
+    "route": {
+      "enum": [
+        "edge-local",
+        "swarm-worker"
+      ],
+      "description": "edge-local: Edge 1 plans and runs the intent itself. swarm-worker: Edge 1 plans and dispatches steps to swarm workers."
+    },
+    "slot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "description",
+        "x-ask"
+      ],
+      "properties": {
+        "type": {
+          "const": "string"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "x-ask": {
+          "$ref": "#/$defs/localized",
+          "description": "Clarification question per locale, asked when this slot is required and missing."
+        },
+        "x-verbatim": {
+          "type": "boolean",
+          "description": "The value is copied from the utterance (a name, file, folder, language name or the text itself); the Core drops a value that does not occur there."
+        }
+      }
+    },
+    "slotsSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "additionalProperties",
+        "properties",
+        "required"
+      ],
+      "properties": {
+        "type": {
+          "const": "object"
+        },
+        "additionalProperties": {
+          "const": false
+        },
+        "properties": {
+          "type": "object",
+          "minProperties": 1,
+          "propertyNames": {
+            "$ref": "#/$defs/slotName"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/slot"
+          }
+        },
+        "required": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/slotName"
+          },
+          "description": "Required slots, in the order the Core asks for them."
+        }
+      }
+    },
+    "intent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "intent",
+        "title",
+        "canonical_en",
+        "slots_schema",
+        "capabilities",
+        "data_classes",
+        "route"
+      ],
+      "properties": {
+        "intent": {
+          "$ref": "#/$defs/intentId"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "canonical_en": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "description": "Canonical English template. {slot} placeholders name declared slots."
+        },
+        "slots_schema": {
+          "$ref": "#/$defs/slotsSchema"
+        },
+        "capabilities": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^urn:sidged:capability:[A-Za-z0-9._-]{1,128}$"
+          }
+        },
+        "data_classes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "common.schema.json#/$defs/dataClass"
+          }
+        },
+        "artifact_mime": {
+          "type": "string",
+          "pattern": "^application/vnd\\.sidged\\.artifact\\.[a-z0-9.-]+\\+json$"
+        },
+        "route": {
+          "$ref": "#/$defs/route"
+        },
+        "plan": {
+          "$ref": "#/$defs/planTemplate",
+          "description": "Declarative SDG-L3 plan the Core instantiates from the verified slots (0017 §2b)."
+        }
+      }
+    },
+    "planTemplate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "steps"
+      ],
+      "properties": {
+        "steps": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 16,
+          "items": {
+            "$ref": "#/$defs/planTemplateStep"
+          }
+        }
+      }
+    },
+    "planTemplateStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "capability",
+        "args"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{0,31}$"
+        },
+        "capability": {
+          "type": "string",
+          "pattern": "^urn:sidged:capability:[A-Za-z0-9._-]{1,128}$"
+        },
+        "approval": {
+          "type": "boolean"
+        },
+        "args": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/slotName"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/planTemplateArg"
+          }
+        }
+      }
+    },
+    "planTemplateArg": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "slot"
+          ],
+          "properties": {
+            "slot": {
+              "$ref": "#/$defs/slotName"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "intent"
+          ],
+          "properties": {
+            "intent": {
+              "const": "canonical"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "ref"
+          ],
+          "properties": {
+            "ref": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{0,31}$"
+            },
+            "field": {
+              "type": "string",
+              "pattern": "^[A-Za-z_][A-Za-z0-9_]{0,63}$"
+            }
+          }
+        }
+      ]
+    },
+    "composition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "first",
+        "then"
+      ],
+      "properties": {
+        "first": {
+          "$ref": "#/$defs/intentId"
+        },
+        "then": {
+          "$ref": "#/$defs/intentId"
+        },
+        "satisfies": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/slotName"
+          }
+        },
+        "replaces": {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^[a-z][a-z0-9_]{0,31}$"
+          },
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{0,31}$"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,139 @@
+# Copyright 2026 VAIEV
+# SPDX-License-Identifier: Apache-2.0
+#
+# Sidged v1 compose (V1 spec L1): 1 Control (Edge 1) + N Workers (Edges 2..n)
+# on one same-host internal network. Edges 2..n are instances of the same
+# signed sidged-core image. Works with `podman compose` and `docker compose`.
+#
+#   SIDGED_GIT_SHA="$(git rev-parse HEAD)" podman compose up --build
+#   podman compose --profile llm up              # with the optional local llama
+#
+# Do not use --scale: replicas would share one device key. Add Edges 3..n
+# as further services (worker3, ...) each with its own key volume and uid.
+#
+# - Local mode (SIDGED_LOCAL=1, fully offline) is the default; set
+#   SIDGED_LOCAL=0 explicitly for cloud calls.
+# - No ports are published except the Edge 1 UI, and only on 127.0.0.1
+#   (0010: no public ports; OCI image on loopback). No SSH port.
+# - Workers sit only on the internal `edges` network and llama only on the
+#   internal `model` network, which only control shares: the worker cannot
+#   reach llama, and neither has a route out except the control node's
+#   Privacy Gateway (Invariant 5). Nothing of llama is published.
+# - Local mode has no `egress` network at all; the cloud override adds it to
+#   control only (Invariant 7 does not rest on SIDGED_LOCAL alone).
+# - No secrets in env, and none at all in local mode: device keys come from
+#   per-edge volumes at /keys. Cloud mode is an explicit opt-in override that
+#   adds the provider key as a file-based secret:
+#     podman compose -f docker-compose.yml -f docker-compose.cloud.yml up
+#   Place the key first; the init step makes it owner = control uid 65532,
+#   mode 0400 (rootless podman: inside `podman unshare`):
+#     scripts/compose-init.sh --secret /path/to/xai.key
+#     scripts/compose-check.py --secret-file secrets/xai_api_key
+# - Volume owner and mode: run the operator init step before the first `up`:
+#     scripts/compose-init.sh        (applies x-sidged-volume-init below)
+# - Each service runs under its own numeric non-root uid:gid, with no
+#   cap_add. The human approver is a separate host uid that no service uses
+#   (x-sidged-approval, 0004 R9/R9c); the operator provisions the approval
+#   directory on the host (owner core uid, group approver, setgid 2750/2710)
+#   and no service mounts it. The approval socket is not wired into compose
+#   until the Core has a serve mode.
+# Note: sidged has no long-running serve mode yet, so control and worker run
+# `sidged --version` and exit; replace `command` once the Core API exists.
+
+# Owner and mode of every named volume (applied by scripts/compose-init.sh).
+x-sidged-volume-init:
+  edge1-keys: {uid: 65532, gid: 65532, mode: "0700"}
+  edge1-state: {uid: 65532, gid: 65532, mode: "0700"}
+  edge2-keys: {uid: 65533, gid: 65533, mode: "0700"}
+  models: {uid: 65531, gid: 65531, mode: "0500"}
+
+# 0004 R9/R9c: separate approver uid (dedicated host user sidged-approver)
+# and the operator-provisioned approval directory.
+x-sidged-approval:
+  approver_uid: 65540
+  dir: /run/sidged/approval
+
+x-hardening: &hardening
+  read_only: true
+  cap_drop: [ALL]
+  security_opt: ["no-new-privileges:true"]
+  tmpfs: ["/tmp:size=16m,mode=1777"]
+  restart: "no"
+
+x-edge: &edge
+  <<: *hardening
+  image: localhost/sidged-core:${SIDGED_TAG:-dev}
+  command: ["--version"]
+
+services:
+  control:
+    <<: *edge
+    build:
+      context: .
+      dockerfile: Containerfile
+      target: core
+      args:
+        SIDGED_GIT_SHA: ${SIDGED_GIT_SHA:-unknown}
+    user: "65532:65532"
+    hostname: edge1
+    environment:
+      SIDGED_EDGE_ROLE: control
+      SIDGED_LOCAL: ${SIDGED_LOCAL:-1}
+    networks: [edges, model]
+    ports:
+      - target: 8443
+        published: "${SIDGED_UI_PORT:-8443}"
+        host_ip: 127.0.0.1
+        protocol: tcp
+    volumes:
+      - type: volume
+        source: edge1-keys
+        target: /keys
+        read_only: true
+      - type: volume
+        source: edge1-state
+        target: /home/nonroot/state
+
+  worker:
+    <<: *edge
+    user: "65533:65533"
+    hostname: edge2
+    environment:
+      SIDGED_EDGE_ROLE: worker
+      SIDGED_LOCAL: ${SIDGED_LOCAL:-1}
+    networks: [edges]
+    volumes:
+      - type: volume
+        source: edge2-keys
+        target: /keys
+        read_only: true
+
+  # Optional local model server (profile "llm"), only on the internal
+  # `model` network shared with control. 0.0.0.0 is the container's own
+  # interface on that network; no port is published on the host.
+  llama:
+    <<: *hardening
+    profiles: [llm]
+    image: ghcr.io/ggml-org/llama.cpp:server@sha256:e83cbdc66e692129e17aad70293366cb00e3acca94b9f197c91a8a56e92201c3
+    user: "65531:65531"
+    networks: [model]
+    command: ["--host", "0.0.0.0", "--port", "8080", "-m", "/models/model.gguf"]
+    volumes:
+      - type: volume
+        source: models
+        target: /models
+        read_only: true
+
+networks:
+  edges:
+    internal: true
+  # control <-> llama only.
+  model:
+    internal: true
+  # `egress` is declared in docker-compose.cloud.yml (control only).
+
+volumes:
+  edge1-keys:
+  edge1-state:
+  edge2-keys:
+  models:

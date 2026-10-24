@@ -1,0 +1,23 @@
+{
+  "id": "ch-residency-demo",
+  "issuer_key": "keys/issuer.key",
+  "holder_key": "keys/holder.key",
+  "rights": [
+    {
+      "action": "app.comment.read",
+      "resource": "urn:sidged:capability:app.comment.read"
+    },
+    {
+      "action": "guard.moderate",
+      "resource": "urn:sidged:capability:guard.moderate"
+    },
+    {
+      "action": "guard.monitor",
+      "resource": "urn:sidged:capability:guard.monitor"
+    },
+    {
+      "action": "model.complete",
+      "resource": "urn:sidged:capability:model.complete"
+    }
+  ]
+}

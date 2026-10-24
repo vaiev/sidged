@@ -1,0 +1,214 @@
+# Copyright 2026 VAIEV
+# SPDX-License-Identifier: Apache-2.0
+# Multi-arch container build and acceptance test (V1 spec L1, DoD item 4).
+# The scripts are fixed for ROADMAP 8.2 (rootless podman 4.9 and 5.x). The workflow
+# stays manual until a manual run on GitHub is green; then it returns to push,
+# pull_request and a nightly schedule.
+name: Container
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: container-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  base-index:
+    name: base digests are multi-arch indexes
+    # Rootless podman (preinstalled on ubuntu-24.04); no docker.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          # Build exactly the commit the SIDGED_GIT_SHA label names (not the merge ref).
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Check podman
+        run: podman --version
+      - name: Verify every FROM digest is an index with amd64 and arm64
+        env:
+          # Cache trust split: trusted events inspect from a throwaway podman store.
+          SIDGED_CACHE_SCOPE: ${{ github.event_name == 'pull_request' && format('pr{0}', github.event.pull_request.number) || '' }}
+          SIDGED_CI_RUN: ${{ github.run_id }}-${{ github.run_attempt }}
+        run: |
+          scripts/test-check-base-index.sh
+          scripts/check-base-index.sh
+      - name: Cache trust split and run-label cleanup fixtures
+        run: scripts/test-container-cache-scope.sh
+      - name: Remove throwaway trusted stores
+        if: always()
+        run: |
+          # Cache trust split: remove any throwaway trusted store left by a killed step.
+          # sidged_store_remove also removes a podman 5 runroot linked from the store.
+          . scripts/podman-store.sh
+          for d in "$RUNNER_TEMP"/sidged-store.*; do sidged_store_remove "$d"; done
+
+  # amd64 and arm64 run in every run. The Containerfile cross-compiles on the
+  # build platform (rust musl target, clang + lld), so qemu only runs the arm64
+  # runtime smoke test. Both platforms prove DoD 1 in one run.
+  image-amd64:
+    name: linux/amd64
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          # Build exactly the commit the SIDGED_GIT_SHA label names (not the merge ref).
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      # Rootless podman is preinstalled on the runner (no setup-qemu/buildx
+      # actions: they need docker).
+      - name: Check podman
+        run: podman --version
+      # pyyaml and podman-compose in a per-job venv, hash-locked; the venv's
+      # podman-compose is called directly.
+      - name: Compose policy check and rootless podman compose up
+        env:
+          COMPOSE_UP: "1"
+          # The image and the version check use the PR head commit.
+          SIDGED_GIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          # Cache trust split: same cache scope and run label as the image build;
+          # the job's always() cleanup removes the labelled compose image.
+          SIDGED_CACHE_SCOPE: ${{ github.event_name == 'pull_request' && format('pr{0}', github.event.pull_request.number) || '' }}
+          SIDGED_CI_RUN: ${{ github.run_id }}-${{ github.run_attempt }}
+        run: |
+          venv="$RUNNER_TEMP/compose-venv"
+          python3 -m venv "$venv"
+          "$venv/bin/pip" install --require-hashes --no-deps -r .github/ci/compose-requirements.txt
+          export PYTHON="$venv/bin/python" ENGINE_COMPOSE="$venv/bin/podman-compose"
+          scripts/compose-test.sh
+      # Free space on the container storage filesystem (sizes only, no
+      # paths or host names).
+      - name: Disk before build
+        run: df -h --output=size,used,avail,pcent "$(podman info --format '{{.Store.GraphRoot}}')"
+      - name: Build and test core image
+        env:
+          PLATFORM: linux/amd64
+          # Provenance: the PR head commit, not the synthetic merge commit.
+          SIDGED_GIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          SIDGED_MANIFEST: localhost/sidged-ci-${{ github.run_id }}-${{ github.run_attempt }}:${{ github.job }}
+          # Cache trust split: pull requests get cache mounts scoped to their
+          # PR number (sidged-cargo-{reg,target}-pr<N>); every other event
+          # (push to main, schedule, release, workflow_dispatch) builds from
+          # the committed Containerfile with no cache mounts and --no-cache.
+          SIDGED_CACHE_SCOPE: ${{ github.event_name == 'pull_request' && format('pr{0}', github.event.pull_request.number) || '' }}
+          SIDGED_CI_RUN: ${{ github.run_id }}-${{ github.run_attempt }}
+        run: scripts/container-test.sh "$PLATFORM"
+      # Scan what ships for this platform (musl binary, core image
+      # filesystem) plus the effective build context, with the same head
+      # checkout and SIDGED_GIT_SHA as the image test.
+      - name: No RFC 8032 test seeds in shipped binary, image or build context
+        env:
+          SIDGED_GIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          SIDGED_MANIFEST: localhost/sidged-ci-${{ github.run_id }}-${{ github.run_attempt }}:${{ github.job }}
+          # Cache trust split: same cache scope and run label as the image build.
+          SIDGED_CACHE_SCOPE: ${{ github.event_name == 'pull_request' && format('pr{0}', github.event.pull_request.number) || '' }}
+          SIDGED_CI_RUN: ${{ github.run_id }}-${{ github.run_attempt }}
+        run: |
+          scripts/test-check-no-test-keys.sh
+          scripts/scan-shipped-test-keys.sh linux/amd64
+      # Remove this run's manifest, tags and intermediate images, even on failure.
+      - name: Clean up this run's images
+        if: always()
+        env:
+          SIDGED_MANIFEST: localhost/sidged-ci-${{ github.run_id }}-${{ github.run_attempt }}:${{ github.job }}
+          SIDGED_CI_RUN: ${{ github.run_id }}-${{ github.run_attempt }}
+        run: |
+          podman manifest rm "$SIDGED_MANIFEST" || true
+          podman rmi -f "$SIDGED_MANIFEST-linux-amd64" "$SIDGED_MANIFEST-linux-arm64" || true
+          # Remove only images labelled with this run (builds use
+          # --layers=false, so no unlabelled intermediates are kept). PR
+          # cache mounts stay for that PR's next run.
+          podman images -q --filter "label=sidged.ci.run=$SIDGED_CI_RUN" | sort -u | xargs -r podman rmi -f >/dev/null || true
+          podman image prune -f --filter "label=sidged.ci.run=$SIDGED_CI_RUN" >/dev/null || true
+          # Cache trust split: remove any throwaway trusted store left by a killed step.
+          # sidged_store_remove also removes a podman 5 runroot linked from the store.
+          . scripts/podman-store.sh
+          for d in "$RUNNER_TEMP"/sidged-store.*; do sidged_store_remove "$d"; done
+          echo "disk after build and cleanup:"
+          df -h --output=size,used,avail,pcent "$(podman info --format '{{.Store.GraphRoot}}')"
+
+  image-arm64:
+    name: linux/arm64
+    # One platform at a time on the runner disk; still runs when amd64
+    # failed, not when the run was cancelled.
+    needs: image-amd64
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          # Build exactly the commit the SIDGED_GIT_SHA label names (not the merge ref).
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      # Rootless podman; qemu-user-static provides the arm64 binfmt handler.
+      - name: Check podman and emulation
+        run: |
+          podman --version
+          if [ "$(uname -m)" != aarch64 ] && [ ! -e /proc/sys/fs/binfmt_misc/qemu-aarch64 ]; then
+            sudo apt-get update -qq && sudo apt-get install -y -qq qemu-user-static
+          fi
+          if [ "$(uname -m)" != aarch64 ]; then
+            [ -e /proc/sys/fs/binfmt_misc/qemu-aarch64 ] || { echo "::error::qemu-aarch64 binfmt is not registered on the runner"; exit 1; }
+          fi
+      # Record the emulator the arm64 smoke test ran under.
+      - name: Log qemu-user-static and binfmt versions
+        run: |
+          qemu-aarch64-static --version || echo "qemu-aarch64-static not on PATH"
+          cat /proc/sys/fs/binfmt_misc/qemu-aarch64 || true
+      # Free space on the container storage filesystem (sizes only, no
+      # paths or host names).
+      - name: Disk before build
+        run: df -h --output=size,used,avail,pcent "$(podman info --format '{{.Store.GraphRoot}}')"
+      - name: Build and test core image
+        env:
+          PLATFORM: linux/arm64
+          # Provenance: the PR head commit, not the synthetic merge commit.
+          SIDGED_GIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          SIDGED_MANIFEST: localhost/sidged-ci-${{ github.run_id }}-${{ github.run_attempt }}:${{ github.job }}
+          # Cache trust split: pull requests get cache mounts scoped to their
+          # PR number (sidged-cargo-{reg,target}-pr<N>); every other event
+          # (push to main, schedule, release, workflow_dispatch) builds from
+          # the committed Containerfile with no cache mounts and --no-cache.
+          SIDGED_CACHE_SCOPE: ${{ github.event_name == 'pull_request' && format('pr{0}', github.event.pull_request.number) || '' }}
+          SIDGED_CI_RUN: ${{ github.run_id }}-${{ github.run_attempt }}
+        run: scripts/container-test.sh "$PLATFORM"
+      # Scan what ships for this platform (musl binary, core image
+      # filesystem) plus the effective build context, with the same head
+      # checkout and SIDGED_GIT_SHA as the image test.
+      - name: No RFC 8032 test seeds in shipped binary, image or build context
+        env:
+          SIDGED_GIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          SIDGED_MANIFEST: localhost/sidged-ci-${{ github.run_id }}-${{ github.run_attempt }}:${{ github.job }}
+          # Cache trust split: same cache scope and run label as the image build.
+          SIDGED_CACHE_SCOPE: ${{ github.event_name == 'pull_request' && format('pr{0}', github.event.pull_request.number) || '' }}
+          SIDGED_CI_RUN: ${{ github.run_id }}-${{ github.run_attempt }}
+        run: |
+          scripts/test-check-no-test-keys.sh
+          scripts/scan-shipped-test-keys.sh linux/arm64
+      # Remove this run's manifest, tags and intermediate images, even on failure.
+      - name: Clean up this run's images
+        if: always()
+        env:
+          SIDGED_MANIFEST: localhost/sidged-ci-${{ github.run_id }}-${{ github.run_attempt }}:${{ github.job }}
+          SIDGED_CI_RUN: ${{ github.run_id }}-${{ github.run_attempt }}
+        run: |
+          podman manifest rm "$SIDGED_MANIFEST" || true
+          podman rmi -f "$SIDGED_MANIFEST-linux-amd64" "$SIDGED_MANIFEST-linux-arm64" || true
+          # Remove only images labelled with this run (builds use
+          # --layers=false, so no unlabelled intermediates are kept). PR
+          # cache mounts stay for that PR's next run.
+          podman images -q --filter "label=sidged.ci.run=$SIDGED_CI_RUN" | sort -u | xargs -r podman rmi -f >/dev/null || true
+          podman image prune -f --filter "label=sidged.ci.run=$SIDGED_CI_RUN" >/dev/null || true
+          # Cache trust split: remove any throwaway trusted store left by a killed step.
+          # sidged_store_remove also removes a podman 5 runroot linked from the store.
+          . scripts/podman-store.sh
+          for d in "$RUNNER_TEMP"/sidged-store.*; do sidged_store_remove "$d"; done
+          echo "disk after build and cleanup:"
+          df -h --output=size,used,avail,pcent "$(podman info --format '{{.Store.GraphRoot}}')"

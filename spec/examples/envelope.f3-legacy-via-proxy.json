@@ -1,0 +1,53 @@
+{
+  "v": "0.1",
+  "form": "F3",
+  "sender_agent": "did:example:alice-homeserver#agent-home",
+  "sender_device": "did:example:alice-homeserver",
+  "aud": "did:example:alice-phone#agent-assistant",
+  "session": "sess-thermo-0042",
+  "seq": 17,
+  "attestation_ref": "https://attest.example.org/alice-homeserver/latest",
+  "cap_token": {
+    "format": "biscuit",
+    "token": "En0KEwoEMTIzNBgDIgkKBwgKEgMYgAgSJAgAEiBExampleOpaqueTokenValue"
+  },
+  "intent": "telemetry.report",
+  "data": {
+    "temperature_c": 21.5
+  },
+  "payload_type": "application/json",
+  "residency": {
+    "tags": [
+      "CH"
+    ],
+    "data_classes": [
+      "home.sensor"
+    ]
+  },
+  "nonce": "Pl0Ok9Ij8Uh7Yg6Tf5Rd4Es3",
+  "issued": "2026-10-09T08:20:00Z",
+  "expires": "2026-10-09T08:25:00Z",
+  "provenance": [
+    {
+      "role": "legacy-endpoint",
+      "id": "urn:example:modbus:thermostat-1",
+      "method": "proxy",
+      "labels": [
+        "legacy",
+        "unattested"
+      ]
+    },
+    {
+      "role": "proxy",
+      "id": "did:example:alice-homeserver#agent-home",
+      "device": "did:example:alice-homeserver",
+      "at": "2026-10-09T08:20:00Z"
+    }
+  ],
+  "sig": {
+    "alg": "EdDSA",
+    "kid": "did:example:alice-homeserver#agent-home-key",
+    "canon": "jcs",
+    "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+  }
+}

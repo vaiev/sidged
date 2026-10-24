@@ -1,0 +1,211 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sidged.com/spec/schemas/linguist-envelope.schema.json",
+  "title": "Sidged linguist envelope (v0.1)",
+  "description": "Output of the companion linguist (Model -1): one utterance in English, German, or Swiss German normalised to a catalog intent, canonical English slot values, and a local clarification question when a required slot is missing. The envelope is a proposal. The Core trusts only lang, intent, and slots, and re-derives every other member from the intent catalog (intent-catalog.schema.json). Residency, approval, and grant members do not exist here; the Core supplies them. Status: Draft v0.1.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "v",
+    "lang",
+    "intent",
+    "slots",
+    "missing_slots",
+    "clarification_needed",
+    "clarification_question_local",
+    "canonical_intent_en",
+    "suggested_route",
+    "required_data_classes"
+  ],
+  "properties": {
+    "v": {
+      "$ref": "common.schema.json#/$defs/schemaVersion"
+    },
+    "lang": {
+      "$ref": "intent-catalog.schema.json#/$defs/locale",
+      "description": "Language of the utterance."
+    },
+    "intent": {
+      "oneOf": [
+        {
+          "$ref": "intent-catalog.schema.json#/$defs/intentId"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Catalog intent, or null when none fits."
+    },
+    "slots": {
+      "type": "object",
+      "propertyNames": {
+        "$ref": "intent-catalog.schema.json#/$defs/slotName"
+      },
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 512
+      },
+      "description": "Slot values given by the utterance, in canonical English. Names, quoted text, and file names stay verbatim."
+    },
+    "missing_slots": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "intent-catalog.schema.json#/$defs/slotName"
+      },
+      "description": "Required slots the utterance does not give, in catalog order."
+    },
+    "clarification_needed": {
+      "type": "boolean"
+    },
+    "clarification_question_local": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1,
+      "maxLength": 256,
+      "description": "One short question in the utterance language; null when no clarification is needed."
+    },
+    "canonical_intent_en": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1,
+      "maxLength": 1024,
+      "description": "The catalog template filled with slot values; a missing slot is written <slot>. Null when intent is null."
+    },
+    "suggested_route": {
+      "enum": [
+        "edge-local",
+        "swarm-worker",
+        "clarify"
+      ],
+      "description": "clarify: ask locally and wake nothing. Otherwise the route of the catalog intent."
+    },
+    "required_data_classes": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "common.schema.json#/$defs/dataClass"
+      }
+    },
+    "then": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 2,
+      "description": "Follow-up intents of a composition, in the order said (0017 §2c). Each pair must be declared in the catalog's compositions; the Core derives missing_slots and canonical_intent_en.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "intent",
+          "slots"
+        ],
+        "properties": {
+          "intent": {
+            "$ref": "intent-catalog.schema.json#/$defs/intentId"
+          },
+          "slots": {
+            "type": "object",
+            "propertyNames": {
+              "$ref": "intent-catalog.schema.json#/$defs/slotName"
+            },
+            "additionalProperties": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            }
+          },
+          "missing_slots": {
+            "type": "array",
+            "items": {
+              "$ref": "intent-catalog.schema.json#/$defs/slotName"
+            }
+          },
+          "canonical_intent_en": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "clarification_needed": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "clarification_question_local": {
+            "type": "string"
+          },
+          "suggested_route": {
+            "const": "clarify"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "intent": {
+            "type": "string"
+          },
+          "missing_slots": {
+            "maxItems": 0
+          },
+          "clarification_question_local": {
+            "type": "null"
+          },
+          "suggested_route": {
+            "not": {
+              "const": "clarify"
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "intent": {
+            "type": "null"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "slots": {
+            "maxProperties": 0
+          },
+          "missing_slots": {
+            "maxItems": 0
+          },
+          "clarification_needed": {
+            "const": true
+          },
+          "canonical_intent_en": {
+            "type": "null"
+          },
+          "required_data_classes": {
+            "maxItems": 0
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "canonical_intent_en": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  ]
+}

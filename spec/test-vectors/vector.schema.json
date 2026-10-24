@@ -1,0 +1,400 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sidged.com/spec/test-vectors/vector.schema.json",
+  "title": "Sidged Test Vector File",
+  "description": "A group of conformance test vectors: fixed inputs with expected results for one operation area. See test-vectors/README.md for the operation contracts. The suite version is recorded only in test-vectors/VERSION, not in vector files. Status: Draft, not for implementation.",
+  "type": "object",
+  "required": [
+    "category",
+    "description",
+    "vectors"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "category": {
+      "enum": [
+        "resource-matching",
+        "capability",
+        "plan",
+        "tokens",
+        "envelope",
+        "residency",
+        "signatures",
+        "slice",
+        "records",
+        "egress",
+        "approval",
+        "intent"
+      ]
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "vectors": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/vector"
+      }
+    }
+  },
+  "$defs": {
+    "vector": {
+      "type": "object",
+      "required": [
+        "id",
+        "spec",
+        "status"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "description": "Stable identifier, never reused: category, group, and a three-digit number.",
+          "type": "string",
+          "pattern": "^[a-z]+\\.[a-z0-9-]+\\.[0-9]{3}$"
+        },
+        "kind": {
+          "description": "single (default): one operation with input and expected. sequence: ordered steps at one implementation, with state carried from step to step.",
+          "enum": [
+            "single",
+            "sequence"
+          ]
+        },
+        "spec": {
+          "description": "Rules this vector tests.",
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "doc",
+              "section"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "doc": {
+                "enum": [
+                  "L0",
+                  "L1",
+                  "L2",
+                  "L3",
+                  "L4",
+                  "L5",
+                  "L6",
+                  "L7",
+                  "L8",
+                  "RFC 8032",
+                  "RFC 8785",
+                  "0017"
+                ]
+              },
+              "version": {
+                "type": "string"
+              },
+              "section": {
+                "type": "string"
+              },
+              "tag": {
+                "description": "Profile tag of the rule, for example C1 or R2.",
+                "type": "string",
+                "pattern": "^[RCP][0-3]$"
+              }
+            }
+          }
+        },
+        "operation": {
+          "description": "What to run. Each operation's input and output are defined in test-vectors/README.md.",
+          "enum": [
+            "resource-covers",
+            "capability-check",
+            "plan-check",
+            "token-check",
+            "envelope-check",
+            "residency-regions",
+            "residency-tag-syntax",
+            "ed25519-sign",
+            "jcs-signing-input",
+            "verify",
+            "sign",
+            "did-key",
+            "jwk-thumbprint",
+            "holder-bind",
+            "token-chain",
+            "receive",
+            "session-check",
+            "dcbor-encode",
+            "record-digest",
+            "record-check",
+            "record-retention",
+            "dcbor-decode",
+            "record-derive",
+            "record-resource",
+            "plan-digest",
+            "stored-plan-signing-input",
+            "stored-plan-check",
+            "flow-check",
+            "residency-destination",
+            "egress-check",
+            "approval-binding",
+            "linguist-verify",
+            "intent-plan",
+            "time-resolve",
+            "duration-read"
+          ]
+        },
+        "profile": {
+          "type": "string",
+          "pattern": "^[RCP][0-3]$"
+        },
+        "requires": {
+          "description": "Optional features a runner must support to run this vector; runners without them skip it.",
+          "type": "array",
+          "items": {
+            "enum": [
+              "EdDSA",
+              "jcs",
+              "cel",
+              "dcbor",
+              "cedar",
+              "intent"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "input": {
+          "type": "object"
+        },
+        "expected": {
+          "oneOf": [
+            {
+              "type": "object",
+              "required": [
+                "result"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "result": {
+                  "const": "accept"
+                }
+              }
+            },
+            {
+              "type": "object",
+              "required": [
+                "result"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "result": {
+                  "const": "refuse"
+                },
+                "reason": {
+                  "$ref": "#/$defs/reason"
+                }
+              }
+            },
+            {
+              "type": "object",
+              "required": [
+                "value"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "value": {}
+              }
+            }
+          ]
+        },
+        "state": {
+          "description": "Sequence only: initial state, defined per operation in test-vectors/README.md.",
+          "type": "object"
+        },
+        "steps": {
+          "description": "Sequence only: steps in order. Each step sees the state left by the steps before it.",
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/step"
+          }
+        },
+        "status": {
+          "description": "normative: follows from merged draft text. provisional: an interim reading of an open question, described in open_issue; failures are reported but do not fail a run.",
+          "enum": [
+            "normative",
+            "provisional"
+          ]
+        },
+        "open_issue": {
+          "description": "One sentence on what is still open about this provisional vector.",
+          "type": "string",
+          "minLength": 1
+        },
+        "note": {
+          "description": "One line for readers. Never compared.",
+          "type": "string"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "provisional"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "open_issue"
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "open_issue"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "sequence"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "state",
+              "steps"
+            ],
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "operation"
+                  ]
+                },
+                {
+                  "required": [
+                    "input"
+                  ]
+                },
+                {
+                  "required": [
+                    "expected"
+                  ]
+                }
+              ]
+            }
+          },
+          "else": {
+            "required": [
+              "operation",
+              "input",
+              "expected"
+            ],
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "state"
+                  ]
+                },
+                {
+                  "required": [
+                    "steps"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "step": {
+      "type": "object",
+      "required": [
+        "operation",
+        "now",
+        "input",
+        "expected"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "operation": {
+          "$ref": "#/$defs/vector/properties/operation"
+        },
+        "now": {
+          "description": "The receiver's clock for this step, RFC 3339 with an explicit offset.",
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})$"
+        },
+        "input": {
+          "type": "object"
+        },
+        "expected": {
+          "description": "result (accept or refuse, with an optional reason), executed (whether the requested action ran), or both. Members that are absent are not compared.",
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": false,
+          "properties": {
+            "result": {
+              "enum": [
+                "accept",
+                "refuse"
+              ]
+            },
+            "reason": {
+              "$ref": "#/$defs/reason"
+            },
+            "executed": {
+              "type": "boolean"
+            }
+          },
+          "dependentRequired": {
+            "reason": [
+              "result"
+            ]
+          },
+          "if": {
+            "required": [
+              "reason"
+            ]
+          },
+          "then": {
+            "properties": {
+              "result": {
+                "const": "refuse"
+              }
+            }
+          }
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "reason": {
+      "description": "Refusal reason code from registries/refusal-reasons.md, or a list of acceptable codes where the drafts do not fix the order of checks. Absent when the drafts do not fix a code.",
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      ]
+    }
+  }
+}

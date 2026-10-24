@@ -1,0 +1,18 @@
+{
+  "v": "0.2",
+  "lang": "en",
+  "intent": "task.summarize",
+  "missing": [],
+  "slots": {
+    "source": "the report"
+  },
+  "then": [
+    {
+      "intent": "messaging.send",
+      "slots": {
+        "recipient": "Lea"
+      },
+      "canonical_intent_en": "Send a message to Lea about the previous result"
+    }
+  ]
+}

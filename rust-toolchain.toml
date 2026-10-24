@@ -1,0 +1,7 @@
+# Pinned per V1 spec L1: cedar-policy 4.13 requires rustc >= 1.89.
+[toolchain]
+channel = "1.89.0"
+components = ["clippy", "rustfmt"]
+# validate.yml "static musl binary" job and the arm64 container image build for these targets.
+targets = ["x86_64-unknown-linux-musl", "aarch64-unknown-linux-musl"]
+profile = "minimal"

@@ -1,0 +1,7 @@
+{
+  "v": "0.1",
+  "reason": "profile-too-low",
+  "requires": {
+    "communication_profile": "C2"
+  }
+}

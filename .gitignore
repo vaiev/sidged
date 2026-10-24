@@ -1,0 +1,24 @@
+/runtime/target/
+/runtime/target.lock
+/companion/target/
+/site/target/
+**/*.rs.bk
+node_modules/
+.env
+.env.*
+.DS_Store
+*.swp
+
+__pycache__/
+*.pyc
+
+# Demo private keys (sidged keygen) must never be committed.
+demo/*/keys/
+*.key
+
+# Build and local training output artifacts (large weights and VM images)
+/dist/
+/local-training/out/
+/local-training/data.jsonl
+/.sidged-os/
+/.agent-handover.md

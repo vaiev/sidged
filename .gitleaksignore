@@ -1,0 +1,2 @@
+# RFC 8032 test vector (TEST 1 public key JWK thumbprint in a didkey.rs unit test), not a secret.
+553e895d1083e548235357fde4f89a2d0fcad497:runtime/sidged-grant/src/didkey.rs:generic-api-key:162

@@ -1,0 +1,20 @@
+{
+  "v": "0.1",
+  "lang": "en",
+  "intent": "scheduling.remind",
+  "slots": {
+    "subject": "the dentist appointment",
+    "time": "tomorrow at 08:00"
+  },
+  "missing_slots": [],
+  "clarification_needed": false,
+  "clarification_question_local": null,
+  "canonical_intent_en": "Remind me about the dentist appointment tomorrow at 08:00",
+  "suggested_route": "edge-local",
+  "required_data_classes": [
+    "calendar.events"
+  ],
+  "residency": [
+    "CH"
+  ]
+}

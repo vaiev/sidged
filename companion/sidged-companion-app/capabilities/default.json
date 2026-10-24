@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "The canvas may call the companion command allowlist and nothing else.",
+  "windows": ["main"],
+  "permissions": ["allow-companion"]
+}

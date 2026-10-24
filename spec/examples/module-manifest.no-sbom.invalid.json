@@ -1,0 +1,77 @@
+{
+  "v": "0.1",
+  "id": "urn:example:module:calendar-assist",
+  "name": "Calendar Assist",
+  "description": "Proposes meeting times from local calendar availability.",
+  "version": "1.2.0",
+  "kind": "feature",
+  "publisher": {
+    "id": "did:example:openmodules-collective",
+    "name": "Example Open Modules Collective",
+    "contact": "https://modules.example.org/contact"
+  },
+  "compat": {
+    "runtime": ">=0.3 <0.4",
+    "min_profile": "R1"
+  },
+  "capabilities": {
+    "provides": [
+      "calendar.propose_meeting"
+    ],
+    "requires": [
+      "calendar.read_availability"
+    ]
+  },
+  "permissions": [
+    {
+      "capability": "calendar.read_availability",
+      "scope": "urn:example:calendar:local/*",
+      "consequential": false,
+      "reason": "Read free and busy times to suggest slots."
+    },
+    {
+      "capability": "messaging.send_invite",
+      "consequential": true,
+      "reason": "Send an invitation after you approve it."
+    }
+  ],
+  "data_classes": [
+    "calendar.availability",
+    "contacts.name"
+  ],
+  "egress": [
+    {
+      "destination": "https://calendar.example.net/api",
+      "purpose": "Deliver approved invitations.",
+      "data_classes": [
+        "calendar.availability"
+      ],
+      "residency": [
+        "CH",
+        "EU",
+        "CH-EU"
+      ]
+    }
+  ],
+  "resources": {
+    "memory_mb": 64,
+    "storage_mb": 20,
+    "network": true
+  },
+  "provenance": {
+    "type": "https://slsa.dev/provenance/v1",
+    "uri": "https://modules.example.org/calendar-assist/1.2.0/provenance.intoto.jsonl",
+    "digest": {
+      "alg": "sha-256",
+      "value": "2nIOkr8XvhJ0D5r1ccgRfCO3nCCC1iLmZcixxVXOQm8"
+    },
+    "reproducible": true
+  },
+  "sig": {
+    "alg": "EdDSA",
+    "kid": "did:example:openmodules-collective#release-key-2026",
+    "canon": "jcs",
+    "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy",
+    "signer": "did:example:openmodules-collective"
+  }
+}

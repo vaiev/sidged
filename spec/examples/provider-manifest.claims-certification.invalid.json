@@ -1,0 +1,118 @@
+{
+  "v": "0.1",
+  "provider": {
+    "id": "https://models.example.net",
+    "name": "Example Models"
+  },
+  "manifest_version": 14,
+  "published": "2026-09-15T00:00:00Z",
+  "profile_claim": {
+    "profile": "P2",
+    "basis": "certification",
+    "against": "Sidged L7 draft v0.1",
+    "self_assessment": "https://models.example.net/sidged/self-assessment-p2.html"
+  },
+  "runtime_request_header": "Sidged-Request",
+  "model_identity": {
+    "carrier": "envelope"
+  },
+  "models": [
+    {
+      "id": "example-large",
+      "name": "Example Large",
+      "version": "2026-08",
+      "modalities": [
+        "text",
+        "image"
+      ],
+      "context_tokens": 256000,
+      "tools": true,
+      "streaming": true,
+      "regions": [
+        "CH",
+        "DE"
+      ]
+    }
+  ],
+  "pricing": [
+    {
+      "item": "example-large",
+      "unit": "1k-input-tokens",
+      "price": {
+        "amount": "0.003",
+        "currency": "CHF"
+      }
+    }
+  ],
+  "accepted_credentials": [
+    "privacy-pass",
+    "prepaid-token"
+  ],
+  "anonymous_mode": true,
+  "unlinkable_billing": true,
+  "identified_mode": {
+    "offered": false
+  },
+  "training": {
+    "no_training": true,
+    "no_profiling": true
+  },
+  "retention": {
+    "content_window": "PT0S",
+    "logs_exclude_content": true,
+    "logs_no_persistent_ids": true
+  },
+  "tracking": {
+    "no_tracking": true,
+    "accepts_relays": true,
+    "no_response_identifiers": true
+  },
+  "regions": [
+    "CH",
+    "DE"
+  ],
+  "residency_support": [
+    "CH",
+    "EU",
+    "CH-EU"
+  ],
+  "envelope": {
+    "accepted": true,
+    "versions": [
+      "0.1"
+    ],
+    "endpoint": "https://models.example.net/sidged/v0"
+  },
+  "ohttp": {
+    "supported": true,
+    "gateway": "https://ohttp.models.example.net/gateway",
+    "key_config": "https://ohttp.models.example.net/ohttp-keys"
+  },
+  "attestation": {
+    "confidential_computing": true,
+    "endpoints": []
+  },
+  "transparency": {
+    "log_entry": "https://transparency.example.org/log/entries/88231",
+    "reports": "https://models.example.net/transparency",
+    "audit": {
+      "auditor": "Example Audit GmbH",
+      "summary": "https://models.example.net/sidged/audit-2026.html",
+      "issued": "2026-06-01T00:00:00Z",
+      "valid_until": "2028-06-01T00:00:00Z"
+    }
+  },
+  "planned_changes": [
+    {
+      "effective": "2026-11-01T00:00:00Z",
+      "summary": "Model example-large 2026-11 replaces 2026-08."
+    }
+  ],
+  "sig": {
+    "alg": "EdDSA",
+    "kid": "https://models.example.net#manifest-key-2026",
+    "canon": "jcs",
+    "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy",
+    "signer": "https://models.example.net"
+  }
+}

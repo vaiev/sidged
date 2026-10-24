@@ -1,0 +1,16 @@
+{
+  "v": "0.1",
+  "id": "urn:sidged:capability:drop_file",
+  "title": "Drop a file",
+  "input_schema": {
+    "type": "object",
+    "additionalProperties": false
+  },
+  "effects": [
+    "delete"
+  ],
+  "data_classes": [
+    "documents"
+  ],
+  "consequential": false
+}

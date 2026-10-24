@@ -1,0 +1,31 @@
+# Copyright 2026 VAIEV
+# SPDX-License-Identifier: Apache-2.0
+#
+# Egress profile for sidged-run@.service (example, not installed as active).
+# To use it, copy it to /etc/systemd/system/sidged-run@<name>.service.d/egress.conf,
+# replace the @...@ placeholders with numeric uids and run systemctl daemon-reload.
+#
+# What changes against the local default:
+# - the process may open AF_INET/AF_INET6 sockets for the Privacy Gateway
+#   (0007 R1: the gateway is the only HTTP path, and it decides destination,
+#   residency and the privacy report);
+# - no IPAddressAllow list: systemd IP filters cannot name hosts, so the
+#   gateway registry stays the control (0007 R3); IPAddressDeny is reset;
+# - the approval socket directory /run/sidged/approval (tmpfiles, 2750
+#   sidged:sidged-approver, 0004 R9c) becomes writable so the Core can bind
+#   its approval socket there. Nothing else listens.
+#
+# @APPROVER_UID@      uid of sidged-approver (never 0, never the sidged uid)
+# @NON_APPROVER_UIDS@ comma-separated uids of every agent, launcher, worker
+#                     and model process (0004 R9c); none may be 0
+# Planner credentials: SIDGED_API_KEY_FILE pointing at a 0600 file owned by
+# sidged (e.g. under /var/lib/sidged/credentials/), never the key itself.
+
+[Service]
+Environment=SIDGED_LOCAL=0
+PrivateNetwork=no
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+IPAddressDeny=
+ReadWritePaths=/run/sidged/approval
+ExecStart=
+ExecStart=/usr/local/bin/sidged guard /var/lib/sidged/scenarios/%i --keys /var/lib/sidged/keys --log /var/lib/sidged/audit/%i.log --log-key /var/lib/sidged/log-key/issuer.key --approve unix:/run/sidged/approval/control.sock --approve-uid @APPROVER_UID@ --non-approver-uid @NON_APPROVER_UIDS@

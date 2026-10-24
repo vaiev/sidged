@@ -1,0 +1,64 @@
+{
+  "v": "0.1",
+  "id": "urn:example:module:modbus-proxy",
+  "name": "Modbus Thermostat Proxy",
+  "version": "0.4.1",
+  "kind": "legacy-adapter",
+  "publisher": {
+    "id": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+    "name": "Self-signed (sideloaded)"
+  },
+  "compat": {
+    "runtime": ">=0.3 <0.4",
+    "min_profile": "R1"
+  },
+  "capabilities": {
+    "provides": [
+      "home.thermostat.read",
+      "home.thermostat.set"
+    ],
+    "requires": []
+  },
+  "permissions": [
+    {
+      "capability": "network.local",
+      "scope": "urn:example:lan:192.168.10.20/*",
+      "consequential": false,
+      "reason": "Talk to the thermostat on the isolated network segment."
+    },
+    {
+      "capability": "home.thermostat.set",
+      "consequential": true,
+      "reason": "Changing the temperature moves a physical device."
+    }
+  ],
+  "data_classes": [
+    "home.sensor"
+  ],
+  "egress": [],
+  "resources": {
+    "memory_mb": 16,
+    "network": true
+  },
+  "legacy": {
+    "method": "proxy",
+    "labels": [
+      "legacy"
+    ]
+  },
+  "sbom": {
+    "format": "spdx",
+    "uri": "file:sbom.spdx.json",
+    "digest": {
+      "alg": "sha-256",
+      "value": "Yk9pM2xZc0Z3d1F4b1R2c2V0S2xNbm9QcVJzVHVWdw"
+    }
+  },
+  "sig": {
+    "alg": "EdDSA",
+    "kid": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK#z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+    "canon": "jcs",
+    "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy",
+    "signer": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK"
+  }
+}

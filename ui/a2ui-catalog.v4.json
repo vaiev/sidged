@@ -1,0 +1,192 @@
+{
+  "v": "4.0",
+  "about": "Machine-readable catalog of the atomic @vaiev/ui v4 primitives for the Sidged morphing surface. A surface is assembled from capability input_schema and output_schema, from intent-catalog slots, and from signed artifact records: the composer picks, in catalog order, the first primitive whose bind matches the data. No primitive renders or triggers a consequential confirmation; that belongs to the Core-owned Trusted UI bar outside every surface.",
+  "token_source": "ui/vaiev-ui/tokens/tokens.css",
+  "limits": {
+    "max_nodes": 64,
+    "max_depth": 4,
+    "max_text": 4096
+  },
+  "primitives": [
+    {
+      "name": "IntentHeader",
+      "role": "header",
+      "description": "Title and status of the intent the surface serves.",
+      "children": {"min": 0, "max": 0},
+      "binds": [],
+      "tokens": ["--vv-type-headline", "--vv-type-small", "--vv-color-on-surface", "--vv-color-on-surface-variant", "--vv-space-4"],
+      "props_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["title", "status"],
+        "properties": {
+          "title": {"type": "string", "minLength": 1, "maxLength": 256},
+          "subtitle": {"type": "string", "maxLength": 512},
+          "status": {"enum": ["clarifying", "ready", "running", "completed", "refused"]},
+          "lang": {"type": "string", "maxLength": 16}
+        }
+      }
+    },
+    {
+      "name": "FlowBadge",
+      "role": "provenance",
+      "description": "Where the data of this surface may flow: local or gateway mode, residency tags and data classes as declared by the Core.",
+      "children": {"min": 0, "max": 0},
+      "binds": [],
+      "tokens": ["--vv-color-primary-container", "--vv-color-on-primary-container", "--vv-shape-full", "--vv-type-label"],
+      "props_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["mode", "label", "residency", "data_classes"],
+        "properties": {
+          "mode": {"enum": ["local", "gateway", "undecided"]},
+          "label": {"type": "string", "minLength": 1, "maxLength": 128},
+          "residency": {"type": "array", "maxItems": 8, "items": {"type": "string", "maxLength": 64}},
+          "data_classes": {"type": "array", "maxItems": 16, "items": {"type": "string", "maxLength": 128}}
+        }
+      }
+    },
+    {
+      "name": "ArtifactCard",
+      "role": "artifact",
+      "description": "A signed artifact record (mail, code, solution) shown by record id; its consequential action is only named, never triggered here.",
+      "children": {"min": 0, "max": 0},
+      "binds": [{"mime_prefix": "application/vnd.sidged.artifact."}],
+      "tokens": ["--vv-color-surface-container", "--vv-shape-md", "--vv-type-title", "--vv-type-body", "--vv-space-4"],
+      "props_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["artifact_type", "record_id", "title"],
+        "properties": {
+          "artifact_type": {"type": "string", "pattern": "^application/vnd\\.sidged\\.artifact\\.[a-z0-9.-]+\\+json$"},
+          "record_id": {"type": "string", "minLength": 1, "maxLength": 128},
+          "title": {"type": "string", "minLength": 1, "maxLength": 256},
+          "subtitle": {"type": "string", "maxLength": 512},
+          "body": {"type": "string", "maxLength": 4096},
+          "files": {
+            "type": "array",
+            "maxItems": 50,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["path"],
+              "properties": {"path": {"type": "string", "maxLength": 512}, "diff": {"type": "string", "maxLength": 4096}}
+            }
+          },
+          "consequential_capability": {"type": "string", "pattern": "^urn:sidged:capability:[A-Za-z0-9._-]{1,128}$"}
+        }
+      }
+    },
+    {
+      "name": "StepTimeline",
+      "role": "progress",
+      "description": "Ordered plan steps with status and the worker that ran them.",
+      "children": {"min": 0, "max": 0},
+      "binds": [{"shape": {"type": "array", "items": {"type": "object", "required": ["step_id", "label", "status"]}}}],
+      "tokens": ["--vv-color-outline-variant", "--vv-color-success", "--vv-color-warning", "--vv-type-small", "--vv-space-2"],
+      "props_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["steps"],
+        "properties": {
+          "steps": {
+            "type": "array",
+            "maxItems": 64,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["step_id", "label", "status"],
+              "properties": {
+                "step_id": {"type": "string", "maxLength": 64},
+                "label": {"type": "string", "maxLength": 256},
+                "status": {"enum": ["pending", "running", "completed", "failed", "refused", "skipped"]},
+                "worker_id": {"type": "string", "maxLength": 128},
+                "requires_owner_gate": {"type": "boolean"}
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "DataTable",
+      "role": "collection",
+      "description": "Rows of objects with columns taken from the items schema.",
+      "children": {"min": 0, "max": 0},
+      "binds": [{"shape": {"type": "array", "items": {"type": "object"}}}],
+      "tokens": ["--vv-color-surface-container-low", "--vv-color-outline-variant", "--vv-type-small", "--vv-space-2"],
+      "props_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["columns", "rows"],
+        "properties": {
+          "caption": {"type": "string", "maxLength": 256},
+          "columns": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 16,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["key", "label"],
+              "properties": {"key": {"type": "string", "maxLength": 64}, "label": {"type": "string", "maxLength": 128}}
+            }
+          },
+          "rows": {"type": "array", "maxItems": 500, "items": {"type": "object"}}
+        }
+      }
+    },
+    {
+      "name": "FormSurface",
+      "role": "form",
+      "description": "Fields generated from an object schema. In input mode the values go back to the Core, which validates them against the same schema; in readonly mode it shows a result object.",
+      "children": {"min": 0, "max": 0},
+      "binds": [{"shape": {"type": "object"}}],
+      "tokens": ["--vv-color-surface-container-high", "--vv-color-outline", "--vv-color-focus", "--vv-shape-sm", "--vv-type-label", "--vv-type-body", "--vv-space-3"],
+      "props_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["mode", "fields"],
+        "properties": {
+          "mode": {"enum": ["input", "readonly"]},
+          "submit_label": {"type": "string", "maxLength": 64},
+          "fields": {
+            "type": "array",
+            "maxItems": 32,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["name", "label", "kind", "required"],
+              "properties": {
+                "name": {"type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_.-]{0,63}$"},
+                "label": {"type": "string", "minLength": 1, "maxLength": 256},
+                "kind": {"enum": ["text", "number", "integer", "boolean", "choice", "text-list", "json"]},
+                "required": {"type": "boolean"},
+                "description": {"type": "string", "maxLength": 512},
+                "options": {"type": "array", "maxItems": 64, "items": {"type": "string", "maxLength": 128}},
+                "value": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "SplitPane",
+      "role": "layout",
+      "description": "Two panes side by side (or stacked on narrow screens), for example a form next to its result.",
+      "children": {"min": 2, "max": 2},
+      "binds": [],
+      "tokens": ["--vv-layout-gutter", "--vv-color-outline-variant", "--vv-space-4"],
+      "props_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["orientation"],
+        "properties": {
+          "orientation": {"enum": ["horizontal", "vertical"]},
+          "ratio": {"type": "number", "minimum": 0.2, "maximum": 0.8}
+        }
+      }
+    }
+  ]
+}

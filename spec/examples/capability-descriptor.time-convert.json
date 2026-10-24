@@ -1,0 +1,59 @@
+{
+  "v": "0.1",
+  "id": "urn:sidged:capability:convert_time",
+  "title": "Convert time",
+  "description": "Convert time between timezones. Source: mcp-server-time tool convert_time.",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "source_timezone": {
+        "type": "string",
+        "description": "Source IANA timezone name (e.g., 'America/New_York', 'Europe/London')."
+      },
+      "time": {
+        "type": "string",
+        "description": "Time to convert in 24-hour format (HH:MM)."
+      },
+      "target_timezone": {
+        "type": "string",
+        "description": "Target IANA timezone name (e.g., 'Asia/Tokyo', 'America/Los_Angeles')."
+      }
+    },
+    "required": [
+      "source_timezone",
+      "time",
+      "target_timezone"
+    ]
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "source": {
+        "type": "object"
+      },
+      "target": {
+        "type": "object"
+      },
+      "time_difference": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "source",
+      "target",
+      "time_difference"
+    ],
+    "additionalProperties": false
+  },
+  "effects": [
+    "read"
+  ],
+  "data_classes": [],
+  "residency": {
+    "tags": []
+  },
+  "cost": {
+    "class": "free"
+  },
+  "consequential": false
+}

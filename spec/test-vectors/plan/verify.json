@@ -1,0 +1,880 @@
+{
+  "category": "plan",
+  "description": "SDG-L3 plan verification: effects, data-flow labels, bounded map, approvals, and cost.",
+  "vectors": [
+    {
+      "id": "plan.verify.001",
+      "spec": [{ "doc": "L3", "version": "0.1", "section": "R7" }],
+      "operation": "plan-check",
+      "input": {
+        "catalog": [
+          {
+            "id": "urn:sidged:capability:calendar.free_slots",
+            "effects": ["read"],
+            "data_classes": ["calendar.availability"],
+            "consequential": false,
+            "cost": { "class": "free" }
+          },
+          {
+            "id": "urn:sidged:capability:message.send",
+            "effects": ["egress"],
+            "data_classes": ["communications.content"],
+            "consequential": true,
+            "cost": { "class": "free" }
+          }
+        ],
+        "plan": {
+          "v": "0.1",
+          "goal": "Propose a time",
+          "budget": { "max": { "amount": "0.01", "currency": "CHF" } },
+          "steps": [
+            {
+              "id": "free",
+              "kind": "call",
+              "capability": "urn:sidged:capability:calendar.free_slots",
+              "args": { "range": { "lit": "next_week" } }
+            },
+            { "id": "pick", "kind": "expr", "expr": "free.slots" },
+            {
+              "id": "send",
+              "kind": "call",
+              "capability": "urn:sidged:capability:message.send",
+              "approval": true,
+              "args": { "to": { "lit": "contact:bea" }, "body": { "ref": "pick" } }
+            }
+          ]
+        }
+      },
+      "expected": { "result": "accept" },
+      "status": "normative"
+    },
+    {
+      "id": "plan.verify.002",
+      "spec": [{ "doc": "L3", "version": "0.1", "section": "R11" }],
+      "operation": "plan-check",
+      "input": {
+        "catalog": [
+          {
+            "id": "urn:sidged:capability:records.read",
+            "effects": ["read"],
+            "data_classes": ["health.records"],
+            "consequential": false,
+            "cost": { "class": "free" }
+          },
+          {
+            "id": "urn:sidged:capability:message.send",
+            "effects": ["egress"],
+            "data_classes": ["communications.content"],
+            "consequential": true,
+            "cost": { "class": "free" }
+          }
+        ],
+        "plan": {
+          "v": "0.1",
+          "steps": [
+            {
+              "id": "notes",
+              "kind": "call",
+              "capability": "urn:sidged:capability:records.read",
+              "args": {}
+            },
+            {
+              "id": "send",
+              "kind": "call",
+              "capability": "urn:sidged:capability:message.send",
+              "approval": true,
+              "args": { "body": { "ref": "notes" } }
+            }
+          ]
+        }
+      },
+      "expected": { "result": "refuse" },
+      "status": "normative",
+      "note": "health.records reaches an egress capability and the default flow policy denies it"
+    },
+    {
+      "id": "plan.verify.003",
+      "spec": [{ "doc": "L3", "version": "0.1", "section": "R7" }],
+      "operation": "plan-check",
+      "input": {
+        "catalog": [
+          {
+            "id": "urn:sidged:capability:message.send",
+            "effects": ["egress"],
+            "data_classes": ["communications.content"],
+            "consequential": true,
+            "cost": { "class": "free" }
+          }
+        ],
+        "plan": {
+          "v": "0.1",
+          "steps": [
+            {
+              "id": "send",
+              "kind": "call",
+              "capability": "urn:sidged:capability:message.send",
+              "args": { "to": { "lit": "contact:bea" } }
+            }
+          ]
+        }
+      },
+      "expected": { "result": "refuse" },
+      "status": "normative",
+      "note": "consequential send without approval"
+    },
+    {
+      "id": "plan.verify.004",
+      "spec": [{ "doc": "L3", "version": "0.1", "section": "R6" }],
+      "operation": "plan-check",
+      "input": {
+        "catalog": [
+          {
+            "id": "urn:sidged:capability:message.send",
+            "effects": ["egress"],
+            "data_classes": ["communications.content"],
+            "consequential": true,
+            "cost": { "class": "free" }
+          }
+        ],
+        "plan": {
+          "v": "0.1",
+          "steps": [
+            { "id": "slots", "kind": "expr", "expr": "true" },
+            {
+              "id": "each",
+              "kind": "map",
+              "over": { "ref": "slots" },
+              "bound": 100,
+              "capability": "urn:sidged:capability:message.send",
+              "approval": true,
+              "args": { "body": { "item": true } }
+            }
+          ]
+        }
+      },
+      "expected": { "result": "refuse" },
+      "status": "normative",
+      "note": "map bound above 32"
+    },
+    {
+      "id": "plan.verify.005",
+      "spec": [{ "doc": "L3", "version": "0.1", "section": "R4" }],
+      "operation": "plan-check",
+      "input": {
+        "catalog": [],
+        "plan": {
+          "v": "0.1",
+          "steps": [
+            {
+              "id": "send",
+              "kind": "call",
+              "capability": "urn:sidged:capability:message.send",
+              "approval": true,
+              "args": { "body": { "ref": "later" } }
+            },
+            { "id": "later", "kind": "expr", "expr": "true" }
+          ]
+        }
+      },
+      "expected": { "result": "refuse" },
+      "status": "normative"
+    },
+    {
+      "id": "plan.verify.006",
+      "spec": [{ "doc": "L3", "version": "0.1", "section": "R14" }],
+      "operation": "plan-check",
+      "input": {
+        "catalog": [
+          {
+            "id": "urn:sidged:capability:message.send",
+            "effects": ["egress"],
+            "data_classes": ["communications.content"],
+            "consequential": true,
+            "cost": { "class": "metered", "max": { "amount": "0.02", "currency": "CHF" } }
+          }
+        ],
+        "plan": {
+          "v": "0.1",
+          "budget": { "max": { "amount": "0.01", "currency": "CHF" } },
+          "steps": [
+            {
+              "id": "send",
+              "kind": "call",
+              "capability": "urn:sidged:capability:message.send",
+              "approval": true,
+              "args": { "to": { "lit": "contact:bea" } }
+            }
+          ]
+        }
+      },
+      "expected": { "result": "refuse" },
+      "status": "normative",
+      "note": "metered cost 0.02 exceeds budget 0.01"
+    },
+    {
+      "id": "plan.verify.007",
+      "spec": [{ "doc": "L3", "version": "0.1", "section": "R6" }],
+      "operation": "plan-check",
+      "input": {
+        "catalog": [
+          {
+            "id": "urn:sidged:capability:message.send",
+            "effects": ["egress"],
+            "data_classes": ["communications.content"],
+            "consequential": true,
+            "cost": { "class": "free" }
+          }
+        ],
+        "plan": {
+          "v": "0.1",
+          "steps": [
+            { "id": "slots", "kind": "expr", "expr": "true" },
+            {
+              "id": "each",
+              "kind": "map",
+              "over": { "ref": "slots" },
+              "bound": 3,
+              "capability": "urn:sidged:capability:message.send",
+              "approval": true,
+              "args": { "body": { "item": true } }
+            }
+          ]
+        }
+      },
+      "expected": { "result": "accept" },
+      "status": "normative"
+    },
+    {
+      "id": "plan.verify.008",
+      "spec": [{ "doc": "L3", "version": "0.1", "section": "R11" }],
+      "operation": "plan-check",
+      "input": {
+        "allow": [
+          { "class": "health.records", "capability": "urn:sidged:capability:message.send" }
+        ],
+        "catalog": [
+          {
+            "id": "urn:sidged:capability:records.read",
+            "effects": ["read"],
+            "data_classes": ["health.records"],
+            "consequential": false,
+            "cost": { "class": "free" }
+          },
+          {
+            "id": "urn:sidged:capability:message.send",
+            "effects": ["egress"],
+            "data_classes": ["communications.content"],
+            "consequential": true,
+            "cost": { "class": "free" }
+          }
+        ],
+        "plan": {
+          "v": "0.1",
+          "steps": [
+            {
+              "id": "notes",
+              "kind": "call",
+              "capability": "urn:sidged:capability:records.read",
+              "args": {}
+            },
+            {
+              "id": "send",
+              "kind": "call",
+              "capability": "urn:sidged:capability:message.send",
+              "approval": true,
+              "args": { "body": { "ref": "notes" } }
+            }
+          ]
+        }
+      },
+      "expected": { "result": "accept" },
+      "status": "normative",
+      "note": "the same flow as plan.verify.002 with an explicit allow entry standing in for a later Cedar permit"
+    },
+    {
+      "id": "plan.verify.009",
+      "spec": [{ "doc": "L3", "version": "0.1", "section": "R8" }],
+      "operation": "plan-check",
+      "requires": ["cel"],
+      "input": {
+        "catalog": [],
+        "plan": {
+          "v": "0.1",
+          "steps": [
+            { "id": "free", "kind": "expr", "expr": "true" },
+            { "id": "bad", "kind": "expr", "expr": "free.filter(x, x > 0)" }
+          ]
+        }
+      },
+      "expected": { "result": "refuse" },
+      "status": "normative",
+      "note": "CEL comprehension macro. The structural checker skips this vector."
+    },
+    {
+      "id": "plan.verify.010",
+      "spec": [{ "doc": "L3", "version": "0.1", "section": "R14" }],
+      "operation": "plan-check",
+      "input": {
+        "catalog": [
+          {
+            "id": "urn:sidged:capability:message.send",
+            "effects": ["egress"],
+            "data_classes": ["communications.content"],
+            "consequential": true,
+            "cost": { "class": "metered", "max": { "amount": "0.02", "currency": "CHF" } }
+          }
+        ],
+        "plan": {
+          "v": "0.1",
+          "budget": { "max": { "amount": "1x", "currency": "CHF" } },
+          "steps": [
+            {
+              "id": "send",
+              "kind": "call",
+              "capability": "urn:sidged:capability:message.send",
+              "approval": true,
+              "args": { "to": { "lit": "contact:bea" } }
+            }
+          ]
+        }
+      },
+      "expected": { "result": "refuse" },
+      "status": "normative",
+      "note": "budget.max.amount 1x is not a decimal (common money pattern): refused, not compared"
+    },
+    {
+      "id": "plan.verify.011",
+      "spec": [{ "doc": "L3", "version": "0.1", "section": "R14" }],
+      "operation": "plan-check",
+      "input": {
+        "catalog": [
+          {
+            "id": "urn:sidged:capability:message.send",
+            "effects": ["egress"],
+            "data_classes": ["communications.content"],
+            "consequential": true,
+            "cost": { "class": "metered", "max": { "amount": "-0.02", "currency": "CHF" } }
+          }
+        ],
+        "plan": {
+          "v": "0.1",
+          "budget": { "max": { "amount": "1", "currency": "CHF" } },
+          "steps": [
+            {
+              "id": "send",
+              "kind": "call",
+              "capability": "urn:sidged:capability:message.send",
+              "approval": true,
+              "args": { "to": { "lit": "contact:bea" } }
+            }
+          ]
+        }
+      },
+      "expected": { "result": "refuse" },
+      "status": "normative",
+      "note": "cost amount -0.02 is not a decimal: a negative cost cannot lower the total"
+    },
+    {
+      "id": "plan.verify.012",
+      "spec": [{ "doc": "L3", "version": "0.1", "section": "R14" }],
+      "operation": "plan-check",
+      "input": {
+        "catalog": [
+          {
+            "id": "urn:sidged:capability:message.send",
+            "effects": ["egress"],
+            "data_classes": ["communications.content"],
+            "consequential": true,
+            "cost": { "class": "metered", "max": { "amount": "0.02", "currency": "chf" } }
+          }
+        ],
+        "plan": {
+          "v": "0.1",
+          "budget": { "max": { "amount": "1", "currency": "chf" } },
+          "steps": [
+            {
+              "id": "send",
+              "kind": "call",
+              "capability": "urn:sidged:capability:message.send",
+              "approval": true,
+              "args": { "to": { "lit": "contact:bea" } }
+            }
+          ]
+        }
+      },
+      "expected": { "result": "refuse" },
+      "status": "normative",
+      "note": "currency chf is not an ISO 4217 code (^[A-Z]{3}$)"
+    },
+    {
+      "id": "plan.verify.013",
+      "spec": [{ "doc": "L3", "version": "0.1", "section": "R8a" }],
+      "operation": "plan-check",
+      "input": {
+        "catalog": [],
+        "plan": { "v": "0.1", "steps": [{ "id": "pick", "kind": "expr", "expr": "[[[[1]]]]" }] }
+      },
+      "expected": { "result": "accept" },
+      "status": "normative",
+      "note": "four nested brackets are within the R8a bound"
+    },
+    {
+      "id": "plan.verify.014",
+      "spec": [{ "doc": "L3", "version": "0.1", "section": "R8a" }],
+      "operation": "plan-check",
+      "input": {
+        "catalog": [],
+        "plan": { "v": "0.1", "steps": [{ "id": "pick", "kind": "expr", "expr": "[[[[[1]]]]]" }] }
+      },
+      "expected": { "result": "refuse" },
+      "status": "normative",
+      "note": "five nested brackets exceed the R8a bound; refused before parsing"
+    },
+    {
+      "id": "plan.verify.015",
+      "spec": [{ "doc": "L3", "version": "0.1", "section": "R8a" }],
+      "operation": "plan-check",
+      "input": {
+        "catalog": [],
+        "plan": { "v": "0.1", "steps": [{ "id": "pick", "kind": "expr", "expr": "size('((((((') > 0" }] }
+      },
+      "expected": { "result": "refuse" },
+      "status": "normative",
+      "note": "brackets inside a string literal count toward the R8a bound"
+    },
+    {
+      "id": "plan.verify.016",
+      "spec": [{ "doc": "L3", "version": "0.1", "section": "R10" }],
+      "operation": "plan-check",
+      "input": {
+        "catalog": [
+          {
+            "id": "urn:sidged:capability:records.read",
+            "effects": ["read"],
+            "data_classes": ["health.records"],
+            "consequential": false,
+            "cost": { "class": "free" }
+          },
+          {
+            "id": "urn:sidged:capability:message.send",
+            "effects": ["egress"],
+            "data_classes": ["communications.content"],
+            "consequential": true,
+            "cost": { "class": "free" }
+          }
+        ],
+        "plan": {
+          "v": "0.1",
+          "steps": [
+            { "id": "notes", "kind": "call", "capability": "urn:sidged:capability:records.read", "args": {} },
+            {
+              "id": "each",
+              "kind": "map",
+              "over": { "ref": "notes" },
+              "bound": 5,
+              "capability": "urn:sidged:capability:message.send",
+              "approval": true,
+              "args": { "to": { "lit": "contact:bea" }, "body": { "lit": "ping" } }
+            }
+          ]
+        }
+      },
+      "expected": { "result": "refuse" },
+      "status": "normative",
+      "note": "a map over health.records reaches egress through its repetitions even without the item (implicit flow)"
+    },
+    {
+      "id": "plan.verify.017",
+      "spec": [
+        {
+          "doc": "L3",
+          "version": "0.1",
+          "section": "R4a"
+        }
+      ],
+      "operation": "plan-check",
+      "input": {
+        "catalog": [
+          {
+            "id": "urn:sidged:capability:workspace.read",
+            "effects": [
+              "read"
+            ],
+            "data_classes": [
+              "documents.text"
+            ],
+            "consequential": false,
+            "cost": {
+              "class": "free"
+            },
+            "output_schema": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "text": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "id": "urn:sidged:capability:notes.append",
+            "effects": [
+              "write"
+            ],
+            "data_classes": [
+              "documents.text"
+            ],
+            "consequential": false,
+            "cost": {
+              "class": "free"
+            }
+          }
+        ],
+        "plan": {
+          "v": "0.1",
+          "goal": "Keep a file's text as a note",
+          "steps": [
+            {
+              "id": "read",
+              "kind": "call",
+              "capability": "urn:sidged:capability:workspace.read",
+              "args": {
+                "path": {
+                  "lit": "report.md"
+                }
+              }
+            },
+            {
+              "id": "pick",
+              "kind": "expr",
+              "expr": "read.text"
+            },
+            {
+              "id": "note",
+              "kind": "call",
+              "capability": "urn:sidged:capability:notes.append",
+              "args": {
+                "text": {
+                  "ref": "read",
+                  "field": "text"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative",
+      "note": "a ref with a field the producer's output_schema declares"
+    },
+    {
+      "id": "plan.verify.018",
+      "spec": [
+        {
+          "doc": "L3",
+          "version": "0.1",
+          "section": "R4a"
+        }
+      ],
+      "operation": "plan-check",
+      "input": {
+        "catalog": [
+          {
+            "id": "urn:sidged:capability:workspace.read",
+            "effects": [
+              "read"
+            ],
+            "data_classes": [
+              "documents.text"
+            ],
+            "consequential": false,
+            "cost": {
+              "class": "free"
+            },
+            "output_schema": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "text": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "id": "urn:sidged:capability:notes.append",
+            "effects": [
+              "write"
+            ],
+            "data_classes": [
+              "documents.text"
+            ],
+            "consequential": false,
+            "cost": {
+              "class": "free"
+            }
+          }
+        ],
+        "plan": {
+          "v": "0.1",
+          "goal": "Keep a file's text as a note",
+          "steps": [
+            {
+              "id": "read",
+              "kind": "call",
+              "capability": "urn:sidged:capability:workspace.read",
+              "args": {
+                "path": {
+                  "lit": "report.md"
+                }
+              }
+            },
+            {
+              "id": "pick",
+              "kind": "expr",
+              "expr": "read.text"
+            },
+            {
+              "id": "note",
+              "kind": "call",
+              "capability": "urn:sidged:capability:notes.append",
+              "args": {
+                "text": {
+                  "ref": "read",
+                  "field": "body"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "result": "refuse"
+      },
+      "status": "normative",
+      "note": "a ref with a field the producer's output_schema does not declare"
+    },
+    {
+      "id": "plan.verify.019",
+      "spec": [
+        {
+          "doc": "L3",
+          "version": "0.1",
+          "section": "R4a"
+        }
+      ],
+      "operation": "plan-check",
+      "input": {
+        "catalog": [
+          {
+            "id": "urn:sidged:capability:workspace.read",
+            "effects": [
+              "read"
+            ],
+            "data_classes": [
+              "documents.text"
+            ],
+            "consequential": false,
+            "cost": {
+              "class": "free"
+            },
+            "output_schema": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "text": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "id": "urn:sidged:capability:notes.append",
+            "effects": [
+              "write"
+            ],
+            "data_classes": [
+              "documents.text"
+            ],
+            "consequential": false,
+            "cost": {
+              "class": "free"
+            }
+          }
+        ],
+        "plan": {
+          "v": "0.1",
+          "goal": "Keep a file's text as a note",
+          "steps": [
+            {
+              "id": "read",
+              "kind": "call",
+              "capability": "urn:sidged:capability:workspace.read",
+              "args": {
+                "path": {
+                  "lit": "report.md"
+                }
+              }
+            },
+            {
+              "id": "pick",
+              "kind": "expr",
+              "expr": "read.text"
+            },
+            {
+              "id": "note",
+              "kind": "call",
+              "capability": "urn:sidged:capability:notes.append",
+              "args": {
+                "text": {
+                  "ref": "pick",
+                  "field": "text"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "result": "refuse"
+      },
+      "status": "normative",
+      "note": "an expr step declares no output members, so a field of it is refused"
+    },
+    {
+      "id": "plan.verify.020",
+      "spec": [
+        {
+          "doc": "L3",
+          "version": "0.1",
+          "section": "R6"
+        },
+        {
+          "doc": "L3",
+          "version": "0.1",
+          "section": "R4a"
+        }
+      ],
+      "operation": "plan-check",
+      "input": {
+        "catalog": [
+          {
+            "id": "urn:sidged:capability:calendar.free_slots",
+            "effects": [
+              "read"
+            ],
+            "data_classes": [
+              "calendar.availability"
+            ],
+            "consequential": false,
+            "cost": {
+              "class": "free"
+            },
+            "output_schema": {
+              "type": "object",
+              "properties": {
+                "slots": {
+                  "type": "array"
+                }
+              }
+            }
+          }
+        ],
+        "plan": {
+          "v": "0.1",
+          "goal": "Look at each free slot",
+          "steps": [
+            {
+              "id": "free",
+              "kind": "call",
+              "capability": "urn:sidged:capability:calendar.free_slots",
+              "args": {
+                "range": {
+                  "lit": "next_week"
+                }
+              }
+            },
+            {
+              "id": "each",
+              "kind": "map",
+              "over": {
+                "ref": "free",
+                "field": "slots"
+              },
+              "bound": 4,
+              "capability": "urn:sidged:capability:calendar.free_slots",
+              "args": {
+                "range": {
+                  "item": true
+                }
+              }
+            }
+          ]
+        }
+      },
+      "expected": {
+        "result": "refuse"
+      },
+      "status": "normative",
+      "note": "a map's over is a ref to a whole earlier output; field is only for arguments"
+    },
+    {
+      "id": "plan.verify.021",
+      "spec": [
+        {
+          "doc": "L3",
+          "version": "0.1",
+          "section": "1"
+        }
+      ],
+      "operation": "plan-check",
+      "input": {
+        "catalog": [
+          {
+            "id": "urn:sidged:capability:calendar.free_slots",
+            "effects": [
+              "read"
+            ],
+            "data_classes": [
+              "calendar.availability"
+            ],
+            "consequential": false,
+            "cost": {
+              "class": "free"
+            }
+          }
+        ],
+        "plan": {
+          "v": "0.1",
+          "steps": [
+            {
+              "id": "free",
+              "kind": "call",
+              "capability": "urn:sidged:capability:calendar.free_slots",
+              "args": {
+                "range": {
+                  "lit": "next_week"
+                }
+              },
+              "retry": 3
+            }
+          ]
+        }
+      },
+      "expected": {
+        "result": "refuse"
+      },
+      "status": "normative",
+      "note": "a member the plan schema does not allow (here retry on a step) is refused, never ignored"
+    }
+  ]
+}

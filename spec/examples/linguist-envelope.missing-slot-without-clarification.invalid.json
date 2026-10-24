@@ -1,0 +1,18 @@
+{
+  "v": "0.1",
+  "lang": "gsw",
+  "intent": "scheduling.remind",
+  "slots": {
+    "subject": "the dentist appointment"
+  },
+  "missing_slots": [
+    "time"
+  ],
+  "clarification_needed": false,
+  "clarification_question_local": null,
+  "canonical_intent_en": "Remind me about the dentist appointment <time>",
+  "suggested_route": "edge-local",
+  "required_data_classes": [
+    "calendar.events"
+  ]
+}

@@ -1,0 +1,181 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sidged.com/spec/schemas/capability-token.schema.json",
+  "title": "Sidged Capability Token (v0.1)",
+  "description": "Capability token that grants specific actions on specific resources for a specific audience and time window (Sidged L2). Tokens are short-lived and sender-bound through the cnf member (proof of possession, for example DPoP RFC 9449 or mTLS-bound RFC 8705). On delegation (F6) each hop may only narrow rights, lifetime, and budget, and the full chain is carried so it can be verified end to end (Sidged L2, [C2]). The narrowing rules and the 1 hour maximum lifetime are defined in Sidged L2; they cannot be fully expressed in JSON Schema, so spec/validate performs them as semantic checks. Tokens never override the receiver's local policy. Normative rules are in docs/specs/0002-grant.md. Status: Draft v0.1.",
+  "type": "object",
+  "$ref": "#/$defs/tokenFields",
+  "properties": {
+    "chain": {
+      "description": "Parent tokens, ordered from the root token to the immediate parent. Empty for a root token. Each link is a complete signed token without its own chain (the chain is flattened). For every adjacent pair (parent, child), including the last link and this token: child.iss equals parent.sub, child rights are a subset of parent rights, child exp is not later than parent exp, and child budget does not exceed parent budget.",
+      "type": "array",
+      "maxItems": 16,
+      "items": {
+        "$ref": "#/$defs/link"
+      }
+    }
+  },
+  "required": [
+    "chain"
+  ],
+  "unevaluatedProperties": false,
+  "$defs": {
+    "link": {
+      "type": "object",
+      "$ref": "#/$defs/tokenFields",
+      "unevaluatedProperties": false
+    },
+    "tokenFields": {
+      "type": "object",
+      "required": [
+        "v",
+        "id",
+        "iss",
+        "sub",
+        "aud",
+        "iat",
+        "exp",
+        "cnf",
+        "rights",
+        "sig"
+      ],
+      "properties": {
+        "v": {
+          "$ref": "common.schema.json#/$defs/schemaVersion"
+        },
+        "id": {
+          "description": "Unique token identifier.",
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9._:-]+$"
+        },
+        "iss": {
+          "description": "Issuer: the owner, agent, or runtime that grants the rights. For a delegated token, the holder (sub) of the parent token.",
+          "$ref": "common.schema.json#/$defs/identifier"
+        },
+        "sub": {
+          "description": "Holder: the agent the token is issued to. Only the holder can use the token, proven through cnf.",
+          "$ref": "common.schema.json#/$defs/identifier"
+        },
+        "aud": {
+          "description": "Audience: exactly one agent, device, or provider that accepts the token. Unchanged along a delegation chain (Sidged L2).",
+          "$ref": "common.schema.json#/$defs/identifier"
+        },
+        "iat": {
+          "description": "Issued at.",
+          "$ref": "common.schema.json#/$defs/timestamp"
+        },
+        "nbf": {
+          "description": "Not valid before.",
+          "$ref": "common.schema.json#/$defs/timestamp"
+        },
+        "exp": {
+          "description": "Expiry. At most 1 hour after iat; owner policy MAY set a shorter maximum (Sidged L2). Checked by spec/validate.",
+          "$ref": "common.schema.json#/$defs/timestamp"
+        },
+        "cnf": {
+          "description": "Proof-of-possession confirmation (sender binding), modelled on RFC 7800. At least one member is required.",
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": false,
+          "properties": {
+            "jkt": {
+              "description": "JWK SHA-256 thumbprint (RFC 7638) of the holder key, as used by DPoP (RFC 9449).",
+              "$ref": "common.schema.json#/$defs/base64url"
+            },
+            "x5t#S256": {
+              "description": "Certificate SHA-256 thumbprint for mTLS-bound tokens (RFC 8705).",
+              "$ref": "common.schema.json#/$defs/base64url"
+            },
+            "kid": {
+              "description": "Key identifier of the holder key (for example a DID URL).",
+              "$ref": "common.schema.json#/$defs/identifier"
+            }
+          }
+        },
+        "rights": {
+          "description": "Granted rights. Delegation can remove rights or narrow them, never add or widen them.",
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "items": {
+            "$ref": "#/$defs/right"
+          }
+        },
+        "budget": {
+          "$ref": "#/$defs/budget"
+        },
+        "ext": {
+          "$ref": "common.schema.json#/$defs/ext"
+        },
+        "sig": {
+          "$ref": "common.schema.json#/$defs/signature"
+        }
+      }
+    },
+    "right": {
+      "type": "object",
+      "required": [
+        "action",
+        "resource"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "description": "Capability or action name (MCP-compatible tool or capability name).",
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]*(\\.[a-z0-9_-]+)*$",
+          "maxLength": 128
+        },
+        "resource": {
+          "description": "Resource the action applies to, as a URI. A trailing /* matches every resource below that prefix. A delegated right narrows a parent right if it has the same action and an equal or narrower resource.",
+          "type": "string",
+          "maxLength": 2048,
+          "pattern": "^[A-Za-z][A-Za-z0-9+.-]*:[^\\s]*$"
+        },
+        "constraints": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "max_amount": {
+              "description": "Maximum money per use, for payments.",
+              "$ref": "common.schema.json#/$defs/money"
+            },
+            "max_uses": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "data_classes": {
+              "description": "Data classes the right may touch. A delegated right may only list a subset.",
+              "type": "array",
+              "items": {
+                "$ref": "common.schema.json#/$defs/dataClass"
+              },
+              "uniqueItems": true
+            }
+          }
+        }
+      }
+    },
+    "budget": {
+      "description": "Per-token budget (Sidged L6 rate limits and budgets). A delegated token may only lower each limit, and may not drop a limit the parent set.",
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": false,
+      "properties": {
+        "messages": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "compute_units": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "money": {
+          "$ref": "common.schema.json#/$defs/money"
+        }
+      }
+    }
+  }
+}

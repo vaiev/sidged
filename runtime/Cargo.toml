@@ -1,0 +1,24 @@
+[workspace]
+resolver = "2"
+members = [
+    "sidged-core",
+    "sidged-record",
+    "sidged-capability",
+    "sidged-grant",
+    "sidged-verify",
+    "sidged-mcp",
+    "sidged-gateway",
+    "sidged-log",
+    "sidged-cli",
+    "sidged-model",
+    "sidged-guard",
+    "sidged-tui",
+]
+
+# Shipped artifacts (VM disk, host install): `--profile dist`. Whole-program LTO, one codegen unit
+# and no symbols take the static musl `sidged` from 16.6 MB to 11.3 MB; `release` stays fast for CI.
+[profile.dist]
+inherits = "release"
+lto = true
+codegen-units = 1
+strip = true

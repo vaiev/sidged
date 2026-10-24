@@ -1,0 +1,119 @@
+{
+  "tools": [
+    {
+      "name": "weather.lookup",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "latitude": {
+            "type": "string"
+          },
+          "longitude": {
+            "type": "string"
+          },
+          "current": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "latitude",
+          "longitude",
+          "current"
+        ],
+        "additionalProperties": false
+      },
+      "_meta": {
+        "io.sidged/capability": {
+          "v": "0.1",
+          "id": "urn:sidged:capability:weather.lookup",
+          "title": "Public weather lookup",
+          "description": "Fetch public city weather through the privacy gateway using literal latitude, longitude and current=temperature_2m; no personal location.",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "latitude": {
+                "type": "string"
+              },
+              "longitude": {
+                "type": "string"
+              },
+              "current": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "latitude",
+              "longitude",
+              "current"
+            ],
+            "additionalProperties": false
+          },
+          "effects": [
+            "read",
+            "egress"
+          ],
+          "data_classes": [
+            "x-public.weather"
+          ],
+          "residency": {
+            "tags": [
+              "unrestricted"
+            ]
+          },
+          "cost": {
+            "class": "free"
+          },
+          "consequential": true
+        }
+      }
+    },
+    {
+      "name": "model.complete",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "prompt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "prompt"
+        ]
+      },
+      "_meta": {
+        "io.sidged/capability": {
+          "v": "0.1",
+          "id": "urn:sidged:capability:model.complete",
+          "title": "Summarize public weather",
+          "description": "Summarize public city weather using the configured global provider.",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "prompt": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "prompt"
+            ]
+          },
+          "effects": [
+            "egress"
+          ],
+          "data_classes": [
+            "x-public.weather"
+          ],
+          "residency": {
+            "tags": [
+              "unrestricted"
+            ]
+          },
+          "cost": {
+            "class": "free"
+          },
+          "consequential": true
+        }
+      }
+    }
+  ]
+}

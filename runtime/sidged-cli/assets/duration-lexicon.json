@@ -1,0 +1,43 @@
+{
+  "v": "0.1",
+  "about": "Word forms the timer executor reads in a duration slot (en, de, gsw incl. Bernese, Basel and Zurich forms). A duration is a sum of [number|article] [fraction] unit groups, optionally joined by connectors; fillers (\"a quarter of an hour\") are skipped; anything else is refused. Every form is lowercase and belongs to exactly one entry.",
+  "units": {
+    "1": ["s", "sec", "secs", "second", "seconds", "sek", "sekunde", "sekunden", "sekundä", "sekündli"],
+    "60": ["m", "min", "mins", "minute", "minutes", "minuten", "minutä", "minüt", "minütli", "minüteli"],
+    "900": ["viertelstunde", "viertelstunden", "viertelstund", "viertelschtund", "viertustund", "viertustunde", "viertelstündli", "viertustündli"],
+    "3600": ["h", "hr", "hrs", "hour", "hours", "std", "stunde", "stunden", "stund", "stundä", "stunda", "schtund", "schtunde", "stündli", "stündeli"],
+    "86400": ["d", "day", "days", "tag", "tage", "tagen", "täg", "tääg"]
+  },
+  "articles": ["a", "an", "e", "ä", "es", "en", "ein", "eine", "einen", "einer", "ere", "nere", "eme", "emne", "ne"],
+  "numbers": {
+    "1": ["one", "eins", "eis", "ais"],
+    "2": ["two", "zwei", "zwöi", "zwo", "zwoi", "zwai"],
+    "3": ["three", "drei", "drü", "drüü", "drai"],
+    "4": ["four", "vier", "vieri", "viär"],
+    "5": ["five", "fünf", "füf", "füüf", "foif", "föif"],
+    "6": ["six", "sechs", "sächs"],
+    "7": ["seven", "sieben", "sibe", "sibä", "siebe"],
+    "8": ["eight", "acht", "achti"],
+    "9": ["nine", "neun", "nün", "nüün", "nüni"],
+    "10": ["ten", "zehn", "zäh", "zää", "zäche", "zächä", "zähni", "zächni"],
+    "11": ["eleven", "elf", "elfi", "euf", "eufi"],
+    "12": ["twelve", "zwölf", "zwölfi", "zwöuf", "zwöufi"],
+    "15": ["fifteen", "fünfzehn", "füfzäh", "füfzä", "füfzeh", "füfzächä"],
+    "20": ["twenty", "zwanzig", "zwänzg", "zwänzig", "zwanzg"],
+    "25": ["fünfundzwanzig", "füfezwänzg", "füfezwanzg", "füfezwänzig"],
+    "30": ["thirty", "dreissig", "dreißig", "drissg", "driissg", "drissig", "driissig"],
+    "40": ["forty", "vierzig", "vierzg"],
+    "45": ["fünfundvierzig", "füfevierzg", "füfevierzig"],
+    "50": ["fifty", "fünfzig", "füfzg", "füfzig"],
+    "60": ["sixty", "sechzig", "sächzg", "sächzig"],
+    "90": ["ninety", "neunzig", "nünzg", "nünzig"]
+  },
+  "fractions": {
+    "0.25": ["quarter", "quarters", "viertel", "viertu", "vierteli"],
+    "0.5": ["half", "halb", "halbe", "halben", "halbi", "halbä", "haub", "haube", "haubi"],
+    "0.75": ["dreiviertel", "drüviertel", "drüviertu"],
+    "1.5": ["anderthalb", "andertalb", "anderhalb", "andethalb", "anderthaub", "andethaub", "eineinhalb"]
+  },
+  "connectors": ["and", "und", "u", "plus", "&"],
+  "fillers": ["of", "vo", "von"]
+}

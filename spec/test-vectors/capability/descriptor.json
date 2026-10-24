@@ -1,0 +1,731 @@
+{
+  "category": "capability",
+  "description": "SDG-L1 capability descriptor checks: schema, effect codes, and the consequential and egress rules.",
+  "vectors": [
+    {
+      "id": "capability.descriptor.001",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.1",
+          "section": "R6"
+        }
+      ],
+      "operation": "capability-check",
+      "input": {
+        "descriptor": {
+          "v": "0.1",
+          "id": "urn:sidged:capability:get_current_time",
+          "title": "Get current time",
+          "input_schema": {
+            "type": "object"
+          },
+          "effects": [
+            "read"
+          ],
+          "data_classes": [],
+          "consequential": false
+        }
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative"
+    },
+    {
+      "id": "capability.descriptor.002",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.1",
+          "section": "R9"
+        }
+      ],
+      "operation": "capability-check",
+      "input": {
+        "descriptor": {
+          "v": "0.1",
+          "id": "urn:sidged:capability:drop_file",
+          "title": "Drop a file",
+          "input_schema": {
+            "type": "object"
+          },
+          "effects": [
+            "delete"
+          ],
+          "data_classes": [
+            "documents"
+          ],
+          "consequential": false
+        }
+      },
+      "expected": {
+        "result": "refuse"
+      },
+      "status": "normative"
+    },
+    {
+      "id": "capability.descriptor.003",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.1",
+          "section": "R10"
+        }
+      ],
+      "operation": "capability-check",
+      "input": {
+        "descriptor": {
+          "v": "0.1",
+          "id": "urn:sidged:capability:send_note",
+          "title": "Send a note",
+          "input_schema": {
+            "type": "object"
+          },
+          "effects": [
+            "egress"
+          ],
+          "data_classes": [],
+          "consequential": true
+        }
+      },
+      "expected": {
+        "result": "refuse"
+      },
+      "status": "normative"
+    },
+    {
+      "id": "capability.descriptor.004",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.1",
+          "section": "R6"
+        }
+      ],
+      "operation": "capability-check",
+      "input": {
+        "descriptor": {
+          "v": "0.1",
+          "id": "urn:sidged:capability:ping",
+          "title": "Ping",
+          "input_schema": {
+            "type": "object"
+          },
+          "effects": [
+            "observe"
+          ],
+          "data_classes": [],
+          "consequential": false
+        }
+      },
+      "expected": {
+        "result": "refuse"
+      },
+      "status": "normative"
+    },
+    {
+      "id": "capability.descriptor.005",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.1",
+          "section": "R11"
+        }
+      ],
+      "operation": "capability-check",
+      "input": {
+        "descriptor": {
+          "v": "0.1",
+          "id": "urn:sidged:capability:paid_read",
+          "title": "Paid read",
+          "input_schema": {
+            "type": "object"
+          },
+          "effects": [
+            "read"
+          ],
+          "data_classes": [],
+          "cost": {
+            "class": "metered"
+          },
+          "consequential": false
+        }
+      },
+      "expected": {
+        "result": "refuse"
+      },
+      "status": "normative"
+    },
+    {
+      "id": "capability.descriptor.006",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.1",
+          "section": "R1"
+        }
+      ],
+      "operation": "capability-check",
+      "input": {
+        "descriptor": {
+          "v": "0.1",
+          "id": "urn:sidged:capability:get time",
+          "title": "Get current time",
+          "input_schema": {
+            "type": "object"
+          },
+          "effects": [
+            "read"
+          ],
+          "data_classes": [],
+          "consequential": false
+        }
+      },
+      "expected": {
+        "result": "refuse"
+      },
+      "status": "normative",
+      "note": "a space is outside the identifier character set"
+    },
+    {
+      "id": "capability.descriptor.007",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.1",
+          "section": "R1"
+        }
+      ],
+      "operation": "capability-check",
+      "input": {
+        "descriptor": {
+          "v": "0.1",
+          "id": "urn:sidged:tool:get_current_time",
+          "title": "Get current time",
+          "input_schema": {
+            "type": "object"
+          },
+          "effects": [
+            "read"
+          ],
+          "data_classes": [],
+          "consequential": false
+        }
+      },
+      "expected": {
+        "result": "refuse"
+      },
+      "status": "normative",
+      "note": "the prefix must be urn:sidged:capability:"
+    },
+    {
+      "id": "capability.descriptor.008",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.1",
+          "section": "R1"
+        }
+      ],
+      "operation": "capability-check",
+      "input": {
+        "descriptor": {
+          "v": "0.1",
+          "id": "urn:sidged:capability:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "title": "Get current time",
+          "input_schema": {
+            "type": "object"
+          },
+          "effects": [
+            "read"
+          ],
+          "data_classes": [],
+          "consequential": false
+        }
+      },
+      "expected": {
+        "result": "refuse"
+      },
+      "status": "normative",
+      "note": "more than 128 characters after the prefix"
+    },
+    {
+      "id": "capability.descriptor.009",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.1",
+          "section": "R3"
+        }
+      ],
+      "operation": "capability-check",
+      "input": {
+        "descriptor": {
+          "v": "0.2",
+          "id": "urn:sidged:capability:get_current_time",
+          "title": "Get current time",
+          "input_schema": {
+            "type": "object"
+          },
+          "effects": [
+            "read"
+          ],
+          "data_classes": [],
+          "consequential": false
+        }
+      },
+      "expected": {
+        "result": "refuse"
+      },
+      "status": "normative",
+      "note": "an unimplemented descriptor version fails closed"
+    },
+    {
+      "id": "capability.descriptor.010",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.1",
+          "section": "R4"
+        }
+      ],
+      "operation": "capability-check",
+      "input": {
+        "descriptor": {
+          "v": "0.1",
+          "id": "urn:sidged:capability:get_current_time",
+          "title": "Get current time",
+          "input_schema": {
+            "type": "array"
+          },
+          "effects": [
+            "read"
+          ],
+          "data_classes": [],
+          "consequential": false
+        }
+      },
+      "expected": {
+        "result": "refuse"
+      },
+      "status": "normative",
+      "note": "input_schema.type must be object when present"
+    },
+    {
+      "id": "capability.descriptor.011",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.1",
+          "section": "R5"
+        }
+      ],
+      "operation": "capability-check",
+      "input": {
+        "descriptor": {
+          "v": "0.1",
+          "id": "urn:sidged:capability:get_current_time",
+          "title": "Get current time",
+          "input_schema": {
+            "type": "object"
+          },
+          "effects": [
+            "read"
+          ],
+          "data_classes": [],
+          "consequential": false,
+          "output_schema": {
+            "type": "string"
+          }
+        }
+      },
+      "expected": {
+        "result": "refuse"
+      },
+      "status": "normative",
+      "note": "output_schema.type must be object when present"
+    },
+    {
+      "id": "capability.descriptor.012",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.1",
+          "section": "R5"
+        }
+      ],
+      "operation": "capability-check",
+      "input": {
+        "descriptor": {
+          "v": "0.1",
+          "id": "urn:sidged:capability:get_current_time",
+          "title": "Get current time",
+          "input_schema": {
+            "type": "object"
+          },
+          "effects": [
+            "read"
+          ],
+          "data_classes": [],
+          "consequential": false,
+          "output_schema": {
+            "type": "object",
+            "properties": {
+              "iso": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative",
+      "note": "an object output schema"
+    },
+    {
+      "id": "capability.descriptor.013",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.1",
+          "section": "R7"
+        }
+      ],
+      "operation": "capability-check",
+      "input": {
+        "descriptor": {
+          "v": "0.1",
+          "id": "urn:sidged:capability:get_current_time",
+          "title": "Get current time",
+          "input_schema": {
+            "type": "object"
+          },
+          "effects": [
+            "read"
+          ],
+          "data_classes": [
+            "passwords"
+          ],
+          "consequential": false
+        }
+      },
+      "expected": {
+        "result": "refuse"
+      },
+      "status": "normative",
+      "note": "not a registered class, subclass or x- class"
+    },
+    {
+      "id": "capability.descriptor.014",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.1",
+          "section": "R7"
+        }
+      ],
+      "operation": "capability-check",
+      "input": {
+        "descriptor": {
+          "v": "0.1",
+          "id": "urn:sidged:capability:get_current_time",
+          "title": "Get current time",
+          "input_schema": {
+            "type": "object"
+          },
+          "effects": [
+            "read"
+          ],
+          "data_classes": [
+            "contacts.email",
+            "x-acme.ticket"
+          ],
+          "consequential": false
+        }
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative",
+      "note": "a registered subclass and a private x- class"
+    },
+    {
+      "id": "capability.descriptor.015",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.1",
+          "section": "R6"
+        }
+      ],
+      "operation": "capability-check",
+      "input": {
+        "descriptor": {
+          "v": "0.1",
+          "id": "urn:sidged:capability:get_current_time",
+          "title": "Get current time",
+          "input_schema": {
+            "type": "object"
+          },
+          "effects": [
+            "read",
+            "read"
+          ],
+          "data_classes": [],
+          "consequential": false
+        }
+      },
+      "expected": {
+        "result": "refuse"
+      },
+      "status": "normative",
+      "note": "an effect code repeats"
+    },
+    {
+      "id": "capability.descriptor.016",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.1",
+          "section": "R6"
+        }
+      ],
+      "operation": "capability-check",
+      "input": {
+        "descriptor": {
+          "v": "0.1",
+          "id": "urn:sidged:capability:get_current_time",
+          "title": "Get current time",
+          "input_schema": {
+            "type": "object"
+          },
+          "effects": [],
+          "data_classes": [],
+          "consequential": false
+        }
+      },
+      "expected": {
+        "result": "refuse"
+      },
+      "status": "normative",
+      "note": "effects names at least one code"
+    },
+    {
+      "id": "capability.descriptor.017",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.1",
+          "section": "R9"
+        }
+      ],
+      "operation": "capability-check",
+      "input": {
+        "descriptor": {
+          "v": "0.1",
+          "id": "urn:sidged:capability:get_current_time",
+          "title": "Get current time",
+          "input_schema": {
+            "type": "object"
+          },
+          "effects": [
+            "delete"
+          ],
+          "data_classes": [],
+          "consequential": false
+        }
+      },
+      "expected": {
+        "result": "refuse"
+      },
+      "status": "normative",
+      "note": "delete requires consequential: true"
+    },
+    {
+      "id": "capability.descriptor.018",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.1",
+          "section": "R9"
+        }
+      ],
+      "operation": "capability-check",
+      "input": {
+        "descriptor": {
+          "v": "0.1",
+          "id": "urn:sidged:capability:get_current_time",
+          "title": "Get current time",
+          "input_schema": {
+            "type": "object"
+          },
+          "effects": [
+            "execute"
+          ],
+          "data_classes": [],
+          "consequential": true
+        }
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative",
+      "note": "execute with consequential: true"
+    },
+    {
+      "id": "capability.descriptor.019",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.1",
+          "section": "R11"
+        }
+      ],
+      "operation": "capability-check",
+      "input": {
+        "descriptor": {
+          "v": "0.1",
+          "id": "urn:sidged:capability:get_current_time",
+          "title": "Get current time",
+          "input_schema": {
+            "type": "object"
+          },
+          "effects": [
+            "read"
+          ],
+          "data_classes": [],
+          "consequential": false,
+          "cost": {
+            "class": "free",
+            "max": {
+              "amount": "0.10",
+              "currency": "CHF"
+            }
+          }
+        }
+      },
+      "expected": {
+        "result": "refuse"
+      },
+      "status": "normative",
+      "note": "a free cost has no max"
+    },
+    {
+      "id": "capability.descriptor.020",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.1",
+          "section": "R11"
+        }
+      ],
+      "operation": "capability-check",
+      "input": {
+        "descriptor": {
+          "v": "0.1",
+          "id": "urn:sidged:capability:get_current_time",
+          "title": "Get current time",
+          "input_schema": {
+            "type": "object"
+          },
+          "effects": [
+            "read"
+          ],
+          "data_classes": [],
+          "consequential": false,
+          "cost": {
+            "class": "metered",
+            "max": {
+              "amount": "1e2",
+              "currency": "CHF"
+            }
+          }
+        }
+      },
+      "expected": {
+        "result": "refuse"
+      },
+      "status": "normative",
+      "note": "max.amount is a decimal string"
+    },
+    {
+      "id": "capability.descriptor.021",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.1",
+          "section": "R11"
+        }
+      ],
+      "operation": "capability-check",
+      "input": {
+        "descriptor": {
+          "v": "0.1",
+          "id": "urn:sidged:capability:get_current_time",
+          "title": "Get current time",
+          "input_schema": {
+            "type": "object"
+          },
+          "effects": [
+            "read"
+          ],
+          "data_classes": [],
+          "consequential": false,
+          "cost": {
+            "class": "metered",
+            "max": {
+              "amount": "0.10",
+              "currency": "chf"
+            }
+          }
+        }
+      },
+      "expected": {
+        "result": "refuse"
+      },
+      "status": "normative",
+      "note": "max.currency is an ISO 4217 code"
+    },
+    {
+      "id": "capability.descriptor.022",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.1",
+          "section": "R11"
+        }
+      ],
+      "operation": "capability-check",
+      "input": {
+        "descriptor": {
+          "v": "0.1",
+          "id": "urn:sidged:capability:get_current_time",
+          "title": "Get current time",
+          "input_schema": {
+            "type": "object"
+          },
+          "effects": [
+            "read"
+          ],
+          "data_classes": [],
+          "consequential": false,
+          "cost": {
+            "class": "metered",
+            "max": {
+              "amount": "0.10",
+              "currency": "CHF"
+            }
+          }
+        }
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative",
+      "note": "a metered cost with a decimal max"
+    }
+  ]
+}

@@ -1,0 +1,791 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sidged.com/spec/schemas/provider-manifest.schema.json",
+  "title": "Sidged Provider Manifest (v0.1)",
+  "description": "Signed, versioned, machine-readable description of a provider (Sidged L7), published at a well-known location that can be fetched without authentication. It covers capabilities (models, modalities, context limits, tools), pricing, accepted credentials, retention (Sidged L7), no-training commitment (Sidged L7), regions and residency support (Sidged L7), Oblivious HTTP support (Sidged L7), attestation endpoints (Sidged L7), identified-mode linking (Sidged L7, section 4), model identity (Sidged L7), and the claimed profile as a self-assessment (Sidged L7). Before v1.0 any claim is a self-assessment only and is not a certification. Runtimes treat the provider as P0 unless they verify the claim (Sidged L7); this schema only checks that a claim is internally complete. Status: Draft, not for implementation.",
+  "type": "object",
+  "required": [
+    "v",
+    "provider",
+    "manifest_version",
+    "published",
+    "profile_claim",
+    "models",
+    "model_identity",
+    "pricing",
+    "accepted_credentials",
+    "anonymous_mode",
+    "identified_mode",
+    "training",
+    "retention",
+    "tracking",
+    "regions",
+    "residency_support",
+    "envelope",
+    "ohttp",
+    "attestation",
+    "transparency",
+    "planned_changes",
+    "sig"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "v": {
+      "$ref": "common.schema.json#/$defs/schemaVersion"
+    },
+    "provider": {
+      "type": "object",
+      "required": [
+        "id",
+        "name"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/$defs/identifier"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "contact": {
+          "$ref": "common.schema.json#/$defs/uri"
+        }
+      }
+    },
+    "manifest_version": {
+      "description": "Manifest version; increases with every change (Sidged L7).",
+      "type": "integer",
+      "minimum": 1
+    },
+    "published": {
+      "$ref": "common.schema.json#/$defs/timestamp"
+    },
+    "profile_claim": {
+      "description": "Claimed provider profile (Sidged L7). basis is fixed to self-assessment before v1.0. A manifest MAY claim P0.",
+      "type": "object",
+      "required": [
+        "profile",
+        "basis",
+        "against"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "profile": {
+          "$ref": "common.schema.json#/$defs/providerProfile"
+        },
+        "basis": {
+          "const": "self-assessment"
+        },
+        "against": {
+          "description": "Draft the self-assessment refers to.",
+          "const": "Sidged L7 draft v0.1"
+        },
+        "self_assessment": {
+          "description": "Link to the published self-assessment with evidence per rule.",
+          "$ref": "common.schema.json#/$defs/httpsUrl"
+        }
+      },
+      "if": {
+        "properties": {
+          "profile": {
+            "enum": [
+              "P1",
+              "P2",
+              "P3"
+            ]
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "self_assessment"
+        ]
+      }
+    },
+    "runtime_request_header": {
+      "description": "Request header that marks a request as a runtime request (Sidged L7), if the provider uses one.",
+      "type": "string",
+      "pattern": "^[A-Za-z0-9-]+$",
+      "maxLength": 64
+    },
+    "models": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/model"
+      },
+      "maxItems": 256
+    },
+    "tools": {
+      "description": "Tools or services offered besides models (search, content, payment).",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_-]*(\\.[a-z0-9_-]+)*$"
+      },
+      "uniqueItems": true
+    },
+    "pricing": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "item",
+          "unit",
+          "price"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "item": {
+            "description": "Model id or tool name.",
+            "type": "string",
+            "maxLength": 256
+          },
+          "unit": {
+            "description": "Billing unit, for example 1k-input-tokens, request, minute.",
+            "type": "string",
+            "maxLength": 64
+          },
+          "price": {
+            "$ref": "common.schema.json#/$defs/money"
+          }
+        }
+      }
+    },
+    "accepted_credentials": {
+      "description": "Credentials accepted for authorisation and quota (Sidged L7).",
+      "type": "array",
+      "items": {
+        "enum": [
+          "privacy-pass",
+          "blind-signature",
+          "prepaid-token",
+          "api-key",
+          "account",
+          "none"
+        ]
+      },
+      "uniqueItems": true,
+      "minItems": 1
+    },
+    "anonymous_mode": {
+      "description": "Anonymous mode without an account tied to a real-world identity (Sidged L7).",
+      "type": "boolean"
+    },
+    "unlinkable_billing": {
+      "description": "Billing is unlinkable from usage (Sidged L7, [P2]).",
+      "type": "boolean"
+    },
+    "identified_mode": {
+      "description": "Identified mode and the linking it implies (Sidged L7, section 4).",
+      "type": "object",
+      "required": [
+        "offered"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "offered": {
+          "type": "boolean"
+        },
+        "linking": {
+          "description": "Plain-language description of how requests are linked to the account.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        }
+      },
+      "if": {
+        "properties": {
+          "offered": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "linking"
+        ]
+      }
+    },
+    "training": {
+      "description": "Commitment not to train on, fine-tune on, or build profiles from runtime requests or responses (Sidged L7).",
+      "type": "object",
+      "required": [
+        "no_training",
+        "no_profiling"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "no_training": {
+          "type": "boolean"
+        },
+        "no_profiling": {
+          "type": "boolean"
+        }
+      }
+    },
+    "retention": {
+      "description": "Retention of runtime request and response content after delivery (Sidged L7), as an ISO 8601 duration. PT0S means none. A non-zero window must state its purpose: abuse handling or legal duty.",
+      "type": "object",
+      "required": [
+        "content_window",
+        "logs_exclude_content",
+        "logs_no_persistent_ids"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "content_window": {
+          "$ref": "common.schema.json#/$defs/duration"
+        },
+        "purpose": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "abuse-handling",
+              "legal-duty"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "logs_exclude_content": {
+          "type": "boolean"
+        },
+        "logs_no_persistent_ids": {
+          "type": "boolean"
+        },
+        "evidence": {
+          "description": "Attestation or audit evidence covering the window ([P3]).",
+          "$ref": "common.schema.json#/$defs/httpsUrl"
+        }
+      },
+      "if": {
+        "properties": {
+          "content_window": {
+            "not": {
+              "pattern": "^P(T0+S|0+D)$"
+            }
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "purpose"
+        ],
+        "properties": {
+          "purpose": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    "tracking": {
+      "description": "No tracking or fingerprinting for runtime requests, relay acceptance, and clean responses (Sidged L7).",
+      "type": "object",
+      "required": [
+        "no_tracking",
+        "accepts_relays",
+        "no_response_identifiers"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "no_tracking": {
+          "type": "boolean"
+        },
+        "accepts_relays": {
+          "type": "boolean"
+        },
+        "no_response_identifiers": {
+          "type": "boolean"
+        }
+      }
+    },
+    "regions": {
+      "description": "Regions where runtime requests are processed (ISO 3166-1 alpha-2 codes).",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z]{2}$"
+      },
+      "uniqueItems": true,
+      "minItems": 1
+    },
+    "residency_support": {
+      "description": "Residency tags the provider honours (Sidged L7). Requests with any other tag are refused.",
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/residencyTag"
+      },
+      "uniqueItems": true
+    },
+    "envelope": {
+      "description": "Sidged Envelope support (Sidged L7). P2 and above require the Sidged Envelope itself; equivalent mappings are not accepted.",
+      "type": "object",
+      "required": [
+        "accepted"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "accepted": {
+          "type": "boolean"
+        },
+        "versions": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/versionString"
+          },
+          "uniqueItems": true
+        },
+        "endpoint": {
+          "$ref": "common.schema.json#/$defs/httpsUrl"
+        }
+      },
+      "if": {
+        "properties": {
+          "accepted": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "versions",
+          "endpoint"
+        ]
+      }
+    },
+    "ohttp": {
+      "description": "Oblivious HTTP gateway (RFC 9458) for non-streaming requests (Sidged L7, [P2]).",
+      "type": "object",
+      "required": [
+        "supported"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "supported": {
+          "type": "boolean"
+        },
+        "gateway": {
+          "$ref": "common.schema.json#/$defs/httpsUrl"
+        },
+        "key_config": {
+          "description": "URL of the published key configuration.",
+          "$ref": "common.schema.json#/$defs/httpsUrl"
+        }
+      },
+      "if": {
+        "properties": {
+          "supported": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "gateway",
+          "key_config"
+        ]
+      }
+    },
+    "attestation": {
+      "description": "Confidential and attested inference (Sidged L7).",
+      "type": "object",
+      "required": [
+        "confidential_computing",
+        "endpoints"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "confidential_computing": {
+          "type": "boolean"
+        },
+        "endpoints": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/httpsUrl"
+          },
+          "uniqueItems": true
+        },
+        "reference_values": {
+          "description": "Published reference values used to verify attestation offline.",
+          "$ref": "common.schema.json#/$defs/httpsUrl"
+        }
+      }
+    },
+    "transparency": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "log_entry": {
+          "description": "Entry of this manifest in a public transparency log (Sidged L7, [P2]).",
+          "$ref": "common.schema.json#/$defs/uri"
+        },
+        "reports": {
+          "description": "Periodic transparency reports (Sidged L7, [P2]).",
+          "$ref": "common.schema.json#/$defs/httpsUrl"
+        },
+        "audit": {
+          "description": "Independent third-party audit (Sidged L7, [P2]).",
+          "type": "object",
+          "required": [
+            "auditor",
+            "summary",
+            "issued",
+            "valid_until"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "auditor": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "summary": {
+              "$ref": "common.schema.json#/$defs/httpsUrl"
+            },
+            "credential": {
+              "description": "Audit statement as a Verifiable Credential (SHOULD, Sidged L7).",
+              "$ref": "common.schema.json#/$defs/uri"
+            },
+            "issued": {
+              "$ref": "common.schema.json#/$defs/timestamp"
+            },
+            "valid_until": {
+              "description": "At most two years after issued (Sidged L7; checked by spec/validate).",
+              "$ref": "common.schema.json#/$defs/timestamp"
+            }
+          }
+        }
+      }
+    },
+    "planned_changes": {
+      "description": "Material changes to model or policy, announced before they take effect (Sidged L7), including planned profile drops (Sidged L7).",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "effective",
+          "summary"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "effective": {
+            "$ref": "common.schema.json#/$defs/timestamp"
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "new_profile": {
+            "$ref": "common.schema.json#/$defs/providerProfile"
+          }
+        }
+      }
+    },
+    "model_identity": {
+      "description": "How every response carries the model identity (name, version, region) and the currently claimed profile (Sidged L7): in the response envelope (model_ref) or, without envelope support, in the named response header.",
+      "type": "object",
+      "required": [
+        "carrier"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "carrier": {
+          "enum": [
+            "envelope",
+            "header"
+          ]
+        },
+        "header": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9-]+$",
+          "maxLength": 64
+        }
+      },
+      "if": {
+        "properties": {
+          "carrier": {
+            "const": "header"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "header"
+        ]
+      }
+    },
+    "ext": {
+      "$ref": "common.schema.json#/$defs/ext"
+    },
+    "sig": {
+      "description": "Manifest signature; signer is the provider identity.",
+      "allOf": [
+        {
+          "$ref": "common.schema.json#/$defs/signature"
+        },
+        {
+          "required": [
+            "signer"
+          ]
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "description": "P1 and above: every [P1] rule that a manifest can state (Sidged L7).",
+      "if": {
+        "properties": {
+          "profile_claim": {
+            "properties": {
+              "profile": {
+                "enum": [
+                  "P1",
+                  "P2",
+                  "P3"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "anonymous_mode": {
+            "const": true
+          },
+          "training": {
+            "properties": {
+              "no_training": {
+                "const": true
+              },
+              "no_profiling": {
+                "const": true
+              }
+            }
+          },
+          "retention": {
+            "properties": {
+              "logs_exclude_content": {
+                "const": true
+              },
+              "logs_no_persistent_ids": {
+                "const": true
+              }
+            }
+          },
+          "tracking": {
+            "properties": {
+              "no_tracking": {
+                "const": true
+              },
+              "accepts_relays": {
+                "const": true
+              },
+              "no_response_identifiers": {
+                "const": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "description": "P2 and above: anonymous credentials, unlinkable billing, OHTTP, envelope and residency, transparency log and reports, independent audit (Sidged L7).",
+      "if": {
+        "properties": {
+          "profile_claim": {
+            "properties": {
+              "profile": {
+                "enum": [
+                  "P2",
+                  "P3"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "unlinkable_billing"
+        ],
+        "properties": {
+          "accepted_credentials": {
+            "anyOf": [
+              {
+                "contains": {
+                  "const": "privacy-pass"
+                }
+              },
+              {
+                "contains": {
+                  "const": "blind-signature"
+                }
+              }
+            ]
+          },
+          "unlinkable_billing": {
+            "const": true
+          },
+          "ohttp": {
+            "properties": {
+              "supported": {
+                "const": true
+              }
+            }
+          },
+          "envelope": {
+            "properties": {
+              "accepted": {
+                "const": true
+              }
+            }
+          },
+          "residency_support": {
+            "minItems": 1
+          },
+          "transparency": {
+            "required": [
+              "log_entry",
+              "reports",
+              "audit"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "description": "P3: attested retention and attested confidential inference (Sidged L7, section 5).",
+      "if": {
+        "properties": {
+          "profile_claim": {
+            "properties": {
+              "profile": {
+                "const": "P3"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "retention": {
+            "required": [
+              "evidence"
+            ]
+          },
+          "attestation": {
+            "required": [
+              "reference_values"
+            ],
+            "properties": {
+              "confidential_computing": {
+                "const": true
+              },
+              "endpoints": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "description": "Model identity travels in the envelope only if the provider accepts envelopes (Sidged L7).",
+      "if": {
+        "properties": {
+          "envelope": {
+            "properties": {
+              "accepted": {
+                "const": false
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "model_identity": {
+            "properties": {
+              "carrier": {
+                "const": "header"
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "model": {
+      "description": "Model identity and capabilities (Sidged L7, section 8).",
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "version",
+        "modalities",
+        "regions"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._:/-]+$",
+          "maxLength": 256
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "modalities": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "enum": [
+              "text",
+              "image",
+              "audio",
+              "video",
+              "embedding"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "context_tokens": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "tools": {
+          "description": "Whether the model supports tool calls.",
+          "type": "boolean"
+        },
+        "streaming": {
+          "type": "boolean"
+        },
+        "regions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z]{2}$"
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        },
+        "measurement": {
+          "description": "Published code or model identity bound by attestation ([P3]).",
+          "$ref": "common.schema.json#/$defs/digest"
+        }
+      }
+    }
+  }
+}

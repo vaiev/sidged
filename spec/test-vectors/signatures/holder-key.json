@@ -1,0 +1,88 @@
+{
+  "category": "signatures",
+  "description": "Ed25519 did:key resolution and RFC 7638 cnf.jkt binding for SDG-L2 R8, using the RFC 8032 section 7.1 test public keys. TEST ONLY.",
+  "vectors": [
+    {
+      "id": "signature.did-key.001",
+      "spec": [{ "doc": "L2", "version": "0.1", "section": "R8" }],
+      "operation": "did-key",
+      "requires": ["EdDSA"],
+      "input": { "public_key_hex": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a" },
+      "expected": { "value": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw" },
+      "status": "normative",
+      "note": "RFC 8032 test 1 public key as an Ed25519 did:key"
+    },
+    {
+      "id": "signature.did-key.002",
+      "spec": [{ "doc": "L2", "version": "0.1", "section": "R8" }],
+      "operation": "did-key",
+      "requires": ["EdDSA"],
+      "input": { "did": "did:key:z6MkiaMbhXHNA4eJVCCj8dbzKzTgYDKf6crKgHVHid1F1WCT" },
+      "expected": { "value": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c" },
+      "status": "normative",
+      "note": "Resolve RFC 8032 test 2"
+    },
+    {
+      "id": "signature.jwk-thumbprint.001",
+      "spec": [{ "doc": "L2", "version": "0.1", "section": "R8" }],
+      "operation": "jwk-thumbprint",
+      "requires": ["EdDSA"],
+      "input": { "public_key_hex": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a" },
+      "expected": { "value": "kPrK_qmxVWaYVA9wwBF6Iuo3vVzz7TxHCTwXBygrS4k" },
+      "status": "normative",
+      "note": "RFC 7638 thumbprint of the OKP JWK for test key 1"
+    },
+    {
+      "id": "signature.jwk-thumbprint.002",
+      "spec": [{ "doc": "L2", "version": "0.1", "section": "R8" }],
+      "operation": "jwk-thumbprint",
+      "requires": ["EdDSA"],
+      "input": { "public_key_hex": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c" },
+      "expected": { "value": "FtIu-VbGrfe_KB6CH7GNwODB72MNxj_ml11dEvO-7kk" },
+      "status": "normative",
+      "note": "RFC 7638 thumbprint of test key 2"
+    },
+    {
+      "id": "signature.holder-bind.001",
+      "spec": [{ "doc": "L2", "version": "0.1", "section": "R8" }],
+      "operation": "holder-bind",
+      "requires": ["EdDSA"],
+      "input": {
+        "sub": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+        "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+        "jkt": "kPrK_qmxVWaYVA9wwBF6Iuo3vVzz7TxHCTwXBygrS4k"
+      },
+      "expected": { "result": "accept" },
+      "status": "normative",
+      "note": "cnf.kid names the holder and cnf.jkt is that key's thumbprint"
+    },
+    {
+      "id": "signature.holder-bind.002",
+      "spec": [{ "doc": "L2", "version": "0.1", "section": "R8" }],
+      "operation": "holder-bind",
+      "requires": ["EdDSA"],
+      "input": {
+        "sub": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+        "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+        "jkt": "FtIu-VbGrfe_KB6CH7GNwODB72MNxj_ml11dEvO-7kk"
+      },
+      "expected": { "result": "refuse" },
+      "status": "normative",
+      "note": "Thumbprint of a different key"
+    },
+    {
+      "id": "signature.holder-bind.003",
+      "spec": [{ "doc": "L2", "version": "0.1", "section": "R8" }],
+      "operation": "holder-bind",
+      "requires": ["EdDSA"],
+      "input": {
+        "sub": "did:example:alice",
+        "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+        "jkt": "kPrK_qmxVWaYVA9wwBF6Iuo3vVzz7TxHCTwXBygrS4k"
+      },
+      "expected": { "result": "refuse" },
+      "status": "normative",
+      "note": "cnf.kid does not name sub"
+    }
+  ]
+}

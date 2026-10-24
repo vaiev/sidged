@@ -1,0 +1,2996 @@
+{
+  "v": "0.2",
+  "about": "Synthetic surface forms for the companion linguist (Model -1). Frames use {slot} placeholders of the runtime intent catalog; pool entries give a canonical English value and surface forms per language. A plain string is verbatim in every language. eval_frames never appear in training. Swiss German frames may name dialect nodes (<node>, dialect_lexicon.json), realized per region.",
+  "pools": {
+    "person": [
+      "Anna",
+      "Marco",
+      "Lea",
+      "Jonas",
+      "Sara",
+      "Luca",
+      "Nina",
+      "David",
+      "Mia",
+      "Elias",
+      "Laura",
+      "Reto",
+      "Petra",
+      "Beat",
+      "Sandra",
+      "Noah"
+    ],
+    "file_name": [
+      "report.pdf",
+      "notes.md",
+      "budget-2026.xlsx",
+      "protokoll.docx",
+      "README.md",
+      "offerte_v2.pdf",
+      "meeting-notes.txt",
+      "plan.odt",
+      "slides.pptx"
+    ],
+    "folder": [
+      "Documents",
+      "Downloads",
+      "Desktop",
+      "Projekte",
+      "Archiv",
+      "Fotos",
+      "Work"
+    ],
+    "quoted_text": [
+      "\"Guten Morgen zusammen\"",
+      "\"See you soon\"",
+      "\"Merci vielmal\"",
+      "\"Wir sehen uns am Montag\"",
+      "\"Happy birthday\""
+    ],
+    "msg_topic": [
+      {
+        "en": [
+          "dinner on Friday"
+        ],
+        "de": [
+          "Abendessen am Freitag"
+        ],
+        "gsw": [
+          "Znacht am Friitig",
+          "z Nachtässe am Fritig",
+          "Znacht am Fritig",
+          "Nachtässe am Friitig"
+        ]
+      },
+      {
+        "en": [
+          "tomorrow's meeting",
+          "the meeting tomorrow"
+        ],
+        "de": [
+          "Meeting morgen",
+          "Sitzung morgen"
+        ],
+        "gsw": [
+          "Sitzig morn",
+          "Meeting morn",
+          "Meeting vo morn",
+          "Sitzig vo morn"
+        ]
+      },
+      {
+        "en": [
+          "the project deadline"
+        ],
+        "de": [
+          "Projekt-Deadline"
+        ],
+        "gsw": [
+          "Projäkt-Deadline"
+        ]
+      },
+      {
+        "en": [
+          "the trip to Bern"
+        ],
+        "de": [
+          "Ausflug nach Bern"
+        ],
+        "gsw": [
+          "Uusflug uf Bärn",
+          "Usflug uf Bärn"
+        ]
+      },
+      {
+        "en": [
+          "the delayed train",
+          "the train delay"
+        ],
+        "de": [
+          "Zugverspätung"
+        ],
+        "gsw": [
+          "Zugsverspätig"
+        ]
+      },
+      {
+        "en": [
+          "next week's training",
+          "training next week"
+        ],
+        "de": [
+          "Training nächste Woche"
+        ],
+        "gsw": [
+          "Training nächst Wuche",
+          "Training nächschti Wuche"
+        ]
+      },
+      {
+        "en": [
+          "the shopping list"
+        ],
+        "de": [
+          "Einkaufsliste"
+        ],
+        "gsw": [
+          "Poschtiliste",
+          "Ichoufsliste"
+        ]
+      },
+      {
+        "en": [
+          "the birthday party"
+        ],
+        "de": [
+          "Geburtstagsparty"
+        ],
+        "gsw": [
+          "Geburtstagsfescht",
+          "Geburi-Party"
+        ]
+      },
+      {
+        "en": [
+          "the open invoice",
+          "the unpaid bill"
+        ],
+        "de": [
+          "offene Rechnung"
+        ],
+        "gsw": [
+          "offni Rächnig"
+        ]
+      },
+      {
+        "en": [
+          "the holiday plans",
+          "our vacation plans"
+        ],
+        "de": [
+          "Ferienpläne"
+        ],
+        "gsw": [
+          "Ferieplän"
+        ]
+      },
+      {
+        "en": [
+          "the training",
+          "the move"
+        ],
+        "de": [
+          "Training",
+          "Umzug"
+        ],
+        "gsw": [
+          "Training",
+          "Zügle",
+          "Umzug"
+        ]
+      },
+      {
+        "en": [
+          "the holidays"
+        ],
+        "de": [
+          "Ferien",
+          "Urlaub"
+        ],
+        "gsw": [
+          "Ferie",
+          "Ferielager"
+        ]
+      }
+    ],
+    "code_description": [
+      {
+        "canonical": "a parser for CSV files",
+        "en": [
+          "a parser for CSV files",
+          "a CSV parser"
+        ],
+        "de": [
+          "einen Parser für CSV-Dateien"
+        ],
+        "gsw": [
+          "en Parser für CSV-Dateie",
+          "e Parser für CSV-Files"
+        ]
+      },
+      {
+        "canonical": "a function that sorts a list by date",
+        "en": [
+          "a function that sorts a list by date"
+        ],
+        "de": [
+          "eine Funktion, die eine Liste nach Datum sortiert"
+        ],
+        "gsw": [
+          "e Funktion wo e Lischte nach Datum sortiert"
+        ]
+      },
+      {
+        "canonical": "a unit test for the login",
+        "en": [
+          "a unit test for the login"
+        ],
+        "de": [
+          "einen Unit-Test für das Login"
+        ],
+        "gsw": [
+          "en Unit-Test fürs Login"
+        ]
+      },
+      {
+        "canonical": "a small web server",
+        "en": [
+          "a small web server",
+          "a tiny web server"
+        ],
+        "de": [
+          "einen kleinen Webserver"
+        ],
+        "gsw": [
+          "en chliine Webserver",
+          "e chline Webserver"
+        ]
+      },
+      {
+        "canonical": "a script that renames photos",
+        "en": [
+          "a script that renames photos"
+        ],
+        "de": [
+          "ein Skript, das Fotos umbenennt"
+        ],
+        "gsw": [
+          "es Skript wo Fötteli umbenennt"
+        ]
+      },
+      {
+        "canonical": "a command line tool for notes",
+        "en": [
+          "a command line tool for notes",
+          "a CLI for notes"
+        ],
+        "de": [
+          "ein Kommandozeilen-Tool für Notizen"
+        ],
+        "gsw": [
+          "es Kommandozeile-Tool für Notize"
+        ]
+      },
+      {
+        "canonical": "a fix for the off-by-one bug in the pager",
+        "en": [
+          "a fix for the off-by-one bug in the pager"
+        ],
+        "de": [
+          "einen Fix für den Off-by-one-Fehler im Pager"
+        ],
+        "gsw": [
+          "en Fix für de Off-by-one-Fähler im Pager"
+        ]
+      },
+      {
+        "canonical": "a JSON schema validator",
+        "en": [
+          "a JSON schema validator"
+        ],
+        "de": [
+          "einen JSON-Schema-Validator"
+        ],
+        "gsw": [
+          "en JSON-Schema-Validator"
+        ]
+      }
+    ],
+    "code_language": [
+      "Rust",
+      "Python",
+      "TypeScript",
+      "Go",
+      "Kotlin",
+      "Java",
+      "C"
+    ],
+    "search_subject": [
+      {
+        "canonical": "the opening hours of the library",
+        "en": [
+          "the opening hours of the library",
+          "library opening hours"
+        ],
+        "de": [
+          "die Öffnungszeiten der Bibliothek"
+        ],
+        "gsw": [
+          "d Öffnigsziite vo de Bibliothek",
+          "d Öffnigszyte vor Bibliothek"
+        ]
+      },
+      {
+        "canonical": "train connections to Lucerne",
+        "en": [
+          "train connections to Lucerne"
+        ],
+        "de": [
+          "Zugverbindungen nach Luzern"
+        ],
+        "gsw": [
+          "Zugsverbindige uf Luzärn",
+          "Zugverbindige nach Luzärn"
+        ]
+      },
+      {
+        "canonical": "the weather this weekend",
+        "en": [
+          "the weather this weekend",
+          "this weekend's weather"
+        ],
+        "de": [
+          "das Wetter am Wochenende"
+        ],
+        "gsw": [
+          "s Wätter am Wuchenänd",
+          "ds Wätter am Wucheänd"
+        ]
+      },
+      {
+        "canonical": "heat pumps",
+        "en": [
+          "heat pumps"
+        ],
+        "de": [
+          "Wärmepumpen"
+        ],
+        "gsw": [
+          "Wärmepumpe"
+        ]
+      },
+      {
+        "canonical": "recipes for rösti",
+        "en": [
+          "recipes for rösti",
+          "rösti recipes"
+        ],
+        "de": [
+          "Rezepte für Rösti"
+        ],
+        "gsw": [
+          "Rezept für Röschti"
+        ]
+      },
+      {
+        "canonical": "the history of the Gotthard tunnel",
+        "en": [
+          "the history of the Gotthard tunnel"
+        ],
+        "de": [
+          "die Geschichte des Gotthardtunnels"
+        ],
+        "gsw": [
+          "d Gschicht vom Gotthardtunnel"
+        ]
+      },
+      {
+        "canonical": "hiking trails near Zug",
+        "en": [
+          "hiking trails near Zug"
+        ],
+        "de": [
+          "Wanderwege bei Zug"
+        ],
+        "gsw": [
+          "Wanderwäg bi Zug"
+        ]
+      },
+      {
+        "canonical": "the rules of Jass",
+        "en": [
+          "the rules of Jass",
+          "Jass rules"
+        ],
+        "de": [
+          "die Jass-Regeln"
+        ],
+        "gsw": [
+          "d Jassregle"
+        ]
+      },
+      {
+        "canonical": "electric bikes",
+        "en": [
+          "electric bikes",
+          "e-bikes"
+        ],
+        "de": [
+          "E-Bikes"
+        ],
+        "gsw": [
+          "E-Bikes",
+          "Elektrovelos"
+        ]
+      }
+    ],
+    "timeframe": [
+      {
+        "en": [
+          "next week"
+        ],
+        "de": [
+          "nächste Woche"
+        ],
+        "gsw": [
+          "nächst Wuche",
+          "nächschti Wuche",
+          "die nächst Wuche"
+        ]
+      },
+      {
+        "en": [
+          "on Thursday afternoon",
+          "Thursday afternoon"
+        ],
+        "de": [
+          "am Donnerstagnachmittag"
+        ],
+        "gsw": [
+          "am Dunschtignamittag",
+          "am Donnschtignamitag"
+        ]
+      },
+      {
+        "en": [
+          "tomorrow morning"
+        ],
+        "de": [
+          "morgen Vormittag",
+          "morgen früh"
+        ],
+        "gsw": [
+          "morn am Vormittag",
+          "morn am Morge"
+        ]
+      },
+      {
+        "en": [
+          "this Friday"
+        ],
+        "de": [
+          "diesen Freitag"
+        ],
+        "gsw": [
+          "dä Friitig",
+          "dä Fritig",
+          "am Friitig"
+        ]
+      },
+      {
+        "en": [
+          "early next month",
+          "at the start of next month"
+        ],
+        "de": [
+          "Anfang nächsten Monat"
+        ],
+        "gsw": [
+          "Afang nächste Monet",
+          "aafangs nächschte Monet"
+        ]
+      },
+      {
+        "en": [
+          "on Monday at 10",
+          "Monday at 10am"
+        ],
+        "de": [
+          "am Montag um 10 Uhr"
+        ],
+        "gsw": [
+          "am Mäntig am zähni",
+          "am Mändig am zäni"
+        ]
+      },
+      {
+        "en": [
+          "on Friday",
+          "this weekend"
+        ],
+        "de": [
+          "am Freitag",
+          "am Wochenende"
+        ],
+        "gsw": [
+          "am Fritig",
+          "am Wuchenänd",
+          "am Wucheänd"
+        ]
+      },
+      {
+        "en": [
+          "tomorrow"
+        ],
+        "de": [
+          "morgen"
+        ],
+        "gsw": [
+          "morn",
+          "moorn"
+        ]
+      }
+    ],
+    "reminder_time": [
+      {
+        "en": [
+          "tomorrow at 8",
+          "tomorrow at 8am"
+        ],
+        "de": [
+          "morgen um 8",
+          "morgen um acht Uhr"
+        ],
+        "gsw": [
+          "morn am achti",
+          "morn am 8i",
+          "morn am achti am Morge",
+          "morn am Morge am achti"
+        ]
+      },
+      {
+        "en": [
+          "today at 5pm",
+          "at 5 this afternoon"
+        ],
+        "de": [
+          "heute um 17 Uhr"
+        ],
+        "gsw": [
+          "hüt am füfi",
+          "hüt am föifi"
+        ]
+      },
+      {
+        "en": [
+          "in 20 minutes"
+        ],
+        "de": [
+          "in 20 Minuten"
+        ],
+        "gsw": [
+          "in 20 Minute",
+          "i 20 Minute"
+        ]
+      },
+      {
+        "en": [
+          "on Monday morning",
+          "Monday morning"
+        ],
+        "de": [
+          "am Montagmorgen"
+        ],
+        "gsw": [
+          "am Mäntigmorge",
+          "am Mändigmorge",
+          "am Mänti am Morge",
+          "Mändig am Morge"
+        ]
+      },
+      {
+        "en": [
+          "this evening",
+          "tonight"
+        ],
+        "de": [
+          "heute Abend"
+        ],
+        "gsw": [
+          "hüt am Abig",
+          "hüt z Abe",
+          "hüt am Abe",
+          "hütt z Obe"
+        ]
+      },
+      {
+        "en": [
+          "on Friday at 2pm"
+        ],
+        "de": [
+          "am Freitag um 14 Uhr"
+        ],
+        "gsw": [
+          "am Friitig am zwei",
+          "am Fritig am zwöi"
+        ]
+      },
+      {
+        "en": [
+          "in an hour",
+          "in one hour"
+        ],
+        "de": [
+          "in einer Stunde"
+        ],
+        "gsw": [
+          "in ere Stund",
+          "inere Stund",
+          "innere Stund",
+          "ines Stündli"
+        ]
+      },
+      {
+        "en": [
+          "on Sunday evening"
+        ],
+        "de": [
+          "am Sonntagabend"
+        ],
+        "gsw": [
+          "am Sunntigabig",
+          "am Sunntig z Abe"
+        ]
+      },
+      {
+        "en": [
+          "at noon"
+        ],
+        "de": [
+          "um 12 Uhr mittags",
+          "am Mittag"
+        ],
+        "gsw": [
+          "am Mittag",
+          "am Zmittag"
+        ]
+      },
+      {
+        "en": [
+          "tomorrow at 7",
+          "tomorrow morning"
+        ],
+        "de": [
+          "morgen früh",
+          "morgen um sieben"
+        ],
+        "gsw": [
+          "morn am sibni",
+          "morn am Morge",
+          "morn früe"
+        ]
+      },
+      {
+        "en": [
+          "at half past eight",
+          "at 8.30"
+        ],
+        "de": [
+          "um halb neun",
+          "um 8.30"
+        ],
+        "gsw": [
+          "am halbi nüni",
+          "am haubi nüni",
+          "am 8.30"
+        ]
+      },
+      {
+        "en": [
+          "on Wednesday afternoon"
+        ],
+        "de": [
+          "am Mittwochnachmittag",
+          "Mittwoch am Nachmittag"
+        ],
+        "gsw": [
+          "am Mittwuch am Namittag",
+          "am Mittwuchnamittag"
+        ]
+      },
+      {
+        "en": [
+          "in half an hour"
+        ],
+        "de": [
+          "in einer halben Stunde"
+        ],
+        "gsw": [
+          "inere haube Stund",
+          "in ere halbe Stund",
+          "i ere haubi Stund"
+        ]
+      },
+      {
+        "en": [
+          "tonight at 9"
+        ],
+        "de": [
+          "heute Abend um neun"
+        ],
+        "gsw": [
+          "hüt am Aabe am nüni",
+          "hüt z Abe am nüni"
+        ]
+      },
+      {
+        "en": [
+          "on Saturday at 10"
+        ],
+        "de": [
+          "am Samstag um 10"
+        ],
+        "gsw": [
+          "am Samschtig am zäni",
+          "am Samstig am 10i"
+        ]
+      },
+      {
+        "en": [
+          "in two hours"
+        ],
+        "de": [
+          "in zwei Stunden"
+        ],
+        "gsw": [
+          "in zwöi Stund",
+          "i zwöi Stunde",
+          "in zwei Stund"
+        ]
+      },
+      {
+        "en": [
+          "at a quarter past three"
+        ],
+        "de": [
+          "um Viertel nach drei"
+        ],
+        "gsw": [
+          "am viertu ab drü",
+          "am viertel ab drü"
+        ]
+      }
+    ],
+    "reminder_subject": [
+      {
+        "canonical": "the dentist appointment",
+        "en": [
+          "the dentist appointment",
+          "my dentist appointment"
+        ],
+        "de": [
+          "den Zahnarzttermin"
+        ],
+        "gsw": [
+          "de Zahnarzttermin"
+        ]
+      },
+      {
+        "canonical": "taking out the trash",
+        "en": [
+          "taking out the trash",
+          "the trash"
+        ],
+        "de": [
+          "den Müll"
+        ],
+        "gsw": [
+          "de Abfall",
+          "de Ghüdder"
+        ]
+      },
+      {
+        "canonical": "the laundry",
+        "en": [
+          "the laundry"
+        ],
+        "de": [
+          "die Wäsche"
+        ],
+        "gsw": [
+          "d Wösch",
+          "d Wäsch"
+        ]
+      },
+      {
+        "canonical": "the parcel pickup",
+        "en": [
+          "the parcel pickup",
+          "picking up the parcel"
+        ],
+        "de": [
+          "das Paket"
+        ],
+        "gsw": [
+          "s Päckli",
+          "ds Päckli"
+        ]
+      },
+      {
+        "canonical": "the tax return",
+        "en": [
+          "the tax return",
+          "my taxes"
+        ],
+        "de": [
+          "die Steuererklärung"
+        ],
+        "gsw": [
+          "d Stüürerklärig",
+          "d Stürerklärig"
+        ]
+      },
+      {
+        "canonical": "watering the plants",
+        "en": [
+          "watering the plants",
+          "the plants"
+        ],
+        "de": [
+          "die Pflanzen"
+        ],
+        "gsw": [
+          "d Pflanze",
+          "d Blueme"
+        ]
+      },
+      {
+        "canonical": "the train ticket",
+        "en": [
+          "the train ticket"
+        ],
+        "de": [
+          "das Zugticket"
+        ],
+        "gsw": [
+          "s Zugbillett",
+          "ds Billett"
+        ]
+      },
+      {
+        "canonical": "the car service",
+        "en": [
+          "the car service"
+        ],
+        "de": [
+          "den Autoservice"
+        ],
+        "gsw": [
+          "de Autoservice"
+        ]
+      }
+    ],
+    "doc_ref": [
+      {
+        "canonical": "the last email",
+        "en": [
+          "the last email",
+          "my last email"
+        ],
+        "de": [
+          "die letzte E-Mail"
+        ],
+        "gsw": [
+          "s letscht Mail",
+          "ds letschte Mail"
+        ]
+      },
+      {
+        "canonical": "the meeting minutes",
+        "en": [
+          "the meeting minutes",
+          "the minutes"
+        ],
+        "de": [
+          "das Sitzungsprotokoll"
+        ],
+        "gsw": [
+          "s Sitzigsprotokoll",
+          "ds Protokoll"
+        ]
+      },
+      {
+        "canonical": "this article",
+        "en": [
+          "this article"
+        ],
+        "de": [
+          "diesen Artikel"
+        ],
+        "gsw": [
+          "dä Artikel",
+          "dr Artikel"
+        ]
+      },
+      {
+        "canonical": "the attached document",
+        "en": [
+          "the attached document",
+          "the attachment"
+        ],
+        "de": [
+          "das angehängte Dokument"
+        ],
+        "gsw": [
+          "s aghänkte Dokument",
+          "dr Aahang"
+        ]
+      }
+    ],
+    "target_language": [
+      {
+        "canonical": "English",
+        "en": [
+          "English"
+        ],
+        "de": [
+          "Englische"
+        ],
+        "gsw": [
+          "Änglisch",
+          "Englisch"
+        ]
+      },
+      {
+        "canonical": "French",
+        "en": [
+          "French"
+        ],
+        "de": [
+          "Französische"
+        ],
+        "gsw": [
+          "Französisch",
+          "Französisch"
+        ]
+      },
+      {
+        "canonical": "Italian",
+        "en": [
+          "Italian"
+        ],
+        "de": [
+          "Italienische"
+        ],
+        "gsw": [
+          "Italiänisch"
+        ]
+      },
+      {
+        "canonical": "Spanish",
+        "en": [
+          "Spanish"
+        ],
+        "de": [
+          "Spanische"
+        ],
+        "gsw": [
+          "Spanisch"
+        ]
+      },
+      {
+        "canonical": "German",
+        "en": [
+          "German"
+        ],
+        "de": [
+          "Deutsche"
+        ],
+        "gsw": [
+          "Hochdütsch",
+          "Dütsch"
+        ]
+      }
+    ],
+    "device": [
+      {
+        "canonical": "the living room light",
+        "en": [
+          "the living room light",
+          "the light in the living room"
+        ],
+        "de": [
+          "das Licht im Wohnzimmer",
+          "die Wohnzimmerlampe"
+        ],
+        "gsw": [
+          "s Liecht i de Stube",
+          "ds Liecht ir Stube"
+        ]
+      },
+      {
+        "canonical": "the heating",
+        "en": [
+          "the heating"
+        ],
+        "de": [
+          "die Heizung"
+        ],
+        "gsw": [
+          "d Heizig",
+          "d Hizig"
+        ]
+      },
+      {
+        "canonical": "the bedroom blinds",
+        "en": [
+          "the bedroom blinds"
+        ],
+        "de": [
+          "die Storen im Schlafzimmer"
+        ],
+        "gsw": [
+          "d Store im Schlafzimmer",
+          "d Store im Schlafzimmer"
+        ]
+      },
+      {
+        "canonical": "the kitchen radio",
+        "en": [
+          "the kitchen radio"
+        ],
+        "de": [
+          "das Küchenradio"
+        ],
+        "gsw": [
+          "s Chuchiradio",
+          "ds Chuchiradio"
+        ]
+      },
+      {
+        "canonical": "the fan",
+        "en": [
+          "the fan"
+        ],
+        "de": [
+          "den Ventilator"
+        ],
+        "gsw": [
+          "de Ventilator",
+          "dr Ventilator"
+        ]
+      },
+      {
+        "canonical": "the coffee machine",
+        "en": [
+          "the coffee machine"
+        ],
+        "de": [
+          "die Kaffeemaschine"
+        ],
+        "gsw": [
+          "d Kafimaschine",
+          "d Kaffimaschine"
+        ]
+      }
+    ],
+    "setting": [
+      {
+        "canonical": "21 degrees",
+        "en": [
+          "21 degrees"
+        ],
+        "de": [
+          "21 Grad"
+        ],
+        "gsw": [
+          "21 Grad",
+          "einezwänzg Grad"
+        ]
+      },
+      {
+        "canonical": "50 percent",
+        "en": [
+          "50 percent",
+          "half"
+        ],
+        "de": [
+          "50 Prozent"
+        ],
+        "gsw": [
+          "50 Prozänt",
+          "füfzg Prozänt",
+          "fufzg Prozänt",
+          "halb"
+        ]
+      },
+      {
+        "canonical": "maximum",
+        "en": [
+          "maximum",
+          "max"
+        ],
+        "de": [
+          "Maximum"
+        ],
+        "gsw": [
+          "Maximum",
+          "volli Pulle"
+        ]
+      },
+      {
+        "canonical": "night mode",
+        "en": [
+          "night mode"
+        ],
+        "de": [
+          "Nachtmodus"
+        ],
+        "gsw": [
+          "Nachtmodus"
+        ]
+      },
+      {
+        "canonical": "eco mode",
+        "en": [
+          "eco mode"
+        ],
+        "de": [
+          "Eco-Modus"
+        ],
+        "gsw": [
+          "Eco-Modus"
+        ]
+      },
+      {
+        "canonical": "half open",
+        "en": [
+          "half open"
+        ],
+        "de": [
+          "halb offen"
+        ],
+        "gsw": [
+          "halb offe"
+        ]
+      },
+      {
+        "canonical": "level 2",
+        "en": [
+          "level 2"
+        ],
+        "de": [
+          "Stufe 2"
+        ],
+        "gsw": [
+          "Stufe 2",
+          "Stuefe zwei"
+        ]
+      }
+    ],
+    "note_content": [
+      {
+        "en": [
+          "buy milk and bread",
+          "call the plumber about the leak",
+          "idea: a shared family calendar",
+          "book the hotel for the summer trip",
+          "return the library books"
+        ]
+      },
+      {
+        "de": [
+          "Milch und Brot kaufen",
+          "Klempner wegen dem Leck anrufen",
+          "Idee: gemeinsamer Familienkalender",
+          "Hotel für die Sommerferien buchen",
+          "Bücher in die Bibliothek zurückbringen"
+        ]
+      },
+      {
+        "gsw": [
+          "Milch und Brot poschte",
+          "Sanitär wäge em Leck aalüte",
+          "Idee: gmeinsame Familiekaländer",
+          "Hotel für d Summerferie bueche",
+          "Büecher i d Bibliothek zruggbringe",
+          "no ga poschte nach em schaffe"
+        ]
+      }
+    ],
+    "duration": [
+      {
+        "canonical": "5 minutes",
+        "en": [
+          "5 minutes",
+          "five minutes"
+        ],
+        "de": [
+          "5 Minuten",
+          "fünf Minuten"
+        ],
+        "gsw": [
+          "5 Minute",
+          "füf Minute",
+          "föif Minute",
+          "fümf Minute",
+          "5 Minuute"
+        ]
+      },
+      {
+        "canonical": "10 minutes",
+        "en": [
+          "10 minutes",
+          "ten minutes"
+        ],
+        "de": [
+          "zehn Minuten"
+        ],
+        "gsw": [
+          "zäh Minute",
+          "10 Minute",
+          "zäh Minuute",
+          "zä Minute"
+        ]
+      },
+      {
+        "canonical": "15 minutes",
+        "en": [
+          "15 minutes",
+          "a quarter of an hour"
+        ],
+        "de": [
+          "eine Viertelstunde",
+          "15 Minuten"
+        ],
+        "gsw": [
+          "e Viertelstund",
+          "e Viertustund"
+        ]
+      },
+      {
+        "canonical": "30 minutes",
+        "en": [
+          "30 minutes",
+          "half an hour"
+        ],
+        "de": [
+          "eine halbe Stunde"
+        ],
+        "gsw": [
+          "e halbi Stund",
+          "e haubi Stund"
+        ]
+      },
+      {
+        "canonical": "1 hour",
+        "en": [
+          "one hour",
+          "an hour"
+        ],
+        "de": [
+          "eine Stunde"
+        ],
+        "gsw": [
+          "e Stund"
+        ]
+      },
+      {
+        "canonical": "90 seconds",
+        "en": [
+          "90 seconds"
+        ],
+        "de": [
+          "90 Sekunden"
+        ],
+        "gsw": [
+          "90 Sekunde",
+          "nünzg Sekunde"
+        ]
+      },
+      {
+        "canonical": "45 minutes",
+        "en": [
+          "45 minutes"
+        ],
+        "de": [
+          "45 Minuten",
+          "eine Dreiviertelstunde"
+        ],
+        "gsw": [
+          "45 Minute",
+          "e Dreiviertelstund"
+        ]
+      }
+    ],
+    "timer_label": [
+      {
+        "canonical": "the pasta",
+        "en": [
+          "the pasta"
+        ],
+        "de": [
+          "die Pasta",
+          "die Nudeln"
+        ],
+        "gsw": [
+          "d Pasta",
+          "d Teigware"
+        ]
+      },
+      {
+        "canonical": "the tea",
+        "en": [
+          "the tea"
+        ],
+        "de": [
+          "den Tee"
+        ],
+        "gsw": [
+          "de Tee",
+          "dr Tee"
+        ]
+      },
+      {
+        "canonical": "the oven",
+        "en": [
+          "the oven"
+        ],
+        "de": [
+          "den Ofen"
+        ],
+        "gsw": [
+          "de Ofe",
+          "dr Ofe"
+        ]
+      },
+      {
+        "canonical": "the break",
+        "en": [
+          "the break",
+          "my break"
+        ],
+        "de": [
+          "die Pause"
+        ],
+        "gsw": [
+          "d Pause"
+        ]
+      },
+      {
+        "canonical": "the parking meter",
+        "en": [
+          "the parking meter"
+        ],
+        "de": [
+          "die Parkuhr"
+        ],
+        "gsw": [
+          "d Parkuhr"
+        ]
+      }
+    ],
+    "file_query": [
+      {
+        "canonical": "the tax documents",
+        "en": [
+          "the tax documents"
+        ],
+        "de": [
+          "die Steuerunterlagen"
+        ],
+        "gsw": [
+          "d Stüürunterlage",
+          "d Stürunterlage"
+        ]
+      },
+      {
+        "canonical": "the holiday photos",
+        "en": [
+          "the holiday photos",
+          "the vacation pictures"
+        ],
+        "de": [
+          "die Ferienfotos"
+        ],
+        "gsw": [
+          "d Feriefötteli",
+          "d Feriefotene"
+        ]
+      },
+      {
+        "canonical": "the rental contract",
+        "en": [
+          "the rental contract",
+          "the lease"
+        ],
+        "de": [
+          "den Mietvertrag"
+        ],
+        "gsw": [
+          "de Mietvertrag",
+          "dr Mietvertrag"
+        ]
+      },
+      {
+        "canonical": "the slides from the workshop",
+        "en": [
+          "the slides from the workshop"
+        ],
+        "de": [
+          "die Folien vom Workshop"
+        ],
+        "gsw": [
+          "d Folie vom Workshop"
+        ]
+      },
+      {
+        "canonical": "the insurance letter",
+        "en": [
+          "the insurance letter"
+        ],
+        "de": [
+          "den Versicherungsbrief"
+        ],
+        "gsw": [
+          "de Versicherigsbrief"
+        ]
+      }
+    ]
+  },
+  "intents": {
+    "messaging.send": {
+      "pools": {
+        "recipient": [
+          "person"
+        ],
+        "topic": [
+          "msg_topic"
+        ]
+      },
+      "frames": {
+        "en": [
+          "Send {recipient} a message about {topic}",
+          "Text {recipient} about {topic}",
+          "Message {recipient} regarding {topic}",
+          "Write to {recipient} about {topic}",
+          "Send a message to {recipient}",
+          "Message {recipient}",
+          "Write a message about {topic}",
+          "Send a message",
+          "I need to message someone",
+          "Could you drop {recipient} a line about {topic}?",
+          "Ping {recipient}",
+          "Ping {recipient} about {topic}",
+          "Shoot {recipient} a quick note about {topic}",
+          "Let {recipient} know about {topic}",
+          "Can you write to {recipient}?",
+          "Drop a message about {topic}",
+          "Get in touch with {recipient} regarding {topic}",
+          "Reach out to {recipient}",
+          "Get in touch with {recipient} about {topic}",
+          "Message {recipient} about {topic}",
+          "Text {recipient} regarding {topic}",
+          "Send the message off"
+        ],
+        "de": [
+          "Schreib {recipient} eine Nachricht wegen {topic}",
+          "Nachricht an {recipient}: es geht um {topic}",
+          "Schick {recipient} eine Nachricht wegen {topic}",
+          "Schick eine Nachricht an {recipient}",
+          "Schreib {recipient}",
+          "Schreib eine Nachricht wegen {topic}",
+          "Schick eine Nachricht",
+          "Ich muss jemandem schreiben",
+          "Kannst du {recipient} wegen {topic} anschreiben?",
+          "Melde dich bei {recipient}",
+          "Gib {recipient} Bescheid wegen {topic}",
+          "Sag {recipient} Bescheid wegen {topic}",
+          "Kontaktier {recipient} wegen {topic}",
+          "Schreib kurz {recipient}",
+          "Ich will jemandem wegen {topic} schreiben",
+          "Nimm wegen {topic} Kontakt mit {recipient} auf",
+          "Schreib jemandem wegen {topic}",
+          "Schreib {recipient} wegen dem {topic}",
+          "Schick {recipient} eine Nachricht wegen dem {topic}",
+          "Kontaktiere {recipient} wegen {topic}",
+          "Kannst du dich bei {recipient} wegen {topic} melden?",
+          "Melde dich bitte bei {recipient}",
+          "Meld dich mal bei {recipient}, es geht um {topic}",
+          "Frag {recipient} wegen {topic}",
+          "Schick die Nachricht ab"
+        ],
+        "gsw": [
+          "Schriib {recipient} wäge {topic}",
+          "Schick {recipient} e Nachricht wäge {topic}",
+          "Mäld di bi {recipient} wäge {topic}",
+          "Shrib {recipient} wäg {topic}",
+          "Schick {recipient} e Nachricht",
+          "Schriib {recipient}",
+          "Schriib e Nachricht wäge {topic}",
+          "Schick e Nachricht",
+          "Ig mues öpperem schriibe",
+          "Chasch {recipient} wäge {topic} aaschriibe?",
+          "Mäld di mau bi {recipient}",
+          "Gib {recipient} Bscheid wäge {topic}",
+          "Säg {recipient} wäge {topic} Bscheid",
+          "Schriib churz {recipient}",
+          "Schick {recipient} es Nachrichtli wäge {topic}",
+          "Ig wett öpperem wäge {topic} schriibe",
+          "Nimm mit {recipient} Kontakt uf wäge {topic}",
+          "Schriib öpperem wäge {topic}",
+          "Schriib {recipient} wäge em {topic}",
+          "Schick {recipient} e Nachricht wäge em {topic}",
+          "Mäld di bi {recipient} wäge em {topic}",
+          "Schrib em {recipient} wäg {topic}",
+          "Ig mues {recipient} wäge {topic} schriibe",
+          "<schreib> {recipient} <wegen> {topic}",
+          "<schreib> <mal> {recipient} <wegen> {topic}",
+          "<kannst_du> {recipient} <wegen> {topic} <schreiben>?",
+          "<melde_dich> bi {recipient} <wegen> {topic}",
+          "<melde_dich> <mal> bi {recipient}",
+          "<melde_dich> <kurz> bi {recipient} <wegen> {topic}",
+          "<schick> {recipient} <eine> <nachricht> <wegen> {topic}",
+          "<sag> {recipient} <bescheid> <wegen> {topic}",
+          "<gib> {recipient} <bescheid> <wegen> {topic}",
+          "<ich> <muss> {recipient} no <schreiben> <wegen> {topic}",
+          "<ich> <will> {recipient} <wegen> {topic} <schreiben>",
+          "<schreib> <jemandem> <wegen> {topic}",
+          "<tu> {recipient} <wegen> {topic} <schreiben>",
+          "<bitte> <schreib> {recipient}",
+          "<kannst_du> di bi {recipient} <melden_inf> <wegen> {topic}?",
+          "<kannst_du> di <mal> bi {recipient} <melden_inf>?",
+          "<melde_dich> <bitte> bi {recipient}, <wegen> {topic}",
+          "{recipient} wartet, <melde_dich> bi {recipient} <wegen> {topic}",
+          "Schick d Nachricht ab"
+        ]
+      },
+      "eval_frames": {
+        "en": [
+          "Drop {recipient} a quick message about {topic}",
+          "Write a few lines to someone about {topic}",
+          "Could you contact {recipient} and mention {topic}?",
+          "Fire off a text to {recipient} on {topic}",
+          "Contact {recipient} for me",
+          "There's a text I need to get out"
+        ],
+        "de": [
+          "Melde dich wegen dem {topic} bei {recipient}",
+          "Schreib bitte {recipient}",
+          "Richte {recipient} etwas zu {topic} aus",
+          "Lass {recipient} per Nachricht wissen: {topic}",
+          "Ich will {recipient} etwas mitteilen",
+          "Da muss eine Nachricht raus"
+        ],
+        "gsw": [
+          "Gib {recipient} kurz Bscheid wäge em {topic}",
+          "Mäld di wäge {topic}",
+          "<ich> <will> <mal> {recipient} <schreiben>",
+          "<melde_dich> <bitte> bi {recipient} <wegen> {topic}",
+          "<tu> <mal> {recipient} <eine> <nachricht> schicke",
+          "<schreib> {recipient} <kurz> <wegen> {topic}",
+          "Schriib {recipient} es Nachrichtli wäg {topic}",
+          "<ich> <muss> öpperem schriibe"
+        ]
+      }
+    },
+    "task.code": {
+      "pools": {
+        "description": [
+          "code_description"
+        ],
+        "language": [
+          "code_language"
+        ]
+      },
+      "frames": {
+        "en": [
+          "Write {description} in {language}",
+          "Code {description} for me",
+          "I need {description}",
+          "Implement {description} in {language}",
+          "Build {description}",
+          "Write me some {language} code",
+          "Can you code something for me?",
+          "Please put together {description} using {language}",
+          "Can you build {description}?",
+          "Create {description} in {language}",
+          "Develop {description}",
+          "Generate {description} with {language}",
+          "Help me write code",
+          "I'd like {description} written in {language}",
+          "Draft {description}"
+        ],
+        "de": [
+          "Schreib {description} in {language}",
+          "Programmier mir {description}",
+          "Ich brauche {description}",
+          "Erstelle in {language} {description}",
+          "Bau {description}",
+          "Schreib mir Code in {language}",
+          "Programmier mir etwas",
+          "Entwickle {description} mit {language}",
+          "Kannst du {description} bauen?",
+          "Implementier {description} in {language}",
+          "Erstelle {description}",
+          "Generier mir {description} mit {language}",
+          "Hilf mir beim Programmieren",
+          "Ich hätte gern {description} in {language}",
+          "Setz {description} um"
+        ],
+        "gsw": [
+          "Schriib mer {description} in {language}",
+          "Programmier mer {description}",
+          "Ich bruuch {description}",
+          "Ig bruuche {description}",
+          "Mach mer in {language} {description}",
+          "Schriib mer öppis in {language}",
+          "Chasch mer öppis programmiere?",
+          "Bou mr {description} mit {language}",
+          "Chasch mer {description} baue?",
+          "Implementier {description} in {language}",
+          "Erstell mer {description}",
+          "Mach mer {description}",
+          "Hilf mer bim Programmiere",
+          "Ig hätt gärn {description} in {language}",
+          "Setz mer {description} um",
+          "Chasch mr {description} schriibe?",
+          "<schreib> <mir> {description} in {language}",
+          "<kannst_du> <mir> {description} in {language} programmiere?",
+          "<ich> <will> {description} in {language}",
+          "<mach> <mir> <mal> {description}",
+          "<ich> <muss> {description} ha, in {language}",
+          "Programmier <mir> <schnell> {description}",
+          "<kannst_du> <mir> <etwas> in {language} <schreiben>?",
+          "Bau <mir> {description}",
+          "<ich> bruuch <gerade> {description}",
+          "<schreib> <mir> {description}, <bitte> in {language}"
+        ]
+      },
+      "eval_frames": {
+        "en": [
+          "Write me {description} using {language}",
+          "Code something for me",
+          "Hack together {description} in {language}",
+          "Could you code {description}?",
+          "Program something in {language}",
+          "I need some code written"
+        ],
+        "de": [
+          "Bau mir {description} mit {language}",
+          "Ich brauche ein Programm",
+          "Kodier mir {description} in {language}",
+          "Kannst du {description} programmieren?",
+          "Ich brauche irgendein Skript in {language}",
+          "Ich brauche ein bisschen Code"
+        ],
+        "gsw": [
+          "Mach mr {description} in {language}",
+          "Ig bruuch es Programm",
+          "<ich> <will> <mal> {description} programmiere",
+          "<kannst_du> <mir> in {language} {description} mache?",
+          "Hilf <mir>, {description} z programmiere",
+          "<ich> <muss> {description} programmiere",
+          "Programmier mr {description}",
+          "Ig bruuch es Skript in {language}"
+        ]
+      }
+    },
+    "query.search": {
+      "pools": {
+        "subject": [
+          "search_subject"
+        ]
+      },
+      "frames": {
+        "en": [
+          "Look up {subject}",
+          "Find information about {subject}",
+          "Search for {subject}",
+          "What can you find about {subject}?",
+          "Look something up for me",
+          "Can you search for something?",
+          "I'd like to know more about {subject}",
+          "Tell me about {subject}",
+          "Research {subject}",
+          "Dig up info on {subject}",
+          "Any info on {subject}?",
+          "I want to look something up",
+          "Read up on {subject} for me",
+          "Can you check something online?"
+        ],
+        "de": [
+          "Such mir Infos über {subject}",
+          "Schau mal nach: {subject}",
+          "Was findest du über {subject}?",
+          "Recherchier {subject}",
+          "Such mal was für mich",
+          "Kannst du etwas nachschlagen?",
+          "Ich möchte mehr über {subject} wissen",
+          "Erzähl mir etwas über {subject}",
+          "Informier dich über {subject}",
+          "Gibt es Infos zu {subject}?",
+          "Was weisst du über {subject}?",
+          "Ich will etwas nachschauen",
+          "Finde etwas zu {subject} heraus",
+          "Kannst du mal was recherchieren?"
+        ],
+        "gsw": [
+          "Such mer Infos über {subject}",
+          "Lueg mal nache: {subject}",
+          "Was findsch über {subject}?",
+          "Recherchier mer {subject}",
+          "Lueg mau naa: {subject}",
+          "Such mer mal öppis",
+          "Chasch mer öppis naaluege?",
+          "Ig wett meh über {subject} wüsse",
+          "Verzell mer öppis über {subject}",
+          "Informier di über {subject}",
+          "Gits Infos zu {subject}?",
+          "Was weisch über {subject}?",
+          "Ig wett öppis naaluege",
+          "Find öppis zu {subject} use",
+          "Chasch mau öppis recherchiere?",
+          "Lueg mr mau {subject} naa",
+          "Was gits über {subject}?",
+          "<such> <mir> <mal> Infos über {subject}",
+          "<schau> <mal> nach {subject}",
+          "<kannst_du> <mir> <etwas> über {subject} <nachschauen>?",
+          "<ich> <will> <viel> meh über {subject} wüsse",
+          "<such> <mal> <etwas> zu {subject}",
+          "<kannst_du> <mal> <nachschauen>?",
+          "<schau> <mir> {subject} <nachschauen>",
+          "Recherchier <mir> <mal> {subject}",
+          "Was gits <heute> über {subject}?",
+          "<such> <schnell> <etwas> über {subject}"
+        ]
+      },
+      "eval_frames": {
+        "en": [
+          "Find out about {subject}",
+          "Search the web for me",
+          "Check the internet for {subject}",
+          "Get me details on {subject}",
+          "Do a quick web search",
+          "Can you google something for me?"
+        ],
+        "de": [
+          "Such mal nach {subject}",
+          "Kannst du etwas nachschlagen für mich?",
+          "Durchforste das Netz nach {subject}",
+          "Hol mir Infos zu {subject}",
+          "Mach eine Internetsuche",
+          "Schau etwas im Netz nach"
+        ],
+        "gsw": [
+          "Such mr mau naa {subject}",
+          "Chasch öppis naaluege?",
+          "<ich> <will> <etwas> über {subject} usefinde",
+          "<schau> <bitte> <mal> {subject} nache",
+          "<kannst_du> <mir> Infos über {subject} sueche?",
+          "Was weiss me über {subject}?",
+          "Lueg im Netz nach {subject}",
+          "Chasch schnäll öppis googlä?"
+        ]
+      }
+    },
+    "scheduling.propose": {
+      "pools": {
+        "participant": [
+          "person"
+        ],
+        "timeframe": [
+          "timeframe"
+        ]
+      },
+      "frames": {
+        "en": [
+          "Schedule a meeting with {participant} {timeframe}",
+          "Propose a meeting to {participant} {timeframe}",
+          "I want to meet {participant} {timeframe}",
+          "Set up a meeting {timeframe}",
+          "Find a time to meet {participant}",
+          "Schedule a meeting",
+          "Book some time with {participant} {timeframe}",
+          "Arrange a meeting with {participant} {timeframe}",
+          "Can we meet {participant} {timeframe}?",
+          "Find a slot with {participant} {timeframe}",
+          "Organize a call with {participant}",
+          "Plan a meeting {timeframe}",
+          "Get {participant} and me together {timeframe}",
+          "When can I meet {participant}?",
+          "Book a meeting with {participant} for {timeframe}",
+          "Book the meeting"
+        ],
+        "de": [
+          "Plane {timeframe} einen Termin mit {participant}",
+          "Schlag {participant} einen Termin {timeframe} vor",
+          "Ich will mich {timeframe} mit {participant} treffen",
+          "Organisier {timeframe} ein Treffen",
+          "Mach einen Termin mit {participant} ab",
+          "Plane ein Meeting",
+          "Vereinbare {timeframe} ein Treffen mit {participant}",
+          "Such {timeframe} einen Termin mit {participant}",
+          "Mach {timeframe} ein Meeting mit {participant} ab",
+          "Finde einen Termin mit {participant}",
+          "Ich brauche {timeframe} einen Termin",
+          "Organisier ein Treffen mit {participant} {timeframe}",
+          "Bring mich {timeframe} mit {participant} zusammen",
+          "Wann kann ich {participant} treffen?",
+          "Mach einen Termin mit {participant} für {timeframe} aus",
+          "Buch das Meeting"
+        ],
+        "gsw": [
+          "Plan {timeframe} en Termin mit {participant}",
+          "Schlag {participant} {timeframe} en Termin vor",
+          "Ich wett mi {timeframe} mit {participant} träffe",
+          "Ig wett mi {timeframe} mit {participant} gseh",
+          "Organisier {timeframe} es Träffe",
+          "Mach mit {participant} en Termin ab",
+          "Plan es Meeting",
+          "Mach {timeframe} es Träffe mit {participant} ab",
+          "Sueche {timeframe} en Termin mit {participant}",
+          "Abmache mit {participant} {timeframe}",
+          "Find en Termin mit {participant}",
+          "Ig bruuch {timeframe} en Termin",
+          "Organisier es Meeting mit {participant} {timeframe}",
+          "Bring mi {timeframe} mit {participant} zäme",
+          "Wänn chan ich {participant} träffe?",
+          "Mach mit {participant} {timeframe} öppis ab",
+          "Ig wett {participant} {timeframe} träffe",
+          "<mach> mit {participant} {timeframe} <einen> <termin> ab",
+          "<ich> <will> {participant} {timeframe} <treffen>",
+          "<kannst_du> {participant} {timeframe} <einen> <termin> <vorschlagen>?",
+          "Schlag {participant} {timeframe} <eine> <sitzung> vor",
+          "<such> <mir> {timeframe} <einen> <termin> mit {participant}",
+          "<ich> <muss> mi {timeframe} mit {participant} <treffen>",
+          "<abmachen> mit {participant}, {timeframe}",
+          "<mach> <mal> <einen> <termin> mit {participant} ab",
+          "Plan <mir> {timeframe} <eine> <sitzung> mit {participant}",
+          "<ich> <will> mit {participant} <einen> <termin> {timeframe}",
+          "<such> <einen> <termin> {timeframe}",
+          "Buech s Meeting"
+        ]
+      },
+      "eval_frames": {
+        "en": [
+          "Line up a meeting with {participant} {timeframe}",
+          "Set up a meeting with {participant}",
+          "Pencil in {participant} {timeframe}",
+          "Is there room {timeframe} for a meeting with {participant}?",
+          "I'd like to meet {participant}",
+          "Get a meeting on the calendar"
+        ],
+        "de": [
+          "Plane mit {participant} {timeframe} etwas ein",
+          "Ich brauche einen Termin mit {participant}",
+          "Finde {timeframe} Zeit für ein Treffen mit {participant}",
+          "Trag {timeframe} ein Treffen mit {participant} in den Kalender ein",
+          "Ich würde gern {participant} treffen",
+          "Wir bräuchten mal eine Sitzung"
+        ],
+        "gsw": [
+          "Plan mit {participant} {timeframe} öppis i",
+          "Ig bruuch en Termin mit {participant}",
+          "<kannst_du> mit {participant} {timeframe} <etwas> <abmachen>?",
+          "Wie wärs mit <einen> <termin> mit {participant} {timeframe}?",
+          "<ich> <muss> {participant} <mal> <treffen>",
+          "Organisier <bitte> {timeframe} <eine> <sitzung> mit {participant}",
+          "Lueg {timeframe} für es Träffe mit {participant}",
+          "Mir bruuche mal e Sitzig"
+        ]
+      }
+    },
+    "scheduling.remind": {
+      "pools": {
+        "subject": [
+          "reminder_subject"
+        ],
+        "time": [
+          "reminder_time"
+        ]
+      },
+      "frames": {
+        "en": [
+          "Remind me {time} about {subject}",
+          "Remind me about {subject} {time}",
+          "Set a reminder for {subject} {time}",
+          "Don't let me forget {subject} {time}",
+          "Remind me about {subject}",
+          "Remind me {time}",
+          "Set a reminder",
+          "Ping me {time} so I remember {subject}",
+          "Remind me of {subject}",
+          "Alert me {time} about {subject}",
+          "Make sure I remember {subject} {time}",
+          "Give me a nudge {time} about {subject}",
+          "I need a reminder {time}",
+          "Nudge me about {subject} {time}",
+          "Can you remind me about something?",
+          "Set the reminder"
+        ],
+        "de": [
+          "Erinnere mich {time} an {subject}",
+          "Kannst du mich {time} an {subject} erinnern?",
+          "Bitte {time} an {subject} erinnern",
+          "Erinnere mich an {subject}",
+          "Erinnere mich {time}",
+          "Stell eine Erinnerung ein",
+          "Denk {time} an {subject} und sag mir Bescheid",
+          "Sag mir {time} wegen {subject} Bescheid",
+          "Vergiss nicht, mich {time} an {subject} zu erinnern",
+          "Ich brauche eine Erinnerung an {subject}",
+          "Erinnerung {time} bitte",
+          "Ich will {time} an {subject} erinnert werden",
+          "Kannst du mich an etwas erinnern?",
+          "Stell die Erinnerung"
+        ],
+        "gsw": [
+          "Erinner mi {time} a {subject}",
+          "Chasch mi {time} a {subject} erinnere?",
+          "Mach mer e Erinnerig {time} wäge {subject}",
+          "Erinner mi {time} ad {subject}",
+          "Erinner mi a {subject}",
+          "Erinner mi {time}",
+          "Tue mer e Erinnerig istelle",
+          "Lüt mer {time} wäge {subject}",
+          "Säg mer {time} wäge {subject} Bscheid",
+          "Vergiss nid, mi {time} a {subject} z erinnere",
+          "Ig bruuch e Erinnerig a {subject}",
+          "Erinnerig {time} bitte",
+          "Ig wett {time} a {subject} erinneret wärde",
+          "Chasch mi a öppis erinnere?",
+          "Tue mi {time} a {subject} erinnere",
+          "Erinner mi {time} dra: {subject}",
+          "<erinnere_mich> {time} a {subject}",
+          "<erinnere_mich> {time}",
+          "<erinnere_mich> a {subject}",
+          "<kannst_du> <mich> {time} a {subject} erinnere?",
+          "<sag> <mir> {time} <bescheid> <wegen> {subject}",
+          "<mach> <mir> <eine> Erinnerig {time} <wegen> {subject}",
+          "<ich> <muss> {time} a {subject} dänke, <erinnere_mich>",
+          "<tu> <mich> {time} a {subject} erinnere",
+          "Vergiss <nicht> <mich> {time} a {subject} z erinnere",
+          "<stell> <mir> <eine> Erinnerig uf {time}: {subject}",
+          "Stell d Erinnerig"
+        ]
+      },
+      "eval_frames": {
+        "en": [
+          "Remind me about {subject} later {time}",
+          "Set me a reminder about {subject}",
+          "Buzz me {time} about {subject}",
+          "Bring up {subject} again {time}",
+          "Give me a heads-up {time}",
+          "Could you set up a reminder for me?"
+        ],
+        "de": [
+          "Gib mir {time} Bescheid wegen {subject}",
+          "Erinnere mich bitte",
+          "Denk {time} für mich an {subject}",
+          "Lass mich {subject} nicht vergessen, {time}",
+          "Gib mir {time} ein Zeichen",
+          "Ich hätte gern einen Reminder"
+        ],
+        "gsw": [
+          "Gib mr {time} Bscheid wäge {subject}",
+          "Chasch mi erinnere?",
+          "<kannst_du> <mich> {time} <wegen> {subject} erinnere?",
+          "<sag> <mir> <bitte> {time} <bescheid>, {subject}",
+          "<ich> <will> {time} a {subject} erinneret wärde",
+          "Erinnerig {time}: {subject}",
+          "Mahn mi {time} a {subject}",
+          "Mach mr e Erinnerig"
+        ]
+      }
+    },
+    "task.summarize": {
+      "pools": {
+        "source": [
+          "file_name",
+          "doc_ref"
+        ]
+      },
+      "frames": {
+        "en": [
+          "Summarize {source}",
+          "Give me a summary of {source}",
+          "Can you summarize {source}?",
+          "TL;DR of {source} please",
+          "I need a summary",
+          "Write a summary",
+          "What are the key points of {source}?",
+          "Boil {source} down to a few lines",
+          "Short version of {source} please",
+          "Condense {source}",
+          "Can you summarize something?",
+          "Give me the gist of {source}",
+          "I'd like an overview",
+          "Summarize the text"
+        ],
+        "de": [
+          "Fass {source} zusammen",
+          "Kannst du {source} zusammenfassen?",
+          "Zusammenfassung bitte: {source}",
+          "Mach mir eine Zusammenfassung",
+          "Ich brauche eine Zusammenfassung",
+          "Was sind die wichtigsten Punkte in {source}?",
+          "Kürz {source} auf das Wesentliche",
+          "Kurzfassung bitte: {source}",
+          "Gib mir das Wichtigste: {source}",
+          "Kannst du etwas zusammenfassen?",
+          "Gib mir einen Überblick: {source}",
+          "Ich hätte gern einen Überblick",
+          "Fass den Text zusammen"
+        ],
+        "gsw": [
+          "Fass {source} zäme",
+          "Chasch {source} zämefasse?",
+          "Mach mer e Zämefassig: {source}",
+          "Fass mr {source} churz zäme",
+          "Mach mer e Zämefassig",
+          "Chasch mer öppis zämefasse?",
+          "Was sind d wichtigschte Pünkt vo {source}?",
+          "Chürz {source} ufs Wesentliche",
+          "Churzfassig bitte: {source}",
+          "Gib mer s Wichtigscht: {source}",
+          "Fass mer öppis zäme",
+          "Um was gahts i {source}?",
+          "Ig hätt gärn en Überblick",
+          "Fass mr {source} zäme bitte",
+          "<fass_zusammen>: {source}",
+          "<kannst_du> <mir> {source} zämefasse?",
+          "<fass_zusammen> <bitte>, {source}",
+          "<mach> <mir> <eine> Zämefassig vo {source}",
+          "<ich> <will> nume d Pünkt us {source}",
+          "Was steit i {source}? <fass_zusammen>",
+          "<kannst_du> {source} <kurz> zämefasse?",
+          "<mach> <mal> <eine> Churzfassig vo {source}",
+          "Zämefassig vo {source} <bitte>",
+          "Fass dä Text zäme"
+        ]
+      },
+      "eval_frames": {
+        "en": [
+          "Sum up {source}",
+          "Summarize it for me",
+          "Recap {source} for me",
+          "Skim {source} and tell me the main points",
+          "Can you boil this down for me?",
+          "A quick summary would help"
+        ],
+        "de": [
+          "Fasse {source} kurz zusammen",
+          "Mach eine kurze Zusammenfassung",
+          "Fass mir {source} in drei Sätzen zusammen",
+          "Ich will {source} kurz zusammengefasst haben",
+          "Fass das mal zusammen",
+          "Eine Kurzversion wäre gut"
+        ],
+        "gsw": [
+          "Fass {source} churz zäme",
+          "Mach e churzi Zämefassig",
+          "<kannst_du> <mir> <mal> {source} zämefasse?",
+          "Was isch s Wichtigschte i {source}?",
+          "<fass_zusammen> <mal> {source}",
+          "<ich> <will> <eine> Zämefassig vo {source}",
+          "Fass mr {source} i drü Sätz zäme",
+          "Chasch das churz zämefasse?"
+        ]
+      }
+    },
+    "task.translate": {
+      "pools": {
+        "source": [
+          "file_name",
+          "doc_ref",
+          "quoted_text"
+        ],
+        "target_language": [
+          "target_language"
+        ]
+      },
+      "frames": {
+        "en": [
+          "Translate {source} into {target_language}",
+          "Can you translate {source} to {target_language}?",
+          "{source} in {target_language} please",
+          "Translate {source}",
+          "I need a translation into {target_language}",
+          "Can you translate something?",
+          "Render {source} in {target_language}",
+          "Put {source} into {target_language}",
+          "How do you say {source} in {target_language}?",
+          "Turn {source} into {target_language}",
+          "Translate something into {target_language}",
+          "I need {source} in {target_language}",
+          "What's {source} in {target_language}?",
+          "Translate the text into {target_language}",
+          "Translate the text"
+        ],
+        "de": [
+          "Übersetz {source} ins {target_language}",
+          "Kannst du {source} ins {target_language} übersetzen?",
+          "Übersetz {source}",
+          "Ich brauche eine Übersetzung ins {target_language}",
+          "Kannst du etwas übersetzen?",
+          "Bring {source} ins {target_language}",
+          "Setz {source} ins {target_language} um",
+          "Übertrag {source} ins {target_language}",
+          "Kannst du etwas ins {target_language} übersetzen?",
+          "Ich brauche {source} übersetzt ins {target_language}",
+          "Übersetzung bitte",
+          "Übersetz den Text ins {target_language}",
+          "Übersetz den Text"
+        ],
+        "gsw": [
+          "Übersetz {source} uf {target_language}",
+          "Chasch {source} uf {target_language} übersetze?",
+          "Übersetz mr {source} is {target_language}",
+          "Übersetz {source}",
+          "Ich bruuch e Übersetzig uf {target_language}",
+          "Chasch mer öppis übersetze?",
+          "Mach {source} uf {target_language}",
+          "Wie seit me {source} uf {target_language}?",
+          "Bring {source} uf {target_language}",
+          "Setz {source} uf {target_language} um",
+          "Chasch öppis uf {target_language} übersetze?",
+          "Ig bruuch {source} uf {target_language}",
+          "Übersetzig bitte",
+          "Übersetz mr {source} uf {target_language}",
+          "<uebersetz> {source} uf {target_language}",
+          "<kannst_du> <mir> {source} uf {target_language} übersetze?",
+          "<uebersetz> <mir> <mal> {source}",
+          "<ich> <muss> {source} uf {target_language} ha",
+          "<ich> <will> {source} uf {target_language}",
+          "<uebersetz> <bitte> {source} is {target_language}",
+          "<mach> <mir> {source} uf {target_language}",
+          "<kannst_du> <etwas> uf {target_language} übersetze?",
+          "Übersetz dä Text uf {target_language}",
+          "Übersetz dä Text"
+        ]
+      },
+      "eval_frames": {
+        "en": [
+          "Get {source} into {target_language}",
+          "Translate it",
+          "Have {source} translated into {target_language}",
+          "Could you translate {source}?",
+          "This needs to be in {target_language}",
+          "Translation please"
+        ],
+        "de": [
+          "Übersetze {source} bitte ins {target_language}",
+          "Ich brauche eine Übersetzung",
+          "Ich hätte {source} gern ins {target_language} übersetzt",
+          "Übersetzen bitte: {source}",
+          "Bitte das Ganze ins {target_language}",
+          "Bitte übersetzen"
+        ],
+        "gsw": [
+          "Übersetz {source} bitte uf {target_language}",
+          "Ig bruuch e Übersetzig",
+          "<kannst_du> {source} <bitte> uf {target_language} übersetze?",
+          "<ich> <will> {source} <auch> uf {target_language}",
+          "<uebersetz> {source} <mal> is {target_language}",
+          "Wie heisst {source} uf {target_language}?",
+          "Tue mr {source} uf {target_language} übersetze",
+          "Übersetz das"
+        ]
+      }
+    },
+    "share.offer": {
+      "pools": {
+        "item": [
+          "file_name",
+          "doc_ref"
+        ],
+        "recipient": [
+          "person"
+        ]
+      },
+      "frames": {
+        "en": [
+          "Share {item} with {recipient}",
+          "Send {item} to {recipient}",
+          "Give {recipient} access to {item}",
+          "Share {item}",
+          "Share something with {recipient}",
+          "Let {recipient} see {item}",
+          "Forward {item} to {recipient}",
+          "Pass {item} on to {recipient}",
+          "Make {item} available to {recipient}",
+          "Share {item} please",
+          "Send a copy of {item} to {recipient}",
+          "Share it with {recipient}",
+          "Share that",
+          "I want to share something",
+          "Share the picture",
+          "Share the link with {recipient}",
+          "Send the picture over"
+        ],
+        "de": [
+          "Teile {item} mit {recipient}",
+          "Schick {item} an {recipient}",
+          "Gib {recipient} Zugriff auf {item}",
+          "Teile {item}",
+          "Teile etwas mit {recipient}",
+          "Leite {item} an {recipient} weiter",
+          "Gib {item} an {recipient} weiter",
+          "Mach {item} für {recipient} verfügbar",
+          "Zeig {recipient} {item}",
+          "Ich will {item} teilen",
+          "Schick {recipient} eine Kopie: {item}",
+          "Teile das mit {recipient}",
+          "Teile das",
+          "Ich möchte etwas teilen",
+          "Kannst du das teilen?",
+          "Teile das Bild",
+          "Schick den Link an {recipient}",
+          "Leite das Bild weiter"
+        ],
+        "gsw": [
+          "Teil {item} mit {recipient}",
+          "Schick {recipient} {item}",
+          "Gib {recipient} Zuegriff uf {item}",
+          "Teil {item}",
+          "Teil öppis mit {recipient}",
+          "Leit {item} a {recipient} wiiter",
+          "Gib {item} a {recipient} wiiter",
+          "Zeig {recipient} {item}",
+          "Mach {item} für {recipient} parat",
+          "Ig wett {item} teile",
+          "Schick {recipient} e Kopie: {item}",
+          "Teil das mit {recipient}",
+          "Teil {item} mit {recipient} bitte",
+          "<teil> {item} mit {recipient}",
+          "<teil> {item} <auch> mit {recipient}",
+          "<kannst_du> {item} mit {recipient} teile?",
+          "<schick> {recipient} {item}",
+          "<schick> {item} <mal> a {recipient}",
+          "<gib> {item} a {recipient} wiiter",
+          "<ich> <will> {item} mit {recipient} teile",
+          "<teil> <mal> {item}",
+          "Leit {item} <bitte> a {recipient} wiiter",
+          "<mach> {item} für {recipient} frei",
+          "Teil s Bild",
+          "Schick dä Link a {recipient}",
+          "Leit s Bild wiiter"
+        ]
+      },
+      "eval_frames": {
+        "en": [
+          "Share {item} with {recipient} please",
+          "Share the file",
+          "Get {item} to {recipient}",
+          "{recipient} needs {item}, please share it",
+          "Make sure {recipient} gets a copy",
+          "Pass this along"
+        ],
+        "de": [
+          "Gib {recipient} {item}",
+          "Teile die Datei",
+          "Lass {recipient} {item} zukommen",
+          "Stell {recipient} {item} zur Verfügung",
+          "Sorg dafür, dass {recipient} eine Kopie bekommt",
+          "Schick das Dokument weiter"
+        ],
+        "gsw": [
+          "Gib {recipient} {item}",
+          "Teil d Datei",
+          "<kannst_du> {recipient} {item} schicke?",
+          "<teil> <bitte> {item} mit {recipient}",
+          "<ich> <will> {recipient} {item} gä",
+          "Mach {item} für {recipient} zuegänglich",
+          "Schick {item} grad a {recipient}",
+          "Gib das wiiter"
+        ]
+      }
+    },
+    "control.set": {
+      "pools": {
+        "device": [
+          "device"
+        ],
+        "setting": [
+          "setting"
+        ]
+      },
+      "frames": {
+        "en": [
+          "Set {device} to {setting}",
+          "Turn {device} to {setting}",
+          "Can you set {device} to {setting}?",
+          "Change {device}",
+          "Set it to {setting}",
+          "Change a setting",
+          "Please put {device} on {setting}",
+          "Switch {device} to {setting}",
+          "Adjust {device} to {setting}",
+          "{device} to {setting}",
+          "Adjust {device}",
+          "Bring {device} to {setting}",
+          "Can you adjust {device}?",
+          "Adjust the appliance",
+          "Set the appliance to {setting}"
+        ],
+        "de": [
+          "Stell {device} auf {setting}",
+          "Bitte {device} auf {setting} stellen",
+          "Kannst du {device} auf {setting} einstellen?",
+          "Stell {device} um",
+          "Stell auf {setting}",
+          "Ändere eine Einstellung",
+          "Schalte {device} auf {setting}",
+          "Dreh {device} auf {setting}",
+          "{device} auf {setting} bitte",
+          "Regle {device} auf {setting}",
+          "Pass {device} an",
+          "Bring {device} auf {setting}",
+          "Kannst du {device} anpassen?",
+          "Stell das Gerät um",
+          "Stell das Gerät auf {setting}"
+        ],
+        "gsw": [
+          "Stell {device} uf {setting}",
+          "Chasch {device} uf {setting} stelle?",
+          "Mach {device} uf {setting}",
+          "Stell {device} um",
+          "Stell uf {setting}",
+          "Ändere mal e Iistellig",
+          "Tue {device} uf {setting}",
+          "Dräi {device} uf {setting}",
+          "{device} uf {setting} bitte",
+          "Schalt {device} uf {setting}",
+          "Pass {device} a",
+          "Bring {device} uf {setting}",
+          "Chasch {device} aapasse?",
+          "Mach {device} uf {setting} bitte",
+          "<stell> {device} uf {setting}",
+          "<kannst_du> {device} uf {setting} stelle?",
+          "<mach> {device} uf {setting}",
+          "<stell> <mal> {device} uf {setting}",
+          "<tu> {device} uf {setting}",
+          "<stell> <bitte> {device} um",
+          "<ich> <will> {device} uf {setting}",
+          "<mach> {device} <lauter>",
+          "<mach> {device} <leiser>",
+          "<stell> uf {setting}",
+          "Stell s Grät um",
+          "Stell s Grät uf {setting}"
+        ]
+      },
+      "eval_frames": {
+        "en": [
+          "Put {device} to {setting}",
+          "Change the settings",
+          "Run {device} at {setting}",
+          "{device} needs to be at {setting}",
+          "Make it {setting}",
+          "Change the value"
+        ],
+        "de": [
+          "Mach {device} auf {setting}",
+          "Ändere die Einstellung",
+          "{device} soll auf {setting} laufen",
+          "Ich hätte {device} gern auf {setting}",
+          "Ich will es auf {setting}",
+          "Ändere den Wert"
+        ],
+        "gsw": [
+          "Stell mr {device} uf {setting}",
+          "Änder d Iistellig",
+          "<kannst_du> <mal> {device} uf {setting} mache?",
+          "<ich> <will> {device} uf {setting} ha",
+          "<stell> <mir> {device} uf {setting}",
+          "{device} <bitte> uf {setting}",
+          "{device} sött uf {setting} sii",
+          "Änder das mal"
+        ]
+      }
+    },
+    "task.note": {
+      "pools": {
+        "content": [
+          "note_content"
+        ]
+      },
+      "frames": {
+        "en": [
+          "Note: {content}",
+          "Write down: {content}",
+          "New note: {content}",
+          "Take a note: {content}",
+          "Take a note",
+          "I want to write something down",
+          "Jot this down: {content}",
+          "Remember this: {content}",
+          "Save a note: {content}",
+          "Add to my notes: {content}",
+          "Put this in my notes: {content}",
+          "Let me dictate a note",
+          "Memo: {content}",
+          "Open a new note",
+          "Save the note"
+        ],
+        "de": [
+          "Notiere: {content}",
+          "Schreib dir auf: {content}",
+          "Neue Notiz: {content}",
+          "Mach eine Notiz: {content}",
+          "Mach eine Notiz",
+          "Ich möchte etwas notieren",
+          "Halte fest: {content}",
+          "Merk dir: {content}",
+          "Speicher als Notiz: {content}",
+          "Füg zu meinen Notizen hinzu: {content}",
+          "Schreib das auf: {content}",
+          "Ich will eine Notiz diktieren",
+          "Notiz für später: {content}",
+          "Leg eine neue Notiz an",
+          "Speicher die Notiz"
+        ],
+        "gsw": [
+          "Notier: {content}",
+          "Schriib der uf: {content}",
+          "Neui Notiz: {content}",
+          "Mach e Notiz: {content}",
+          "Shrib uf: {content}",
+          "Mach e Notiz",
+          "Ich wett öppis notiere",
+          "Häb das fescht: {content}",
+          "Merk der: {content}",
+          "Spicher als Notiz: {content}",
+          "Tue i mini Notize: {content}",
+          "Schriib das uf: {content}",
+          "Ig wett e Notiz diktiere",
+          "Notiz für spöter: {content}",
+          "Leg e neui Notiz aa",
+          "Schrib mr uf: {content}",
+          "<notier>: {content}",
+          "<notier> <mir>: {content}",
+          "<kannst_du> <mir> <etwas> <aufschreiben>?",
+          "<ich> <will> <etwas> notiere",
+          "<schreib> <mir> uf: {content}",
+          "<mach> <mir> <eine> Notiz: {content}",
+          "Tue i <mein_f> Notize: {content}",
+          "<notier> <bitte>: {content}",
+          "<ich> <muss> <etwas> <aufschreiben>",
+          "Merk <dir>: {content}",
+          "Speicher d Notiz"
+        ]
+      },
+      "eval_frames": {
+        "en": [
+          "Note down: {content}",
+          "New note please",
+          "For my notes: {content}",
+          "Keep this for me: {content}",
+          "Start a blank note",
+          "I'd like to save a note"
+        ],
+        "de": [
+          "Notiz: {content}",
+          "Neue Notiz bitte",
+          "Für meine Notizen: {content}",
+          "Bitte vormerken: {content}",
+          "Öffne eine leere Notiz",
+          "Ich muss mir schnell was aufschreiben"
+        ],
+        "gsw": [
+          "Notiz: {content}",
+          "Neui Notiz bitte",
+          "<notier> <mal>: {content}",
+          "<schreib> <bitte> uf: {content}",
+          "<kannst_du> das notiere: {content}",
+          "<ich> <will> <mal> <etwas> <aufschreiben>",
+          "Schriib dr uf: {content}",
+          "Ig sött mr öppis ufschriibe"
+        ]
+      }
+    },
+    "timer.set": {
+      "pools": {
+        "duration": [
+          "duration"
+        ],
+        "label": [
+          "timer_label"
+        ]
+      },
+      "frames": {
+        "en": [
+          "Set a timer for {duration}",
+          "Timer {duration} for {label}",
+          "Start a {duration} timer for {label}",
+          "Countdown {duration}",
+          "Set a timer for {label}",
+          "Start a timer",
+          "Count down {duration} for {label}",
+          "Timer please, {duration}",
+          "Give me {duration} on the clock",
+          "Start counting down {duration}",
+          "I need a timer for {label}",
+          "Run a timer, {duration}, for {label}",
+          "I need a countdown"
+        ],
+        "de": [
+          "Stell einen Timer auf {duration}",
+          "Timer {duration} für {label}",
+          "Stell einen Timer auf {duration} für {label}",
+          "Countdown {duration}",
+          "Stell einen Timer für {label}",
+          "Starte einen Timer",
+          "Lass {duration} für {label} laufen",
+          "Timer bitte, {duration}",
+          "Zähl {duration} runter",
+          "Starte {duration} Countdown",
+          "Ich brauche einen Timer für {label}",
+          "Ein Timer über {duration} für {label}",
+          "Ich brauche einen Countdown"
+        ],
+        "gsw": [
+          "Stell en Timer uf {duration}",
+          "Timer {duration} für {label}",
+          "Stell mer en Timer uf {duration} für {label}",
+          "Mach en Countdown vo {duration}",
+          "Stell en Timer für {label}",
+          "Start en Timer",
+          "Lah mau {duration} laufe für {label}",
+          "Timer bitte, {duration}",
+          "Zell {duration} abe",
+          "Start {duration} Countdown",
+          "Ig bruuch en Timer für {label}",
+          "En Timer vo {duration} für {label}",
+          "Ig bruuch en Countdown",
+          "Stell mr e Timer uf {duration}",
+          "Timer uf {duration} bitte",
+          "<stell> <einen> Timer uf {duration}",
+          "<stell> <mir> <einen> <wecker> uf {duration}",
+          "<kannst_du> <einen> Timer uf {duration} stelle?",
+          "Timer {duration} <fuer> {label}",
+          "<stell> <mal> <einen> Timer <fuer> {label}",
+          "<ich> bruuch <einen> Timer, {duration}",
+          "Lah <mal> {duration} laufe <fuer> {label}",
+          "<mach> <einen> Countdown vo {duration}",
+          "<stell> <einen> Timer, {duration} <fuer> {label}",
+          "<einen> Timer <bitte>"
+        ]
+      },
+      "eval_frames": {
+        "en": [
+          "{duration} timer for {label}",
+          "A timer please",
+          "Beep after {duration}",
+          "Track {duration} for {label}",
+          "Time {label} for me",
+          "Can I get a timer?"
+        ],
+        "de": [
+          "{duration} Timer für {label}",
+          "Einen Timer bitte",
+          "Piep nach {duration}",
+          "Miss {duration} für {label}",
+          "Ich koche {label}, mach mir einen Timer",
+          "Kannst du einen Countdown starten?"
+        ],
+        "gsw": [
+          "{duration} Timer für {label}",
+          "En Timer bitte",
+          "<kannst_du> <mir> {duration} <einen> Timer mache?",
+          "<ich> <will> <einen> Timer <fuer> {label}",
+          "<stell> <bitte> <einen> Timer uf {duration}",
+          "Countdown {duration} <bitte>",
+          "Piips nach {duration}",
+          "Lass mal d Uhr laufe"
+        ]
+      }
+    },
+    "files.find": {
+      "pools": {
+        "query": [
+          "file_query",
+          "file_name"
+        ],
+        "folder": [
+          "folder"
+        ]
+      },
+      "frames": {
+        "en": [
+          "Find {query}",
+          "Search {folder} for {query}",
+          "Where is {query}?",
+          "Look for {query} in {folder}",
+          "Find a file in {folder}",
+          "Find a file",
+          "Where did I put {query}?",
+          "Locate {query}",
+          "Dig out {query} from {folder}",
+          "Can you find {query}?",
+          "Where's {query} saved?",
+          "Look for a file",
+          "Track down {query} in {folder}",
+          "I'm looking for a document",
+          "Find the PDF",
+          "Where's the PDF?"
+        ],
+        "de": [
+          "Finde {query}",
+          "Such {query} im Ordner {folder}",
+          "Ich suche {query}",
+          "Finde {query} in {folder}",
+          "Such eine Datei im Ordner {folder}",
+          "Finde eine Datei",
+          "Wo habe ich {query} gespeichert?",
+          "Wo hab ich {query} hingelegt?",
+          "Hol {query} aus {folder}",
+          "Kannst du {query} finden?",
+          "Such mir {query} raus",
+          "Ich suche eine Datei",
+          "Spür {query} in {folder} auf",
+          "Ich suche ein Dokument",
+          "Such das PDF",
+          "Wo ist das PDF?"
+        ],
+        "gsw": [
+          "Find {query}",
+          "Such {query} im Ordner {folder}",
+          "Ich suech {query}",
+          "Wo hani {query} abgleit?",
+          "Such e Datei im Ordner {folder}",
+          "Find mer e Datei",
+          "Wo isch {query} gspicheret?",
+          "Wo hani {query} gspicheret?",
+          "Hol {query} us {folder}",
+          "Chasch {query} finde?",
+          "Such mer {query} use",
+          "Ig suech e Datei",
+          "Fisch {query} us {folder} use",
+          "Ig suech es Dokument",
+          "Wo hani {query} gspeicheret?",
+          "Ig finde {query} nümm",
+          "<find> {query}",
+          "<such> {query} im Ordner {folder}",
+          "<kannst_du> {query} finde?",
+          "<ich> <such> {query}",
+          "Wo isch {query}? <schau> <mal> in {folder}",
+          "<such> <mir> {query}",
+          "<ich> finde {query} <nicht>",
+          "<such> <mal> in {folder} nach {query}",
+          "<find> <mir> <eine> Datei in {folder}",
+          "<ich> <such> <eine> Datei",
+          "Such s PDF",
+          "Wo isch s PDF?"
+        ]
+      },
+      "eval_frames": {
+        "en": [
+          "Search for {query} in {folder}",
+          "Find my file",
+          "Is {query} somewhere in {folder}?",
+          "I lost {query}, find it",
+          "Look through {folder} for something",
+          "I can't find my document"
+        ],
+        "de": [
+          "Such {query} in {folder}",
+          "Finde meine Datei",
+          "Durchsuch {folder} nach {query}",
+          "{query} ist irgendwo verschwunden",
+          "Schau in {folder} nach etwas",
+          "Ich finde mein Dokument nicht"
+        ],
+        "gsw": [
+          "Such {query} in {folder}",
+          "Find mini Datei",
+          "<kannst_du> <mir> {query} finde?",
+          "Wo han <ich> {query} versorgt?",
+          "<schau> <mal> in {folder}, <ich> <such> {query}",
+          "<such> <bitte> {query}",
+          "Lueg i {folder} nach {query}",
+          "Ig finde mis Dokumänt nöd"
+        ]
+      }
+    }
+  },
+  "unmatched": {
+    "en": [
+      "Send it",
+      "Do that",
+      "Can you help me?",
+      "Order me a pizza",
+      "How are you?",
+      "Finish the thing",
+      "Take care of it",
+      "Book me a flight to Rome",
+      "Play some music",
+      "Thanks!",
+      "Hmm, not sure yet",
+      "I'll write to him later",
+      "I'll get back to you tomorrow",
+      "Did you read my message?",
+      "I texted you yesterday",
+      "I'll call you later",
+      "I still need to do the laundry",
+      "I'll send you the file later"
+    ],
+    "de": [
+      "Schick es",
+      "Mach das",
+      "Kannst du mir helfen?",
+      "Bestell mir eine Pizza",
+      "Wie geht es dir?",
+      "Mach das Ding fertig",
+      "Erledige das",
+      "Buch mir einen Flug nach Rom",
+      "Spiel Musik ab",
+      "Danke!",
+      "Hm, weiss noch nicht",
+      "Ich schreibe ihm später",
+      "Ich melde mich morgen bei dir",
+      "Hast du meine Nachricht gelesen?",
+      "Ich habe dir gestern geschrieben",
+      "Ich rufe dich später an",
+      "Ich muss noch Wäsche waschen",
+      "Ich schicke dir die Datei später"
+    ],
+    "gsw": [
+      "Schick's",
+      "Mach das grad",
+      "Chasch mer hälfe?",
+      "Bstell mer e Pizza",
+      "Wie gaht's der?",
+      "Mach das fertig",
+      "Erledig das",
+      "Buech mer en Flug uf Rom",
+      "Spiel Musig ab",
+      "Merci!",
+      "Hoi zäme",
+      "Weiss no nid so rächt",
+      "Hesch mr öppis z ässe?",
+      "Was lauft hüt?",
+      "Bstell mr es Taxi",
+      "Mach Musig a",
+      "Schlaf guet",
+      "<ich> <schreiben> <dir> <spaeter>",
+      "<ich> <melde_mich> <morgen>",
+      "<kannst_du> <mir> es Taxi bstelle?",
+      "<ich> ha <heute> kei <zeit>",
+      "Spiel <mir> <mal> Musig ab",
+      "<danke> <viel> mau",
+      "Wie gaht's <dir>?",
+      "<ich> <muss> <noch> poschte",
+      "<alle> <zusammen> <morgen> am <abend>?",
+      "Bis <spaeter>",
+      "<ich> chume <spaeter>",
+      "Hesch <zeit> <heute> am <abend>?",
+      "<ich> ha das <nicht> gseh",
+      "Buech <mir> <einen> Flug",
+      "<ich> ha <dir> gester gschribe",
+      "<ich> <melde_mich> <spaeter> no",
+      "<ich> lüte <dir> <morgen> a",
+      "Hesch mis Mail gläse?",
+      "<ich> bi <gerade> am Ässe",
+      "<ich> <schreiben> em Marco <heute> no",
+      "Danke für d <nachricht>",
+      "<ich> ha d Notiz scho gmacht",
+      "Dr Timer isch abgloffe",
+      "Hesch du <zeit> <morgen>?",
+      "<ich> <muss> <noch> d Wösch mache",
+      "<ich> schick <dir> d Datei <spaeter>",
+      "<ich> <such> <noch> e Wohnig",
+      "Mir telefoniere <spaeter>"
+    ]
+  },
+  "compositions": [
+    {
+      "first": "task.summarize",
+      "then": "messaging.send",
+      "pools": {
+        "source": [
+          "file_name",
+          "doc_ref"
+        ],
+        "recipient": [
+          "person"
+        ]
+      },
+      "slots": {
+        "first": [
+          "source"
+        ],
+        "then": [
+          "recipient"
+        ]
+      },
+      "frames": {
+        "en": [
+          "Summarize {source} and send it to {recipient}",
+          "Give me a summary of {source} and message it to {recipient}",
+          "Sum up {source}, then text it to {recipient}",
+          "Condense {source} and forward the summary to {recipient}",
+          "Summarize {source} and send it on",
+          "Make a summary of {source} for {recipient} and send it",
+          "Shorten {source} and send the short version to {recipient}",
+          "Write a short summary of {source} and email it to {recipient}",
+          "Read {source}, summarize it and tell {recipient}",
+          "Can you sum up {source} and message {recipient} with it?",
+          "Summarize {source} for me, then send it over to {recipient}",
+          "Create a summary of {source} and pass it on to {recipient}"
+        ],
+        "de": [
+          "Fass {source} zusammen und schick es {recipient}",
+          "Mach eine Zusammenfassung von {source} und schick sie an {recipient}",
+          "Fass {source} zusammen und schreib {recipient} das Ergebnis",
+          "Fass {source} zusammen und schick es weiter",
+          "Kürz {source} aufs Wesentliche und leite es an {recipient} weiter",
+          "Mach mir eine kurze Zusammenfassung von {source} und schick sie {recipient}",
+          "Kannst du {source} zusammenfassen und an {recipient} schicken?",
+          "Lies {source}, fass es zusammen und gib es {recipient} weiter",
+          "Schreib eine Zusammenfassung von {source} und mail sie an {recipient}",
+          "Erstell eine Zusammenfassung von {source} und schick sie rüber zu {recipient}"
+        ],
+        "gsw": [
+          "Fass {source} zäme und schick's {recipient}",
+          "Mach e Zämefassig vo {source} und schick se {recipient}",
+          "Fass {source} zäme und schick's wiiter",
+          "<fass_zusammen> {source} und <schick> das {recipient}",
+          "<mach> <mir> <eine> Zämefassig vo {source} und <schick> se {recipient}",
+          "<kannst_du> {source} zämefasse und {recipient} schicke?",
+          "Fass {source} <kurz> zäme und <schick> das wiiter",
+          "Mach mr e churzi Zämefassig vo {source} und schick die {recipient}",
+          "Lis {source}, fass es zäme und schriib's {recipient}"
+        ]
+      },
+      "eval_frames": {
+        "en": [
+          "Boil {source} down and send that to {recipient}"
+        ],
+        "de": [
+          "Fasse {source} kurz zusammen und sende es an {recipient}"
+        ],
+        "gsw": [
+          "Fass mr {source} zäme und lah's {recipient} zuecho"
+        ]
+      }
+    },
+    {
+      "first": "task.translate",
+      "then": "messaging.send",
+      "pools": {
+        "source": [
+          "file_name",
+          "doc_ref"
+        ],
+        "target_language": [
+          "target_language"
+        ],
+        "recipient": [
+          "person"
+        ]
+      },
+      "slots": {
+        "first": [
+          "source",
+          "target_language"
+        ],
+        "then": [
+          "recipient"
+        ]
+      },
+      "frames": {
+        "en": [
+          "Translate {source} into {target_language} and send it to {recipient}",
+          "Put {source} into {target_language}, then message it to {recipient}",
+          "Translate {source} into {target_language} and send it on",
+          "Translate {source} to {target_language} and email it to {recipient}",
+          "Can you translate {source} into {target_language} and forward it to {recipient}?",
+          "Translate {source} into {target_language}, then forward the translation to {recipient}",
+          "I need {source} in {target_language}, send it to {recipient} afterwards",
+          "Have {source} translated into {target_language} and message {recipient} with it"
+        ],
+        "de": [
+          "Übersetz {source} ins {target_language} und schick es {recipient}",
+          "Übersetze {source} ins {target_language} und schick es an {recipient}",
+          "Übersetz {source} ins {target_language} und schick es weiter",
+          "Übersetz {source} ins {target_language} und leite die Übersetzung an {recipient} weiter",
+          "Kannst du {source} ins {target_language} übersetzen und {recipient} schicken?",
+          "Übersetze {source} ins {target_language} und mail es {recipient}",
+          "Übersetz mir {source} ins {target_language} und schreib es danach {recipient}"
+        ],
+        "gsw": [
+          "Übersetz {source} uf {target_language} und schick's {recipient}",
+          "<uebersetz> {source} uf {target_language} und <schick> das {recipient}",
+          "Übersetz {source} is {target_language} und schick's wiiter",
+          "<kannst_du> {source} uf {target_language} übersetze und {recipient} schicke?",
+          "Übersetz mr {source} is {target_language} und schick's de {recipient}",
+          "<uebersetz> {source} is {target_language} und schriib's {recipient}"
+        ]
+      },
+      "eval_frames": {
+        "en": [
+          "Get {source} into {target_language} and pass it to {recipient}"
+        ],
+        "de": [
+          "Bring {source} ins {target_language} und leite es an {recipient}"
+        ],
+        "gsw": [
+          "Mach {source} uf {target_language} und schick das {recipient}"
+        ]
+      }
+    },
+    {
+      "first": "query.search",
+      "then": "messaging.send",
+      "pools": {
+        "subject": [
+          "search_subject"
+        ],
+        "recipient": [
+          "person"
+        ]
+      },
+      "slots": {
+        "first": [
+          "subject"
+        ],
+        "then": [
+          "recipient"
+        ]
+      },
+      "frames": {
+        "en": [
+          "Search for {subject} and send the results to {recipient}",
+          "Look up {subject} and text {recipient} what you find",
+          "Find information about {subject} and send it on",
+          "Look into {subject} and tell {recipient} what you found",
+          "Research {subject} and message the results to {recipient}",
+          "Can you find out about {subject} and send {recipient} the details?",
+          "Google {subject} and forward what you find to {recipient}",
+          "Dig up info on {subject}, then text {recipient} about it"
+        ],
+        "de": [
+          "Such nach {subject} und schick die Ergebnisse an {recipient}",
+          "Recherchier {subject} und schreib {recipient}, was du findest",
+          "Such {subject} und schick es weiter",
+          "Schau dir {subject} an und sag {recipient}, was du gefunden hast",
+          "Informier dich über {subject} und schreib {recipient} die Ergebnisse",
+          "Kannst du {subject} recherchieren und {recipient} schicken, was du findest?",
+          "Find etwas über {subject} heraus und leite es an {recipient} weiter",
+          "Such Infos zu {subject} und mail sie {recipient}"
+        ],
+        "gsw": [
+          "Such {subject} und schick's {recipient}",
+          "<such> Infos über {subject} und <schick> se {recipient}",
+          "Lueg {subject} nache und schriib {recipient} was d findsch",
+          "Such {subject} und schick's wiiter",
+          "Lueg emal {subject} nache und säg's {recipient}",
+          "<such> {subject} und schriib {recipient} was d gfunde hesch",
+          "Chasch {subject} nachelüege und {recipient} schicke?"
+        ]
+      },
+      "eval_frames": {
+        "en": [
+          "Check {subject} and let {recipient} know the results"
+        ],
+        "de": [
+          "Schau nach {subject} und schick das an {recipient}"
+        ],
+        "gsw": [
+          "Lueg mr {subject} aa und schick das {recipient}"
+        ]
+      }
+    }
+  ]
+}

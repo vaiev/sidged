@@ -1,0 +1,17 @@
+{
+  "v": "0.2",
+  "lang": "gsw",
+  "intent": "task.summarize",
+  "missing": [],
+  "slots": {
+    "source": "protokoll.docx"
+  },
+  "then": [
+    {
+      "intent": "messaging.send",
+      "slots": {
+        "recipient": "Marco"
+      }
+    }
+  ]
+}

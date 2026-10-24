@@ -1,0 +1,7 @@
+{
+  "audience": "did:example:ch-residency",
+  "provider_region": "CH",
+  "provider_id": "https://api.infomaniak.com/",
+  "provider_profile": "P1",
+  "model": "apertus"
+}

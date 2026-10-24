@@ -1,0 +1,252 @@
+/* ==========================================================================
+   VAIEV Components v4 · Referenz-Implementierung (mobile first)
+   Benötigt: fonts.css, tokens.css. Kein JavaScript nötig ausser für
+   Navigation-Schrumpfen (data-scrolled) und Thema-Umschalter.
+   ========================================================================== */
+
+/* ---------- Basis ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--vv-color-surface);
+  color: var(--vv-color-on-surface);
+  font: 400 var(--vv-type-body)/1.5 var(--vv-font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+img, svg { display: block; max-width: 100%; }
+img { height: auto; }
+a { color: var(--vv-color-primary); text-underline-offset: 0.18em; }
+:focus-visible {
+  outline: var(--vv-focus-width) solid var(--vv-color-focus);
+  outline-offset: var(--vv-focus-offset);
+}
+.vv-sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- Layout ---------- */
+.vv-container {
+  width: 100%;
+  max-width: calc(var(--vv-layout-max) + 2 * var(--vv-layout-margin));
+  margin-inline: auto;
+  padding-inline: var(--vv-layout-margin);
+}
+.vv-section { padding-block: var(--vv-layout-section); }
+.vv-grid { display: grid; gap: var(--vv-layout-gutter); grid-template-columns: 1fr; }
+@media (min-width: 600px)  { .vv-grid--2, .vv-grid--3, .vv-grid--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 840px)  { .vv-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 1200px) { .vv-grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+/* ---------- Typografie ---------- */
+.vv-display  { font-size: var(--vv-type-display);  line-height: 1.06; font-weight: 600; letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
+.vv-headline { font-size: var(--vv-type-headline); line-height: 1.15; font-weight: 600; letter-spacing: -0.015em; margin: 0; text-wrap: balance; }
+.vv-title    { font-size: var(--vv-type-title);    line-height: 1.3;  font-weight: 500; margin: 0; }
+.vv-body-lg  { font-size: var(--vv-type-body-lg);  line-height: 1.55; margin: 0; text-wrap: pretty; }
+.vv-body     { font-size: var(--vv-type-body);     line-height: 1.5;  margin: 0; text-wrap: pretty; }
+.vv-small    { font-size: var(--vv-type-small);    line-height: 1.45; margin: 0; }
+.vv-overline { font: 500 var(--vv-type-overline)/1.4 var(--vv-font-mono); letter-spacing: 0.08em; text-transform: uppercase; margin: 0; }
+.vv-muted    { color: var(--vv-color-on-surface-variant); }
+
+/* ---------- Zustandsebene (für alle interaktiven Flächen) ---------- */
+.vv-state { position: relative; isolation: isolate; }
+.vv-state::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit;
+  background: currentColor; opacity: 0; z-index: -1; pointer-events: none;
+  transition: opacity var(--vv-motion-short) var(--vv-ease-standard);
+}
+.vv-state:hover::before         { opacity: var(--vv-state-hover); }
+.vv-state:focus-visible::before { opacity: var(--vv-state-focus); }
+.vv-state:active::before        { opacity: var(--vv-state-pressed); }
+
+/* ---------- Button: Pille, Form-Morph beim Drücken ---------- */
+.vv-btn {
+  position: relative; isolation: isolate;
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--vv-space-2);
+  min-height: var(--vv-touch-target); padding: 0 var(--vv-space-6);
+  border: 0; border-radius: var(--vv-shape-full);
+  font: 500 var(--vv-type-label)/1 var(--vv-font-sans); text-decoration: none; cursor: pointer;
+  background: var(--vv-color-primary); color: var(--vv-color-on-primary);
+  transition: border-radius var(--vv-motion-medium) var(--vv-ease-spring);
+  -webkit-tap-highlight-color: transparent;
+}
+.vv-btn::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; z-index: -1;
+  background: currentColor; opacity: 0; pointer-events: none;
+  transition: opacity var(--vv-motion-short) var(--vv-ease-standard);
+}
+.vv-btn:hover::before { opacity: var(--vv-state-hover); }
+.vv-btn:focus-visible::before { opacity: var(--vv-state-focus); }
+.vv-btn:active { border-radius: var(--vv-shape-pressed); }
+.vv-btn:active::before { opacity: var(--vv-state-pressed); }
+.vv-btn > svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+.vv-btn--tonal    { background: var(--vv-color-secondary-container); color: var(--vv-color-on-secondary-container); }
+.vv-btn--outlined { background: transparent; color: var(--vv-color-on-surface); box-shadow: inset 0 0 0 1px var(--vv-color-outline); }
+.vv-btn--text     { background: transparent; color: var(--vv-color-primary); padding-inline: var(--vv-space-3); }
+.vv-btn--on-stage { background: rgb(255 255 255 / 0.10); color: var(--vv-color-on-stage); }
+.vv-btn--block    { width: 100%; }
+.vv-btn[disabled], .vv-btn[aria-disabled="true"] {
+  cursor: not-allowed; background: color-mix(in srgb, var(--vv-color-on-surface) 12%, transparent);
+  color: color-mix(in srgb, var(--vv-color-on-surface) 38%, transparent); box-shadow: none;
+}
+
+.vv-icon-btn {
+  position: relative; isolation: isolate;
+  display: inline-grid; place-items: center;
+  width: var(--vv-touch-target); height: var(--vv-touch-target);
+  border: 0; border-radius: var(--vv-shape-full); background: transparent; color: inherit; cursor: pointer;
+}
+.vv-icon-btn::before { content: ""; position: absolute; inset: 4px; border-radius: inherit; background: currentColor; opacity: 0; z-index: -1; transition: opacity var(--vv-motion-short); }
+.vv-icon-btn:hover::before { opacity: var(--vv-state-hover); }
+.vv-icon-btn:active::before { opacity: var(--vv-state-pressed); }
+.vv-icon-btn > svg { width: 24px; height: 24px; }
+
+/* ---------- Glas: nur Steuerebene ---------- */
+.vv-glass {
+  background: var(--vv-glass-tint);
+  border: 1px solid var(--vv-glass-border);
+  box-shadow: inset 0 1px 0 var(--vv-glass-highlight), var(--vv-glass-shadow);
+  -webkit-backdrop-filter: blur(var(--vv-glass-blur)) saturate(var(--vv-glass-saturate));
+  backdrop-filter: blur(var(--vv-glass-blur)) saturate(var(--vv-glass-saturate));
+}
+.vv-glass--on-stage { background: var(--vv-glass-tint-dark); border-color: rgb(255 255 255 / 0.10); color: var(--vv-color-on-stage); }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .vv-glass { background: var(--vv-color-surface-container-high); }
+  .vv-glass--on-stage { background: #191B22; }
+}
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  .vv-glass { background: var(--vv-color-surface-container-high); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .vv-glass--on-stage { background: #191B22; }
+}
+
+/* ---------- Navigation: schwebende Glas-Pille, schrumpft beim Scrollen ----------
+   <header class="vv-nav"><div class="vv-nav__bar vv-glass">…</div></header>
+   JS setzt data-scrolled auf .vv-nav, sobald window.scrollY > 24. */
+.vv-nav {
+  position: sticky; top: 0; z-index: 50;
+  padding: max(var(--vv-space-2), env(safe-area-inset-top)) var(--vv-layout-margin) 0;
+  pointer-events: none;
+}
+.vv-nav__bar {
+  pointer-events: auto;
+  margin-inline: auto; max-width: var(--vv-layout-max);
+  display: flex; align-items: center; justify-content: space-between; gap: var(--vv-space-4);
+  min-height: 56px; padding: var(--vv-space-1) var(--vv-space-1) var(--vv-space-1) var(--vv-space-5);
+  border-radius: var(--vv-shape-full);
+  transition: max-width var(--vv-motion-long) var(--vv-ease-spring), padding var(--vv-motion-medium) var(--vv-ease-standard);
+}
+.vv-nav__brand { display: flex; align-items: center; min-height: var(--vv-touch-target); }
+.vv-nav__brand img { height: 24px; width: auto; }
+.vv-nav__brand .vv-nav__symbol { display: none; }
+.vv-nav__links { display: none; }
+.vv-nav[data-scrolled] .vv-nav__bar { max-width: 220px; }
+.vv-nav[data-scrolled] .vv-nav__brand .vv-nav__lockup { display: none; }
+.vv-nav[data-scrolled] .vv-nav__brand .vv-nav__symbol { display: block; }
+@media (min-width: 840px) {
+  .vv-nav__links { display: flex; align-items: center; gap: var(--vv-space-1); }
+  .vv-nav__links a {
+    position: relative; isolation: isolate; display: inline-flex; align-items: center;
+    min-height: var(--vv-touch-target); padding: 0 var(--vv-space-4); border-radius: var(--vv-shape-full);
+    color: inherit; text-decoration: none; font: 500 var(--vv-type-label)/1 var(--vv-font-sans);
+  }
+  .vv-nav__links a::before { content: ""; position: absolute; inset: 4px 0; border-radius: inherit; background: currentColor; opacity: 0; z-index: -1; transition: opacity var(--vv-motion-short); }
+  .vv-nav__links a:hover::before { opacity: var(--vv-state-hover); }
+  .vv-nav__menu { display: none; }
+  .vv-nav[data-scrolled] .vv-nav__bar { max-width: var(--vv-layout-max); }
+}
+
+/* ---------- Bottom Sheet (Menü auf compact/medium) ----------
+   <dialog class="vv-sheet">…</dialog>, öffnen mit showModal() */
+.vv-sheet {
+  margin: auto 0 0; width: 100%; max-width: none; max-height: 85dvh;
+  border: 0; padding: var(--vv-space-2) var(--vv-layout-margin) max(var(--vv-space-6), env(safe-area-inset-bottom));
+  border-radius: var(--vv-shape-lg) var(--vv-shape-lg) 0 0;
+  background: var(--vv-color-surface-container-low); color: var(--vv-color-on-surface);
+}
+.vv-sheet::backdrop { background: rgb(0 0 0 / 0.32); }
+.vv-sheet[open] { animation: vv-sheet-in var(--vv-motion-long) var(--vv-ease-spring); }
+.vv-sheet__handle { width: 32px; height: 4px; border-radius: 2px; margin: var(--vv-space-2) auto var(--vv-space-4); background: var(--vv-color-outline); opacity: 0.6; }
+.vv-sheet__list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--vv-space-1); }
+.vv-sheet__list a {
+  position: relative; isolation: isolate; display: flex; align-items: center; justify-content: space-between;
+  min-height: 56px; padding: 0 var(--vv-space-4); border-radius: var(--vv-shape-md);
+  color: inherit; text-decoration: none; font: 500 var(--vv-type-title)/1.2 var(--vv-font-sans);
+}
+.vv-sheet__list a::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: currentColor; opacity: 0; z-index: -1; }
+.vv-sheet__list a:active::before { opacity: var(--vv-state-pressed); }
+@keyframes vv-sheet-in { from { transform: translateY(100%); } to { transform: none; } }
+@media (min-width: 840px) { .vv-sheet { max-width: 560px; margin: auto; border-radius: var(--vv-shape-lg); } }
+
+/* ---------- Flächen und Karten (flach, tonal) ---------- */
+.vv-card {
+  border-radius: var(--vv-shape-md); padding: var(--vv-space-6);
+  background: var(--vv-color-surface-container-low);
+  display: flex; flex-direction: column; gap: var(--vv-space-3);
+}
+.vv-card--high     { background: var(--vv-color-surface-container-high); }
+.vv-card--outlined { background: transparent; box-shadow: inset 0 0 0 1px var(--vv-color-outline-variant); }
+.vv-card__icon {
+  width: 48px; height: 48px; border-radius: var(--vv-shape-sm); display: grid; place-items: center;
+  background: var(--vv-color-primary-container); color: var(--vv-color-on-primary-container);
+}
+.vv-card__icon > svg { width: 24px; height: 24px; }
+.vv-panel { border-radius: var(--vv-shape-xl); background: var(--vv-color-surface-container); }
+.vv-stage {
+  position: relative; overflow: hidden; border-radius: var(--vv-shape-xl);
+  background: var(--vv-color-stage); color: var(--vv-color-on-stage);
+}
+/* Kein zusätzlicher Schein: symbol-stage.svg bringt Bloom und schwarzen Grund selbst mit. */
+
+/* ---------- Felder ---------- */
+.vv-field { display: grid; gap: var(--vv-space-2); }
+.vv-field label { font: 500 var(--vv-type-small)/1.3 var(--vv-font-sans); }
+.vv-field input, .vv-field select, .vv-field textarea {
+  min-height: var(--vv-touch-target); padding: 0 var(--vv-space-4);
+  border: 1px solid var(--vv-color-outline); border-radius: var(--vv-shape-sm);
+  background: var(--vv-color-surface-container-lowest); color: var(--vv-color-on-surface);
+  font: 400 1rem/1.4 var(--vv-font-sans); /* 16 px: kein Zoom auf iOS */
+}
+.vv-field textarea { padding-block: var(--vv-space-3); min-height: 120px; }
+.vv-field :is(input, select, textarea):focus-visible { outline: 2px solid var(--vv-color-primary); outline-offset: -1px; border-color: transparent; }
+.vv-field [aria-invalid="true"] { border: 2px solid var(--vv-color-error); }
+.vv-field__help  { font-size: var(--vv-type-small); color: var(--vv-color-on-surface-variant); }
+.vv-field__error { font-size: var(--vv-type-small); color: var(--vv-color-error); display: flex; gap: var(--vv-space-2); align-items: center; }
+
+/* ---------- Chip / Tag ---------- */
+.vv-chip {
+  display: inline-flex; align-items: center; gap: var(--vv-space-2);
+  min-height: 32px; padding: 0 var(--vv-space-3); border-radius: var(--vv-shape-xs);
+  font: 500 var(--vv-type-small)/1 var(--vv-font-sans);
+  background: var(--vv-color-secondary-container); color: var(--vv-color-on-secondary-container);
+}
+.vv-chip--primary { background: var(--vv-color-primary-container); color: var(--vv-color-on-primary-container); }
+.vv-chip--outlined { background: transparent; box-shadow: inset 0 0 0 1px var(--vv-color-outline-variant); color: var(--vv-color-on-surface); }
+
+/* ---------- Hinweis ---------- */
+.vv-note {
+  display: flex; gap: var(--vv-space-3); align-items: flex-start;
+  padding: var(--vv-space-4) var(--vv-space-5); border-radius: var(--vv-shape-md);
+  background: var(--vv-color-surface-container); color: var(--vv-color-on-surface);
+}
+.vv-note > svg { width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px; }
+.vv-note--success { background: var(--vv-color-success-container); color: var(--vv-color-on-success-container); }
+.vv-note--error   { background: var(--vv-color-error-container);   color: var(--vv-color-on-error-container); }
+.vv-note--warning { background: var(--vv-color-warning-container); color: var(--vv-color-on-warning-container); }
+
+/* ---------- Schalter ---------- */
+.vv-switch {
+  appearance: none; -webkit-appearance: none; margin: 0; cursor: pointer;
+  width: 52px; height: 32px; border-radius: var(--vv-shape-full);
+  background: var(--vv-color-surface-container-highest); box-shadow: inset 0 0 0 2px var(--vv-color-outline);
+  position: relative; transition: background var(--vv-motion-short);
+}
+.vv-switch::after {
+  content: ""; position: absolute; top: 8px; left: 8px; width: 16px; height: 16px; border-radius: 50%;
+  background: var(--vv-color-outline); transition: all var(--vv-motion-medium) var(--vv-ease-spring);
+}
+.vv-switch:checked { background: var(--vv-color-primary); box-shadow: none; }
+.vv-switch:checked::after { left: 24px; top: 4px; width: 24px; height: 24px; background: var(--vv-color-on-primary); }
+
+/* ---------- Bewegung reduzieren ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}

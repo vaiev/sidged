@@ -1,0 +1,512 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sidged.com/spec/schemas/privacy-report.schema.json",
+  "title": "Sidged Privacy Report (v0.1)",
+  "description": "User-visible report produced by the Privacy Gateway for each cloud call (Sidged L7, REQUIRED at R1, the same profile as the Privacy Gateway). It states the provider, provider profile (P0 to P3), relay used, data classes and fields sent after redaction, what was redacted, network identity exposed (relay or direct), account linkage, and the provider's declared retention window (Sidged L7, section 13; Sidged L7). It lists field names and data classes, never values, plus residency, model identity where returned, and a hash of the exact outbound payload, which links to the protected egress log at R2 (verifiable minimisation, Sidged L7). Redaction maps MUST NOT leave the device and are never part of a report. A profile downgrade is shown here (Sidged L7). The report is itself sensitive and is stored under the log protections of Sidged L7. Status: Draft, not for implementation.",
+  "type": "object",
+  "required": [
+    "v",
+    "id",
+    "call_at",
+    "provider",
+    "provider_profile",
+    "gateway_mode",
+    "relay",
+    "network_identity",
+    "account",
+    "sent",
+    "redacted",
+    "minimisation",
+    "residency",
+    "retention"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "v": {
+      "$ref": "common.schema.json#/$defs/schemaVersion"
+    },
+    "id": {
+      "description": "Report identifier, local to the device.",
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "call_at": {
+      "$ref": "common.schema.json#/$defs/timestamp"
+    },
+    "agent": {
+      "description": "Agent that made the call.",
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "provider": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/$defs/identifier"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 256
+        },
+        "manifest_version": {
+          "description": "Version of the Provider Manifest in effect, if any.",
+          "type": "string",
+          "maxLength": 64
+        }
+      }
+    },
+    "provider_profile": {
+      "description": "Profile used for this call. effective is P0 unless the runtime verified the claim (Sidged L7, Sidged L7).",
+      "type": "object",
+      "required": [
+        "claimed",
+        "effective",
+        "verified"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "claimed": {
+          "description": "Profile claimed in the manifest, or null if none.",
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "common.schema.json#/$defs/providerProfile"
+            }
+          ]
+        },
+        "effective": {
+          "$ref": "common.schema.json#/$defs/providerProfile"
+        },
+        "verified": {
+          "type": "boolean"
+        },
+        "downgrade": {
+          "description": "Present when the effective profile is lower than the pinned or claimed profile (Sidged L7).",
+          "type": "object",
+          "required": [
+            "from",
+            "reason"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "from": {
+              "$ref": "common.schema.json#/$defs/providerProfile"
+            },
+            "reason": {
+              "enum": [
+                "signature-invalid",
+                "audit-invalid",
+                "audit-revoked",
+                "attestation-failed",
+                "expired",
+                "unreachable",
+                "pin-violation",
+                "other"
+              ]
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "verified": {
+                "const": false
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "effective": {
+                "const": "P0"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "effective_tier": {
+      "description": "Effective tier of the session (README, How They Fit Together): the lowest of runtime, communication hops, and provider.",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 3
+    },
+    "gateway_mode": {
+      "description": "full: full gateway mode (Sidged L7). verified-provider: reduced protections allowed by a verified P1 to P3 profile and owner policy.",
+      "enum": [
+        "full",
+        "verified-provider"
+      ]
+    },
+    "relay": {
+      "type": "object",
+      "required": [
+        "used"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "used": {
+          "type": "boolean"
+        },
+        "type": {
+          "enum": [
+            "ohttp",
+            "masque",
+            "proxy",
+            "other"
+          ]
+        },
+        "id": {
+          "$ref": "common.schema.json#/$defs/identifier"
+        }
+      },
+      "if": {
+        "properties": {
+          "used": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "type"
+        ]
+      },
+      "else": {
+        "not": {
+          "required": [
+            "type"
+          ]
+        }
+      }
+    },
+    "network_identity": {
+      "description": "Network identity exposed to the provider.",
+      "enum": [
+        "relay",
+        "direct"
+      ]
+    },
+    "account": {
+      "description": "Account linkage (Sidged L7, section 2). In identified mode the provider can link requests to the account, and the runtime labels this clearly (Sidged L7).",
+      "type": "object",
+      "required": [
+        "mode",
+        "linkable"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "enum": [
+            "anonymous",
+            "identified"
+          ]
+        },
+        "linkable": {
+          "type": "boolean"
+        },
+        "credential": {
+          "description": "Anonymous credential scheme used, if any.",
+          "enum": [
+            "privacy-pass",
+            "blind-signature",
+            "other"
+          ]
+        }
+      },
+      "if": {
+        "properties": {
+          "mode": {
+            "const": "identified"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "linkable": {
+            "const": true
+          }
+        },
+        "not": {
+          "required": [
+            "credential"
+          ]
+        }
+      }
+    },
+    "sent": {
+      "description": "What left the device, after redaction.",
+      "type": "object",
+      "required": [
+        "data_classes",
+        "fields"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "data_classes": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/dataClass"
+          },
+          "uniqueItems": true
+        },
+        "fields": {
+          "description": "Names of the fields or context items sent (not their values).",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 256
+          },
+          "uniqueItems": true
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "redacted": {
+      "description": "What was removed or pseudonymised before sending. Only categories and field names, never the original values.",
+      "type": "object",
+      "required": [
+        "data_classes",
+        "fields"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "data_classes": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/dataClass"
+          },
+          "uniqueItems": true
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 256
+          },
+          "uniqueItems": true
+        },
+        "pseudonymised": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 256
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "minimisation": {
+      "type": "object",
+      "required": [
+        "steps",
+        "payload_digest"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "steps": {
+          "description": "Minimisation steps applied (Sidged L7 full gateway mode list).",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "context-selection",
+              "redaction",
+              "pseudonymisation",
+              "tracking-strip",
+              "header-strip",
+              "no-persistent-id",
+              "fresh-credential",
+              "relay"
+            ]
+          }
+        },
+        "payload_digest": {
+          "description": "Hash of the exact outbound payload, linking this report to the protected egress log entry (Sidged L7 verifiable minimisation).",
+          "$ref": "common.schema.json#/$defs/digest"
+        },
+        "egress_log_ref": {
+          "description": "Local reference to the egress log entry.",
+          "type": "string",
+          "maxLength": 256
+        }
+      }
+    },
+    "residency": {
+      "type": "object",
+      "required": [
+        "tags"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "tags": {
+          "description": "Residency tags of the data sent.",
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/residencyTag"
+          },
+          "uniqueItems": true
+        },
+        "provider_region": {
+          "description": "Region the provider declared for this call, if any.",
+          "type": "string",
+          "maxLength": 64
+        }
+      }
+    },
+    "retention": {
+      "description": "Provider's declared retention window (Sidged L7) as an ISO 8601 duration (PT0S for none), or undeclared when the provider publishes no manifest or no window (Sidged L7).",
+      "type": "object",
+      "required": [
+        "declared"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "declared": {
+          "oneOf": [
+            {
+              "$ref": "common.schema.json#/$defs/duration"
+            },
+            {
+              "const": "undeclared"
+            }
+          ]
+        },
+        "purpose": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "abuse-handling",
+              "legal-duty"
+            ]
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "model": {
+      "description": "Model identity returned with the response (Sidged L7, Sidged L7). Below P3 this is an unverified declaration.",
+      "type": "object",
+      "required": [
+        "name",
+        "version"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "maxLength": 256
+        },
+        "version": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "region": {
+          "type": "string",
+          "maxLength": 64
+        }
+      }
+    },
+    "ext": {
+      "$ref": "common.schema.json#/$defs/ext"
+    }
+  },
+  "allOf": [
+    {
+      "description": "Sidged L7: a P0 provider is called in full gateway mode, or in identified mode by explicit user choice.",
+      "if": {
+        "properties": {
+          "provider_profile": {
+            "properties": {
+              "effective": {
+                "const": "P0"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "anyOf": [
+          {
+            "properties": {
+              "gateway_mode": {
+                "const": "full"
+              }
+            }
+          },
+          {
+            "properties": {
+              "account": {
+                "properties": {
+                  "mode": {
+                    "const": "identified"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "description": "Full gateway mode means no account and no persistent identifiers (Sidged L7). If no relay was available the call still appears here with relay.used false and network_identity direct, so the missing relay is visible.",
+      "if": {
+        "properties": {
+          "gateway_mode": {
+            "const": "full"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "account": {
+            "properties": {
+              "mode": {
+                "const": "anonymous"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "description": "Network identity must match relay use.",
+      "if": {
+        "properties": {
+          "relay": {
+            "properties": {
+              "used": {
+                "const": true
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "network_identity": {
+            "const": "relay"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "network_identity": {
+            "const": "direct"
+          }
+        }
+      }
+    }
+  ]
+}

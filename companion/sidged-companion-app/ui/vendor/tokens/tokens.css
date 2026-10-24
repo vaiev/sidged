@@ -1,0 +1,243 @@
+/* ==========================================================================
+   VAIEV Tokens v4 · 2026-10-13
+   «Content is flat. Controls float.»
+
+   Three layers:
+     1. Reference  --vv-ref-*     fixed colour scales (never used directly in the UI)
+     2. System     --vv-color-*   roles after Material 3, VAIEV namespace
+                   --vv-shape-*, --vv-space-*, --vv-type-*, --vv-motion-*,
+                   --vv-state-*, --vv-glass-*
+     3. Bridges    --md-sys-color-*  (Material Web), v3 aliases (--bg, --accent …)
+
+   Light/dark: every role once, with light-dark(). The theme follows the
+   system; <html data-theme="light|dark"> overrides it.
+   One accent: rose. Gradient only in the mark. Bloom only on the stage.
+   ========================================================================== */
+
+:root {
+  color-scheme: light dark;
+
+  /* ---------- 1. Reference ---------- */
+  --vv-ref-rose-50:  #FFF0F5; --vv-ref-rose-100: #FFDCE8; --vv-ref-rose-200: #FFBFD5;
+  --vv-ref-rose-300: #FC9CBF; --vv-ref-rose-400: #F07AA8; --vv-ref-rose-500: #D75485;
+  --vv-ref-rose-600: #C1366B; --vv-ref-rose-700: #A81C55; --vv-ref-rose-800: #820F40;
+  --vv-ref-rose-900: #560928;
+
+  --vv-ref-neutral-0:   #FFFFFF; --vv-ref-neutral-25:  #FAFAFC; --vv-ref-neutral-50:  #F4F5F8;
+  --vv-ref-neutral-75:  #EFF1F5; --vv-ref-neutral-100: #E9EBF0; --vv-ref-neutral-125: #E2E5EB;
+  --vv-ref-neutral-200: #DCDEE3; --vv-ref-neutral-300: #C0C4D0; --vv-ref-neutral-400: #9A9EAA;
+  --vv-ref-neutral-500: #767A85; --vv-ref-neutral-600: #5A606E; --vv-ref-neutral-700: #3F424C;
+  --vv-ref-neutral-800: #282A31; --vv-ref-neutral-850: #20232B; --vv-ref-neutral-900: #191B22;
+  --vv-ref-neutral-925: #16181E; --vv-ref-neutral-950: #101218; --vv-ref-neutral-1000: #0B0C10;
+
+  --vv-ref-symbol-start: #A81C56; --vv-ref-symbol-mid: #D24B7E; --vv-ref-symbol-end: #F07AA8;
+  --vv-ref-stage: #000000;
+
+  /* ---------- 2. System: colour roles (light, dark) ---------- */
+  --vv-color-primary:              light-dark(#A81C55, #FF8CB8);
+  --vv-color-on-primary:           light-dark(#FFFFFF, #560928);
+  --vv-color-primary-container:    light-dark(#FFDCE8, #820F40);
+  --vv-color-on-primary-container: light-dark(#560928, #FFDCE8);
+
+  --vv-color-secondary-container:    light-dark(#E5E9F2, #262A34);
+  --vv-color-on-secondary-container: light-dark(#12141A, #E5E9F2);
+
+  --vv-color-surface:                   light-dark(#FAFAFC, #101218);
+  --vv-color-surface-dim:               light-dark(#DADDE3, #101218);
+  --vv-color-surface-bright:            light-dark(#FAFAFC, #32353E);
+  --vv-color-surface-container-lowest:  light-dark(#FFFFFF, #0B0C10);
+  --vv-color-surface-container-low:     light-dark(#F4F5F8, #16181E);
+  --vv-color-surface-container:         light-dark(#EFF1F5, #191B22);
+  --vv-color-surface-container-high:    light-dark(#E9EBF0, #20232B);
+  --vv-color-surface-container-highest: light-dark(#E2E5EB, #282A31);
+  --vv-color-on-surface:                light-dark(#12141A, #F7F7F8);
+  --vv-color-on-surface-variant:        light-dark(#5A606E, #A8ACB8);
+  --vv-color-outline:                   light-dark(#767A85, #8A8E9A);
+  --vv-color-outline-variant:           light-dark(#DCDEE3, #3F424C);
+
+  --vv-color-inverse-surface:    light-dark(#262A34, #E5E9F2);
+  --vv-color-inverse-on-surface: light-dark(#F7F7F8, #191B22);
+  --vv-color-inverse-primary:    light-dark(#FF8CB8, #A81C55);
+
+  --vv-color-error:              light-dark(#B0212A, #F2716C);
+  --vv-color-on-error:           light-dark(#FFFFFF, #3B0A0D);
+  --vv-color-error-container:    light-dark(#FDECEC, #6B1B1E);
+  --vv-color-on-error-container: light-dark(#6B0F14, #FDECEC);
+
+  /* Extended roles (not in the M3 baseline) */
+  --vv-color-success:              light-dark(#0B7643, #6CD092);
+  --vv-color-on-success:           light-dark(#FFFFFF, #05301A);
+  --vv-color-success-container:    light-dark(#E7F4EC, #134A2C);
+  --vv-color-on-success-container: light-dark(#063D22, #C8F0D6);
+  --vv-color-warning:              light-dark(#975C16, #F0BE67);
+  --vv-color-on-warning:           light-dark(#FFFFFF, #3A2606);
+  --vv-color-warning-container:    light-dark(#FBF1E3, #4A3410);
+  --vv-color-on-warning-container: light-dark(#4D2E08, #FBE6BF);
+
+  --vv-color-stage:    #000000;   /* stage: hero, OG, presentation */
+  --vv-color-on-stage: #F7F7F8;
+  --vv-color-scrim:    #000000;   /* at 32 % opacity under sheets */
+  --vv-color-shadow:   light-dark(rgb(18 20 26 / 0.14), rgb(0 0 0 / 0.5));
+  --vv-color-focus:    var(--vv-color-primary);
+
+  /* ---------- State layers (overlay in the content colour) ---------- */
+  --vv-state-hover:   0.08;
+  --vv-state-focus:   0.10;
+  --vv-state-pressed: 0.10;
+  --vv-state-dragged: 0.16;
+  --vv-state-disabled-content:   0.38;
+  --vv-state-disabled-container: 0.12;
+
+  /* ---------- Shape: concentric (inner = outer − spacing) ---------- */
+  --vv-shape-none: 0;
+  --vv-shape-xs:   8px;   /* chip, tag, tooltip */
+  --vv-shape-sm:   12px;  /* field, small card, menu item */
+  --vv-shape-md:   16px;  /* card */
+  --vv-shape-lg:   24px;  /* sheet, dialog, large card, open glass navigation */
+  --vv-shape-xl:   32px;  /* hero container, section surface */
+  --vv-shape-full: 9999px;/* button, glass pill, switch, avatar */
+  --vv-shape-pressed: 12px; /* pill button while pressed (shape morph) */
+
+  /* ---------- Space (base 4) ---------- */
+  --vv-space-1: 4px;  --vv-space-2: 8px;  --vv-space-3: 12px; --vv-space-4: 16px;
+  --vv-space-5: 20px; --vv-space-6: 24px; --vv-space-8: 32px; --vv-space-10: 40px;
+  --vv-space-12: 48px; --vv-space-16: 64px; --vv-space-20: 80px; --vv-space-28: 112px;
+
+  /* ---------- Layout: mobile first, window classes after M3 ----------
+     compact < 600 · medium 600–839 · expanded 840–1199 · large ≥ 1200 */
+  --vv-layout-margin:  16px;              /* compact */
+  --vv-layout-gutter:  16px;
+  --vv-layout-max:     1200px;
+  --vv-layout-section: clamp(64px, 6vw + 40px, 112px); /* space between sections */
+  --vv-touch-target:   48px;
+
+  /* ---------- Typography (fluid 360 → 1440 px) ---------- */
+  --vv-font-sans: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --vv-font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --vv-type-display:  clamp(2.25rem, 1.67rem + 2.59vw, 4rem);     /* 36→64 · lh 1.06 · 600 · −0.02em */
+  --vv-type-headline: clamp(1.75rem, 1.5rem + 1.11vw, 2.5rem);    /* 28→40 · lh 1.15 · 600 · −0.015em */
+  --vv-type-title:    clamp(1.25rem, 1.17rem + 0.37vw, 1.5rem);   /* 20→24 · lh 1.3 · 500 */
+  --vv-type-body-lg:  clamp(1.0625rem, 1.02rem + 0.19vw, 1.1875rem); /* 17→19 · lh 1.55 · 400 */
+  --vv-type-body:     clamp(1rem, 0.98rem + 0.09vw, 1.0625rem);   /* 16→17 · lh 1.5 · 400 */
+  --vv-type-label:    0.9375rem;  /* 15 · buttons, navigation · 500 */
+  --vv-type-small:    0.875rem;   /* 14 · lh 1.45 · 400 */
+  --vv-type-overline: 0.8125rem;  /* 13 · Mono · 500 · UPPERCASE · 0.08em */
+
+  /* ---------- Motion ---------- */
+  --vv-motion-short:  150ms;
+  --vv-motion-medium: 250ms;
+  --vv-motion-long:   400ms;
+  --vv-ease-standard:   cubic-bezier(.2, 0, 0, 1);
+  --vv-ease-decelerate: cubic-bezier(.05, .7, .1, 1);
+  --vv-ease-accelerate: cubic-bezier(.3, 0, .8, .15);
+  /* spring (spatial, slight overshoot) for shape morph, sheet, pill */
+  --vv-ease-spring: linear(0, 0.009, 0.035 2.1%, 0.141 4.4%, 0.281 6.7%, 0.723 12.9%,
+    0.938 16.7%, 1.017 19.4%, 1.077 22.2%, 1.088 24.3%, 1.083 26.4%, 1.04 32.1%,
+    1.017 35.6%, 0.996 41.5%, 0.991 46.5%, 1.001 59.2%, 1);
+
+  /* ---------- Glass: control layer only ---------- */
+  --vv-glass-tint:      light-dark(rgb(250 250 252 / 0.74), rgb(16 18 24 / 0.72));
+  --vv-glass-tint-dark: rgb(16 18 24 / 0.64); /* always dark over the stage */
+  --vv-glass-border:    light-dark(rgb(255 255 255 / 0.60), rgb(255 255 255 / 0.10));
+  --vv-glass-highlight: light-dark(rgb(255 255 255 / 0.70), rgb(255 255 255 / 0.14));
+  --vv-glass-blur:      24px;
+  --vv-glass-saturate:  160%;
+  --vv-glass-shadow:    0 8px 32px var(--vv-color-shadow);
+
+  /* ---------- Focus ---------- */
+  --vv-focus-width: 2px;
+  --vv-focus-offset: 2px;
+}
+
+/* Force a theme */
+[data-theme="light"] { color-scheme: light; }
+[data-theme="dark"]  { color-scheme: dark; }
+
+/* Layout margins per window class */
+@media (min-width: 600px)  { :root { --vv-layout-margin: 24px; --vv-layout-gutter: 24px; } }
+@media (min-width: 840px)  { :root { --vv-layout-margin: 32px; } }
+@media (min-width: 1200px) { :root { --vv-layout-margin: 40px; } }
+
+/* ---------- 3a. Material Web bridge (optional) ---------- */
+:root {
+  --md-sys-color-primary: var(--vv-color-primary);
+  --md-sys-color-on-primary: var(--vv-color-on-primary);
+  --md-sys-color-primary-container: var(--vv-color-primary-container);
+  --md-sys-color-on-primary-container: var(--vv-color-on-primary-container);
+  --md-sys-color-secondary-container: var(--vv-color-secondary-container);
+  --md-sys-color-on-secondary-container: var(--vv-color-on-secondary-container);
+  --md-sys-color-surface: var(--vv-color-surface);
+  --md-sys-color-surface-container-lowest: var(--vv-color-surface-container-lowest);
+  --md-sys-color-surface-container-low: var(--vv-color-surface-container-low);
+  --md-sys-color-surface-container: var(--vv-color-surface-container);
+  --md-sys-color-surface-container-high: var(--vv-color-surface-container-high);
+  --md-sys-color-surface-container-highest: var(--vv-color-surface-container-highest);
+  --md-sys-color-on-surface: var(--vv-color-on-surface);
+  --md-sys-color-on-surface-variant: var(--vv-color-on-surface-variant);
+  --md-sys-color-outline: var(--vv-color-outline);
+  --md-sys-color-outline-variant: var(--vv-color-outline-variant);
+  --md-sys-color-error: var(--vv-color-error);
+  --md-sys-color-on-error: var(--vv-color-on-error);
+  --md-sys-color-error-container: var(--vv-color-error-container);
+  --md-sys-color-on-error-container: var(--vv-color-on-error-container);
+  --md-sys-color-inverse-surface: var(--vv-color-inverse-surface);
+  --md-sys-color-inverse-on-surface: var(--vv-color-inverse-on-surface);
+  --md-sys-color-inverse-primary: var(--vv-color-inverse-primary);
+  --md-ref-typeface-brand: var(--vv-font-sans);
+  --md-ref-typeface-plain: var(--vv-font-sans);
+}
+
+/* ---------- 3b. v3 aliases (deprecated, not for new code) ---------- */
+:root {
+  --bg: var(--vv-color-surface);
+  --surface: var(--vv-color-surface-container-lowest);
+  --surface-2: var(--vv-color-surface-container);
+  --surface-3: var(--vv-color-surface-container-high);
+  --fg: var(--vv-color-on-surface);
+  --muted: var(--vv-color-on-surface-variant);
+  --line: var(--vv-color-outline-variant);
+  --line-strong: var(--vv-color-outline);
+  --accent: var(--vv-color-primary);
+  --accent-on: var(--vv-color-on-primary);
+  --accent-soft: var(--vv-color-primary-container);
+  --danger: var(--vv-color-error);
+  --success: var(--vv-color-success);
+  --warning: var(--vv-color-warning);
+  --stage: var(--vv-color-stage);
+  --font-sans: var(--vv-font-sans);
+  --font-mono: var(--vv-font-mono);
+}
+
+/* ---------- Tailwind v4 (optional) ---------- */
+@theme {
+  --color-primary: var(--vv-color-primary);
+  --color-on-primary: var(--vv-color-on-primary);
+  --color-primary-container: var(--vv-color-primary-container);
+  --color-on-primary-container: var(--vv-color-on-primary-container);
+  --color-secondary-container: var(--vv-color-secondary-container);
+  --color-on-secondary-container: var(--vv-color-on-secondary-container);
+  --color-surface: var(--vv-color-surface);
+  --color-surface-lowest: var(--vv-color-surface-container-lowest);
+  --color-surface-low: var(--vv-color-surface-container-low);
+  --color-surface-container: var(--vv-color-surface-container);
+  --color-surface-high: var(--vv-color-surface-container-high);
+  --color-surface-highest: var(--vv-color-surface-container-highest);
+  --color-on-surface: var(--vv-color-on-surface);
+  --color-on-surface-variant: var(--vv-color-on-surface-variant);
+  --color-outline: var(--vv-color-outline);
+  --color-outline-variant: var(--vv-color-outline-variant);
+  --color-error: var(--vv-color-error);
+  --color-success: var(--vv-color-success);
+  --color-warning: var(--vv-color-warning);
+  --color-stage: var(--vv-color-stage);
+  --font-sans: var(--vv-font-sans);
+  --font-mono: var(--vv-font-mono);
+  --radius-xs: var(--vv-shape-xs);
+  --radius-sm: var(--vv-shape-sm);
+  --radius-md: var(--vv-shape-md);
+  --radius-lg: var(--vv-shape-lg);
+  --radius-xl: var(--vv-shape-xl);
+  --breakpoint-sm: 600px;   /* medium */
+  --breakpoint-md: 840px;   /* expanded */
+  --breakpoint-lg: 1200px;  /* large */
+}

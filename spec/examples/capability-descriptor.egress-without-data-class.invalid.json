@@ -1,0 +1,14 @@
+{
+  "v": "0.1",
+  "id": "urn:sidged:capability:send_note",
+  "title": "Send a note",
+  "input_schema": {
+    "type": "object",
+    "additionalProperties": false
+  },
+  "effects": [
+    "egress"
+  ],
+  "data_classes": [],
+  "consequential": true
+}

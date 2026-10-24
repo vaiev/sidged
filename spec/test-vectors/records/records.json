@@ -1,0 +1,2005 @@
+{
+  "category": "records",
+  "description": "Deterministic CBOR encoding and decoding and typed Records (spec 0012, SDG-L0). Real Ed25519 signatures over dcbor with the RFC 8032 test keys; generated and self-checked by tools/gen_dcbor_vectors.py.",
+  "vectors": [
+    {
+      "id": "dcbor.encode.001",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 §2"
+        }
+      ],
+      "operation": "dcbor-encode",
+      "requires": [
+        "dcbor"
+      ],
+      "input": {
+        "value": null
+      },
+      "expected": {
+        "value": "f6"
+      },
+      "status": "normative",
+      "note": "null"
+    },
+    {
+      "id": "dcbor.encode.002",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 §2"
+        }
+      ],
+      "operation": "dcbor-encode",
+      "requires": [
+        "dcbor"
+      ],
+      "input": {
+        "value": true
+      },
+      "expected": {
+        "value": "f5"
+      },
+      "status": "normative",
+      "note": "true"
+    },
+    {
+      "id": "dcbor.encode.003",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 §2"
+        }
+      ],
+      "operation": "dcbor-encode",
+      "requires": [
+        "dcbor"
+      ],
+      "input": {
+        "value": 23
+      },
+      "expected": {
+        "value": "17"
+      },
+      "status": "normative",
+      "note": "int-23"
+    },
+    {
+      "id": "dcbor.encode.004",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 §2"
+        }
+      ],
+      "operation": "dcbor-encode",
+      "requires": [
+        "dcbor"
+      ],
+      "input": {
+        "value": 24
+      },
+      "expected": {
+        "value": "1818"
+      },
+      "status": "normative",
+      "note": "int-24"
+    },
+    {
+      "id": "dcbor.encode.005",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 §2"
+        }
+      ],
+      "operation": "dcbor-encode",
+      "requires": [
+        "dcbor"
+      ],
+      "input": {
+        "value": -1
+      },
+      "expected": {
+        "value": "20"
+      },
+      "status": "normative",
+      "note": "int-neg-1"
+    },
+    {
+      "id": "dcbor.encode.006",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 §2"
+        }
+      ],
+      "operation": "dcbor-encode",
+      "requires": [
+        "dcbor"
+      ],
+      "input": {
+        "value": 65536
+      },
+      "expected": {
+        "value": "1a00010000"
+      },
+      "status": "normative",
+      "note": "int-65536"
+    },
+    {
+      "id": "dcbor.encode.007",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 §2"
+        }
+      ],
+      "operation": "dcbor-encode",
+      "requires": [
+        "dcbor"
+      ],
+      "input": {
+        "value": "Zürich"
+      },
+      "expected": {
+        "value": "675ac3bc72696368"
+      },
+      "status": "normative",
+      "note": "text"
+    },
+    {
+      "id": "dcbor.encode.008",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 §2"
+        }
+      ],
+      "operation": "dcbor-encode",
+      "requires": [
+        "dcbor"
+      ],
+      "input": {
+        "value": [
+          1,
+          "a"
+        ]
+      },
+      "expected": {
+        "value": "82016161"
+      },
+      "status": "normative",
+      "note": "array"
+    },
+    {
+      "id": "dcbor.encode.009",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 §2"
+        }
+      ],
+      "operation": "dcbor-encode",
+      "requires": [
+        "dcbor"
+      ],
+      "input": {
+        "value": {
+          "b": 1,
+          "a": 2,
+          "aa": 3
+        }
+      },
+      "expected": {
+        "value": "a361610261620162616103"
+      },
+      "status": "normative",
+      "note": "map-key-order"
+    },
+    {
+      "id": "dcbor.encode.010",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 R2-R3"
+        }
+      ],
+      "operation": "dcbor-encode",
+      "requires": [
+        "dcbor"
+      ],
+      "input": {
+        "value": 1.5
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "malformed"
+      },
+      "status": "normative",
+      "note": "float: float-not-allowed"
+    },
+    {
+      "id": "dcbor.encode.011",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 R2-R3"
+        }
+      ],
+      "operation": "dcbor-encode",
+      "requires": [
+        "dcbor"
+      ],
+      "input": {
+        "value": "Zürich"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "malformed"
+      },
+      "status": "normative",
+      "note": "not-nfc: not-nfc"
+    },
+    {
+      "id": "dcbor.encode.012",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 R2-R3"
+        }
+      ],
+      "operation": "dcbor-encode",
+      "requires": [
+        "dcbor"
+      ],
+      "input": {
+        "value": 18446744073709551616
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "malformed"
+      },
+      "status": "normative",
+      "note": "int-2^64: integer-out-of-range"
+    },
+    {
+      "id": "dcbor.encode.013",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 R2-R3"
+        }
+      ],
+      "operation": "dcbor-encode",
+      "requires": [
+        "dcbor"
+      ],
+      "input": {
+        "value": {
+          "Zü": 1
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "malformed"
+      },
+      "status": "normative",
+      "note": "not-nfc-key: not-nfc"
+    },
+    {
+      "id": "dcbor.decode.001",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 R4"
+        }
+      ],
+      "operation": "dcbor-decode",
+      "requires": [
+        "dcbor"
+      ],
+      "input": {
+        "hex": "a2616101616202"
+      },
+      "expected": {
+        "value": {
+          "a": 1,
+          "b": 2
+        }
+      },
+      "status": "normative",
+      "note": "canonical map"
+    },
+    {
+      "id": "dcbor.decode.002",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 R4"
+        }
+      ],
+      "operation": "dcbor-decode",
+      "requires": [
+        "dcbor"
+      ],
+      "input": {
+        "hex": "1817"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "malformed"
+      },
+      "status": "normative",
+      "note": "not-deterministic: non-shortest int 23"
+    },
+    {
+      "id": "dcbor.decode.003",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 R4"
+        }
+      ],
+      "operation": "dcbor-decode",
+      "requires": [
+        "dcbor"
+      ],
+      "input": {
+        "hex": "a2616201616102"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "malformed"
+      },
+      "status": "normative",
+      "note": "not-deterministic: unsorted map keys"
+    },
+    {
+      "id": "dcbor.decode.004",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 R4"
+        }
+      ],
+      "operation": "dcbor-decode",
+      "requires": [
+        "dcbor"
+      ],
+      "input": {
+        "hex": "9f01ff"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "malformed"
+      },
+      "status": "normative",
+      "note": "indefinite-or-reserved: indefinite-length array"
+    },
+    {
+      "id": "dcbor.decode.005",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 R4"
+        }
+      ],
+      "operation": "dcbor-decode",
+      "requires": [
+        "dcbor"
+      ],
+      "input": {
+        "hex": "a2616101616102"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "malformed"
+      },
+      "status": "normative",
+      "note": "duplicate-key: duplicate key a"
+    },
+    {
+      "id": "dcbor.decode.006",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 R4"
+        }
+      ],
+      "operation": "dcbor-decode",
+      "requires": [
+        "dcbor"
+      ],
+      "input": {
+        "hex": "f93c00"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "malformed"
+      },
+      "status": "normative",
+      "note": "float-or-simple: half float 1.0"
+    },
+    {
+      "id": "dcbor.decode.007",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 R4"
+        }
+      ],
+      "operation": "dcbor-decode",
+      "requires": [
+        "dcbor"
+      ],
+      "input": {
+        "hex": "c060"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "malformed"
+      },
+      "status": "normative",
+      "note": "bytes-or-tag: tag 0"
+    },
+    {
+      "id": "dcbor.decode.008",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 R4"
+        }
+      ],
+      "operation": "dcbor-decode",
+      "requires": [
+        "dcbor"
+      ],
+      "input": {
+        "hex": "4101"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "malformed"
+      },
+      "status": "normative",
+      "note": "bytes-or-tag: byte string"
+    },
+    {
+      "id": "dcbor.decode.009",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 R4"
+        }
+      ],
+      "operation": "dcbor-decode",
+      "requires": [
+        "dcbor"
+      ],
+      "input": {
+        "hex": "a10101"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "malformed"
+      },
+      "status": "normative",
+      "note": "non-text-key: integer map key"
+    },
+    {
+      "id": "dcbor.decode.010",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 R4"
+        }
+      ],
+      "operation": "dcbor-decode",
+      "requires": [
+        "dcbor"
+      ],
+      "input": {
+        "hex": "0102"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "malformed"
+      },
+      "status": "normative",
+      "note": "not-deterministic: trailing bytes"
+    },
+    {
+      "id": "record.digest.001",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 R7"
+        }
+      ],
+      "operation": "record-digest",
+      "requires": [
+        "dcbor"
+      ],
+      "input": {
+        "record": {
+          "v": "0.1",
+          "type": "application/vnd.sidged.note+json",
+          "class": "health.records.notes",
+          "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
+          "provenance": {
+            "source": "urn:sidged:capability:notes.write",
+            "created": "2026-10-15T08:00:00Z",
+            "derived_from": [],
+            "plan": null
+          },
+          "residency": {
+            "tags": [
+              "CH"
+            ]
+          },
+          "retention": {
+            "until": "2027-10-15T08:00:00Z",
+            "on_expiry": "delete"
+          },
+          "content": {
+            "text": "Physio Tuesday 14:00"
+          },
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+            "canon": "dcbor",
+            "value": "cYZLoDibia-1OruFLa-gp20bU27CuV8WtIbDdu5IyHDsu4tBaMCpKKSPv_1wSobFjVmaO-jq3eB9i_A3lXg4Ag",
+            "signer": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw"
+          }
+        }
+      },
+      "expected": {
+        "value": {
+          "digest": "kcHiSq8w2q20D_lvH9l7BRFn2CJwELSQaFwkbgzwvZI",
+          "dcbor_hex": "a8617663302e31647479706578206170706c69636174696f6e2f766e642e7369646765642e6e6f74652b6a736f6e65636c617373746865616c74682e7265636f7264732e6e6f746573656f776e657278386469643a6b65793a7a364d6b77534438644264716358517a4b4a5a5146507932686832697a7a78736b6e644b436a646d4332644270664d4567636f6e74656e74a164746578747450687973696f20547565736461792031343a3030697265736964656e6379a164746167738162434869726574656e74696f6ea265756e74696c74323032372d31302d31355430383a30303a30305a696f6e5f6578706972796664656c6574656a70726f76656e616e6365a464706c616ef666736f75726365782175726e3a7369646765643a6361706162696c6974793a6e6f7465732e7772697465676372656174656474323032362d31302d31355430383a30303a30305a6c646572697665645f66726f6d80"
+        }
+      },
+      "status": "normative",
+      "note": "digest ignores sig; sha256 b64url over dcbor"
+    },
+    {
+      "id": "record.check.001",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 §3"
+        }
+      ],
+      "operation": "record-check",
+      "requires": [
+        "dcbor",
+        "EdDSA"
+      ],
+      "input": {
+        "record": {
+          "v": "0.1",
+          "type": "application/vnd.sidged.note+json",
+          "class": "health.records.notes",
+          "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
+          "provenance": {
+            "source": "urn:sidged:capability:notes.write",
+            "created": "2026-10-15T08:00:00Z",
+            "derived_from": [],
+            "plan": null
+          },
+          "residency": {
+            "tags": [
+              "CH"
+            ]
+          },
+          "retention": {
+            "until": "2027-10-15T08:00:00Z",
+            "on_expiry": "delete"
+          },
+          "content": {
+            "text": "Physio Tuesday 14:00"
+          },
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+            "canon": "dcbor",
+            "value": "cYZLoDibia-1OruFLa-gp20bU27CuV8WtIbDdu5IyHDsu4tBaMCpKKSPv_1wSobFjVmaO-jq3eB9i_A3lXg4Ag",
+            "signer": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw"
+          }
+        },
+        "trusted_core_keys": [
+          "rfc8032-test-1"
+        ]
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative",
+      "note": "signed by the trusted Core key"
+    },
+    {
+      "id": "record.check.002",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 §3"
+        }
+      ],
+      "operation": "record-check",
+      "requires": [
+        "dcbor",
+        "EdDSA"
+      ],
+      "input": {
+        "record": {
+          "v": "0.1",
+          "type": "application/vnd.sidged.note+json",
+          "class": "calendar.availability",
+          "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
+          "provenance": {
+            "source": "urn:sidged:capability:notes.write",
+            "created": "2026-10-15T08:00:00Z",
+            "derived_from": [],
+            "plan": null
+          },
+          "residency": {
+            "tags": [
+              "CH"
+            ]
+          },
+          "retention": {
+            "until": "2027-10-15T08:00:00Z",
+            "on_expiry": "delete"
+          },
+          "content": {
+            "text": "Physio Tuesday 14:00"
+          },
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+            "canon": "dcbor",
+            "value": "cYZLoDibia-1OruFLa-gp20bU27CuV8WtIbDdu5IyHDsu4tBaMCpKKSPv_1wSobFjVmaO-jq3eB9i_A3lXg4Ag",
+            "signer": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw"
+          }
+        },
+        "trusted_core_keys": [
+          "rfc8032-test-1"
+        ]
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "bad-signature"
+      },
+      "status": "normative",
+      "note": "class relabelled after signing"
+    },
+    {
+      "id": "record.check.003",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 §3"
+        }
+      ],
+      "operation": "record-check",
+      "requires": [
+        "dcbor",
+        "EdDSA"
+      ],
+      "input": {
+        "record": {
+          "v": "0.1",
+          "type": "application/vnd.sidged.note+json",
+          "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
+          "provenance": {
+            "source": "urn:sidged:capability:notes.write",
+            "created": "2026-10-15T08:00:00Z",
+            "derived_from": [],
+            "plan": null
+          },
+          "residency": {
+            "tags": [
+              "CH"
+            ]
+          },
+          "retention": {
+            "until": "2027-10-15T08:00:00Z",
+            "on_expiry": "delete"
+          },
+          "content": {
+            "text": "Physio Tuesday 14:00"
+          },
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+            "canon": "dcbor",
+            "value": "ccTB7NB9TWJw1Y9_g8wWwxRej40cWJR98u74MrqJZwM7Jsf8vIIWhwyPoBOuD9MK7paJAr5vGHh9RYw2PSfgDw",
+            "signer": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw"
+          }
+        },
+        "trusted_core_keys": [
+          "rfc8032-test-1"
+        ]
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "malformed"
+      },
+      "status": "normative",
+      "note": "missing-class"
+    },
+    {
+      "id": "record.check.004",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 §3"
+        }
+      ],
+      "operation": "record-check",
+      "requires": [
+        "dcbor",
+        "EdDSA"
+      ],
+      "input": {
+        "record": {
+          "v": "0.1",
+          "type": "application/vnd.sidged.note+json",
+          "class": "health.records.notes",
+          "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
+          "provenance": {
+            "source": "urn:sidged:capability:notes.write",
+            "created": "2026-10-15T08:00:00Z",
+            "derived_from": [],
+            "plan": null
+          },
+          "residency": {
+            "tags": [
+              "CH"
+            ]
+          },
+          "content": {
+            "text": "Physio Tuesday 14:00"
+          },
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+            "canon": "dcbor",
+            "value": "P37qlw9bxScet7EfXdI8HOI4xBhaRMxAgFyYHrwS321jQrAWUlTW1xyNhQpgoAR31eEJnv6ozmBA5pXaMX6WDg",
+            "signer": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw"
+          }
+        },
+        "trusted_core_keys": [
+          "rfc8032-test-1"
+        ]
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "malformed"
+      },
+      "status": "normative",
+      "note": "missing-retention"
+    },
+    {
+      "id": "record.check.005",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 §3"
+        }
+      ],
+      "operation": "record-check",
+      "requires": [
+        "dcbor",
+        "EdDSA"
+      ],
+      "input": {
+        "record": {
+          "v": "0.1",
+          "type": "application/vnd.sidged.note+json",
+          "class": "health.records.notes",
+          "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
+          "provenance": {
+            "created": "2026-10-15T08:00:00Z",
+            "derived_from": [],
+            "plan": null
+          },
+          "residency": {
+            "tags": [
+              "CH"
+            ]
+          },
+          "retention": {
+            "until": "2027-10-15T08:00:00Z",
+            "on_expiry": "delete"
+          },
+          "content": {
+            "text": "Physio Tuesday 14:00"
+          },
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+            "canon": "dcbor",
+            "value": "AaJ6WLY0xir-wd196NL1uN_KtA-FQoeowXV-OuqOHRoCE59v0kH4OnDcqxIYpaIEoQdF5zLv5MOyoalNRBaWBw",
+            "signer": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw"
+          }
+        },
+        "trusted_core_keys": [
+          "rfc8032-test-1"
+        ]
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "malformed"
+      },
+      "status": "normative",
+      "note": "missing-provenance"
+    },
+    {
+      "id": "record.check.006",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 §3"
+        }
+      ],
+      "operation": "record-check",
+      "requires": [
+        "dcbor",
+        "EdDSA"
+      ],
+      "input": {
+        "record": {
+          "v": "0.1",
+          "type": "application/vnd.sidged.note+json",
+          "class": "health.records.notes",
+          "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
+          "provenance": {
+            "source": "urn:sidged:capability:notes.write",
+            "created": "2026-10-15T08:00:00Z",
+            "derived_from": [],
+            "plan": null
+          },
+          "residency": {
+            "tags": [
+              "Not A Tag!"
+            ]
+          },
+          "retention": {
+            "until": "2027-10-15T08:00:00Z",
+            "on_expiry": "delete"
+          },
+          "content": {
+            "text": "Physio Tuesday 14:00"
+          },
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+            "canon": "dcbor",
+            "value": "LhNyKgw-oYV4Hj8yaSAWUruwJRfbo0YIskavfX2s7EAcTmgctBVAg5MA3ybu5SuWFAWlrieCIfaAOWLi7sdIBA",
+            "signer": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw"
+          }
+        },
+        "trusted_core_keys": [
+          "rfc8032-test-1"
+        ]
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "residency-unknown-tag"
+      },
+      "status": "normative",
+      "note": "bad-residency"
+    },
+    {
+      "id": "record.check.007",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 §3"
+        }
+      ],
+      "operation": "record-check",
+      "requires": [
+        "dcbor",
+        "EdDSA"
+      ],
+      "input": {
+        "record": {
+          "v": "0.1",
+          "type": "application/vnd.sidged.note+json",
+          "class": "health.records.notes",
+          "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
+          "provenance": {
+            "source": "urn:sidged:capability:notes.write",
+            "created": "2026-10-15T08:00:00Z",
+            "derived_from": [],
+            "plan": null
+          },
+          "residency": {
+            "tags": [
+              "CH"
+            ]
+          },
+          "retention": {
+            "until": "2027-10-15T08:00:00Z",
+            "on_expiry": "archive"
+          },
+          "content": {
+            "text": "Physio Tuesday 14:00"
+          },
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+            "canon": "dcbor",
+            "value": "NfPxVEP1-gj-Na9kLRSD03da8QbjwsfPx30LnUf2GxJRTRhNarIaL-LOAfji48jS9h9fMo9h4jYvFbNtovIcDQ",
+            "signer": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw"
+          }
+        },
+        "trusted_core_keys": [
+          "rfc8032-test-1"
+        ]
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "malformed"
+      },
+      "status": "normative",
+      "note": "bad-retention"
+    },
+    {
+      "id": "record.check.008",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 §3"
+        }
+      ],
+      "operation": "record-check",
+      "requires": [
+        "dcbor",
+        "EdDSA"
+      ],
+      "input": {
+        "record": {
+          "v": "0.2",
+          "type": "application/vnd.sidged.note+json",
+          "class": "health.records.notes",
+          "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
+          "provenance": {
+            "source": "urn:sidged:capability:notes.write",
+            "created": "2026-10-15T08:00:00Z",
+            "derived_from": [],
+            "plan": null
+          },
+          "residency": {
+            "tags": [
+              "CH"
+            ]
+          },
+          "retention": {
+            "until": "2027-10-15T08:00:00Z",
+            "on_expiry": "delete"
+          },
+          "content": {
+            "text": "Physio Tuesday 14:00"
+          },
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+            "canon": "dcbor",
+            "value": "fxGFdLZ_QI1DS-IwJmtNfXjSBGP7ycdY7Mks4C_05NqkZrQTq9bREEFZiTE8Fi88xh37Nk02g3SMJmQi2PySAw",
+            "signer": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw"
+          }
+        },
+        "trusted_core_keys": [
+          "rfc8032-test-1"
+        ]
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "unsupported-version"
+      },
+      "status": "normative",
+      "note": "unsupported-version"
+    },
+    {
+      "id": "record.check.009",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 §3"
+        }
+      ],
+      "operation": "record-check",
+      "requires": [
+        "dcbor",
+        "EdDSA"
+      ],
+      "input": {
+        "record": {
+          "v": "0.1",
+          "type": "application/vnd.sidged.note+json",
+          "class": "healthx.notes",
+          "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
+          "provenance": {
+            "source": "urn:sidged:capability:notes.write",
+            "created": "2026-10-15T08:00:00Z",
+            "derived_from": [],
+            "plan": null
+          },
+          "residency": {
+            "tags": [
+              "CH"
+            ]
+          },
+          "retention": {
+            "until": "2027-10-15T08:00:00Z",
+            "on_expiry": "delete"
+          },
+          "content": {
+            "text": "Physio Tuesday 14:00"
+          },
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+            "canon": "dcbor",
+            "value": "xQQxc_h_P4BOS8EzOUM0I5b9vflUAFR39cBFoC5H6jxkmpCL8IJA1iJuhfAegHKNuM0utd3i5u6dg3bbDQjJBw",
+            "signer": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw"
+          }
+        },
+        "trusted_core_keys": [
+          "rfc8032-test-1"
+        ]
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "malformed"
+      },
+      "status": "normative",
+      "note": "bad-class"
+    },
+    {
+      "id": "record.check.010",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 §3"
+        }
+      ],
+      "operation": "record-check",
+      "requires": [
+        "dcbor",
+        "EdDSA"
+      ],
+      "input": {
+        "record": {
+          "v": "0.1",
+          "type": "application/vnd.sidged.note+json",
+          "class": "health/records",
+          "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
+          "provenance": {
+            "source": "urn:sidged:capability:notes.write",
+            "created": "2026-10-15T08:00:00Z",
+            "derived_from": [],
+            "plan": null
+          },
+          "residency": {
+            "tags": [
+              "CH"
+            ]
+          },
+          "retention": {
+            "until": "2027-10-15T08:00:00Z",
+            "on_expiry": "delete"
+          },
+          "content": {
+            "text": "Physio Tuesday 14:00"
+          },
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+            "canon": "dcbor",
+            "value": "TxuOBOqLsbSV4EoEeSrHvBFQDgy_LaeHwGIzunMbnuYrSTfYh4ku-0pnRwkFawxf3zVRocy8uXxkGAC8FyvoAQ",
+            "signer": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw"
+          }
+        },
+        "trusted_core_keys": [
+          "rfc8032-test-1"
+        ]
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "malformed"
+      },
+      "status": "normative",
+      "note": "bad-class"
+    },
+    {
+      "id": "record.check.011",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 §3"
+        }
+      ],
+      "operation": "record-check",
+      "requires": [
+        "dcbor",
+        "EdDSA"
+      ],
+      "input": {
+        "record": {
+          "v": "0.1",
+          "type": "application/vnd.sidged.note+json",
+          "class": "health..notes",
+          "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
+          "provenance": {
+            "source": "urn:sidged:capability:notes.write",
+            "created": "2026-10-15T08:00:00Z",
+            "derived_from": [],
+            "plan": null
+          },
+          "residency": {
+            "tags": [
+              "CH"
+            ]
+          },
+          "retention": {
+            "until": "2027-10-15T08:00:00Z",
+            "on_expiry": "delete"
+          },
+          "content": {
+            "text": "Physio Tuesday 14:00"
+          },
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+            "canon": "dcbor",
+            "value": "8IOKESzvr86d_x2zfKpEWghejQBwfqguO8ccSJiXEMFzal5gmdomOn8Ln9D0aML_503tUG37Tq9CSVKi0GrMDw",
+            "signer": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw"
+          }
+        },
+        "trusted_core_keys": [
+          "rfc8032-test-1"
+        ]
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "malformed"
+      },
+      "status": "normative",
+      "note": "bad-class"
+    },
+    {
+      "id": "record.check.012",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 §3"
+        }
+      ],
+      "operation": "record-check",
+      "requires": [
+        "dcbor",
+        "EdDSA"
+      ],
+      "input": {
+        "record": {
+          "v": "0.1",
+          "type": "application/vnd.sidged.note+json",
+          "class": "x-acme.notes",
+          "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
+          "provenance": {
+            "source": "urn:sidged:capability:notes.write",
+            "created": "2026-10-15T08:00:00Z",
+            "derived_from": [],
+            "plan": null
+          },
+          "residency": {
+            "tags": [
+              "CH"
+            ]
+          },
+          "retention": {
+            "until": "2027-10-15T08:00:00Z",
+            "on_expiry": "delete"
+          },
+          "content": {
+            "text": "Physio Tuesday 14:00"
+          },
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+            "canon": "dcbor",
+            "value": "-CCriWT5aKInUGJNdEOTTI3RmWobFDDPXpSW9TxUAPwjc96-BtKRsuy10BJtYHqmKsiUoaU4KJTrkcJlIDAFBQ",
+            "signer": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw"
+          }
+        },
+        "trusted_core_keys": [
+          "rfc8032-test-1"
+        ]
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative",
+      "note": "x- class roots are accepted (data-class registry)"
+    },
+    {
+      "id": "record.check.013",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 §3"
+        }
+      ],
+      "operation": "record-check",
+      "requires": [
+        "dcbor",
+        "EdDSA"
+      ],
+      "input": {
+        "record": {
+          "v": "0.1",
+          "type": "application/vnd.sidged.note+json",
+          "class": "health.records.notes",
+          "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
+          "provenance": {
+            "source": "urn:sidged:capability:notes.write",
+            "created": "2026-10-15T08:00:00Z",
+            "derived_from": [],
+            "plan": null
+          },
+          "residency": {
+            "tags": [
+              "CH"
+            ]
+          },
+          "retention": {
+            "until": "2027-10-15T08:00:00Z",
+            "on_expiry": "delete"
+          },
+          "content": {
+            "text": "Physio Tuesday 14:00"
+          },
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:key:z6MkiaMbhXHNA4eJVCCj8dbzKzTgYDKf6crKgHVHid1F1WCT",
+            "canon": "dcbor",
+            "value": "EH0n4CGTiLDdjo03xYoXadkELbETp2MfXweuJd6RhWhblb9e5pDhheAHlF93yrrlOEeiP5CDuOX2mfCcOQBqDA",
+            "signer": "did:key:z6MkiaMbhXHNA4eJVCCj8dbzKzTgYDKf6crKgHVHid1F1WCT"
+          }
+        },
+        "trusted_core_keys": [
+          "rfc8032-test-1"
+        ]
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "bad-signature"
+      },
+      "status": "normative",
+      "note": "valid signature by rfc8032-test-2, which is not a trusted Core key"
+    },
+    {
+      "id": "record.check.014",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 §3"
+        }
+      ],
+      "operation": "record-check",
+      "requires": [
+        "dcbor",
+        "EdDSA"
+      ],
+      "input": {
+        "record": {
+          "v": "0.1",
+          "type": "application/vnd.sidged.note+json",
+          "class": "health.records.notes",
+          "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
+          "provenance": {
+            "source": "urn:sidged:capability:notes.write",
+            "created": "2026-10-15T08:00:00Z",
+            "derived_from": [],
+            "plan": null
+          },
+          "residency": {
+            "tags": [
+              "CH"
+            ]
+          },
+          "retention": {
+            "until": "2027-10-15T08:00:00Z",
+            "on_expiry": "delete"
+          },
+          "content": {
+            "text": "Physio Tuesday 14:00"
+          },
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:key:z6MkiaMbhXHNA4eJVCCj8dbzKzTgYDKf6crKgHVHid1F1WCT",
+            "canon": "dcbor",
+            "value": "cYZLoDibia-1OruFLa-gp20bU27CuV8WtIbDdu5IyHDsu4tBaMCpKKSPv_1wSobFjVmaO-jq3eB9i_A3lXg4Ag",
+            "signer": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw"
+          }
+        },
+        "trusted_core_keys": [
+          "rfc8032-test-1"
+        ]
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "bad-signature"
+      },
+      "status": "normative",
+      "note": "kid differs from signer (both outside the signed bytes)"
+    },
+    {
+      "id": "record.retention.001",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 R8"
+        }
+      ],
+      "operation": "record-retention",
+      "input": {
+        "record": {
+          "v": "0.1",
+          "type": "application/vnd.sidged.note+json",
+          "class": "health.records.notes",
+          "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
+          "provenance": {
+            "source": "urn:sidged:capability:notes.write",
+            "created": "2026-10-15T08:00:00Z",
+            "derived_from": [],
+            "plan": null
+          },
+          "residency": {
+            "tags": [
+              "CH"
+            ]
+          },
+          "retention": {
+            "until": "2027-10-15T08:00:00Z",
+            "on_expiry": "delete"
+          },
+          "content": {
+            "text": "Physio Tuesday 14:00"
+          },
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+            "canon": "dcbor",
+            "value": "cYZLoDibia-1OruFLa-gp20bU27CuV8WtIbDdu5IyHDsu4tBaMCpKKSPv_1wSobFjVmaO-jq3eB9i_A3lXg4Ag",
+            "signer": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw"
+          }
+        },
+        "now": "2027-10-15T07:59:59Z"
+      },
+      "expected": {
+        "value": "live"
+      },
+      "status": "normative"
+    },
+    {
+      "id": "record.retention.002",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 R8"
+        }
+      ],
+      "operation": "record-retention",
+      "input": {
+        "record": {
+          "v": "0.1",
+          "type": "application/vnd.sidged.note+json",
+          "class": "health.records.notes",
+          "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
+          "provenance": {
+            "source": "urn:sidged:capability:notes.write",
+            "created": "2026-10-15T08:00:00Z",
+            "derived_from": [],
+            "plan": null
+          },
+          "residency": {
+            "tags": [
+              "CH"
+            ]
+          },
+          "retention": {
+            "until": "2027-10-15T08:00:00Z",
+            "on_expiry": "delete"
+          },
+          "content": {
+            "text": "Physio Tuesday 14:00"
+          },
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+            "canon": "dcbor",
+            "value": "cYZLoDibia-1OruFLa-gp20bU27CuV8WtIbDdu5IyHDsu4tBaMCpKKSPv_1wSobFjVmaO-jq3eB9i_A3lXg4Ag",
+            "signer": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw"
+          }
+        },
+        "now": "2027-10-15T08:00:00Z"
+      },
+      "expected": {
+        "value": "expired"
+      },
+      "status": "normative"
+    },
+    {
+      "id": "record.retention.003",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 R8"
+        }
+      ],
+      "operation": "record-retention",
+      "input": {
+        "record": {
+          "v": "0.1",
+          "type": "application/vnd.sidged.note+json",
+          "class": "health.records.notes",
+          "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
+          "provenance": {
+            "source": "urn:sidged:capability:notes.write",
+            "created": "2026-10-15T08:00:00Z",
+            "derived_from": [],
+            "plan": null
+          },
+          "residency": {
+            "tags": [
+              "CH"
+            ]
+          },
+          "retention": {
+            "until": "2027-10-15T08:00:00Z",
+            "on_expiry": "delete"
+          },
+          "content": {
+            "text": "Physio Tuesday 14:00"
+          },
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+            "canon": "dcbor",
+            "value": "cYZLoDibia-1OruFLa-gp20bU27CuV8WtIbDdu5IyHDsu4tBaMCpKKSPv_1wSobFjVmaO-jq3eB9i_A3lXg4Ag",
+            "signer": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw"
+          }
+        },
+        "now": "2028-01-01T00:00:00Z"
+      },
+      "expected": {
+        "value": "expired"
+      },
+      "status": "normative"
+    },
+    {
+      "id": "record.retention.004",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 R8"
+        }
+      ],
+      "operation": "record-retention",
+      "input": {
+        "record": {
+          "v": "0.1",
+          "type": "application/vnd.sidged.note+json",
+          "class": "health.records.notes",
+          "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
+          "provenance": {
+            "source": "urn:sidged:capability:notes.write",
+            "created": "2026-10-15T08:00:00Z",
+            "derived_from": [],
+            "plan": null
+          },
+          "residency": {
+            "tags": [
+              "CH"
+            ]
+          },
+          "retention": {
+            "until": null,
+            "on_expiry": "delete"
+          },
+          "content": {
+            "text": "Physio Tuesday 14:00"
+          },
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
+            "canon": "dcbor",
+            "value": "wJsAb_bSIPBPxeoYRvVdv_ox8Op0a6u7Vx_0PodCevTc7Q6PQZyrT9YmcRJNhLkYnKqNTYDjpd86PqHrBmuxAQ",
+            "signer": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw"
+          }
+        },
+        "now": "2099-01-01T00:00:00Z"
+      },
+      "expected": {
+        "value": "live"
+      },
+      "status": "normative",
+      "note": "until null = owner-managed"
+    },
+    {
+      "id": "record.derive.002",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 R10"
+        }
+      ],
+      "operation": "record-derive",
+      "input": {
+        "inputs": [
+          {
+            "class": "health.records.notes",
+            "tags": [
+              "CH"
+            ]
+          },
+          {
+            "class": "health.records.notes",
+            "tags": [
+              "EU"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "value": {
+          "class": "health.records.notes",
+          "tags": [
+            "CH",
+            "EU"
+          ],
+          "regions": []
+        }
+      },
+      "status": "normative",
+      "note": "CH + EU -> nowhere, never any"
+    },
+    {
+      "id": "record.derive.003",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 R10"
+        }
+      ],
+      "operation": "record-derive",
+      "input": {
+        "inputs": [
+          {
+            "class": "health.records.notes",
+            "tags": [
+              "CH"
+            ]
+          },
+          {
+            "class": "health.records.notes",
+            "tags": [
+              "CH-EU"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "value": {
+          "class": "health.records.notes",
+          "tags": [
+            "CH",
+            "CH-EU"
+          ],
+          "regions": [
+            "CH"
+          ]
+        }
+      },
+      "status": "normative",
+      "note": "CH + CH-EU -> CH"
+    },
+    {
+      "id": "record.derive.005",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 R10"
+        }
+      ],
+      "operation": "record-derive",
+      "input": {
+        "inputs": [
+          {
+            "class": "health.records",
+            "tags": []
+          },
+          {
+            "class": "finance.payments",
+            "tags": []
+          }
+        ]
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "data-class-forbidden"
+      },
+      "status": "normative",
+      "note": "no common covering class"
+    },
+    {
+      "id": "record.derive.006",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 R10"
+        }
+      ],
+      "operation": "record-derive",
+      "input": {
+        "inputs": [
+          {
+            "class": "health.records.notes",
+            "tags": []
+          },
+          {
+            "class": "health.records.labs",
+            "tags": []
+          }
+        ]
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "data-class-forbidden"
+      },
+      "status": "normative",
+      "note": "siblings have no covering input class"
+    },
+    {
+      "id": "record.derive.007",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 R10"
+        }
+      ],
+      "operation": "record-derive",
+      "input": {
+        "inputs": [
+          {
+            "class": "health.records.notes",
+            "tags": [
+              "CH"
+            ]
+          },
+          {
+            "class": "health.records.notes",
+            "tags": [
+              "unrestricted"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "value": {
+          "class": "health.records.notes",
+          "tags": [
+            "CH"
+          ],
+          "regions": [
+            "CH"
+          ]
+        }
+      },
+      "status": "normative",
+      "note": "CH + unrestricted -> CH (0001 R8e)"
+    },
+    {
+      "id": "record.derive.008",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 R10"
+        }
+      ],
+      "operation": "record-derive",
+      "input": {
+        "inputs": [
+          {
+            "class": "health.records",
+            "tags": [
+              "unrestricted"
+            ]
+          },
+          {
+            "class": "health.records.notes",
+            "tags": [
+              "unrestricted"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "value": {
+          "class": "health.records",
+          "tags": [
+            "unrestricted"
+          ],
+          "regions": "any"
+        }
+      },
+      "status": "normative",
+      "note": "covering class; all unrestricted stays unrestricted"
+    },
+    {
+      "id": "record.derive.009",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 R10"
+        }
+      ],
+      "operation": "record-derive",
+      "input": {
+        "inputs": [
+          {
+            "class": "health.records.notes",
+            "tags": [
+              "CH"
+            ]
+          },
+          {
+            "class": "health.records.notes",
+            "tags": []
+          }
+        ]
+      },
+      "expected": {
+        "value": {
+          "class": "health.records.notes",
+          "tags": [],
+          "regions": []
+        }
+      },
+      "status": "normative",
+      "note": "CH + empty tags -> empty, fails closed (0001 R8a)"
+    },
+    {
+      "id": "record.resource.001",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 R9"
+        }
+      ],
+      "operation": "record-resource",
+      "input": {
+        "class": "health.records.notes"
+      },
+      "expected": {
+        "value": "urn:sidged:record:health/records/notes"
+      },
+      "status": "normative"
+    },
+    {
+      "id": "record.resource.002",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 R9"
+        }
+      ],
+      "operation": "record-resource",
+      "input": {
+        "class": "x-acme"
+      },
+      "expected": {
+        "value": "urn:sidged:record:x-acme"
+      },
+      "status": "normative"
+    },
+    {
+      "id": "record.resource.003",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 R9"
+        }
+      ],
+      "operation": "record-resource",
+      "input": {
+        "class": "health/records"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "malformed"
+      },
+      "status": "normative",
+      "note": "bad class grammar or root"
+    },
+    {
+      "id": "record.resource.004",
+      "spec": [
+        {
+          "doc": "L0",
+          "version": "0.1",
+          "section": "0012 R9"
+        }
+      ],
+      "operation": "record-resource",
+      "input": {
+        "class": "healthx"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "malformed"
+      },
+      "status": "normative",
+      "note": "bad class grammar or root"
+    },
+    {
+      "id": "record.coverage.001",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "R9"
+        }
+      ],
+      "operation": "resource-covers",
+      "input": {
+        "right": "urn:sidged:record:health/*",
+        "resource": "urn:sidged:record:health/records/notes"
+      },
+      "expected": {
+        "value": true
+      },
+      "status": "normative",
+      "note": "record class resources under SDG-L2 R9 (0012 R9)"
+    },
+    {
+      "id": "record.coverage.002",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "R9"
+        }
+      ],
+      "operation": "resource-covers",
+      "input": {
+        "right": "urn:sidged:record:health/records/*",
+        "resource": "urn:sidged:record:health/records/notes"
+      },
+      "expected": {
+        "value": true
+      },
+      "status": "normative",
+      "note": "record class resources under SDG-L2 R9 (0012 R9)"
+    },
+    {
+      "id": "record.coverage.003",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "R9"
+        }
+      ],
+      "operation": "resource-covers",
+      "input": {
+        "right": "urn:sidged:record:health/*",
+        "resource": "urn:sidged:record:health"
+      },
+      "expected": {
+        "value": false
+      },
+      "status": "normative",
+      "note": "record class resources under SDG-L2 R9 (0012 R9)"
+    },
+    {
+      "id": "record.coverage.004",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "R9"
+        }
+      ],
+      "operation": "resource-covers",
+      "input": {
+        "right": "urn:sidged:record:health/*",
+        "resource": "urn:sidged:record:healthx/notes"
+      },
+      "expected": {
+        "value": false
+      },
+      "status": "normative",
+      "note": "record class resources under SDG-L2 R9 (0012 R9)"
+    },
+    {
+      "id": "record.coverage.005",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "R9"
+        }
+      ],
+      "operation": "resource-covers",
+      "input": {
+        "right": "urn:sidged:record:health/records",
+        "resource": "urn:sidged:record:health/records/notes"
+      },
+      "expected": {
+        "value": false
+      },
+      "status": "normative",
+      "note": "record class resources under SDG-L2 R9 (0012 R9)"
+    }
+  ]
+}

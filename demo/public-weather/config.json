@@ -1,0 +1,9 @@
+{
+  "audience": "did:example:public-weather",
+  "provider_region": "GLOBAL",
+  "provider_id": "https://generativelanguage.googleapis.com/",
+  "provider_profile": "P0",
+  "model": "gemini-2.5-flash",
+  "task": "Look up public weather for Zurich city (47.3769, 8.5417) and summarize it. Use only public non-personal data; no device location or user information.",
+  "record_result": true
+}

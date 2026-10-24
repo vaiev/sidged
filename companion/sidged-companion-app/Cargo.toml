@@ -1,0 +1,31 @@
+[package]
+name = "sidged-companion-app"
+version = "0.2.0"
+edition = "2021"
+rust-version = "1.89"
+license = "Apache-2.0"
+publish = false
+description = "Tauri v2 shell of the Sidged companion node: sidged-desktop and sidged-android."
+
+[lib]
+name = "sidged_companion_app_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "~2.6", features = [] }
+
+[dependencies]
+# 2.11.x is the last line that builds with the repository toolchain (rustc 1.89).
+tauri = { version = "~2.11", features = [] }
+serde_json = "1"
+sidged-companion-core = { path = "../sidged-companion-core" }
+# The GGUF header reader: the weights declare their output form (0017 L3b).
+sidged-cli = { path = "../../runtime/sidged-cli" }
+# The on-device model (WP 9b): weights are identified by SHA-256; getuid for the peer-uid check.
+sha2 = "0.10"
+libc = "0.2"
+
+# Timers and reminders ring through the OS on the phone (local notifications, no network).
+[target.'cfg(target_os = "android")'.dependencies]
+tauri-plugin-notification = "~2.3"
+time = { version = "0.3", features = ["parsing"] }

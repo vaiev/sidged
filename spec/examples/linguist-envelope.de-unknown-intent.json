@@ -1,0 +1,12 @@
+{
+  "v": "0.1",
+  "lang": "de",
+  "intent": null,
+  "slots": {},
+  "missing_slots": [],
+  "clarification_needed": true,
+  "clarification_question_local": "Was genau soll ich tun?",
+  "canonical_intent_en": null,
+  "suggested_route": "clarify",
+  "required_data_classes": []
+}

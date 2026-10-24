@@ -1,0 +1,56 @@
+{
+  "v": "0.1",
+  "locales": [
+    "en",
+    "de",
+    "gsw"
+  ],
+  "unknown_intent_ask": {
+    "en": "What exactly should I do?",
+    "de": "Was genau soll ich tun?",
+    "gsw": "Was genau söll ich mache?"
+  },
+  "intents": [
+    {
+      "intent": "scheduling.remind",
+      "title": "Set a reminder",
+      "canonical_en": "Remind me about {subject} {time}",
+      "slots_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "subject": {
+            "type": "string",
+            "description": "What to be reminded of.",
+            "x-ask": {
+              "en": "What should I remind you of?",
+              "de": "Woran soll ich dich erinnern?",
+              "gsw": "Wora söll ich di erinnere?"
+            }
+          },
+          "time": {
+            "type": "string",
+            "description": "When the reminder fires.",
+            "x-ask": {
+              "en": "When should I remind you?",
+              "de": "Wann soll ich dich erinnern?",
+              "gsw": "Wänn söll ich di erinnere?"
+            }
+          }
+        },
+        "required": [
+          "subject",
+          "time"
+        ]
+      },
+      "capabilities": [
+        "urn:sidged:capability:reminder.create"
+      ],
+      "data_classes": [
+        "calendar.events"
+      ],
+      "artifact_mime": "application/vnd.sidged.artifact.solution+json",
+      "route": "edge-local"
+    }
+  ]
+}

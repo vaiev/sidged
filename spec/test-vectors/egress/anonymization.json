@@ -1,0 +1,1673 @@
+{
+  "category": "egress",
+  "description": "Model-call egress decision (spec 0007 §5.1 to 5.3): approval per (provider, task type) with limit, local-only classes from the Core's read log, residency fail-closed, size limit, deterministic detector sdg.pii/1. model_claim is ignored.",
+  "vectors": [
+    {
+      "id": "egress.anonymization.001",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "5.1-5.3"
+        }
+      ],
+      "operation": "egress-check",
+      "input": {
+        "route": "cloud",
+        "provider": "infomaniak",
+        "task_type": "planner",
+        "destination": "CH",
+        "tags": [
+          "CH"
+        ],
+        "read_classes": [
+          "query.general"
+        ],
+        "approval": {
+          "valid": true,
+          "standing": true,
+          "used": 0,
+          "scope": {
+            "standing": true,
+            "provider": "infomaniak",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "a762d88ab6f4a4555fdbf17850cb192c1ebb7bbd31b40cbaf853665c00bb967e"
+        },
+        "payload": "Weather forecast for Zurich tomorrow?",
+        "model_claim": {
+          "anonymized": true
+        }
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative",
+      "note": "clean CH query with valid first-use approval"
+    },
+    {
+      "id": "egress.anonymization.002",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "5.1-5.3"
+        }
+      ],
+      "operation": "egress-check",
+      "input": {
+        "route": "local",
+        "provider": "infomaniak",
+        "task_type": "planner",
+        "destination": "CH",
+        "tags": [
+          "CH"
+        ],
+        "read_classes": [
+          "health.records"
+        ],
+        "payload": "Weather forecast for Zurich tomorrow?",
+        "model_claim": {
+          "anonymized": true
+        }
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative",
+      "note": "local planner call needs no approval (R7)"
+    },
+    {
+      "id": "egress.anonymization.003",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "5.1-5.3"
+        }
+      ],
+      "operation": "egress-check",
+      "input": {
+        "route": "cloud",
+        "provider": "infomaniak",
+        "task_type": "planner",
+        "destination": "CH",
+        "tags": [
+          "CH"
+        ],
+        "read_classes": [
+          "query.general"
+        ],
+        "payload": "Weather forecast for Zurich tomorrow?",
+        "model_claim": {
+          "anonymized": true
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "approval-required"
+      },
+      "status": "normative",
+      "note": "first use per (provider, task type) without approval (R8)"
+    },
+    {
+      "id": "egress.anonymization.004",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "5.1-5.3"
+        }
+      ],
+      "operation": "egress-check",
+      "input": {
+        "route": "cloud",
+        "provider": "infomaniak",
+        "task_type": "planner",
+        "destination": "CH",
+        "tags": [
+          "CH"
+        ],
+        "read_classes": [
+          "query.general"
+        ],
+        "approval": {
+          "valid": true,
+          "standing": true,
+          "used": 20,
+          "scope": {
+            "standing": true,
+            "provider": "infomaniak",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "a762d88ab6f4a4555fdbf17850cb192c1ebb7bbd31b40cbaf853665c00bb967e"
+        },
+        "payload": "Weather forecast for Zurich tomorrow?",
+        "model_claim": {
+          "anonymized": true
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "approval-required"
+      },
+      "status": "normative",
+      "note": "call over the approved limit asks again (R8b)"
+    },
+    {
+      "id": "egress.anonymization.005",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "5.1-5.3"
+        }
+      ],
+      "operation": "egress-check",
+      "input": {
+        "route": "cloud",
+        "provider": "infomaniak",
+        "task_type": "planner",
+        "destination": "CH",
+        "tags": [
+          "CH"
+        ],
+        "read_classes": [
+          "health.fitness"
+        ],
+        "approval": {
+          "valid": true,
+          "standing": true,
+          "used": 0,
+          "scope": {
+            "standing": true,
+            "provider": "infomaniak",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "a762d88ab6f4a4555fdbf17850cb192c1ebb7bbd31b40cbaf853665c00bb967e"
+        },
+        "payload": "Resting heart rate trend, anonymized",
+        "model_claim": {
+          "anonymized": true
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "data-class-forbidden"
+      },
+      "status": "normative",
+      "note": "health class refused although the model labels it anonymized (R9, R11 A)"
+    },
+    {
+      "id": "egress.anonymization.006",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "5.1-5.3"
+        }
+      ],
+      "operation": "egress-check",
+      "input": {
+        "route": "cloud",
+        "provider": "infomaniak",
+        "task_type": "planner",
+        "destination": "CH",
+        "tags": [
+          "CH"
+        ],
+        "read_classes": [
+          "query.general",
+          "contacts.email"
+        ],
+        "approval": {
+          "valid": true,
+          "standing": true,
+          "used": 0,
+          "scope": {
+            "standing": true,
+            "provider": "infomaniak",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "a762d88ab6f4a4555fdbf17850cb192c1ebb7bbd31b40cbaf853665c00bb967e"
+        },
+        "payload": "Weather forecast for Zurich tomorrow?",
+        "model_claim": {
+          "anonymized": true
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "data-class-forbidden"
+      },
+      "status": "normative",
+      "note": "class above export threshold (contacts) refused (R11 A)"
+    },
+    {
+      "id": "egress.anonymization.007",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "5.1-5.3"
+        }
+      ],
+      "operation": "egress-check",
+      "input": {
+        "route": "cloud",
+        "provider": "infomaniak",
+        "task_type": "planner",
+        "destination": "CH",
+        "tags": [
+          "CH"
+        ],
+        "read_classes": [],
+        "approval": {
+          "valid": true,
+          "standing": true,
+          "used": 0,
+          "scope": {
+            "standing": true,
+            "provider": "infomaniak",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "a762d88ab6f4a4555fdbf17850cb192c1ebb7bbd31b40cbaf853665c00bb967e"
+        },
+        "payload": "Weather forecast for Zurich tomorrow?",
+        "model_claim": {
+          "anonymized": true
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "data-class-forbidden"
+      },
+      "status": "normative",
+      "note": "input without class fails closed (R11 A)"
+    },
+    {
+      "id": "egress.anonymization.008",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "5.1-5.3"
+        }
+      ],
+      "operation": "egress-check",
+      "input": {
+        "route": "cloud",
+        "provider": "infomaniak",
+        "task_type": "planner",
+        "destination": "CH",
+        "tags": [
+          "CH"
+        ],
+        "read_classes": [
+          "query.general"
+        ],
+        "approval": {
+          "valid": true,
+          "standing": true,
+          "used": 0,
+          "scope": {
+            "standing": true,
+            "provider": "infomaniak",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "a762d88ab6f4a4555fdbf17850cb192c1ebb7bbd31b40cbaf853665c00bb967e"
+        },
+        "payload": "Send the forecast to anna.muster@example.ch",
+        "model_claim": {
+          "anonymized": true
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "data-class-forbidden"
+      },
+      "status": "normative",
+      "note": "payload with an email address is refused (R11 D)"
+    },
+    {
+      "id": "egress.anonymization.009",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "5.1-5.3"
+        }
+      ],
+      "operation": "egress-check",
+      "input": {
+        "route": "cloud",
+        "provider": "infomaniak",
+        "task_type": "planner",
+        "destination": "CH",
+        "tags": [
+          "CH"
+        ],
+        "read_classes": [
+          "query.general"
+        ],
+        "approval": {
+          "valid": true,
+          "standing": true,
+          "used": 0,
+          "scope": {
+            "standing": true,
+            "provider": "infomaniak",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "a762d88ab6f4a4555fdbf17850cb192c1ebb7bbd31b40cbaf853665c00bb967e"
+        },
+        "payload": "Patient 756.1234.5678.97 asks about weather",
+        "model_claim": {
+          "anonymized": true
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "data-class-forbidden"
+      },
+      "status": "normative",
+      "note": "payload with a CH AHV number is refused (R11 D)"
+    },
+    {
+      "id": "egress.anonymization.010",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "5.1-5.3"
+        }
+      ],
+      "operation": "egress-check",
+      "input": {
+        "route": "cloud",
+        "provider": "infomaniak",
+        "task_type": "planner",
+        "destination": "CH",
+        "tags": [
+          "CH"
+        ],
+        "read_classes": [
+          "query.general"
+        ],
+        "approval": {
+          "valid": true,
+          "standing": true,
+          "used": 0,
+          "scope": {
+            "standing": true,
+            "provider": "infomaniak",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "a762d88ab6f4a4555fdbf17850cb192c1ebb7bbd31b40cbaf853665c00bb967e"
+        },
+        "payload": "use key sk-abcdefghijklmnopqrstuvwx please",
+        "model_claim": {
+          "anonymized": true
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "data-class-forbidden"
+      },
+      "status": "normative",
+      "note": "payload with an API key is refused (R11 D)"
+    },
+    {
+      "id": "egress.anonymization.011",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "5.1-5.3"
+        }
+      ],
+      "operation": "egress-check",
+      "input": {
+        "route": "cloud",
+        "provider": "infomaniak",
+        "task_type": "planner",
+        "destination": "CH",
+        "tags": [
+          "CH"
+        ],
+        "read_classes": [
+          "query.general"
+        ],
+        "approval": {
+          "valid": true,
+          "standing": true,
+          "used": 0,
+          "scope": {
+            "standing": true,
+            "provider": "infomaniak",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "a762d88ab6f4a4555fdbf17850cb192c1ebb7bbd31b40cbaf853665c00bb967e"
+        },
+        "payload": "card 4111 1111 1111 1111",
+        "model_claim": {
+          "anonymized": true
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "data-class-forbidden"
+      },
+      "status": "normative",
+      "note": "payload with a Luhn-valid card number is refused (R11 D)"
+    },
+    {
+      "id": "egress.anonymization.012",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "5.1-5.3"
+        }
+      ],
+      "operation": "egress-check",
+      "input": {
+        "route": "cloud",
+        "provider": "gemini",
+        "task_type": "planner",
+        "destination": "GLOBAL",
+        "tags": [
+          "unrestricted"
+        ],
+        "read_classes": [
+          "query.general"
+        ],
+        "approval": {
+          "valid": true,
+          "standing": true,
+          "used": 0,
+          "scope": {
+            "standing": true,
+            "provider": "gemini",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "73e5318f2ff6c2ece65947753a953c2eef91034f8818f77c6c76c65247546114"
+        },
+        "payload": "Weather forecast for Zurich tomorrow?",
+        "model_claim": {
+          "anonymized": true
+        }
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative",
+      "note": "unrestricted tag and clean payload permitted to GLOBAL (R11 B)"
+    },
+    {
+      "id": "egress.anonymization.013",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "5.1-5.3"
+        }
+      ],
+      "operation": "egress-check",
+      "input": {
+        "route": "cloud",
+        "provider": "gemini",
+        "task_type": "planner",
+        "destination": "GLOBAL",
+        "tags": [
+          "CH"
+        ],
+        "read_classes": [
+          "query.general"
+        ],
+        "approval": {
+          "valid": true,
+          "standing": true,
+          "used": 0,
+          "scope": {
+            "standing": true,
+            "provider": "gemini",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "73e5318f2ff6c2ece65947753a953c2eef91034f8818f77c6c76c65247546114"
+        },
+        "payload": "Weather forecast for Zurich tomorrow?",
+        "model_claim": {
+          "anonymized": true
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "residency-unsupported"
+      },
+      "status": "normative",
+      "note": "CH data never reaches GLOBAL (R11 B, 0001 R8c)"
+    },
+    {
+      "id": "egress.anonymization.014",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "5.1-5.3"
+        }
+      ],
+      "operation": "egress-check",
+      "input": {
+        "route": "cloud",
+        "provider": "infomaniak",
+        "task_type": "planner",
+        "destination": "CH",
+        "tags": [],
+        "read_classes": [
+          "query.general"
+        ],
+        "approval": {
+          "valid": true,
+          "standing": true,
+          "used": 0,
+          "scope": {
+            "standing": true,
+            "provider": "infomaniak",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "a762d88ab6f4a4555fdbf17850cb192c1ebb7bbd31b40cbaf853665c00bb967e"
+        },
+        "payload": "Weather forecast for Zurich tomorrow?",
+        "model_claim": {
+          "anonymized": true
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "residency-unsupported"
+      },
+      "status": "normative",
+      "note": "missing tags fail closed (R11 B, 0001 R8a)"
+    },
+    {
+      "id": "egress.anonymization.015",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "5.1-5.3"
+        }
+      ],
+      "operation": "egress-check",
+      "input": {
+        "route": "cloud",
+        "provider": "infomaniak",
+        "task_type": "planner",
+        "destination": "CH",
+        "tags": [
+          "CH"
+        ],
+        "read_classes": [
+          "query.general"
+        ],
+        "approval": {
+          "valid": true,
+          "standing": true,
+          "used": 0,
+          "scope": {
+            "standing": true,
+            "provider": "infomaniak",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "a762d88ab6f4a4555fdbf17850cb192c1ebb7bbd31b40cbaf853665c00bb967e"
+        },
+        "payload": "Weather forecast for Zurich tomorrow?",
+        "model_claim": {
+          "anonymized": true
+        },
+        "max_payload_bytes": 16
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "policy-denied"
+      },
+      "status": "normative",
+      "note": "payload over max_payload_bytes refused (R11 C)"
+    },
+    {
+      "id": "egress.anonymization.016",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "5.1-5.3"
+        }
+      ],
+      "operation": "egress-check",
+      "input": {
+        "route": "cloud",
+        "provider": "infomaniak",
+        "task_type": "planner",
+        "destination": "CH",
+        "tags": [
+          "CH"
+        ],
+        "read_classes": [
+          "query.general"
+        ],
+        "approval": {
+          "valid": true,
+          "standing": true,
+          "used": 0,
+          "scope": {
+            "standing": true,
+            "provider": "infomaniak",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "a762d88ab6f4a4555fdbf17850cb192c1ebb7bbd31b40cbaf853665c00bb967e"
+        },
+        "payload": "Weather forecast for Zurich tomorrow?",
+        "model_claim": {
+          "anonymized": true
+        },
+        "detector_version": "sdg.pii/9"
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "policy-denied"
+      },
+      "status": "normative",
+      "note": "unknown detector version refused (R12a)"
+    },
+    {
+      "id": "egress.anonymization.017",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "5.1-5.3"
+        }
+      ],
+      "operation": "egress-check",
+      "input": {
+        "route": "cloud",
+        "provider": "infomaniak",
+        "task_type": "planner",
+        "destination": "CH",
+        "tags": [
+          "CH"
+        ],
+        "read_classes": [
+          "query.general"
+        ],
+        "approval": {
+          "valid": true,
+          "standing": true,
+          "used": 0,
+          "scope": {
+            "standing": true,
+            "provider": "infomaniak",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "a762d88ab6f4a4555fdbf17850cb192c1ebb7bbd31b40cbaf853665c00bb967e"
+        },
+        "payload": "Weather forecast for Zurich tomorrow?",
+        "model_claim": {
+          "anonymized": true
+        },
+        "subscription": {
+          "ref": "keychain:openai-plus",
+          "used": 100,
+          "limit": 100
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "budget-exceeded"
+      },
+      "status": "normative",
+      "note": "exhausted user subscription refused before connect (R10b)"
+    },
+    {
+      "id": "egress.anonymization.018",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "5.1-5.3"
+        }
+      ],
+      "operation": "egress-check",
+      "input": {
+        "route": "cloud",
+        "provider": "infomaniak",
+        "task_type": "planner",
+        "destination": "CH",
+        "tags": [
+          "CH"
+        ],
+        "read_classes": [
+          "query.general"
+        ],
+        "approval": {
+          "valid": true,
+          "standing": true,
+          "used": 0,
+          "scope": {
+            "standing": true,
+            "provider": "infomaniak",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "a762d88ab6f4a4555fdbf17850cb192c1ebb7bbd31b40cbaf853665c00bb967e"
+        },
+        "payload": "Weather forecast for Zurich tomorrow?",
+        "model_claim": {
+          "anonymized": true
+        },
+        "subscription": {
+          "ref": "keychain:openai-plus",
+          "used": 3,
+          "limit": 100
+        }
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative",
+      "note": "subscription within limit permitted (R10)"
+    },
+    {
+      "id": "egress.anonymization.019",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "5.1 to 5.3"
+        }
+      ],
+      "operation": "egress-check",
+      "input": {
+        "route": "cloud",
+        "provider": "infomaniak",
+        "task_type": "planner",
+        "destination": "CH",
+        "tags": [
+          "CH"
+        ],
+        "read_classes": [
+          "query.general"
+        ],
+        "approval": {
+          "valid": true,
+          "standing": true,
+          "used": 5,
+          "scope": {
+            "standing": true,
+            "provider": "infomaniak",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "a762d88ab6f4a4555fdbf17850cb192c1ebb7bbd31b40cbaf853665c00bb967e"
+        },
+        "payload": "Weather forecast for Zurich tomorrow?",
+        "model_claim": {
+          "anonymized": true
+        }
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative",
+      "note": "reuse within limit runs without prompt; the standing approval lookup is not a step read (R8a)"
+    },
+    {
+      "id": "egress.anonymization.020",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "5.1 to 5.3"
+        }
+      ],
+      "operation": "egress-check",
+      "input": {
+        "route": "cloud",
+        "provider": "infomaniak",
+        "task_type": "planner",
+        "destination": "CH",
+        "tags": [
+          "CH"
+        ],
+        "read_classes": [
+          "query.general"
+        ],
+        "approval": {
+          "valid": false,
+          "standing": true,
+          "used": 0,
+          "scope": {
+            "standing": true,
+            "provider": "infomaniak",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "a762d88ab6f4a4555fdbf17850cb192c1ebb7bbd31b40cbaf853665c00bb967e"
+        },
+        "payload": "Weather forecast for Zurich tomorrow?",
+        "model_claim": {
+          "anonymized": true
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "approval-required"
+      },
+      "status": "normative",
+      "note": "expired or revoked standing approval is first use again (R8b)"
+    },
+    {
+      "id": "egress.anonymization.021",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "5.1 to 5.3"
+        }
+      ],
+      "operation": "egress-check",
+      "input": {
+        "route": "cloud",
+        "provider": "infomaniak",
+        "task_type": "planner",
+        "destination": "CH",
+        "tags": [
+          "CH"
+        ],
+        "read_classes": [
+          "biometric.voice"
+        ],
+        "approval": {
+          "valid": true,
+          "standing": true,
+          "used": 0,
+          "scope": {
+            "standing": true,
+            "provider": "infomaniak",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "a762d88ab6f4a4555fdbf17850cb192c1ebb7bbd31b40cbaf853665c00bb967e"
+        },
+        "payload": "Weather forecast for Zurich tomorrow?",
+        "model_claim": {
+          "anonymized": true
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "data-class-forbidden"
+      },
+      "status": "normative",
+      "note": "biometric class refused (R9)"
+    },
+    {
+      "id": "egress.anonymization.022",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "5.1 to 5.3"
+        }
+      ],
+      "operation": "egress-check",
+      "input": {
+        "route": "cloud",
+        "provider": "infomaniak",
+        "task_type": "planner",
+        "destination": "GLOBAL",
+        "tags": [
+          "unrestricted"
+        ],
+        "read_classes": [
+          "secrets"
+        ],
+        "approval": {
+          "valid": true,
+          "standing": true,
+          "used": 0,
+          "scope": {
+            "standing": true,
+            "provider": "infomaniak",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "a762d88ab6f4a4555fdbf17850cb192c1ebb7bbd31b40cbaf853665c00bb967e"
+        },
+        "payload": "Weather forecast for Zurich tomorrow?",
+        "model_claim": {
+          "anonymized": true
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "data-class-forbidden"
+      },
+      "status": "normative",
+      "note": "secrets class refused even with unrestricted tags (R9)"
+    },
+    {
+      "id": "egress.anonymization.023",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "5.1 to 5.3"
+        }
+      ],
+      "operation": "egress-check",
+      "input": {
+        "route": "cloud",
+        "provider": "infomaniak",
+        "task_type": "planner",
+        "destination": "CH",
+        "tags": [
+          "CH"
+        ],
+        "read_classes": [
+          "queryish"
+        ],
+        "approval": {
+          "valid": true,
+          "standing": true,
+          "used": 0,
+          "scope": {
+            "standing": true,
+            "provider": "infomaniak",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "a762d88ab6f4a4555fdbf17850cb192c1ebb7bbd31b40cbaf853665c00bb967e"
+        },
+        "payload": "Weather forecast for Zurich tomorrow?",
+        "model_claim": {
+          "anonymized": true
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "data-class-forbidden"
+      },
+      "status": "normative",
+      "note": "dot boundary: queryish is not covered by query (R11 A)"
+    },
+    {
+      "id": "egress.anonymization.024",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "5.1 to 5.3"
+        }
+      ],
+      "operation": "egress-check",
+      "input": {
+        "route": "cloud",
+        "provider": "infomaniak",
+        "task_type": "planner",
+        "destination": "CH",
+        "tags": [
+          "EU"
+        ],
+        "read_classes": [
+          "query.general"
+        ],
+        "approval": {
+          "valid": true,
+          "standing": true,
+          "used": 0,
+          "scope": {
+            "standing": true,
+            "provider": "infomaniak",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "a762d88ab6f4a4555fdbf17850cb192c1ebb7bbd31b40cbaf853665c00bb967e"
+        },
+        "payload": "Weather forecast for Zurich tomorrow?",
+        "model_claim": {
+          "anonymized": true
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "residency-unsupported"
+      },
+      "status": "normative",
+      "note": "EU data to CH refused (R11 B)"
+    },
+    {
+      "id": "egress.anonymization.025",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "5.1 to 5.3"
+        }
+      ],
+      "operation": "egress-check",
+      "input": {
+        "route": "cloud",
+        "provider": "infomaniak",
+        "task_type": "planner",
+        "destination": "CH",
+        "tags": [
+          "CH"
+        ],
+        "read_classes": [
+          "query.general"
+        ],
+        "approval": {
+          "valid": true,
+          "standing": true,
+          "used": 0,
+          "scope": {
+            "standing": true,
+            "provider": "infomaniak",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "a762d88ab6f4a4555fdbf17850cb192c1ebb7bbd31b40cbaf853665c00bb967e"
+        },
+        "payload": "pay CH93 0076 2011 6238 5295 7",
+        "model_claim": {
+          "anonymized": true
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "data-class-forbidden"
+      },
+      "status": "normative",
+      "note": "payload with an IBAN is refused (R11 D)"
+    },
+    {
+      "id": "egress.anonymization.026",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "5.1 to 5.3"
+        }
+      ],
+      "operation": "egress-check",
+      "input": {
+        "route": "cloud",
+        "provider": "infomaniak",
+        "task_type": "planner",
+        "destination": "CH",
+        "tags": [
+          "CH"
+        ],
+        "read_classes": [
+          "query.general"
+        ],
+        "approval": {
+          "valid": true,
+          "standing": true,
+          "used": 0,
+          "scope": {
+            "standing": true,
+            "provider": "infomaniak",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "a762d88ab6f4a4555fdbf17850cb192c1ebb7bbd31b40cbaf853665c00bb967e"
+        },
+        "payload": "call +41 44 668 18 00 about rain",
+        "model_claim": {
+          "anonymized": true
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "data-class-forbidden"
+      },
+      "status": "normative",
+      "note": "payload with a phone number is refused (R11 D)"
+    },
+    {
+      "id": "egress.anonymization.027",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "5.1 to 5.3"
+        }
+      ],
+      "operation": "egress-check",
+      "input": {
+        "route": "cloud",
+        "provider": "infomaniak",
+        "task_type": "planner",
+        "destination": "CH",
+        "tags": [
+          "CH"
+        ],
+        "read_classes": [
+          "query.general"
+        ],
+        "approval": {
+          "valid": true,
+          "standing": true,
+          "used": 0,
+          "scope": {
+            "standing": true,
+            "provider": "infomaniak",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "a762d88ab6f4a4555fdbf17850cb192c1ebb7bbd31b40cbaf853665c00bb967e"
+        },
+        "payload": "order 12345678 shipped",
+        "model_claim": {
+          "anonymized": true
+        }
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative",
+      "note": "an 8-digit order number is neither a phone (9+ digits) nor a card (13+ digits) (R12)"
+    },
+    {
+      "id": "egress.anonymization.028",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "5.1 to 5.3"
+        }
+      ],
+      "operation": "egress-check",
+      "input": {
+        "route": "local",
+        "provider": "infomaniak",
+        "task_type": "planner",
+        "destination": "CH",
+        "tags": [
+          "CH"
+        ],
+        "read_classes": [
+          "health.records"
+        ],
+        "payload": "anna@example.ch",
+        "model_claim": {
+          "anonymized": true
+        }
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative",
+      "note": "local call is not checked by §5.3 (R7)"
+    },
+    {
+      "id": "egress.anonymization.029",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "5.1 to 5.3"
+        }
+      ],
+      "operation": "egress-check",
+      "input": {
+        "route": "cloud",
+        "provider": "infomaniak",
+        "task_type": "planner",
+        "destination": "CH",
+        "tags": [
+          "CH"
+        ],
+        "read_classes": [
+          "query.general"
+        ],
+        "approval": {
+          "valid": true,
+          "used": 0,
+          "scope": {
+            "standing": false,
+            "provider": "infomaniak",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          }
+        },
+        "payload": "Weather forecast for Zurich tomorrow?",
+        "model_claim": {
+          "anonymized": true
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "approval-required"
+      },
+      "status": "normative",
+      "note": "plain step approval (no scope_digest) never becomes standing (R8s, 0004 R9b)"
+    },
+    {
+      "id": "egress.anonymization.030",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "5.1 to 5.3"
+        }
+      ],
+      "operation": "egress-check",
+      "input": {
+        "route": "cloud",
+        "provider": "infomaniak",
+        "task_type": "planner",
+        "destination": "CH",
+        "tags": [
+          "CH"
+        ],
+        "read_classes": [
+          "query.general"
+        ],
+        "approval": {
+          "valid": true,
+          "standing": true,
+          "used": 0,
+          "scope": {
+            "standing": true,
+            "provider": "infomaniak",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        "payload": "Weather forecast for Zurich tomorrow?",
+        "model_claim": {
+          "anonymized": true
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "approval-required"
+      },
+      "status": "normative",
+      "note": "scope_digest does not match the stored scope (R8s)"
+    },
+    {
+      "id": "egress.anonymization.031",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "5.1 to 5.3"
+        }
+      ],
+      "operation": "egress-check",
+      "input": {
+        "route": "cloud",
+        "provider": "infomaniak",
+        "task_type": "planner",
+        "destination": "CH",
+        "tags": [
+          "CH"
+        ],
+        "read_classes": [
+          "query.general"
+        ],
+        "approval": {
+          "valid": true,
+          "standing": true,
+          "used": 0,
+          "scope": {
+            "standing": true,
+            "provider": "gemini",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "73e5318f2ff6c2ece65947753a953c2eef91034f8818f77c6c76c65247546114"
+        },
+        "payload": "Weather forecast for Zurich tomorrow?",
+        "model_claim": {
+          "anonymized": true
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "approval-required"
+      },
+      "status": "normative",
+      "note": "standing approval for another provider is not reused (R8s)"
+    },
+    {
+      "id": "egress.anonymization.032",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "5.1 to 5.3"
+        }
+      ],
+      "operation": "egress-check",
+      "input": {
+        "route": "cloud",
+        "provider": "infomaniak",
+        "task_type": "planner",
+        "destination": "CH",
+        "tags": [
+          "CH"
+        ],
+        "read_classes": [
+          "query.general"
+        ],
+        "approval": {
+          "valid": true,
+          "standing": true,
+          "used": 0,
+          "scope": {
+            "standing": true,
+            "provider": "infomaniak",
+            "task_type": "urn:sidged:capability:message.send",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "c265f863dd158437fc93566031ce0829fd4d5bf9716d0e1efba13f4e90cb94c5"
+        },
+        "payload": "Weather forecast for Zurich tomorrow?",
+        "model_claim": {
+          "anonymized": true
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "approval-required"
+      },
+      "status": "normative",
+      "note": "standing approval for another task_type is not reused (R8s)"
+    },
+    {
+      "id": "egress.anonymization.033",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "5.1 to 5.3"
+        }
+      ],
+      "operation": "egress-check",
+      "input": {
+        "route": "cloud",
+        "provider": "infomaniak",
+        "task_type": "planner",
+        "destination": "CH",
+        "tags": [
+          "CH"
+        ],
+        "read_classes": [
+          "query.general"
+        ],
+        "approval": {
+          "valid": true,
+          "standing": true,
+          "used": 0,
+          "scope": {
+            "standing": true,
+            "provider": "infomaniak",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "a762d88ab6f4a4555fdbf17850cb192c1ebb7bbd31b40cbaf853665c00bb967e",
+          "revoked": true
+        },
+        "payload": "Weather forecast for Zurich tomorrow?",
+        "model_claim": {
+          "anonymized": true
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "approval-required"
+      },
+      "status": "normative",
+      "note": "revoked standing approval (owner or kill switch) refused (R8r)"
+    },
+    {
+      "id": "egress.anonymization.034",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "5.1 to 5.3"
+        }
+      ],
+      "operation": "egress-check",
+      "input": {
+        "route": "cloud",
+        "provider": "infomaniak",
+        "task_type": "planner",
+        "destination": "CH",
+        "tags": [
+          "CH"
+        ],
+        "read_classes": [
+          "query.general"
+        ],
+        "approval": {
+          "valid": true,
+          "standing": true,
+          "used": 0,
+          "scope": {
+            "standing": true,
+            "provider": "infomaniak",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "a762d88ab6f4a4555fdbf17850cb192c1ebb7bbd31b40cbaf853665c00bb967e"
+        },
+        "payload": "forecast for host 192.168.1.20",
+        "model_claim": {
+          "anonymized": true
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "data-class-forbidden"
+      },
+      "status": "normative",
+      "note": "payload with an IPv4 address is refused (R11 D)"
+    },
+    {
+      "id": "egress.anonymization.035",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.1",
+          "section": "5.1 to 5.3"
+        }
+      ],
+      "operation": "egress-check",
+      "input": {
+        "route": "cloud",
+        "provider": "infomaniak",
+        "task_type": "planner",
+        "destination": "CH",
+        "tags": [
+          "CH"
+        ],
+        "read_classes": [
+          "query.general"
+        ],
+        "approval": {
+          "valid": true,
+          "standing": true,
+          "used": 0,
+          "scope": {
+            "standing": true,
+            "provider": "infomaniak",
+            "task_type": "planner",
+            "limit": {
+              "calls": 20,
+              "budget": 100
+            },
+            "expiry": "2026-11-15T00:00:00Z"
+          },
+          "scope_digest": "a762d88ab6f4a4555fdbf17850cb192c1ebb7bbd31b40cbaf853665c00bb967e"
+        },
+        "payload": "Weather forecast for Zurich tomorrow?",
+        "model_claim": {
+          "anonymized": false
+        }
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative",
+      "note": "model_claim anonymized:false is ignored; a clean payload passes (R11)"
+    }
+  ]
+}

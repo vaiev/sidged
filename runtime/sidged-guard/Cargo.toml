@@ -1,0 +1,30 @@
+[package]
+name = "sidged-guard"
+version = "0.2.0"
+edition = "2021"
+license = "Apache-2.0"
+publish = false
+description = "CH residency scenario: moderate and monitor a test app through the hosted runtime."
+
+[features]
+# `sidged swarm measure` of the v0.1 swarm prototype (ROADMAP v0.5, 11g); off by default.
+experimental = ["sidged-cli/experimental"]
+
+[[bin]]
+name = "sidged"
+path = "src/main.rs"
+
+[dependencies]
+sidged-capability = { path = "../sidged-capability" }
+sidged-cli = { path = "../sidged-cli" }
+sidged-core = { path = "../sidged-core" }
+sidged-gateway = { path = "../sidged-gateway" }
+sidged-grant = { path = "../sidged-grant" }
+sidged-log = { path = "../sidged-log" }
+sidged-mcp = { path = "../sidged-mcp" }
+sidged-record = { path = "../sidged-record" }
+sidged-model = { path = "../sidged-model" }
+serde_json = "1"
+# geteuid for `sidged init` and --system-config (owner check). Already in the
+# lock file via sidged-cli and sidged-gateway (no new crate).
+libc = "0.2"

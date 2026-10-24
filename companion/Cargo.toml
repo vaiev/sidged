@@ -1,0 +1,7 @@
+# Companion workspace (WP 7): the Tauri v2 desktop and Android nodes and the pure-Rust
+# core they embed. Kept apart from runtime/ so the runtime workspace, its lock file and
+# its CI never depend on GUI toolchains.
+[workspace]
+# Resolver 3 picks dependency versions that build with rust-version 1.89.
+resolver = "3"
+members = ["sidged-companion-core", "sidged-companion-app"]

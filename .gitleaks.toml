@@ -1,0 +1,10 @@
+# SPDX-License-Identifier: Apache-2.0
+# Gitleaks configuration: the default rules, plus one allowlist for the
+# published RFC 8032 test keys in test-vectors/ (test only, not secrets).
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Published RFC 8032 section 7.1 test keys used by the test vectors"
+paths = ['''^spec/test-vectors/''']

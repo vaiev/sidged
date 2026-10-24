@@ -1,0 +1,49 @@
+{
+  "v": "0.1",
+  "id": "urn:example:module:local-8b",
+  "name": "Example Local 8B",
+  "version": "2026.9.0",
+  "kind": "model",
+  "publisher": {
+    "id": "did:example:openmodules-collective",
+    "name": "Example Open Modules Collective",
+    "contact": "https://modules.example.org/contact"
+  },
+  "compat": {
+    "runtime": ">=0.3",
+    "min_profile": "R1"
+  },
+  "capabilities": {
+    "provides": [
+      "inference.text"
+    ],
+    "requires": []
+  },
+  "permissions": [],
+  "data_classes": [],
+  "egress": [],
+  "resources": {
+    "memory_mb": 6144,
+    "storage_mb": 5200,
+    "accelerators": [
+      "gpu",
+      "npu"
+    ],
+    "network": false
+  },
+  "sbom": {
+    "format": "spdx",
+    "uri": "https://modules.example.org/local-8b/2026.9.0/sbom.spdx.json",
+    "digest": {
+      "alg": "sha-256",
+      "value": "a3Bq9ZtVYyQm0hGx2kH2bYb9lJmS3cUq3sXo6t0bR1w"
+    }
+  },
+  "sig": {
+    "alg": "EdDSA",
+    "kid": "did:example:openmodules-collective#release-key-2026",
+    "canon": "jcs",
+    "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy",
+    "signer": "did:example:openmodules-collective"
+  }
+}

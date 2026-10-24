@@ -1,0 +1,10 @@
+{
+  "v": "0.1",
+  "reason": "too-busy",
+  "ref": {
+    "session": "sess-4b1d0e9a77",
+    "seq": 3,
+    "idem_key": "idem-2026-10-09-0001-a7c3"
+  },
+  "retry_after": "PT10M"
+}

@@ -1,0 +1,10 @@
+# Build context is only what the Containerfile copies. Never ship keys.
+*
+!rust-toolchain.toml
+!runtime/
+!spec/registries/
+!docs/demo/mcp-server-time/
+runtime/target/
+**/*.key
+**/*.pem
+**/.env

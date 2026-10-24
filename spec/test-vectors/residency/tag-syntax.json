@@ -1,0 +1,265 @@
+{
+  "category": "residency",
+  "description": "Residency tag syntax (Sidged L7): CH, EU, CH-EU, or owner tags starting with x- (lowercase letters, digits, hyphens, at most 64 characters).",
+  "vectors": [
+    {
+      "id": "residency.syntax.001",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.3",
+          "section": "11",
+          "tag": "R2"
+        }
+      ],
+      "operation": "residency-tag-syntax",
+      "input": {
+        "tag": "CH"
+      },
+      "expected": {
+        "value": true
+      },
+      "status": "normative",
+      "note": "Standard tag"
+    },
+    {
+      "id": "residency.syntax.002",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.3",
+          "section": "11",
+          "tag": "R2"
+        }
+      ],
+      "operation": "residency-tag-syntax",
+      "input": {
+        "tag": "EU"
+      },
+      "expected": {
+        "value": true
+      },
+      "status": "normative",
+      "note": "Standard tag"
+    },
+    {
+      "id": "residency.syntax.003",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.3",
+          "section": "11",
+          "tag": "R2"
+        }
+      ],
+      "operation": "residency-tag-syntax",
+      "input": {
+        "tag": "CH-EU"
+      },
+      "expected": {
+        "value": true
+      },
+      "status": "normative",
+      "note": "Standard tag"
+    },
+    {
+      "id": "residency.syntax.004",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.3",
+          "section": "11",
+          "tag": "R2"
+        }
+      ],
+      "operation": "residency-tag-syntax",
+      "input": {
+        "tag": "x-home"
+      },
+      "expected": {
+        "value": true
+      },
+      "status": "normative",
+      "note": "Owner tag"
+    },
+    {
+      "id": "residency.syntax.005",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.3",
+          "section": "11",
+          "tag": "R2"
+        }
+      ],
+      "operation": "residency-tag-syntax",
+      "input": {
+        "tag": "x-a1-b2"
+      },
+      "expected": {
+        "value": true
+      },
+      "status": "normative",
+      "note": "Owner tag with digits and hyphens"
+    },
+    {
+      "id": "residency.syntax.006",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.3",
+          "section": "11",
+          "tag": "R2"
+        }
+      ],
+      "operation": "residency-tag-syntax",
+      "input": {
+        "tag": "x-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "expected": {
+        "value": true
+      },
+      "status": "normative",
+      "note": "Owner tag of 64 characters"
+    },
+    {
+      "id": "residency.syntax.007",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.3",
+          "section": "11",
+          "tag": "R2"
+        }
+      ],
+      "operation": "residency-tag-syntax",
+      "input": {
+        "tag": "x-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "expected": {
+        "value": false
+      },
+      "status": "normative",
+      "note": "Owner tag of 65 characters, one over the maximum"
+    },
+    {
+      "id": "residency.syntax.008",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.3",
+          "section": "11",
+          "tag": "R2"
+        }
+      ],
+      "operation": "residency-tag-syntax",
+      "input": {
+        "tag": "x-"
+      },
+      "expected": {
+        "value": false
+      },
+      "status": "normative",
+      "note": "Prefix only"
+    },
+    {
+      "id": "residency.syntax.009",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.3",
+          "section": "11",
+          "tag": "R2"
+        }
+      ],
+      "operation": "residency-tag-syntax",
+      "input": {
+        "tag": "x-Home"
+      },
+      "expected": {
+        "value": false
+      },
+      "status": "normative",
+      "note": "Uppercase letter in an owner tag"
+    },
+    {
+      "id": "residency.syntax.010",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.3",
+          "section": "11",
+          "tag": "R2"
+        }
+      ],
+      "operation": "residency-tag-syntax",
+      "input": {
+        "tag": "x-a_b"
+      },
+      "expected": {
+        "value": false
+      },
+      "status": "normative",
+      "note": "Underscore in an owner tag"
+    },
+    {
+      "id": "residency.syntax.011",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.3",
+          "section": "11",
+          "tag": "R2"
+        }
+      ],
+      "operation": "residency-tag-syntax",
+      "input": {
+        "tag": "home"
+      },
+      "expected": {
+        "value": false
+      },
+      "status": "normative",
+      "note": "No x- prefix"
+    },
+    {
+      "id": "residency.syntax.012",
+      "spec": [
+        {
+          "doc": "L7",
+          "version": "0.3",
+          "section": "11",
+          "tag": "R2"
+        }
+      ],
+      "operation": "residency-tag-syntax",
+      "input": {
+        "tag": "EU-CH"
+      },
+      "expected": {
+        "value": false
+      },
+      "status": "normative",
+      "note": "Not a standard tag"
+    },
+    {
+      "id": "residency.syntax.013",
+      "spec": [
+        {
+          "doc": "L1",
+          "version": "0.2",
+          "section": "R8"
+        }
+      ],
+      "operation": "residency-tag-syntax",
+      "input": {
+        "tag": "unrestricted"
+      },
+      "expected": {
+        "value": true
+      },
+      "status": "normative",
+      "note": "Explicit no-limit declaration (0001 R8 v0.2)"
+    }
+  ]
+}

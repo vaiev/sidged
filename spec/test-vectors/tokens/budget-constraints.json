@@ -1,0 +1,2073 @@
+{
+  "category": "tokens",
+  "description": "Rule (e) of Sidged L2: every constraint and budget limit the parent sets is present and not higher; data classes are a subset. Money amounts are exact decimals.",
+  "vectors": [
+    {
+      "id": "token.budget.001",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "token-check",
+      "input": {
+        "token": {
+          "v": "0.1",
+          "id": "tok-7f3a9c2e1b-d1",
+          "iss": "did:example:alice-homeserver#agent-planner",
+          "sub": "did:example:alice-phone#agent-assistant",
+          "aud": "did:example:bob-homeserver#agent-calendar",
+          "iat": "2026-10-09T08:05:00Z",
+          "exp": "2026-10-09T08:35:00Z",
+          "cnf": {
+            "jkt": "NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs"
+          },
+          "rights": [
+            {
+              "action": "calendar.propose_meeting",
+              "resource": "urn:example:calendar:bob/work",
+              "constraints": {
+                "max_uses": 1,
+                "data_classes": [
+                  "calendar.availability"
+                ]
+              }
+            }
+          ],
+          "budget": {
+            "messages": 10,
+            "money": {
+              "amount": "0.00",
+              "currency": "CHF"
+            }
+          },
+          "chain": [
+            {
+              "v": "0.1",
+              "id": "tok-7f3a9c2e1b",
+              "iss": "did:example:alice",
+              "sub": "did:example:alice-homeserver#agent-planner",
+              "aud": "did:example:bob-homeserver#agent-calendar",
+              "iat": "2026-10-09T08:00:00Z",
+              "exp": "2026-10-09T09:00:00Z",
+              "cnf": {
+                "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+              },
+              "rights": [
+                {
+                  "action": "calendar.propose_meeting",
+                  "resource": "urn:example:calendar:bob/*",
+                  "constraints": {
+                    "max_uses": 5,
+                    "data_classes": [
+                      "calendar.availability",
+                      "contacts.name"
+                    ]
+                  }
+                },
+                {
+                  "action": "calendar.read_availability",
+                  "resource": "urn:example:calendar:bob/*"
+                }
+              ],
+              "budget": {
+                "messages": 50,
+                "money": {
+                  "amount": "0.00",
+                  "currency": "CHF"
+                }
+              },
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice#owner-key-1",
+                "canon": "jcs",
+                "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+              }
+            }
+          ],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-homeserver#agent-planner-key",
+            "canon": "jcs",
+            "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+          }
+        }
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative",
+      "note": "Message budget below the parent"
+    },
+    {
+      "id": "token.budget.002",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "token-check",
+      "input": {
+        "token": {
+          "v": "0.1",
+          "id": "tok-7f3a9c2e1b-d1",
+          "iss": "did:example:alice-homeserver#agent-planner",
+          "sub": "did:example:alice-phone#agent-assistant",
+          "aud": "did:example:bob-homeserver#agent-calendar",
+          "iat": "2026-10-09T08:05:00Z",
+          "exp": "2026-10-09T08:35:00Z",
+          "cnf": {
+            "jkt": "NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs"
+          },
+          "rights": [
+            {
+              "action": "calendar.propose_meeting",
+              "resource": "urn:example:calendar:bob/work",
+              "constraints": {
+                "max_uses": 1,
+                "data_classes": [
+                  "calendar.availability"
+                ]
+              }
+            }
+          ],
+          "budget": {
+            "messages": 50,
+            "money": {
+              "amount": "0.00",
+              "currency": "CHF"
+            }
+          },
+          "chain": [
+            {
+              "v": "0.1",
+              "id": "tok-7f3a9c2e1b",
+              "iss": "did:example:alice",
+              "sub": "did:example:alice-homeserver#agent-planner",
+              "aud": "did:example:bob-homeserver#agent-calendar",
+              "iat": "2026-10-09T08:00:00Z",
+              "exp": "2026-10-09T09:00:00Z",
+              "cnf": {
+                "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+              },
+              "rights": [
+                {
+                  "action": "calendar.propose_meeting",
+                  "resource": "urn:example:calendar:bob/*",
+                  "constraints": {
+                    "max_uses": 5,
+                    "data_classes": [
+                      "calendar.availability",
+                      "contacts.name"
+                    ]
+                  }
+                },
+                {
+                  "action": "calendar.read_availability",
+                  "resource": "urn:example:calendar:bob/*"
+                }
+              ],
+              "budget": {
+                "messages": 50,
+                "money": {
+                  "amount": "0.00",
+                  "currency": "CHF"
+                }
+              },
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice#owner-key-1",
+                "canon": "jcs",
+                "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+              }
+            }
+          ],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-homeserver#agent-planner-key",
+            "canon": "jcs",
+            "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+          }
+        }
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative",
+      "note": "Budget equal to the parent"
+    },
+    {
+      "id": "token.budget.003",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "token-check",
+      "input": {
+        "token": {
+          "v": "0.1",
+          "id": "tok-7f3a9c2e1b-d1",
+          "iss": "did:example:alice-homeserver#agent-planner",
+          "sub": "did:example:alice-phone#agent-assistant",
+          "aud": "did:example:bob-homeserver#agent-calendar",
+          "iat": "2026-10-09T08:05:00Z",
+          "exp": "2026-10-09T08:35:00Z",
+          "cnf": {
+            "jkt": "NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs"
+          },
+          "rights": [
+            {
+              "action": "calendar.propose_meeting",
+              "resource": "urn:example:calendar:bob/work",
+              "constraints": {
+                "max_uses": 1,
+                "data_classes": [
+                  "calendar.availability"
+                ]
+              }
+            }
+          ],
+          "budget": {
+            "messages": 51,
+            "money": {
+              "amount": "0.00",
+              "currency": "CHF"
+            }
+          },
+          "chain": [
+            {
+              "v": "0.1",
+              "id": "tok-7f3a9c2e1b",
+              "iss": "did:example:alice",
+              "sub": "did:example:alice-homeserver#agent-planner",
+              "aud": "did:example:bob-homeserver#agent-calendar",
+              "iat": "2026-10-09T08:00:00Z",
+              "exp": "2026-10-09T09:00:00Z",
+              "cnf": {
+                "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+              },
+              "rights": [
+                {
+                  "action": "calendar.propose_meeting",
+                  "resource": "urn:example:calendar:bob/*",
+                  "constraints": {
+                    "max_uses": 5,
+                    "data_classes": [
+                      "calendar.availability",
+                      "contacts.name"
+                    ]
+                  }
+                },
+                {
+                  "action": "calendar.read_availability",
+                  "resource": "urn:example:calendar:bob/*"
+                }
+              ],
+              "budget": {
+                "messages": 50,
+                "money": {
+                  "amount": "0.00",
+                  "currency": "CHF"
+                }
+              },
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice#owner-key-1",
+                "canon": "jcs",
+                "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+              }
+            }
+          ],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-homeserver#agent-planner-key",
+            "canon": "jcs",
+            "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+          }
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "unauthorized"
+      },
+      "status": "normative",
+      "note": "Message budget above the parent"
+    },
+    {
+      "id": "token.budget.004",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "token-check",
+      "input": {
+        "token": {
+          "v": "0.1",
+          "id": "tok-7f3a9c2e1b-d1",
+          "iss": "did:example:alice-homeserver#agent-planner",
+          "sub": "did:example:alice-phone#agent-assistant",
+          "aud": "did:example:bob-homeserver#agent-calendar",
+          "iat": "2026-10-09T08:05:00Z",
+          "exp": "2026-10-09T08:35:00Z",
+          "cnf": {
+            "jkt": "NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs"
+          },
+          "rights": [
+            {
+              "action": "calendar.propose_meeting",
+              "resource": "urn:example:calendar:bob/work",
+              "constraints": {
+                "max_uses": 1,
+                "data_classes": [
+                  "calendar.availability"
+                ]
+              }
+            }
+          ],
+          "chain": [
+            {
+              "v": "0.1",
+              "id": "tok-7f3a9c2e1b",
+              "iss": "did:example:alice",
+              "sub": "did:example:alice-homeserver#agent-planner",
+              "aud": "did:example:bob-homeserver#agent-calendar",
+              "iat": "2026-10-09T08:00:00Z",
+              "exp": "2026-10-09T09:00:00Z",
+              "cnf": {
+                "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+              },
+              "rights": [
+                {
+                  "action": "calendar.propose_meeting",
+                  "resource": "urn:example:calendar:bob/*",
+                  "constraints": {
+                    "max_uses": 5,
+                    "data_classes": [
+                      "calendar.availability",
+                      "contacts.name"
+                    ]
+                  }
+                },
+                {
+                  "action": "calendar.read_availability",
+                  "resource": "urn:example:calendar:bob/*"
+                }
+              ],
+              "budget": {
+                "messages": 50,
+                "money": {
+                  "amount": "0.00",
+                  "currency": "CHF"
+                }
+              },
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice#owner-key-1",
+                "canon": "jcs",
+                "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+              }
+            }
+          ],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-homeserver#agent-planner-key",
+            "canon": "jcs",
+            "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+          }
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "unauthorized"
+      },
+      "status": "normative",
+      "note": "Budget dropped although the parent sets one"
+    },
+    {
+      "id": "token.budget.005",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "token-check",
+      "input": {
+        "token": {
+          "v": "0.1",
+          "id": "tok-7f3a9c2e1b-d1",
+          "iss": "did:example:alice-homeserver#agent-planner",
+          "sub": "did:example:alice-phone#agent-assistant",
+          "aud": "did:example:bob-homeserver#agent-calendar",
+          "iat": "2026-10-09T08:05:00Z",
+          "exp": "2026-10-09T08:35:00Z",
+          "cnf": {
+            "jkt": "NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs"
+          },
+          "rights": [
+            {
+              "action": "calendar.propose_meeting",
+              "resource": "urn:example:calendar:bob/work",
+              "constraints": {
+                "max_uses": 1,
+                "data_classes": [
+                  "calendar.availability"
+                ]
+              }
+            }
+          ],
+          "budget": {
+            "messages": 10,
+            "money": {
+              "amount": "0.01",
+              "currency": "CHF"
+            }
+          },
+          "chain": [
+            {
+              "v": "0.1",
+              "id": "tok-7f3a9c2e1b",
+              "iss": "did:example:alice",
+              "sub": "did:example:alice-homeserver#agent-planner",
+              "aud": "did:example:bob-homeserver#agent-calendar",
+              "iat": "2026-10-09T08:00:00Z",
+              "exp": "2026-10-09T09:00:00Z",
+              "cnf": {
+                "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+              },
+              "rights": [
+                {
+                  "action": "calendar.propose_meeting",
+                  "resource": "urn:example:calendar:bob/*",
+                  "constraints": {
+                    "max_uses": 5,
+                    "data_classes": [
+                      "calendar.availability",
+                      "contacts.name"
+                    ]
+                  }
+                },
+                {
+                  "action": "calendar.read_availability",
+                  "resource": "urn:example:calendar:bob/*"
+                }
+              ],
+              "budget": {
+                "messages": 50,
+                "money": {
+                  "amount": "0.00",
+                  "currency": "CHF"
+                }
+              },
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice#owner-key-1",
+                "canon": "jcs",
+                "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+              }
+            }
+          ],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-homeserver#agent-planner-key",
+            "canon": "jcs",
+            "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+          }
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "unauthorized"
+      },
+      "status": "normative",
+      "note": "Money budget above the parent"
+    },
+    {
+      "id": "token.budget.006",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "token-check",
+      "input": {
+        "token": {
+          "v": "0.1",
+          "id": "tok-7f3a9c2e1b-d1",
+          "iss": "did:example:alice-homeserver#agent-planner",
+          "sub": "did:example:alice-phone#agent-assistant",
+          "aud": "did:example:bob-homeserver#agent-calendar",
+          "iat": "2026-10-09T08:05:00Z",
+          "exp": "2026-10-09T08:35:00Z",
+          "cnf": {
+            "jkt": "NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs"
+          },
+          "rights": [
+            {
+              "action": "calendar.propose_meeting",
+              "resource": "urn:example:calendar:bob/work",
+              "constraints": {
+                "max_uses": 1,
+                "data_classes": [
+                  "calendar.availability"
+                ]
+              }
+            }
+          ],
+          "budget": {
+            "messages": 10,
+            "money": {
+              "amount": "0.00",
+              "currency": "EUR"
+            }
+          },
+          "chain": [
+            {
+              "v": "0.1",
+              "id": "tok-7f3a9c2e1b",
+              "iss": "did:example:alice",
+              "sub": "did:example:alice-homeserver#agent-planner",
+              "aud": "did:example:bob-homeserver#agent-calendar",
+              "iat": "2026-10-09T08:00:00Z",
+              "exp": "2026-10-09T09:00:00Z",
+              "cnf": {
+                "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+              },
+              "rights": [
+                {
+                  "action": "calendar.propose_meeting",
+                  "resource": "urn:example:calendar:bob/*",
+                  "constraints": {
+                    "max_uses": 5,
+                    "data_classes": [
+                      "calendar.availability",
+                      "contacts.name"
+                    ]
+                  }
+                },
+                {
+                  "action": "calendar.read_availability",
+                  "resource": "urn:example:calendar:bob/*"
+                }
+              ],
+              "budget": {
+                "messages": 50,
+                "money": {
+                  "amount": "0.00",
+                  "currency": "CHF"
+                }
+              },
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice#owner-key-1",
+                "canon": "jcs",
+                "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+              }
+            }
+          ],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-homeserver#agent-planner-key",
+            "canon": "jcs",
+            "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+          }
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "unauthorized"
+      },
+      "status": "normative",
+      "note": "Money budget in a different currency"
+    },
+    {
+      "id": "token.budget.007",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "token-check",
+      "input": {
+        "token": {
+          "v": "0.1",
+          "id": "tok-7f3a9c2e1b-d1",
+          "iss": "did:example:alice-homeserver#agent-planner",
+          "sub": "did:example:alice-phone#agent-assistant",
+          "aud": "did:example:bob-homeserver#agent-calendar",
+          "iat": "2026-10-09T08:05:00Z",
+          "exp": "2026-10-09T08:35:00Z",
+          "cnf": {
+            "jkt": "NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs"
+          },
+          "rights": [
+            {
+              "action": "calendar.propose_meeting",
+              "resource": "urn:example:calendar:bob/work",
+              "constraints": {
+                "max_uses": 1,
+                "data_classes": [
+                  "calendar.availability"
+                ]
+              }
+            }
+          ],
+          "budget": {
+            "messages": 10,
+            "money": {
+              "amount": "0",
+              "currency": "CHF"
+            }
+          },
+          "chain": [
+            {
+              "v": "0.1",
+              "id": "tok-7f3a9c2e1b",
+              "iss": "did:example:alice",
+              "sub": "did:example:alice-homeserver#agent-planner",
+              "aud": "did:example:bob-homeserver#agent-calendar",
+              "iat": "2026-10-09T08:00:00Z",
+              "exp": "2026-10-09T09:00:00Z",
+              "cnf": {
+                "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+              },
+              "rights": [
+                {
+                  "action": "calendar.propose_meeting",
+                  "resource": "urn:example:calendar:bob/*",
+                  "constraints": {
+                    "max_uses": 5,
+                    "data_classes": [
+                      "calendar.availability",
+                      "contacts.name"
+                    ]
+                  }
+                },
+                {
+                  "action": "calendar.read_availability",
+                  "resource": "urn:example:calendar:bob/*"
+                }
+              ],
+              "budget": {
+                "messages": 50,
+                "money": {
+                  "amount": "0.00",
+                  "currency": "CHF"
+                }
+              },
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice#owner-key-1",
+                "canon": "jcs",
+                "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+              }
+            }
+          ],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-homeserver#agent-planner-key",
+            "canon": "jcs",
+            "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+          }
+        }
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative",
+      "note": "Money amounts compare as decimals: 0 equals 0.00"
+    },
+    {
+      "id": "token.budget.008",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "token-check",
+      "input": {
+        "token": {
+          "v": "0.1",
+          "id": "tok-7f3a9c2e1b-d1",
+          "iss": "did:example:alice-homeserver#agent-planner",
+          "sub": "did:example:alice-phone#agent-assistant",
+          "aud": "did:example:bob-homeserver#agent-calendar",
+          "iat": "2026-10-09T08:05:00Z",
+          "exp": "2026-10-09T08:35:00Z",
+          "cnf": {
+            "jkt": "NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs"
+          },
+          "rights": [
+            {
+              "action": "calendar.propose_meeting",
+              "resource": "urn:example:calendar:bob/work",
+              "constraints": {
+                "max_uses": 1,
+                "data_classes": [
+                  "calendar.availability"
+                ]
+              }
+            }
+          ],
+          "budget": {
+            "messages": 10
+          },
+          "chain": [
+            {
+              "v": "0.1",
+              "id": "tok-7f3a9c2e1b",
+              "iss": "did:example:alice",
+              "sub": "did:example:alice-homeserver#agent-planner",
+              "aud": "did:example:bob-homeserver#agent-calendar",
+              "iat": "2026-10-09T08:00:00Z",
+              "exp": "2026-10-09T09:00:00Z",
+              "cnf": {
+                "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+              },
+              "rights": [
+                {
+                  "action": "calendar.propose_meeting",
+                  "resource": "urn:example:calendar:bob/*",
+                  "constraints": {
+                    "max_uses": 5,
+                    "data_classes": [
+                      "calendar.availability",
+                      "contacts.name"
+                    ]
+                  }
+                },
+                {
+                  "action": "calendar.read_availability",
+                  "resource": "urn:example:calendar:bob/*"
+                }
+              ],
+              "budget": {
+                "messages": 50,
+                "compute_units": 100
+              },
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice#owner-key-1",
+                "canon": "jcs",
+                "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+              }
+            }
+          ],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-homeserver#agent-planner-key",
+            "canon": "jcs",
+            "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+          }
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "unauthorized"
+      },
+      "status": "normative",
+      "note": "compute_units dropped although the parent sets it"
+    },
+    {
+      "id": "token.budget.009",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "token-check",
+      "input": {
+        "token": {
+          "v": "0.1",
+          "id": "tok-7f3a9c2e1b-d1",
+          "iss": "did:example:alice-homeserver#agent-planner",
+          "sub": "did:example:alice-phone#agent-assistant",
+          "aud": "did:example:bob-homeserver#agent-calendar",
+          "iat": "2026-10-09T08:05:00Z",
+          "exp": "2026-10-09T08:35:00Z",
+          "cnf": {
+            "jkt": "NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs"
+          },
+          "rights": [
+            {
+              "action": "calendar.propose_meeting",
+              "resource": "urn:example:calendar:bob/work",
+              "constraints": {
+                "max_uses": 1,
+                "data_classes": [
+                  "calendar.availability"
+                ]
+              }
+            }
+          ],
+          "budget": {
+            "messages": 10,
+            "compute_units": 101
+          },
+          "chain": [
+            {
+              "v": "0.1",
+              "id": "tok-7f3a9c2e1b",
+              "iss": "did:example:alice",
+              "sub": "did:example:alice-homeserver#agent-planner",
+              "aud": "did:example:bob-homeserver#agent-calendar",
+              "iat": "2026-10-09T08:00:00Z",
+              "exp": "2026-10-09T09:00:00Z",
+              "cnf": {
+                "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+              },
+              "rights": [
+                {
+                  "action": "calendar.propose_meeting",
+                  "resource": "urn:example:calendar:bob/*",
+                  "constraints": {
+                    "max_uses": 5,
+                    "data_classes": [
+                      "calendar.availability",
+                      "contacts.name"
+                    ]
+                  }
+                },
+                {
+                  "action": "calendar.read_availability",
+                  "resource": "urn:example:calendar:bob/*"
+                }
+              ],
+              "budget": {
+                "messages": 50,
+                "compute_units": 100
+              },
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice#owner-key-1",
+                "canon": "jcs",
+                "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+              }
+            }
+          ],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-homeserver#agent-planner-key",
+            "canon": "jcs",
+            "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+          }
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "unauthorized"
+      },
+      "status": "normative",
+      "note": "compute_units above the parent"
+    },
+    {
+      "id": "token.budget.010",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "token-check",
+      "input": {
+        "token": {
+          "v": "0.1",
+          "id": "tok-7f3a9c2e1b-d1",
+          "iss": "did:example:alice-homeserver#agent-planner",
+          "sub": "did:example:alice-phone#agent-assistant",
+          "aud": "did:example:bob-homeserver#agent-calendar",
+          "iat": "2026-10-09T08:05:00Z",
+          "exp": "2026-10-09T08:35:00Z",
+          "cnf": {
+            "jkt": "NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs"
+          },
+          "rights": [
+            {
+              "action": "calendar.propose_meeting",
+              "resource": "urn:example:calendar:bob/work",
+              "constraints": {
+                "max_uses": 1,
+                "data_classes": [
+                  "calendar.availability"
+                ]
+              }
+            }
+          ],
+          "budget": {
+            "messages": 10,
+            "money": {
+              "amount": "1.0000000000000001",
+              "currency": "CHF"
+            }
+          },
+          "chain": [
+            {
+              "v": "0.1",
+              "id": "tok-7f3a9c2e1b",
+              "iss": "did:example:alice",
+              "sub": "did:example:alice-homeserver#agent-planner",
+              "aud": "did:example:bob-homeserver#agent-calendar",
+              "iat": "2026-10-09T08:00:00Z",
+              "exp": "2026-10-09T09:00:00Z",
+              "cnf": {
+                "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+              },
+              "rights": [
+                {
+                  "action": "calendar.propose_meeting",
+                  "resource": "urn:example:calendar:bob/*",
+                  "constraints": {
+                    "max_uses": 5,
+                    "data_classes": [
+                      "calendar.availability",
+                      "contacts.name"
+                    ]
+                  }
+                },
+                {
+                  "action": "calendar.read_availability",
+                  "resource": "urn:example:calendar:bob/*"
+                }
+              ],
+              "budget": {
+                "messages": 50,
+                "money": {
+                  "amount": "1",
+                  "currency": "CHF"
+                }
+              },
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice#owner-key-1",
+                "canon": "jcs",
+                "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+              }
+            }
+          ],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-homeserver#agent-planner-key",
+            "canon": "jcs",
+            "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+          }
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "unauthorized"
+      },
+      "status": "normative",
+      "note": "Money compared exactly, not as floating point"
+    },
+    {
+      "id": "token.budget.011",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "token-check",
+      "input": {
+        "token": {
+          "v": "0.1",
+          "id": "tok-7f3a9c2e1b-d1",
+          "iss": "did:example:alice-homeserver#agent-planner",
+          "sub": "did:example:alice-phone#agent-assistant",
+          "aud": "did:example:bob-homeserver#agent-calendar",
+          "iat": "2026-10-09T08:05:00Z",
+          "exp": "2026-10-09T08:35:00Z",
+          "cnf": {
+            "jkt": "NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs"
+          },
+          "rights": [
+            {
+              "action": "calendar.propose_meeting",
+              "resource": "urn:example:calendar:bob/work",
+              "constraints": {
+                "max_uses": 1,
+                "data_classes": [
+                  "calendar.availability"
+                ]
+              }
+            }
+          ],
+          "budget": {
+            "messages": 10,
+            "compute_units": 5,
+            "money": {
+              "amount": "0.00",
+              "currency": "CHF"
+            }
+          },
+          "chain": [
+            {
+              "v": "0.1",
+              "id": "tok-7f3a9c2e1b",
+              "iss": "did:example:alice",
+              "sub": "did:example:alice-homeserver#agent-planner",
+              "aud": "did:example:bob-homeserver#agent-calendar",
+              "iat": "2026-10-09T08:00:00Z",
+              "exp": "2026-10-09T09:00:00Z",
+              "cnf": {
+                "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+              },
+              "rights": [
+                {
+                  "action": "calendar.propose_meeting",
+                  "resource": "urn:example:calendar:bob/*",
+                  "constraints": {
+                    "max_uses": 5,
+                    "data_classes": [
+                      "calendar.availability",
+                      "contacts.name"
+                    ]
+                  }
+                },
+                {
+                  "action": "calendar.read_availability",
+                  "resource": "urn:example:calendar:bob/*"
+                }
+              ],
+              "budget": {
+                "messages": 50,
+                "money": {
+                  "amount": "0.00",
+                  "currency": "CHF"
+                }
+              },
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice#owner-key-1",
+                "canon": "jcs",
+                "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+              }
+            }
+          ],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-homeserver#agent-planner-key",
+            "canon": "jcs",
+            "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+          }
+        }
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative",
+      "note": "A child may add a limit the parent does not set"
+    },
+    {
+      "id": "token.budget.012",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "token-check",
+      "input": {
+        "token": {
+          "v": "0.1",
+          "id": "tok-7f3a9c2e1b-d1",
+          "iss": "did:example:alice-homeserver#agent-planner",
+          "sub": "did:example:alice-phone#agent-assistant",
+          "aud": "did:example:bob-homeserver#agent-calendar",
+          "iat": "2026-10-09T08:05:00Z",
+          "exp": "2026-10-09T08:35:00Z",
+          "cnf": {
+            "jkt": "NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs"
+          },
+          "rights": [
+            {
+              "action": "calendar.propose_meeting",
+              "resource": "urn:example:calendar:bob/work",
+              "constraints": {
+                "max_uses": 5,
+                "data_classes": [
+                  "calendar.availability"
+                ]
+              }
+            }
+          ],
+          "budget": {
+            "messages": 10,
+            "money": {
+              "amount": "0.00",
+              "currency": "CHF"
+            }
+          },
+          "chain": [
+            {
+              "v": "0.1",
+              "id": "tok-7f3a9c2e1b",
+              "iss": "did:example:alice",
+              "sub": "did:example:alice-homeserver#agent-planner",
+              "aud": "did:example:bob-homeserver#agent-calendar",
+              "iat": "2026-10-09T08:00:00Z",
+              "exp": "2026-10-09T09:00:00Z",
+              "cnf": {
+                "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+              },
+              "rights": [
+                {
+                  "action": "calendar.propose_meeting",
+                  "resource": "urn:example:calendar:bob/*",
+                  "constraints": {
+                    "max_uses": 5,
+                    "data_classes": [
+                      "calendar.availability",
+                      "contacts.name"
+                    ]
+                  }
+                },
+                {
+                  "action": "calendar.read_availability",
+                  "resource": "urn:example:calendar:bob/*"
+                }
+              ],
+              "budget": {
+                "messages": 50,
+                "money": {
+                  "amount": "0.00",
+                  "currency": "CHF"
+                }
+              },
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice#owner-key-1",
+                "canon": "jcs",
+                "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+              }
+            }
+          ],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-homeserver#agent-planner-key",
+            "canon": "jcs",
+            "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+          }
+        }
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative",
+      "note": "max_uses equal to the parent"
+    },
+    {
+      "id": "token.budget.013",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "token-check",
+      "input": {
+        "token": {
+          "v": "0.1",
+          "id": "tok-7f3a9c2e1b-d1",
+          "iss": "did:example:alice-homeserver#agent-planner",
+          "sub": "did:example:alice-phone#agent-assistant",
+          "aud": "did:example:bob-homeserver#agent-calendar",
+          "iat": "2026-10-09T08:05:00Z",
+          "exp": "2026-10-09T08:35:00Z",
+          "cnf": {
+            "jkt": "NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs"
+          },
+          "rights": [
+            {
+              "action": "calendar.propose_meeting",
+              "resource": "urn:example:calendar:bob/work",
+              "constraints": {
+                "max_uses": 6,
+                "data_classes": [
+                  "calendar.availability"
+                ]
+              }
+            }
+          ],
+          "budget": {
+            "messages": 10,
+            "money": {
+              "amount": "0.00",
+              "currency": "CHF"
+            }
+          },
+          "chain": [
+            {
+              "v": "0.1",
+              "id": "tok-7f3a9c2e1b",
+              "iss": "did:example:alice",
+              "sub": "did:example:alice-homeserver#agent-planner",
+              "aud": "did:example:bob-homeserver#agent-calendar",
+              "iat": "2026-10-09T08:00:00Z",
+              "exp": "2026-10-09T09:00:00Z",
+              "cnf": {
+                "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+              },
+              "rights": [
+                {
+                  "action": "calendar.propose_meeting",
+                  "resource": "urn:example:calendar:bob/*",
+                  "constraints": {
+                    "max_uses": 5,
+                    "data_classes": [
+                      "calendar.availability",
+                      "contacts.name"
+                    ]
+                  }
+                },
+                {
+                  "action": "calendar.read_availability",
+                  "resource": "urn:example:calendar:bob/*"
+                }
+              ],
+              "budget": {
+                "messages": 50,
+                "money": {
+                  "amount": "0.00",
+                  "currency": "CHF"
+                }
+              },
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice#owner-key-1",
+                "canon": "jcs",
+                "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+              }
+            }
+          ],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-homeserver#agent-planner-key",
+            "canon": "jcs",
+            "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+          }
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "unauthorized"
+      },
+      "status": "normative",
+      "note": "max_uses above the parent"
+    },
+    {
+      "id": "token.budget.014",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "token-check",
+      "input": {
+        "token": {
+          "v": "0.1",
+          "id": "tok-7f3a9c2e1b-d1",
+          "iss": "did:example:alice-homeserver#agent-planner",
+          "sub": "did:example:alice-phone#agent-assistant",
+          "aud": "did:example:bob-homeserver#agent-calendar",
+          "iat": "2026-10-09T08:05:00Z",
+          "exp": "2026-10-09T08:35:00Z",
+          "cnf": {
+            "jkt": "NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs"
+          },
+          "rights": [
+            {
+              "action": "calendar.propose_meeting",
+              "resource": "urn:example:calendar:bob/work",
+              "constraints": {
+                "data_classes": [
+                  "calendar.availability"
+                ]
+              }
+            }
+          ],
+          "budget": {
+            "messages": 10,
+            "money": {
+              "amount": "0.00",
+              "currency": "CHF"
+            }
+          },
+          "chain": [
+            {
+              "v": "0.1",
+              "id": "tok-7f3a9c2e1b",
+              "iss": "did:example:alice",
+              "sub": "did:example:alice-homeserver#agent-planner",
+              "aud": "did:example:bob-homeserver#agent-calendar",
+              "iat": "2026-10-09T08:00:00Z",
+              "exp": "2026-10-09T09:00:00Z",
+              "cnf": {
+                "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+              },
+              "rights": [
+                {
+                  "action": "calendar.propose_meeting",
+                  "resource": "urn:example:calendar:bob/*",
+                  "constraints": {
+                    "max_uses": 5,
+                    "data_classes": [
+                      "calendar.availability",
+                      "contacts.name"
+                    ]
+                  }
+                },
+                {
+                  "action": "calendar.read_availability",
+                  "resource": "urn:example:calendar:bob/*"
+                }
+              ],
+              "budget": {
+                "messages": 50,
+                "money": {
+                  "amount": "0.00",
+                  "currency": "CHF"
+                }
+              },
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice#owner-key-1",
+                "canon": "jcs",
+                "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+              }
+            }
+          ],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-homeserver#agent-planner-key",
+            "canon": "jcs",
+            "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+          }
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "unauthorized"
+      },
+      "status": "normative",
+      "note": "max_uses dropped although the parent sets it"
+    },
+    {
+      "id": "token.budget.015",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "token-check",
+      "input": {
+        "token": {
+          "v": "0.1",
+          "id": "tok-7f3a9c2e1b-d1",
+          "iss": "did:example:alice-homeserver#agent-planner",
+          "sub": "did:example:alice-phone#agent-assistant",
+          "aud": "did:example:bob-homeserver#agent-calendar",
+          "iat": "2026-10-09T08:05:00Z",
+          "exp": "2026-10-09T08:35:00Z",
+          "cnf": {
+            "jkt": "NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs"
+          },
+          "rights": [
+            {
+              "action": "calendar.propose_meeting",
+              "resource": "urn:example:calendar:bob/work",
+              "constraints": {
+                "max_uses": 1,
+                "data_classes": [
+                  "calendar.availability",
+                  "contacts.name"
+                ]
+              }
+            }
+          ],
+          "budget": {
+            "messages": 10,
+            "money": {
+              "amount": "0.00",
+              "currency": "CHF"
+            }
+          },
+          "chain": [
+            {
+              "v": "0.1",
+              "id": "tok-7f3a9c2e1b",
+              "iss": "did:example:alice",
+              "sub": "did:example:alice-homeserver#agent-planner",
+              "aud": "did:example:bob-homeserver#agent-calendar",
+              "iat": "2026-10-09T08:00:00Z",
+              "exp": "2026-10-09T09:00:00Z",
+              "cnf": {
+                "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+              },
+              "rights": [
+                {
+                  "action": "calendar.propose_meeting",
+                  "resource": "urn:example:calendar:bob/*",
+                  "constraints": {
+                    "max_uses": 5,
+                    "data_classes": [
+                      "calendar.availability",
+                      "contacts.name"
+                    ]
+                  }
+                },
+                {
+                  "action": "calendar.read_availability",
+                  "resource": "urn:example:calendar:bob/*"
+                }
+              ],
+              "budget": {
+                "messages": 50,
+                "money": {
+                  "amount": "0.00",
+                  "currency": "CHF"
+                }
+              },
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice#owner-key-1",
+                "canon": "jcs",
+                "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+              }
+            }
+          ],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-homeserver#agent-planner-key",
+            "canon": "jcs",
+            "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+          }
+        }
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative",
+      "note": "Data classes equal to the parent"
+    },
+    {
+      "id": "token.budget.016",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "token-check",
+      "input": {
+        "token": {
+          "v": "0.1",
+          "id": "tok-7f3a9c2e1b-d1",
+          "iss": "did:example:alice-homeserver#agent-planner",
+          "sub": "did:example:alice-phone#agent-assistant",
+          "aud": "did:example:bob-homeserver#agent-calendar",
+          "iat": "2026-10-09T08:05:00Z",
+          "exp": "2026-10-09T08:35:00Z",
+          "cnf": {
+            "jkt": "NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs"
+          },
+          "rights": [
+            {
+              "action": "calendar.propose_meeting",
+              "resource": "urn:example:calendar:bob/work",
+              "constraints": {
+                "max_uses": 1,
+                "data_classes": [
+                  "calendar.availability",
+                  "location.precise"
+                ]
+              }
+            }
+          ],
+          "budget": {
+            "messages": 10,
+            "money": {
+              "amount": "0.00",
+              "currency": "CHF"
+            }
+          },
+          "chain": [
+            {
+              "v": "0.1",
+              "id": "tok-7f3a9c2e1b",
+              "iss": "did:example:alice",
+              "sub": "did:example:alice-homeserver#agent-planner",
+              "aud": "did:example:bob-homeserver#agent-calendar",
+              "iat": "2026-10-09T08:00:00Z",
+              "exp": "2026-10-09T09:00:00Z",
+              "cnf": {
+                "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+              },
+              "rights": [
+                {
+                  "action": "calendar.propose_meeting",
+                  "resource": "urn:example:calendar:bob/*",
+                  "constraints": {
+                    "max_uses": 5,
+                    "data_classes": [
+                      "calendar.availability",
+                      "contacts.name"
+                    ]
+                  }
+                },
+                {
+                  "action": "calendar.read_availability",
+                  "resource": "urn:example:calendar:bob/*"
+                }
+              ],
+              "budget": {
+                "messages": 50,
+                "money": {
+                  "amount": "0.00",
+                  "currency": "CHF"
+                }
+              },
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice#owner-key-1",
+                "canon": "jcs",
+                "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+              }
+            }
+          ],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-homeserver#agent-planner-key",
+            "canon": "jcs",
+            "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+          }
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "unauthorized"
+      },
+      "status": "normative",
+      "note": "Data class the parent does not allow"
+    },
+    {
+      "id": "token.budget.017",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "token-check",
+      "input": {
+        "token": {
+          "v": "0.1",
+          "id": "tok-7f3a9c2e1b-d1",
+          "iss": "did:example:alice-homeserver#agent-planner",
+          "sub": "did:example:alice-phone#agent-assistant",
+          "aud": "did:example:bob-homeserver#agent-calendar",
+          "iat": "2026-10-09T08:05:00Z",
+          "exp": "2026-10-09T08:35:00Z",
+          "cnf": {
+            "jkt": "NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs"
+          },
+          "rights": [
+            {
+              "action": "calendar.propose_meeting",
+              "resource": "urn:example:calendar:bob/work",
+              "constraints": {
+                "max_uses": 1
+              }
+            }
+          ],
+          "budget": {
+            "messages": 10,
+            "money": {
+              "amount": "0.00",
+              "currency": "CHF"
+            }
+          },
+          "chain": [
+            {
+              "v": "0.1",
+              "id": "tok-7f3a9c2e1b",
+              "iss": "did:example:alice",
+              "sub": "did:example:alice-homeserver#agent-planner",
+              "aud": "did:example:bob-homeserver#agent-calendar",
+              "iat": "2026-10-09T08:00:00Z",
+              "exp": "2026-10-09T09:00:00Z",
+              "cnf": {
+                "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+              },
+              "rights": [
+                {
+                  "action": "calendar.propose_meeting",
+                  "resource": "urn:example:calendar:bob/*",
+                  "constraints": {
+                    "max_uses": 5,
+                    "data_classes": [
+                      "calendar.availability",
+                      "contacts.name"
+                    ]
+                  }
+                },
+                {
+                  "action": "calendar.read_availability",
+                  "resource": "urn:example:calendar:bob/*"
+                }
+              ],
+              "budget": {
+                "messages": 50,
+                "money": {
+                  "amount": "0.00",
+                  "currency": "CHF"
+                }
+              },
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice#owner-key-1",
+                "canon": "jcs",
+                "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+              }
+            }
+          ],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-homeserver#agent-planner-key",
+            "canon": "jcs",
+            "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+          }
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "unauthorized"
+      },
+      "status": "normative",
+      "note": "data_classes dropped although the parent constrains them"
+    },
+    {
+      "id": "token.budget.018",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "token-check",
+      "input": {
+        "token": {
+          "v": "0.1",
+          "id": "tok-7f3a9c2e1b-d1",
+          "iss": "did:example:alice-homeserver#agent-planner",
+          "sub": "did:example:alice-phone#agent-assistant",
+          "aud": "did:example:bob-homeserver#agent-calendar",
+          "iat": "2026-10-09T08:05:00Z",
+          "exp": "2026-10-09T08:35:00Z",
+          "cnf": {
+            "jkt": "NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs"
+          },
+          "rights": [
+            {
+              "action": "payments.send",
+              "resource": "urn:example:wallet:alice/groceries",
+              "constraints": {
+                "max_amount": {
+                  "amount": "5.00",
+                  "currency": "CHF"
+                }
+              }
+            }
+          ],
+          "budget": {
+            "messages": 10,
+            "money": {
+              "amount": "0.00",
+              "currency": "CHF"
+            }
+          },
+          "chain": [
+            {
+              "v": "0.1",
+              "id": "tok-7f3a9c2e1b",
+              "iss": "did:example:alice",
+              "sub": "did:example:alice-homeserver#agent-planner",
+              "aud": "did:example:bob-homeserver#agent-calendar",
+              "iat": "2026-10-09T08:00:00Z",
+              "exp": "2026-10-09T09:00:00Z",
+              "cnf": {
+                "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+              },
+              "rights": [
+                {
+                  "action": "payments.send",
+                  "resource": "urn:example:wallet:alice/*",
+                  "constraints": {
+                    "max_amount": {
+                      "amount": "20.00",
+                      "currency": "CHF"
+                    }
+                  }
+                }
+              ],
+              "budget": {
+                "messages": 50,
+                "money": {
+                  "amount": "0.00",
+                  "currency": "CHF"
+                }
+              },
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice#owner-key-1",
+                "canon": "jcs",
+                "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+              }
+            }
+          ],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-homeserver#agent-planner-key",
+            "canon": "jcs",
+            "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+          }
+        }
+      },
+      "expected": {
+        "result": "accept"
+      },
+      "status": "normative",
+      "note": "max_amount below the parent"
+    },
+    {
+      "id": "token.budget.019",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "token-check",
+      "input": {
+        "token": {
+          "v": "0.1",
+          "id": "tok-7f3a9c2e1b-d1",
+          "iss": "did:example:alice-homeserver#agent-planner",
+          "sub": "did:example:alice-phone#agent-assistant",
+          "aud": "did:example:bob-homeserver#agent-calendar",
+          "iat": "2026-10-09T08:05:00Z",
+          "exp": "2026-10-09T08:35:00Z",
+          "cnf": {
+            "jkt": "NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs"
+          },
+          "rights": [
+            {
+              "action": "payments.send",
+              "resource": "urn:example:wallet:alice/groceries",
+              "constraints": {
+                "max_amount": {
+                  "amount": "20.01",
+                  "currency": "CHF"
+                }
+              }
+            }
+          ],
+          "budget": {
+            "messages": 10,
+            "money": {
+              "amount": "0.00",
+              "currency": "CHF"
+            }
+          },
+          "chain": [
+            {
+              "v": "0.1",
+              "id": "tok-7f3a9c2e1b",
+              "iss": "did:example:alice",
+              "sub": "did:example:alice-homeserver#agent-planner",
+              "aud": "did:example:bob-homeserver#agent-calendar",
+              "iat": "2026-10-09T08:00:00Z",
+              "exp": "2026-10-09T09:00:00Z",
+              "cnf": {
+                "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+              },
+              "rights": [
+                {
+                  "action": "payments.send",
+                  "resource": "urn:example:wallet:alice/*",
+                  "constraints": {
+                    "max_amount": {
+                      "amount": "20.00",
+                      "currency": "CHF"
+                    }
+                  }
+                }
+              ],
+              "budget": {
+                "messages": 50,
+                "money": {
+                  "amount": "0.00",
+                  "currency": "CHF"
+                }
+              },
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice#owner-key-1",
+                "canon": "jcs",
+                "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+              }
+            }
+          ],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-homeserver#agent-planner-key",
+            "canon": "jcs",
+            "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+          }
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "unauthorized"
+      },
+      "status": "normative",
+      "note": "max_amount above the parent"
+    },
+    {
+      "id": "token.budget.020",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "token-check",
+      "input": {
+        "token": {
+          "v": "0.1",
+          "id": "tok-7f3a9c2e1b-d1",
+          "iss": "did:example:alice-homeserver#agent-planner",
+          "sub": "did:example:alice-phone#agent-assistant",
+          "aud": "did:example:bob-homeserver#agent-calendar",
+          "iat": "2026-10-09T08:05:00Z",
+          "exp": "2026-10-09T08:35:00Z",
+          "cnf": {
+            "jkt": "NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs"
+          },
+          "rights": [
+            {
+              "action": "payments.send",
+              "resource": "urn:example:wallet:alice/groceries",
+              "constraints": {
+                "max_amount": {
+                  "amount": "5.00",
+                  "currency": "EUR"
+                }
+              }
+            }
+          ],
+          "budget": {
+            "messages": 10,
+            "money": {
+              "amount": "0.00",
+              "currency": "CHF"
+            }
+          },
+          "chain": [
+            {
+              "v": "0.1",
+              "id": "tok-7f3a9c2e1b",
+              "iss": "did:example:alice",
+              "sub": "did:example:alice-homeserver#agent-planner",
+              "aud": "did:example:bob-homeserver#agent-calendar",
+              "iat": "2026-10-09T08:00:00Z",
+              "exp": "2026-10-09T09:00:00Z",
+              "cnf": {
+                "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+              },
+              "rights": [
+                {
+                  "action": "payments.send",
+                  "resource": "urn:example:wallet:alice/*",
+                  "constraints": {
+                    "max_amount": {
+                      "amount": "20.00",
+                      "currency": "CHF"
+                    }
+                  }
+                }
+              ],
+              "budget": {
+                "messages": 50,
+                "money": {
+                  "amount": "0.00",
+                  "currency": "CHF"
+                }
+              },
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice#owner-key-1",
+                "canon": "jcs",
+                "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+              }
+            }
+          ],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-homeserver#agent-planner-key",
+            "canon": "jcs",
+            "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+          }
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "unauthorized"
+      },
+      "status": "normative",
+      "note": "max_amount in a different currency"
+    },
+    {
+      "id": "token.budget.021",
+      "spec": [
+        {
+          "doc": "L2",
+          "version": "0.1",
+          "section": "A6",
+          "tag": "C2"
+        }
+      ],
+      "operation": "token-check",
+      "input": {
+        "token": {
+          "v": "0.1",
+          "id": "tok-7f3a9c2e1b-d1",
+          "iss": "did:example:alice-homeserver#agent-planner",
+          "sub": "did:example:alice-phone#agent-assistant",
+          "aud": "did:example:bob-homeserver#agent-calendar",
+          "iat": "2026-10-09T08:05:00Z",
+          "exp": "2026-10-09T08:35:00Z",
+          "cnf": {
+            "jkt": "NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs"
+          },
+          "rights": [
+            {
+              "action": "payments.send",
+              "resource": "urn:example:wallet:alice/groceries"
+            }
+          ],
+          "budget": {
+            "messages": 10,
+            "money": {
+              "amount": "0.00",
+              "currency": "CHF"
+            }
+          },
+          "chain": [
+            {
+              "v": "0.1",
+              "id": "tok-7f3a9c2e1b",
+              "iss": "did:example:alice",
+              "sub": "did:example:alice-homeserver#agent-planner",
+              "aud": "did:example:bob-homeserver#agent-calendar",
+              "iat": "2026-10-09T08:00:00Z",
+              "exp": "2026-10-09T09:00:00Z",
+              "cnf": {
+                "jkt": "0ZcOCORZNYy-DWpqq30jZyJGHTN0d2HglBV3uiguA4I"
+              },
+              "rights": [
+                {
+                  "action": "payments.send",
+                  "resource": "urn:example:wallet:alice/*",
+                  "constraints": {
+                    "max_amount": {
+                      "amount": "20.00",
+                      "currency": "CHF"
+                    }
+                  }
+                }
+              ],
+              "budget": {
+                "messages": 50,
+                "money": {
+                  "amount": "0.00",
+                  "currency": "CHF"
+                }
+              },
+              "sig": {
+                "alg": "EdDSA",
+                "kid": "did:example:alice#owner-key-1",
+                "canon": "jcs",
+                "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+              }
+            }
+          ],
+          "sig": {
+            "alg": "EdDSA",
+            "kid": "did:example:alice-homeserver#agent-planner-key",
+            "canon": "jcs",
+            "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
+          }
+        }
+      },
+      "expected": {
+        "result": "refuse",
+        "reason": "unauthorized"
+      },
+      "status": "normative",
+      "note": "max_amount dropped although the parent sets it"
+    }
+  ]
+}

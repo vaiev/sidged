@@ -1,0 +1,28 @@
+{
+  "v": "0.1",
+  "goal": "Propose a time",
+  "budget": { "max": { "amount": "0.01", "currency": "CHF" } },
+  "steps": [
+    {
+      "id": "free",
+      "kind": "call",
+      "capability": "urn:sidged:capability:calendar.free_slots",
+      "args": { "range": { "lit": "next_week" } }
+    },
+    {
+      "id": "pick",
+      "kind": "expr",
+      "expr": "free.slots"
+    },
+    {
+      "id": "send",
+      "kind": "call",
+      "capability": "urn:sidged:capability:message.send",
+      "approval": true,
+      "args": {
+        "to": { "lit": "contact:bea" },
+        "body": { "ref": "pick" }
+      }
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+# sidged.com site workspace (WP 8): the WASM verifier for the playground. Kept apart from
+# runtime/ so the runtime lock file never carries web-only build settings.
+[workspace]
+resolver = "3"
+members = ["sidged-wasm"]
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true

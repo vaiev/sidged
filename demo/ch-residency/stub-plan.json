@@ -1,0 +1,31 @@
+{
+  "v": "0.1",
+  "steps": [
+    {
+      "id": "read",
+      "kind": "call",
+      "capability": "urn:sidged:capability:app.comment.read",
+      "args": { "id": { "lit": "c1" } }
+    },
+    {
+      "id": "moderate",
+      "kind": "call",
+      "capability": "urn:sidged:capability:guard.moderate",
+      "approval": true,
+      "args": { "comment": { "ref": "read" } }
+    },
+    {
+      "id": "watch",
+      "kind": "call",
+      "capability": "urn:sidged:capability:guard.monitor",
+      "args": {}
+    },
+    {
+      "id": "model",
+      "kind": "call",
+      "capability": "urn:sidged:capability:model.complete",
+      "approval": true,
+      "args": { "prompt": { "ref": "read" } }
+    }
+  ]
+}

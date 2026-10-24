@@ -1,0 +1,15 @@
+{
+  "v": "0.1",
+  "steps": [
+    {
+      "id": "free",
+      "kind": "expr",
+      "expr": "true"
+    },
+    {
+      "id": "free",
+      "kind": "expr",
+      "expr": "false"
+    }
+  ]
+}
