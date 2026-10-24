@@ -52,7 +52,9 @@ if ($Url -ne "") {
         [Console]::Error.WriteLine("open-sidged-app: $shell not found (the offline UI shell)")
         exit 1
     }
-    $target = ([System.Uri]([System.IO.Path]::GetFullPath($shell))).AbsoluteUri
+    # The constructor, not a [System.Uri] cast: PowerShell casts as RelativeOrAbsolute, which
+    # leaves a Unix path relative, and AbsoluteUri then comes back empty.
+    $target = [System.Uri]::new([System.IO.Path]::GetFullPath($shell), [System.UriKind]::Absolute).AbsoluteUri
 }
 
 $browser = $null
