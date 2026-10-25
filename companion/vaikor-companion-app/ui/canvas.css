@@ -1,0 +1,148 @@
+/* Copyright 2026 VAIEV
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Companion canvas layout on top of @vaiev/ui v4 (vendor/tokens/*.css) and the Vaikor theme
+ * (vendor/vaikor-theme.css). Content is flat and tonal; the nav pill and the dock are the
+ * one glass layer. Only layout lives here: colours, type and components come from vaiev/ui. */
+
+body { margin: 0; min-height: 100dvh; }
+
+/* `hidden` must win over the display of layout classes (the onboarding stage is a grid). */
+[hidden] { display: none !important; }
+
+.vv-nav__bar { max-width: 560px; }
+
+.canvas {
+  display: grid; gap: var(--vv-space-6); align-content: start;
+  padding-block: var(--vv-space-8) var(--vv-space-6);
+  max-width: calc(760px + 2 * var(--vv-layout-margin));
+}
+.canvas__head { display: grid; gap: var(--vv-space-2); }
+.canvas__trust {
+  max-width: calc(760px + 2 * var(--vv-layout-margin));
+  padding-bottom: calc(112px + env(safe-area-inset-bottom, 0px));
+}
+
+/* Dock: floating glass pill in the thumb zone. */
+.dock {
+  position: fixed; z-index: 50; inset-inline: 0; bottom: 0; pointer-events: none;
+  padding: 0 var(--vv-layout-margin) max(var(--vv-space-3), env(safe-area-inset-bottom, 0px));
+}
+.dock__bar {
+  pointer-events: auto; margin-inline: auto; max-width: 560px;
+  display: flex; align-items: center; gap: var(--vv-space-2);
+  padding: var(--vv-space-1); border-radius: var(--vv-shape-full);
+}
+.dock__select {
+  flex: 1; min-width: 0; min-height: var(--vv-touch-target);
+  padding: 0 var(--vv-space-4); border: 0; border-radius: var(--vv-shape-full);
+  background: transparent; color: var(--vv-color-on-surface);
+  font: 500 var(--vv-type-label)/1 var(--vv-font-mono); text-overflow: ellipsis;
+}
+.dock__select option { background: var(--vv-color-surface-container-high); color: var(--vv-color-on-surface); }
+
+/* Surfaces. */
+.chips { display: flex; flex-wrap: wrap; gap: var(--vv-space-2); }
+.chips .vv-chip--outlined { font-family: var(--vv-font-mono); }
+.form { display: grid; gap: var(--vv-space-5); }
+.form .vv-field input[readonly] { color: var(--vv-color-on-surface-variant); }
+.files { margin: 0; padding-left: 1.25em; display: grid; gap: var(--vv-space-1); font-family: var(--vv-font-mono); font-size: var(--vv-type-small); }
+
+.timeline { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--vv-space-1); }
+.timeline li {
+  display: flex; flex-wrap: wrap; gap: var(--vv-space-3); align-items: baseline;
+  padding: var(--vv-space-4) var(--vv-space-5); border-radius: var(--vv-space-2);
+  background: var(--vv-color-surface-container-low);
+}
+.timeline li:first-child { border-top-left-radius: var(--vv-shape-md); border-top-right-radius: var(--vv-shape-md); }
+.timeline li:last-child { border-bottom-left-radius: var(--vv-shape-md); border-bottom-right-radius: var(--vv-shape-md); }
+.timeline code { color: var(--vkr-sodium-300); }
+.timeline .is-completed { box-shadow: inset 3px 0 0 var(--vv-color-success); }
+.timeline .is-failed, .timeline .is-refused { box-shadow: inset 3px 0 0 var(--vv-color-error); }
+
+.table-wrap { overflow-x: auto; }
+.table { width: 100%; border-collapse: collapse; font-size: var(--vv-type-small); }
+.table th { text-align: left; font-weight: 500; color: var(--vv-color-outline); padding: 0 var(--vv-space-3) var(--vv-space-3) 0; }
+.table td { padding: var(--vv-space-3) var(--vv-space-3) var(--vv-space-3) 0; border-top: 1px solid var(--vv-color-outline-variant); color: var(--vv-color-on-surface-variant); }
+
+.split { display: grid; gap: var(--vv-space-6); }
+@media (min-width: 840px) { .split--horizontal { grid-template-columns: 1fr 1fr; } }
+
+/* Intent tiles: flat tonal cards; the whole tile is the touch target. */
+.intents { display: grid; gap: var(--vv-space-3); grid-template-columns: 1fr; }
+@media (min-width: 600px) { .intents { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.intent {
+  display: grid; gap: var(--vv-space-2); justify-items: start; text-align: left;
+  min-height: 112px; padding: var(--vv-space-5); border: 0; border-radius: var(--vv-shape-md);
+  background: var(--vv-color-surface-container-low); color: var(--vv-color-on-surface);
+  font: inherit; cursor: pointer;
+}
+.intent .vv-overline { color: var(--vkr-sodium-300); }
+.intent__meta { display: flex; flex-wrap: wrap; gap: var(--vv-space-1); }
+.intent__meta .vv-chip { min-height: 24px; font-family: var(--vv-font-mono); font-size: 0.75rem; }
+.node-chip { font-family: var(--vv-font-mono); max-width: 52vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Onboarding: the black stage with a sodium glow (as on vaikor.com) and one glass card. */
+.is-onboarding { overflow: hidden; }
+.onboarding {
+  position: fixed; inset: 0; z-index: 100; overflow-y: auto;
+  display: grid; place-items: center;
+  padding: max(var(--vv-space-6), env(safe-area-inset-top, 0px)) var(--vv-layout-margin)
+           max(var(--vv-space-6), env(safe-area-inset-bottom, 0px));
+  background:
+    radial-gradient(90% 45% at 50% 100%, rgb(255 167 51 / 0.22), transparent 70%),
+    radial-gradient(60% 180px at 50% 0, #191B22, transparent),
+    var(--vv-color-stage);
+  color: var(--vv-color-on-stage);
+}
+.onboarding__glow {
+  position: absolute; left: 50%; top: 50%; width: min(140vw, 760px); aspect-ratio: 1; translate: -50% -58%;
+  border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle, rgb(255 167 51 / 0.38), rgb(242 138 15 / 0.14) 38%, transparent 66%);
+  filter: blur(24px); animation: onb-breathe 4s ease-in-out infinite;
+}
+.onboarding__card {
+  position: relative; width: 100%; max-width: 460px;
+  padding: var(--vv-space-8) var(--vv-space-6) var(--vv-space-6);
+  border-radius: var(--vv-shape-xl); display: grid; gap: var(--vv-space-6);
+}
+.onboarding__steps { display: flex; gap: var(--vv-space-2); }
+.onboarding__steps span {
+  width: 8px; height: 8px; border-radius: var(--vv-shape-full); background: rgb(255 255 255 / 0.22);
+  transition: width var(--vv-motion-medium) var(--vv-ease-spring), background var(--vv-motion-short);
+}
+.onboarding__steps .is-active { width: 28px; background: var(--vkr-sodium-400); }
+.onboarding__step { display: grid; gap: var(--vv-space-5); animation: onb-rise 450ms var(--vv-ease-decelerate) backwards; }
+.onboarding__over { color: var(--vkr-sodium-300); }
+.onboarding__claim { margin: 0; font-size: clamp(2.25rem, 1.6rem + 3.5vw, 3.25rem); line-height: 1.02; letter-spacing: -0.035em; text-wrap: balance; }
+.onboarding__line { display: block; }
+.onboarding__line--1 { font-weight: 400; color: var(--vv-color-on-surface-variant); }
+.onboarding__line--2 { font-weight: 600; color: var(--vv-color-on-stage); }
+.onboarding__title { margin: 0; font-size: var(--vv-type-headline); line-height: 1.15; font-weight: 600; letter-spacing: -0.015em; }
+.onboarding__lede { margin: 0; font-size: var(--vv-type-body-lg); line-height: 1.55; color: var(--vv-color-on-surface-variant); }
+.onboarding__fine { margin: 0; font-size: var(--vv-type-small); line-height: 1.45; color: var(--vv-color-on-surface-variant); }
+.onboarding__list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--vv-space-3); }
+.onboarding__list li { position: relative; padding-left: var(--vv-space-6); line-height: 1.5; }
+.onboarding__list li::before {
+  content: ""; position: absolute; left: 0; top: 0.55em; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--vkr-sodium-400); box-shadow: 0 0 10px var(--vkr-sodium-500);
+}
+.onboarding__id {
+  display: grid; gap: var(--vv-space-1); padding: var(--vv-space-4) var(--vv-space-5);
+  border-radius: var(--vv-shape-md); background: rgb(255 255 255 / 0.06);
+}
+.onboarding__id code { color: var(--vkr-sodium-300); word-break: break-all; }
+.onboarding__chip { border: 1px solid rgb(255 255 255 / 0.10); color: var(--vv-color-on-stage); }
+@keyframes onb-rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@keyframes onb-breathe { 0%, 100% { opacity: 0.55; transform: scale(0.96); } 50% { opacity: 1; transform: scale(1.04); } }
+@media (prefers-reduced-motion: reduce) { .onboarding__glow, .onboarding__step { animation: none; } }
+
+/* Intent bar: the model's input, one glass pill (it floats above the tiles). */
+.askbar { display: flex; align-items: center; gap: var(--vv-space-2); padding: var(--vv-space-1) var(--vv-space-1) var(--vv-space-1) var(--vv-space-5); border-radius: var(--vv-shape-full); }
+.askbar__input {
+  flex: 1; min-width: 0; min-height: var(--vv-touch-target); border: 0; background: transparent;
+  color: var(--vv-color-on-surface); font: 400 1rem/1.4 var(--vv-font-sans);
+}
+.askbar__input::placeholder { color: var(--vv-color-on-surface-variant); }
+.askbar__input:focus-visible { outline: none; }
+.askbar:focus-within { box-shadow: inset 0 0 0 2px var(--vv-color-primary); }

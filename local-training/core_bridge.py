@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """The Rust Core as the single source of linguist prompts and verdicts. Stdlib only.
 
-Calls `sidged linguist-eval` (runtime/sidged-cli/src/linguist_eval.rs), the shipped binary:
+Calls `vaikor linguist-eval` (runtime/vaikor-cli/src/linguist_eval.rs), the shipped binary:
   render-prompt  utterance (+ catalog subset) -> the exact runtime prompt and chat request
   score          recorded completion -> the runtime verdict and what the Core keeps
   serve          utterance -> the reply of the running llama-server endpoint, scored the same way
@@ -10,8 +10,8 @@ Nothing here renders a prompt or decides acceptance in Python. compact=True sele
 compact output (0017 L3a, L8): the compact instruction and the catalog decoding schema,
 as `model.output: "compact"` does at runtime (`--compact`).
 
-The binary is $SIDGED_BIN when set (the cargo test of sidged-guard passes its own build),
-otherwise `cargo build -p sidged-guard --bin sidged` in runtime/ (debug profile).
+The binary is $VAIKOR_BIN when set (the cargo test of vaikor-guard passes its own build),
+otherwise `cargo build -p vaikor-guard --bin vaikor` in runtime/ (debug profile).
 """
 import functools
 import json
@@ -28,36 +28,36 @@ class CoreError(RuntimeError):
 
 
 @functools.lru_cache(maxsize=1)
-def sidged_binary():
-    path = os.environ.get("SIDGED_BIN")
+def vaikor_binary():
+    path = os.environ.get("VAIKOR_BIN")
     if path:
         if not os.access(path, os.X_OK):
-            raise CoreError(f"SIDGED_BIN={path} is not an executable")
+            raise CoreError(f"VAIKOR_BIN={path} is not an executable")
         return path
     build = subprocess.run(
         ["cargo", "build", "--quiet", "--locked", "--manifest-path", str(RUNTIME_MANIFEST),
-         "-p", "sidged-guard", "--bin", "sidged", "--message-format=json"],
+         "-p", "vaikor-guard", "--bin", "vaikor", "--message-format=json"],
         capture_output=True, text=True, check=False)
     if build.returncode != 0:
-        raise CoreError(f"cargo build of sidged failed:\n{build.stderr[-4000:]}")
+        raise CoreError(f"cargo build of vaikor failed:\n{build.stderr[-4000:]}")
     for line in build.stdout.splitlines():
         message = json.loads(line)
         if (message.get("reason") == "compiler-artifact" and message.get("executable")
-                and message["target"]["name"] == "sidged"):
+                and message["target"]["name"] == "vaikor"):
             return message["executable"]
-    raise CoreError("cargo build did not report the sidged executable")
+    raise CoreError("cargo build did not report the vaikor executable")
 
 
 def run(mode, rows, *args, timeout=None):
     """One JSON result per row, in order; raises CoreError on any failed row."""
     data = "".join(json.dumps(row, ensure_ascii=False) + "\n" for row in rows)
-    proc = subprocess.run([sidged_binary(), "linguist-eval", mode, *args], input=data, capture_output=True,
+    proc = subprocess.run([vaikor_binary(), "linguist-eval", mode, *args], input=data, capture_output=True,
                           text=True, encoding="utf-8", check=False, timeout=timeout)
     results = [json.loads(line) for line in proc.stdout.splitlines() if line.strip()]
     errors = [r["error"] for r in results if "error" in r]
     if proc.returncode != 0 or errors or len(results) != len(rows):
         detail = errors[0] if errors else proc.stderr.strip()
-        raise CoreError(f"sidged linguist-eval {mode}: exit {proc.returncode}, "
+        raise CoreError(f"vaikor linguist-eval {mode}: exit {proc.returncode}, "
                         f"{len(errors)} bad row(s): {detail}")
     return results
 

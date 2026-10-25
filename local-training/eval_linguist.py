@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Model -1 release gate: evaluate the served linguist GGUF through the Rust Core. Stdlib only.
 
-Every reply is judged by `sidged linguist-eval` (core_bridge), i.e. by the functions the
+Every reply is judged by `vaikor linguist-eval` (core_bridge), i.e. by the functions the
 runtime runs: the prompt, the chat request (greedy, max_tokens and thinking off as at
 runtime), the reply post-processing and verify_proposal_for. Python only counts.
 
@@ -31,7 +31,7 @@ model.output "compact" in the --config. The served form must be the split's form
 Usage (lead PC; llama-server started by scripts/serve-local-linguist.sh <model.gguf>):
   python3 -I eval_linguist.py --data out/qwen3-0.6b-linguist/linguist_blind.jsonl \\
       --manifest out/qwen3-0.6b-linguist/manifest.json --gguf <model.gguf> \\
-      --socket $XDG_RUNTIME_DIR/sidged/linguist.sock [--compact] [--out report.json]
+      --socket $XDG_RUNTIME_DIR/vaikor/linguist.sock [--compact] [--out report.json]
   python3 -I eval_linguist.py --data <split.jsonl> --completions <recorded.jsonl>   (re-score)
 """
 import argparse

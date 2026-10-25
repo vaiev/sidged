@@ -120,18 +120,29 @@ skip_step() { echo "==> [$1] SKIPPED: $2"; names+=("$1"); results+=("SKIP"); tim
 
 echo "ci-local: HEAD $head_sha, fmt base $base_sha, scan range $main_sha..$head_sha, cargo -j$jobs"
 
-edition_for() { # edition from the nearest Cargo.toml (or workspace.package); none = fail
+crate_edition() { # edition from the nearest Cargo.toml (or workspace.package)
   local d e; d=$(dirname "$1")
   while [[ $d != . && $d != / ]]; do
     if [[ -f $d/Cargo.toml ]]; then
       e=$(sed -nE 's/^edition *= *"([0-9]+)".*/\1/p' "$d/Cargo.toml" | head -1)
       [[ -z $e ]] && e=$(sed -nE 's/^edition *= *"([0-9]+)".*/\1/p' "$manifest" | head -1)
       [[ -n $e ]] && { echo "$e"; return 0; }
-      echo "fmt: no edition found for $1" >&2; return 1
+      return 1
     fi
     d=$(dirname "$d")
   done
-  echo "fmt: no Cargo.toml above $1" >&2; return 1
+  return 1
+}
+edition_for() { # the file's crate, else the crate of a #[path] module that includes it; none = fail
+  local inc p
+  crate_edition "$1" && return 0
+  while IFS=: read -r inc p; do
+    p=${p#*\"}; p=${p%%\"*}
+    if [[ $(realpath -m "$(dirname "$inc")/$p") == "$(realpath -m "$1")" ]]; then
+      crate_edition "$inc" && return 0
+    fi
+  done < <(git grep -e '#\[path = "' -- '*.rs')
+  echo "fmt: no edition found for $1 (no crate, no #[path] includer)" >&2; return 1
 }
 fmt_changed() {
   local list f ed rc=0 n=0
@@ -154,9 +165,23 @@ fi
 # rust-ci.yml "test and clippy"
 run_step test   cargo test --manifest-path "$manifest" --workspace --locked -j "$jobs"
 run_step clippy cargo clippy --manifest-path "$manifest" --workspace --all-targets --locked -j "$jobs" -- -D warnings
-run_step test-experimental cargo test --manifest-path "$manifest" -p sidged-cli -p sidged-guard --features experimental --locked -j "$jobs"
+run_step test-experimental cargo test --manifest-path "$manifest" -p vaikor-cli -p vaikor-guard --features experimental --locked -j "$jobs"
 # validate.yml "runtime crates"
 run_step test-default cargo test --manifest-path "$manifest" --locked -j "$jobs"
+# The vaikor.com verifier module is its own workspace (rust-ci.yml "site verifier test and clippy").
+site() {
+  cargo test --manifest-path site/Cargo.toml --locked -j "$jobs" &&
+    cargo clippy --manifest-path site/Cargo.toml --all-targets --locked -j "$jobs" -- -D warnings
+}
+run_step site site
+
+# rust-ci.yml "companion core test and clippy" and "companion canvas static checks"
+companion() {
+  cargo test --manifest-path companion/Cargo.toml -p vaikor-companion-core --locked -j "$jobs" &&
+    cargo clippy --manifest-path companion/Cargo.toml -p vaikor-companion-core --all-targets --locked -j "$jobs" -- -D warnings &&
+    bash scripts/tests/companion_ui_check.sh
+}
+run_step companion companion
 
 # validate.yml "validate"
 schema() {
@@ -175,11 +200,11 @@ run_step private-refs private_refs
 
 # validate.yml "musl": the binary must be rebuilt in this run
 musl() {
-  local bin=$target_dir/x86_64-unknown-linux-musl/release/sidged stamp
+  local bin=$target_dir/x86_64-unknown-linux-musl/release/vaikor stamp
   command -v musl-gcc >/dev/null || { echo "musl-gcc missing"; return 1; }
   rm -f "$bin"; stamp=$(mktemp)
   cargo build --manifest-path "$manifest" --locked --release -j "$jobs" \
-    --target x86_64-unknown-linux-musl -p sidged-guard
+    --target x86_64-unknown-linux-musl -p vaikor-guard
   [[ $bin -nt $stamp ]] || { rm -f "$stamp"; echo "musl: $bin not rebuilt in this run"; return 1; }
   rm -f "$stamp"
   ldd "$bin" 2>&1 | grep -q 'statically linked'

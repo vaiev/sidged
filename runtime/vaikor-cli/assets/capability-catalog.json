@@ -1,0 +1,638 @@
+[
+  {
+    "v": "0.1",
+    "id": "tag:vaikor.com,2026:capability:worker.fetch",
+    "title": "Fetch a public page",
+    "description": "Fetch one public https page through the Privacy Gateway; the address leaves the device, so every call needs Trusted UI approval.",
+    "input_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "url"
+      ],
+      "properties": {
+        "url": {
+          "type": "string",
+          "maxLength": 2048,
+          "pattern": "^https://",
+          "description": "Public https address of the page."
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    },
+    "effects": [
+      "egress"
+    ],
+    "data_classes": [
+      "query.general"
+    ],
+    "residency": {
+      "tags": [
+        "unrestricted"
+      ]
+    },
+    "cost": {
+      "class": "free"
+    },
+    "consequential": true
+  },
+  {
+    "v": "0.1",
+    "id": "tag:vaikor.com,2026:capability:workspace.read",
+    "title": "Read a workspace file",
+    "description": "Read one text file inside the owner's workspace (symlinks and path traversal are refused).",
+    "input_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "^[A-Za-z0-9_][A-Za-z0-9_./ -]*$",
+          "description": "Path relative to the workspace; the adapter refuses traversal and symlinks."
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    },
+    "effects": [
+      "read"
+    ],
+    "data_classes": [
+      "documents.text"
+    ],
+    "residency": {
+      "tags": [
+        "CH"
+      ]
+    },
+    "cost": {
+      "class": "free"
+    },
+    "consequential": false
+  },
+  {
+    "v": "0.1",
+    "id": "tag:vaikor.com,2026:capability:workspace.write",
+    "title": "Write a workspace file",
+    "description": "Write one text file inside the owner's workspace (symlinks and path traversal are refused).",
+    "input_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "text"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "^[A-Za-z0-9_][A-Za-z0-9_./ -]*$",
+          "description": "Path relative to the workspace; the adapter refuses traversal and symlinks."
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 1048576,
+          "description": "New content of the file."
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "bytes": {
+          "type": "integer"
+        }
+      }
+    },
+    "effects": [
+      "write"
+    ],
+    "data_classes": [
+      "documents.text"
+    ],
+    "residency": {
+      "tags": [
+        "CH"
+      ]
+    },
+    "cost": {
+      "class": "free"
+    },
+    "consequential": true
+  },
+  {
+    "v": "0.1",
+    "id": "tag:vaikor.com,2026:capability:message.send",
+    "title": "Send a message",
+    "description": "Send one message to a contact through the Privacy Gateway; needs Trusted UI approval.",
+    "input_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "to",
+        "body"
+      ],
+      "properties": {
+        "to": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "description": "Recipient contact."
+        },
+        "body": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16384,
+          "description": "Text of the message."
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "message_id": {
+          "type": "string"
+        }
+      }
+    },
+    "effects": [
+      "egress"
+    ],
+    "data_classes": [
+      "communications.content"
+    ],
+    "residency": {
+      "tags": [
+        "CH"
+      ]
+    },
+    "cost": {
+      "class": "free"
+    },
+    "consequential": true
+  },
+  {
+    "v": "0.1",
+    "id": "tag:vaikor.com,2026:capability:text.generate_local",
+    "title": "Generate text on this node",
+    "description": "A local model (Model 0) writes text from an instruction and source text; nothing leaves the device.",
+    "input_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "instruction"
+      ],
+      "properties": {
+        "instruction": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048,
+          "description": "What to write, in canonical English."
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 65536,
+          "description": "Source text the instruction refers to."
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string"
+        }
+      }
+    },
+    "effects": [
+      "read"
+    ],
+    "data_classes": [
+      "documents.text"
+    ],
+    "residency": {
+      "tags": [
+        "CH"
+      ]
+    },
+    "cost": {
+      "class": "free"
+    },
+    "consequential": false
+  },
+  {
+    "v": "0.1",
+    "id": "tag:vaikor.com,2026:capability:calendar.free_slots",
+    "title": "Find free calendar slots",
+    "description": "Read the owner's free time slots in a range.",
+    "input_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "range"
+      ],
+      "properties": {
+        "range": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "description": "Time range in canonical English, for example next week."
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "slots": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "start": {
+                "type": "string"
+              },
+              "end": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "text": {
+          "type": "string",
+          "description": "The same slots as plain text, one per line, for a step that takes text."
+        }
+      }
+    },
+    "effects": [
+      "read"
+    ],
+    "data_classes": [
+      "calendar.availability"
+    ],
+    "residency": {
+      "tags": [
+        "CH"
+      ]
+    },
+    "cost": {
+      "class": "free"
+    },
+    "consequential": false
+  },
+  {
+    "v": "0.1",
+    "id": "tag:vaikor.com,2026:capability:reminder.create",
+    "title": "Create a reminder",
+    "description": "Create a local reminder on this node.",
+    "input_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "subject",
+        "time"
+      ],
+      "properties": {
+        "subject": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "description": "What to remind of."
+        },
+        "time": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "description": "When, as the owner said it (en, de, gsw); the node resolves it to an absolute time in its time zone."
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "reminder_id": {
+          "type": "string"
+        },
+        "due_at": {
+          "type": "string",
+          "description": "The resolved time, RFC 3339 with the node's offset."
+        }
+      },
+      "required": [
+        "reminder_id",
+        "due_at"
+      ]
+    },
+    "effects": [
+      "write"
+    ],
+    "data_classes": [
+      "calendar.events"
+    ],
+    "residency": {
+      "tags": [
+        "CH"
+      ]
+    },
+    "cost": {
+      "class": "free"
+    },
+    "consequential": false
+  },
+  {
+    "v": "0.1",
+    "id": "tag:vaikor.com,2026:capability:timer.start",
+    "title": "Start a timer",
+    "description": "Start a local countdown timer on this node.",
+    "input_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "duration"
+      ],
+      "properties": {
+        "duration": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "description": "How long, in canonical English."
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "description": "What the timer is for."
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "timer_id": {
+          "type": "string"
+        },
+        "ends_at": {
+          "type": "string"
+        }
+      }
+    },
+    "effects": [
+      "write"
+    ],
+    "data_classes": [],
+    "residency": {
+      "tags": [
+        "CH"
+      ]
+    },
+    "cost": {
+      "class": "free"
+    },
+    "consequential": false
+  },
+  {
+    "v": "0.1",
+    "id": "tag:vaikor.com,2026:capability:device.control",
+    "title": "Control a device",
+    "description": "Set a home device to a state; a physical effect, so every call needs Trusted UI approval.",
+    "input_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "device",
+        "setting"
+      ],
+      "properties": {
+        "device": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "description": "The device, in canonical English."
+        },
+        "setting": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "description": "Target state or value."
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "device": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        }
+      }
+    },
+    "effects": [
+      "write"
+    ],
+    "data_classes": [
+      "device.config"
+    ],
+    "residency": {
+      "tags": [
+        "CH"
+      ]
+    },
+    "cost": {
+      "class": "free"
+    },
+    "consequential": true
+  },
+  {
+    "v": "0.1",
+    "id": "tag:vaikor.com,2026:capability:notes.append",
+    "title": "Append a note",
+    "description": "Append one note to the owner's notes inside the workspace.",
+    "input_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "text"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16384,
+          "description": "Text of the note, verbatim."
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "bytes": {
+          "type": "integer"
+        }
+      }
+    },
+    "effects": [
+      "write"
+    ],
+    "data_classes": [
+      "documents.text"
+    ],
+    "residency": {
+      "tags": [
+        "CH"
+      ]
+    },
+    "cost": {
+      "class": "free"
+    },
+    "consequential": false
+  },
+  {
+    "v": "0.1",
+    "id": "tag:vaikor.com,2026:capability:web.search",
+    "title": "Search the web",
+    "description": "Send one search query to a search provider through the Privacy Gateway.",
+    "input_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "query"
+      ],
+      "properties": {
+        "query": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "description": "Search query in canonical English."
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "effects": [
+      "egress"
+    ],
+    "data_classes": [
+      "query.general"
+    ],
+    "residency": {
+      "tags": [
+        "unrestricted"
+      ]
+    },
+    "cost": {
+      "class": "free"
+    },
+    "consequential": true
+  },
+  {
+    "v": "0.1",
+    "id": "tag:vaikor.com,2026:capability:workspace.find",
+    "title": "Find workspace files",
+    "description": "Find files in the owner's workspace by name or topic.",
+    "input_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "query"
+      ],
+      "properties": {
+        "query": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "description": "Name, topic or content of the file."
+        },
+        "folder": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "description": "Folder to search in, relative to the workspace."
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "matches": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "effects": [
+      "read"
+    ],
+    "data_classes": [
+      "documents.metadata"
+    ],
+    "residency": {
+      "tags": [
+        "CH"
+      ]
+    },
+    "cost": {
+      "class": "free"
+    },
+    "consequential": false
+  }
+]

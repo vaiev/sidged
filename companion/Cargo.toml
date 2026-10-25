@@ -4,4 +4,4 @@
 [workspace]
 # Resolver 3 picks dependency versions that build with rust-version 1.89.
 resolver = "3"
-members = ["sidged-companion-core", "sidged-companion-app"]
+members = ["vaikor-companion-core", "vaikor-companion-app"]

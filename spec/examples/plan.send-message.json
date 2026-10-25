@@ -6,7 +6,7 @@
     {
       "id": "free",
       "kind": "call",
-      "capability": "urn:sidged:capability:calendar.free_slots",
+      "capability": "tag:vaikor.com,2026:capability:calendar.free_slots",
       "args": { "range": { "lit": "next_week" } }
     },
     {
@@ -17,7 +17,7 @@
     {
       "id": "send",
       "kind": "call",
-      "capability": "urn:sidged:capability:message.send",
+      "capability": "tag:vaikor.com,2026:capability:message.send",
       "approval": true,
       "args": {
         "to": { "lit": "contact:bea" },

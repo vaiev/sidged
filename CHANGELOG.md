@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to Sidged. Versions follow Semantic Versioning; while the major version is 0, a minor version may
+All notable changes to Vaikor. Versions follow Semantic Versioning; while the major version is 0, a minor version may
 change interfaces. The plan ahead is in [docs/ROADMAP.md](docs/ROADMAP.md).
 
 ## Unreleased
@@ -9,13 +9,24 @@ The first public preview, `v0.3.0-preview.1`, is a snapshot of this section: v0.
 interfaces will still change. The public history starts with that tag; earlier development happened in a private
 repository. 0.3.0 itself follows when the v0.3.0 section of [docs/ROADMAP.md](docs/ROADMAP.md) is done.
 
+### Changed
+- **Sidged is now Vaikor.** The project, the binary (`vaikor`), the crates (`vaikor-*`), the environment
+  variables (`VAIKOR_*`) and the Android app id (`com.vaikor.companion`) carry the new name. Identifiers change
+  without aliases while the project is pre-alpha: capability and record ids move from the unregistered URN
+  namespace `urn:sidged:` to tag URIs `tag:vaikor.com,2026:` (RFC 4151), the prefix `sdg.*` becomes `vkr.*`, the
+  conformance levels `SDG-L0`..`SDG-L8` become `VKR-L0`..`VKR-L8`, media types move to `application/vnd.vaikor.*`,
+  the MCP descriptor key to `com.vaikor/capability`, the Cedar namespace to `Vaikor::`, the GGUF key to
+  `vaikor.linguist.output` and the schema root to `https://vaikor.com/spec/schemas/`. The signature test vectors
+  are signed again over the renamed objects. Data written under the old name (audit chains, records) stays
+  readable as an archive and is not rewritten.
+
 ### Security
-- Workspace containment by directory handle (ROADMAP 11g): every workspace file operation resolves beneath one open `<workspace>/files` with `openat2(RESOLVE_BENEATH | RESOLVE_NO_SYMLINKS)`, a symlinked or foreign-owned root is refused; timers and reminders change under a lock with atomic replace and ids that never repeat; `sidged task` records go through the record store; the swarm and signed-adapter prototypes and `sidged swarm measure` are behind the `sidged-cli` feature `experimental`.
-- One execution engine (ROADMAP 11f, 0002 R25, R26): `sidged run`, `sidged guard`, `sidged task` and the companion run every step through `sidged-cli/src/engine.rs`; every presenter proves possession over the plan digest and a fresh Core nonce (`sidged run --holder-key`), an effectful run without a signed audit chain refuses before its first step, and the plan parser refuses members the plan schema does not allow (vector `plan.verify.021`, suite 0.13.1).
-- No effect without a grant on `sidged task` and the companion (0002 §6a, ROADMAP 11f): `sidged init` signs a 30-day owner
+- Workspace containment by directory handle (ROADMAP 11g): every workspace file operation resolves beneath one open `<workspace>/files` with `openat2(RESOLVE_BENEATH | RESOLVE_NO_SYMLINKS)`, a symlinked or foreign-owned root is refused; timers and reminders change under a lock with atomic replace and ids that never repeat; `vaikor task` records go through the record store; the swarm and signed-adapter prototypes and `vaikor swarm measure` are behind the `vaikor-cli` feature `experimental`.
+- One execution engine (ROADMAP 11f, 0002 R25, R26): `vaikor run`, `vaikor guard`, `vaikor task` and the companion run every step through `vaikor-cli/src/engine.rs`; every presenter proves possession over the plan digest and a fresh Core nonce (`vaikor run --holder-key`), an effectful run without a signed audit chain refuses before its first step, and the plan parser refuses members the plan schema does not allow (vector `plan.verify.021`, suite 0.13.1).
+- No effect without a grant on `vaikor task` and the companion (0002 §6a, ROADMAP 11f): `vaikor init` signs a 30-day owner
   mandate and a grant policy; each plan runs under a one-hour task token inside it, every step authorised and reserved on
-  the audit chain before its effect; renewal is `sidged mandate renew` on a terminal.
-- One plan parser (ROADMAP 11f, 0003 R4a): `sidged run` and the node executor read plans with the verifier's parser
+  the audit chain before its effect; renewal is `vaikor mandate renew` on a terminal.
+- One plan parser (ROADMAP 11f, 0003 R4a): `vaikor run` and the node executor read plans with the verifier's parser
   (no default `expr`, no truncated `bound`); a `ref` names an output member with `field` and the executor passes exactly
   that value, never a guessed one. Vectors `plan.verify.017`–`019`, `intent.plan.012`–`013`; suite 0.13.0.
 - Grant caveats are enforced at use (0002 R22): a right covers a step only when the step's data classes are within
@@ -34,19 +45,19 @@ repository. 0.3.0 itself follows when the v0.3.0 section of [docs/ROADMAP.md](do
 - Implicit flow through `map` (0003 R10): a `map` over health records that sent one fixed message per element was
   accepted by the verifier and the Python reference (only the Cedar stage refused it), although the number of messages
   reveals the number of records. The list's labels now reach every `map` step; vector `plan.verify.016`; property tests
-  (`sidged-verify/tests/ifc_properties.rs`) check the verifier and the Cedar stage against a reference of the label
+  (`vaikor-verify/tests/ifc_properties.rs`) check the verifier and the Cedar stage against a reference of the label
   rules in both directions (no leak accepted, no clean plan refused).
-- Audit before effect (invariant 9, WP 11e): `sidged task` and the companion ran every step before they opened the
+- Audit before effect (invariant 9, WP 11e): `vaikor task` and the companion ran every step before they opened the
   audit chain; now the chain is verified first, each decision is appended before its effect and its outcome after, and
   a failed append stops the plan.
 
 ### Added
 - WebAuthn approvals (0004 R9w, owner decision 2026-10-22, WP 16): on a single-user device a consequential step may be
   approved by a user-verified assertion of the enrolled platform credential; the challenge is the SHA-256 of the R9
-  binding. `sidged-cli::webauthn` checks client data (type, challenge, origin), authenticator data (relying party, user
+  binding. `vaikor-cli::webauthn` checks client data (type, challenge, origin), authenticator data (relying party, user
   present and verified, increasing counter) and the ES256 or EdDSA signature; the audit names `webauthn-uv`, the
   credential and the counter. Platform bridges follow.
-- WebAuthn enrollment (0004 R9w Enrollment, WP 16): `sidged-cli::webauthn_enroll` checks a WebAuthn Level 3 JSON
+- WebAuthn enrollment (0004 R9w Enrollment, WP 16): `vaikor-cli::webauthn_enroll` checks a WebAuthn Level 3 JSON
   registration against a single-use challenge (client data, relying party, user present and verified, credential id,
   a strictly canonical ES256 or EdDSA COSE_Key matching `publicKey`; attestation `none`) and stores the one enrolled
   credential in a 0600 file written atomically; a second enrollment and a counter rollback are refused.
@@ -59,20 +70,20 @@ repository. 0.3.0 itself follows when the v0.3.0 section of [docs/ROADMAP.md](do
   vectors `intent.linguist.020`–`025` and `intent.plan.009`–`011`.
 - Shared vectors for the intent boundary (`spec/test-vectors/intent/`, suite 0.12.0, 41 vectors): reply verification and
   derivation (0017 L2 to L7), intent plans (PL1 to PL5), spoken times across daylight saving time and durations (X6),
-  run by `sidged-cli/tests/intent_vectors.rs`; `scripts/spec-coverage.py` reports which numbered rules have a vector.
+  run by `vaikor-cli/tests/intent_vectors.rs`; `scripts/spec-coverage.py` reports which numbered rules have a vector.
 - `scripts/repro-wasm.sh`: the browser verifier builds bit-for-bit from a git revision (fixed path, pinned toolchain,
   remapped paths) and prints its SHA-256 (WP 26).
-- Deterministic mutation fuzzing without new dependencies (`runtime/fuzz/mutate.rs`, `SIDGED_FUZZ_ITERS`): the
+- Deterministic mutation fuzzing without new dependencies (`runtime/fuzz/mutate.rs`, `VAIKOR_FUZZ_ITERS`): the
   stored-plan parser, verifier and Cedar flow stage; dCBOR decode/encode and record checks; linguist replies through
   intent plans; spoken times and durations; capability tokens, `did:key` and RFC 3339 times; the companion's surface
   validator.
 - Model -1 on the desktop node: `linguist.run` in the companion, an intent bar on the canvas,
   `scripts/serve-local-linguist.sh` and `setup-companion-toolchain.sh --with-llama` (llama.cpp v0.6.0, CPU).
-- `sidged-cli::linguist`: `LinguistModel`, `LocalLinguist`, `IntentCatalog::understand`.
+- `vaikor-cli::linguist`: `LinguistModel`, `LocalLinguist`, `IntentCatalog::understand`.
 - Real execution on the node (`node_exec.rs`, 0017 X1–X5): executors for workspace read/write/find, notes, timers,
   reminders and local text generation; schema-checked inputs and outputs; consequential steps denied without a Trusted
   UI; honest refusals for capabilities without a backend; records hold the step outcomes.
-- Intent plans (0017 §2b): every catalog intent declares an SDG-L3 plan; `intent_plan::plan_for_intent` instantiates it
+- Intent plans (0017 §2b): every catalog intent declares an VKR-L3 plan; `intent_plan::plan_for_intent` instantiates it
   from verified slots and checks bound, grounding, input schemas, the verifier and Cedar (`check_plan` also for model plans).
 - Durations in en, de and Swiss German (`assets/duration-lexicon.json`: Bernese, Basel and Zurich forms, ISO 8601)
   for `timer.start`.
@@ -84,7 +95,7 @@ repository. 0.3.0 itself follows when the v0.3.0 section of [docs/ROADMAP.md](do
   returned (Android; the plugin is not exposed to the webview).
 - `SECURITY.md` (private reports through GitHub) and `CONTRIBUTING.md` (DCO, invariants, checks); the README opens
   with an honest status.
-- Spoken times (0017 X6): the reminder `time` slot is verbatim and the node resolves it (`sidged-cli::when`,
+- Spoken times (0017 X6): the reminder `time` slot is verbatim and the node resolves it (`vaikor-cli::when`,
   `assets/time-lexicon.json`, en/de/gsw) in the device's IANA time zone, or refuses; `reminder.create` returns `due_at`.
   The canvas sends the device time zone with `node.init` and `intent.run`.
 - Linguist data as a dialect tree: `local-training/dialect_lexicon.json` (forms per region), node-bearing frames in
@@ -97,12 +108,12 @@ repository. 0.3.0 itself follows when the v0.3.0 section of [docs/ROADMAP.md](do
   on eval v8 with 84.1 % on compositions (run 6: 82.7 % and 0.0 %), 47/50 probes on q8_0 and 46/50 on Q4_K_M; seed
   42 reached 91.3 % (compositions 93.6 %) and 46/50.
 - Capability descriptors for every intent capability (`text.generate_local`, `calendar.free_slots`, `reminder.create`,
-  `timer.start`, `device.control`, `notes.append`, `web.search`, `workspace.find`); `sidged-capability::schema` (moved
-  from the companion); `sidged_verify::DeferToCedar`.
-- A linguist GGUF declares its output form (0017 L3b, ROADMAP 13e): `sidged.linguist.output` (`compact` or `full`, absent means full) in the GGUF metadata, covered by the SHA-256 pin; the app and `serve-local-linguist.sh --workspace` set `model.output` from it and refuse any other value, `release_gate.sh` stamps each export from the run manifest and refuses a served form the GGUF does not declare (`sidged-cli::gguf`, `local-training/gguf_output_form.py`).
+  `timer.start`, `device.control`, `notes.append`, `web.search`, `workspace.find`); `vaikor-capability::schema` (moved
+  from the companion); `vaikor_verify::DeferToCedar`.
+- A linguist GGUF declares its output form (0017 L3b, ROADMAP 13e): `vaikor.linguist.output` (`compact` or `full`, absent means full) in the GGUF metadata, covered by the SHA-256 pin; the app and `serve-local-linguist.sh --workspace` set `model.output` from it and refuse any other value, `release_gate.sh` stamps each export from the run manifest and refuses a served form the GGUF does not declare (`vaikor-cli::gguf`, `local-training/gguf_output_form.py`).
 
 ### Changed
-- Model -1 release gate (13e part A): `sidged linguist-eval` scores replies through the runtime path; train, dev
+- Model -1 release gate (13e part A): `vaikor linguist-eval` scores replies through the runtime path; train, dev
   and blind split by paraphrase family with cross-split dedup and a manifest-pinned blind set; the gate runs on the
   served GGUF; seeds are set before LoRA init. The old `effective` metric counted Core-refused replies as right and
   remains for comparison only. The Model 0 and planner-think trainers moved to `local-training/experimental/`.
@@ -113,13 +124,13 @@ repository. 0.3.0 itself follows when the v0.3.0 section of [docs/ROADMAP.md](do
   meta sidecar, decided from the phrasebook; `annotate_langs.py` for the frozen blind), the strict number is reported
   as `lang_strict`; companion `linguist.prompt` follows `model.output`; `check_envelope` refuses over-long slots.
 - README states implementation status honestly; an implementation status table and per-invariant status clauses
-  say which entry point enforces what (grants and pre-effect audit in `sidged run`, not yet in `sidged task`), and the
+  say which entry point enforces what (grants and pre-effect audit in `vaikor run`, not yet in `vaikor task`), and the
   runtime, crate and companion READMEs drop the swarm queue, hybrid planning and other overclaims.
 - **0004 R9d (owner decision):** an `AF_UNIX` model endpoint with the peer-uid check is not egress and may be used
   outside local mode; TCP loopback stays local-mode only. Local mode keeps its stricter profile.
 - New workspaces start with the specified `default-flow` policy. The previous turnkey policy named a principal that never
-  matches (`Sidged::Step::"any"`) and so refused every egress flow.
-- `sidged task` asks Model -1 through the node's `model.endpoint` and plans only Core-verified catalog intents; it
+  matches (`Vaikor::Step::"any"`) and so refused every egress flow.
+- `vaikor task` asks Model -1 through the node's `model.endpoint` and plans only Core-verified catalog intents; it
   refuses without a configured model.
 
 ### Fixed
@@ -147,29 +158,29 @@ repository. 0.3.0 itself follows when the v0.3.0 section of [docs/ROADMAP.md](do
 
 ### Added
 - **Intent catalog and companion linguist (Model -1).** A schema-driven catalog of generic intents
-  (`runtime/sidged-cli/assets/intent-catalog.json`, `spec/schemas/intent-catalog.schema.json`) and the linguist
-  envelope (`spec/schemas/linguist-envelope.schema.json`). `sidged-cli::linguist` keeps only language, intent and slots
+  (`runtime/vaikor-cli/assets/intent-catalog.json`, `spec/schemas/intent-catalog.schema.json`) and the linguist
+  envelope (`spec/schemas/linguist-envelope.schema.json`). `vaikor-cli::linguist` keeps only language, intent and slots
   from a model proposal and re-derives everything else from the catalog; residency, approval and grant members refuse
   the proposal. Training and evaluation pipeline in `local-training/` (Qwen3-0.6B LoRA `lora-linguist-ch`): 88.7 %
   effective accuracy on phrasings never trained on (en 96 %, de 91 %, gsw 82 %).
-- **Companion nodes.** `companion/sidged-companion-core` builds `@vaiev/ui` v4 surfaces from capability schemas, intent
+- **Companion nodes.** `companion/vaikor-companion-core` builds `@vaiev/ui` v4 surfaces from capability schemas, intent
   slots and signed-record result surfaces and validates each against `ui/a2ui-catalog.v4.json`;
-  `companion/sidged-companion-app` is one Tauri v2 app for `sidged-desktop` and `sidged-android` with a single
+  `companion/vaikor-companion-app` is one Tauri v2 app for `vaikor-desktop` and `vaikor-android` with a single
   allowlisted IPC command, a glass onboarding that creates the local node, and an intent home.
-- **sidged.com verifier and schema hub.** `site/sidged-wasm` compiles the pure verification crates to an import-free
-  `wasm32-unknown-unknown` module; `scripts/build-sidged-site.sh` publishes the schemas at their `$id`, examples, test
+- **vaikor.com verifier and schema hub.** `site/vaikor-wasm` compiles the pure verification crates to an import-free
+  `wasm32-unknown-unknown` module; `scripts/build-vaikor-site.sh` publishes the schemas at their `$id`, examples, test
   vectors (public test keys only) and the in-browser playground.
-- **Design.** `ui/vaiev-ui/`: the `@vaiev/ui` v4 tokens, components and IBM Plex fonts with the Sidged theme (Sodium,
+- **Design.** `ui/vaiev-ui/`: the `@vaiev/ui` v4 tokens, components and IBM Plex fonts with the Vaikor theme (Sodium,
   dark only), shared by the companion and the site.
 - **Specification 0017** (intent catalog, linguist, canvas, browser verifier) and the roadmap to 1.0.0.
 - `scripts/setup-companion-toolchain.sh` (pinned, checksum-verified user-local JDK, Android SDK/NDK, tauri-cli) and
   `scripts/tests/companion_ui_check.sh`; Rust CI runs the companion core, canvas and WASM verifier checks.
 
 ### Changed
-- `sidged init` writes an SDG-L1 capability catalog (`runtime/sidged-cli/assets/capability-catalog.json`) with input and
+- `vaikor init` writes an VKR-L1 capability catalog (`runtime/vaikor-cli/assets/capability-catalog.json`) with input and
   output schemas and the registered effect `egress`. The previous catalog declared `network.egress` without data
   classes, which the verifier and the Cedar flow check do not treat as egress.
-- `sidged-record` builds its file-backed store only off `wasm32`; `sidged-verify` exports its plan and catalog parsers.
+- `vaikor-record` builds its file-backed store only off `wasm32`; `vaikor-verify` exports its plan and catalog parsers.
 
 ### Known issues
 - The container workflow fails on the self-hosted runner (temporary Containerfile not found by podman; base-digest
@@ -178,6 +189,6 @@ repository. 0.3.0 itself follows when the v0.3.0 section of [docs/ROADMAP.md](do
 
 ## 0.1.0 — 2026-10-20
 
-First public release: SDG-L0..L8 drafts 0000–0016, schemas and test vectors, the runtime crates (verifier, grants,
+First public release: VKR-L0..L8 drafts 0000–0016, schemas and test vectors, the runtime crates (verifier, grants,
 records, gateway, swarm, turnkey CLI), the offline UI shell, local training for Model 0 and Model 1, and OCI, host and
 VM packaging.

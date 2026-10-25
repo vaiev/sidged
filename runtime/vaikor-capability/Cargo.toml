@@ -1,0 +1,16 @@
+[package]
+name = "vaikor-capability"
+version = "0.2.0"
+edition = "2021"
+license = "Apache-2.0"
+publish = false
+description = "In-memory registry of Vaikor capability descriptors."
+
+[dependencies]
+vaikor-core = { path = "../vaikor-core" }
+# The descriptors on disk are JSON. This crate only parses that document.
+serde_json = "1"
+# Schema `pattern` checks in the subset validator (`schema.rs`).
+regex = "1"
+
+[dev-dependencies]

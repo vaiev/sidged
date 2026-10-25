@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sidged.com/spec/schemas/session-record.schema.json",
-  "title": "Sidged Session Record (v0.1)",
-  "description": "Record of one session that the Core writes and signs (Sidged L4, section 13, section 21). It is carried as data of a Sidged Envelope signed by the Core key, with payload_type application/vnd.sidged.session-record+json. It links every egress to its Privacy Gateway report and holds the effective tier display that the Core rendered, signed by the Core key. spec/validate checks what JSON Schema cannot: each report matches its egress, the display belongs to the session and is signed by the Core key named in core, the display shows every runtime, hop, and provider profile of the session, the displayed tier is not higher than the lowest of them, and an R0 session carries the prototype label. Status: Draft, not for implementation.",
+  "$id": "https://vaikor.com/spec/schemas/session-record.schema.json",
+  "title": "Vaikor Session Record (v0.1)",
+  "description": "Record of one session that the Core writes and signs (Vaikor L4, section 13, section 21). It is carried as data of a Vaikor Envelope signed by the Core key, with payload_type application/vnd.vaikor.session-record+json. It links every egress to its Privacy Gateway report and holds the effective tier display that the Core rendered, signed by the Core key. spec/validate checks what JSON Schema cannot: each report matches its egress, the display belongs to the session and is signed by the Core key named in core, the display shows every runtime, hop, and provider profile of the session, the displayed tier is not higher than the lowest of them, and an R0 session carries the prototype label. Status: Draft, not for implementation.",
   "type": "object",
   "required": [
     "v",
@@ -40,11 +40,11 @@
       }
     },
     "runtime_profile": {
-      "description": "Runtime profile the runtime claims (Sidged L5). R0 is the prototype profile.",
+      "description": "Runtime profile the runtime claims (Vaikor L5). R0 is the prototype profile.",
       "$ref": "#/$defs/runtimeProfile"
     },
     "hops": {
-      "description": "Communication hops of the session with their profiles. C0 is a legacy hop (Sidged L6). Empty if the session had no hop.",
+      "description": "Communication hops of the session with their profiles. C0 is a legacy hop (Vaikor L6). Empty if the session had no hop.",
       "type": "array",
       "maxItems": 32,
       "items": {
@@ -65,7 +65,7 @@
       }
     },
     "egress": {
-      "description": "Every egress of the session (Sidged L5), each with the link to its Privacy Gateway report (Sidged L7). Empty if no data left the device.",
+      "description": "Every egress of the session (Vaikor L5), each with the link to its Privacy Gateway report (Vaikor L7). Empty if no data left the device.",
       "type": "array",
       "maxItems": 256,
       "items": {
@@ -86,7 +86,7 @@
             "$ref": "common.schema.json#/$defs/identifier"
           },
           "provider_profile": {
-            "description": "Effective provider profile used for this egress (Sidged L7, Sidged L7): P0 unless verified.",
+            "description": "Effective provider profile used for this egress (Vaikor L7, Vaikor L7): P0 unless verified.",
             "$ref": "common.schema.json#/$defs/providerProfile"
           },
           "payload_digest": {
@@ -114,7 +114,7 @@
       }
     },
     "tier_display": {
-      "description": "What the Core showed the user as the effective tier, signed by the Core key over the canonical form of this object without sig (Sidged L6).",
+      "description": "What the Core showed the user as the effective tier, signed by the Core key over the canonical form of this object without sig (Vaikor L6).",
       "type": "object",
       "required": [
         "session",

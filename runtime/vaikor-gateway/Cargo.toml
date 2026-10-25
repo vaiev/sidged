@@ -1,0 +1,26 @@
+[package]
+name = "vaikor-gateway"
+version = "0.2.0"
+edition = "2021"
+license = "Apache-2.0"
+publish = false
+description = "Privacy gateway. Reports and the only HTTP path out of the runtime."
+
+[dependencies]
+sha2 = "0.10"
+serde_json = "1"
+# The single blocking client for provider HTTP. TLS is for remote providers.
+# Tests use plain HTTP on 127.0.0.1. No other crate posts to the network.
+ureq = { version = "2.12", default-features = false, features = ["json", "tls"] }
+url = "2"
+# 0007 §5.3 detector set vkr.pii/1 (R12) and NFKC normalization (R11 D).
+regex = "1"
+unicode-normalization = "0.1"
+# Wipes the API key from memory on drop.
+zeroize = "1"
+# SO_PEERCRED on the local model socket (0004 R9d).
+libc = "0.2"
+
+[dev-dependencies]
+vaikor-core = { path = "../vaikor-core" }
+libc = "0.2"

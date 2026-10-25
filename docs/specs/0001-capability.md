@@ -1,22 +1,22 @@
-# 0001 – Capability (SDG-L0 and SDG-L1)
+# 0001 – Capability (VKR-L0 and VKR-L1)
 
 > **Status:** Draft v0.2 (R8 residency fail-closed, 2026-10-15), for implementation of the descriptor and the MCP binding. Grants, plans, and the runtime are later phases.
 > **Date:** 2026-10-14
-> **Spec:** SDG-L0 Core Objects (the slice this layer needs) and SDG-L1 Capability
+> **Spec:** VKR-L0 Core Objects (the slice this layer needs) and VKR-L1 Capability
 > **Basis:** [0000-architektur.md](0000-architektur.md) decisions E1, E2, E3, E4, and E8, accepted 2026-10-14
 > **MCP checked:** Model Context Protocol specification, revision 2025-11-25, [Tools](https://modelcontextprotocol.io/specification/2025-11-25/server/tools) and the [schema](https://modelcontextprotocol.io/specification/2025-11-25/schema) `Tool` and `ToolAnnotations` types, read 2026-10-14
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are to be interpreted as in BCP 14 (RFC 2119 and RFC 8174) when they appear in capitals.
 
-A **capability** is a typed description of one thing a runtime can ask a service, device, module, or legacy app to do. It is not a grant. It does not authorise a call. SDG-L2 will bind a grant to a capability. This document norms the descriptor and one binding: MCP tools.
+A **capability** is a typed description of one thing a runtime can ask a service, device, module, or legacy app to do. It is not a grant. It does not authorise a call. VKR-L2 will bind a grant to a capability. This document norms the descriptor and one binding: MCP tools.
 
 ## 1. L0 slice used here
 
-SDG-L0 names seven primitives: Identity, Capability, Grant, Plan, View, Record, and Module. This document norms Capability. The other six are named so a descriptor can point at them. Their rules are out of scope (section 6).
+VKR-L0 names seven primitives: Identity, Capability, Grant, Plan, View, Record, and Module. This document norms Capability. The other six are named so a descriptor can point at them. Their rules are out of scope (section 6).
 
-**R1.** A capability identifier MUST be a URI of the form `urn:sidged:capability:` followed by 1 to 128 characters from ASCII letters, digits, `.`, `_`, and `-`. *Rationale: one spelling for every binding, and the same character set MCP recommends for tool names.*
+**R1.** A capability identifier MUST be a URI of the form `tag:vaikor.com,2026:capability:` followed by 1 to 128 characters from ASCII letters, digits, `.`, `_`, and `-`. *Rationale: one spelling for every binding, and the same character set MCP recommends for tool names.*
 
-**R2.** The canonical encoding of a descriptor that this slice checks MUST be JSON. JCS is that encoding when the bytes are signed. Deterministic CBOR (`dcbor`) is the other L0 canonical encoding of the same data model. A v0.1 consumer MAY reject a CBOR descriptor it does not implement. *Rationale: MCP and the v0.1 schemas are JSON, so that is what this slice checks. `dcbor` belongs to SDG-L0, with signatures over an L0 encoding. SDG-L6 specifies the envelope that carries those bytes. It does not define the encoding.*
+**R2.** The canonical encoding of a descriptor that this slice checks MUST be JSON. JCS is that encoding when the bytes are signed. Deterministic CBOR (`dcbor`) is the other L0 canonical encoding of the same data model. A v0.1 consumer MAY reject a CBOR descriptor it does not implement. *Rationale: MCP and the v0.1 schemas are JSON, so that is what this slice checks. `dcbor` belongs to VKR-L0, with signatures over an L0 encoding. VKR-L6 specifies the envelope that carries those bytes. It does not define the encoding.*
 
 **R3.** A descriptor MUST use schema version `0.1` until a later minor version is published. A consumer MUST reject a descriptor whose `v` it does not implement. *Rationale: fail closed on an unknown shape.*
 
@@ -62,7 +62,7 @@ A descriptor is a JSON object with the members in the machine schema [capability
 
 **R11.** A `metered` cost MUST include `max`. A `free` cost MUST NOT include `max`. `max.amount` MUST be a decimal string. `max.currency` MUST be an ISO 4217 code. *Rationale: the verifier compares an upper bound, not a prose price.*
 
-**R12.** A descriptor describes a capability. It MUST NOT be treated as a grant, a plan, or an approval. *Rationale: E4 separates the primitives. Authority arrives only with a grant (SDG-L2) and, when `consequential` is true, a Trusted UI approval (SDG-L5).*
+**R12.** A descriptor describes a capability. It MUST NOT be treated as a grant, a plan, or an approval. *Rationale: E4 separates the primitives. Authority arrives only with a grant (VKR-L2) and, when `consequential` is true, a Trusted UI approval (VKR-L5).*
 
 Effect codes for v0.1:
 
@@ -80,19 +80,19 @@ This section is written so it can be filed as an MCP SEP. It is a draft. It is n
 
 MCP tools are model-controlled functions. Each tool has `name`, `description`, `inputSchema`, an optional `outputSchema`, and optional `annotations` (`ToolAnnotations`). The MCP schema states that every property of `ToolAnnotations` is a hint, and that clients MUST NOT make tool-use decisions from annotations that come from an untrusted server. Defaults in that revision: `readOnlyHint` false, `destructiveHint` true when the tool is not read-only, `idempotentHint` false, `openWorldHint` describes an open set of external entities. `Tool` also carries `_meta`, an open object for extensions.
 
-Sidged does not overload those hints. Hints stay hints.
+Vaikor does not overload those hints. Hints stay hints.
 
-**R13.** A Sidged capability descriptor on an MCP tool MUST be carried at `tools[].\_meta["io.sidged/capability"]` and MUST be a descriptor as in section 2. *Rationale: `_meta` is the extension bag in the 2025-11-25 schema. The key follows the `io.modelcontextprotocol/...` extension style. A SEP MAY later promote the member to a first-class tool field. Until then, this carriage does not require a schema change to MCP itself.*
+**R13.** A Vaikor capability descriptor on an MCP tool MUST be carried at `tools[].\_meta["com.vaikor/capability"]` and MUST be a descriptor as in section 2. *Rationale: `_meta` is the extension bag in the 2025-11-25 schema. The key follows the `io.modelcontextprotocol/...` extension style. A SEP MAY later promote the member to a first-class tool field. Until then, this carriage does not require a schema change to MCP itself.*
 
-**R14.** The tool `name` MUST equal the final path segment of the capability `id` after `urn:sidged:capability:`. *Rationale: one call has one name in both protocols. Example: tool `get_current_time` and id `urn:sidged:capability:get_current_time`.*
+**R14.** The tool `name` MUST equal the final path segment of the capability `id` after `tag:vaikor.com,2026:capability:`. *Rationale: one call has one name in both protocols. Example: tool `get_current_time` and id `tag:vaikor.com,2026:capability:get_current_time`.*
 
 **R15.** The tool `inputSchema` MUST be the same JSON value as `input_schema`. When the tool has `outputSchema`, it MUST be the same JSON value as `output_schema`. *Rationale: two schemas for one tool will drift. MCP already requires `inputSchema` to be a JSON Schema object.*
 
-**R16.** A Core MUST ignore `ToolAnnotations` when deciding effects, data classes, residency, cost, or whether a call is consequential, whenever `io.sidged/capability` is present. *Rationale: MCP itself says annotations are hints and are untrusted from an untrusted server. The descriptor is the statement the Core checks. If a hint contradicts the descriptor, the descriptor wins.*
+**R16.** A Core MUST ignore `ToolAnnotations` when deciding effects, data classes, residency, cost, or whether a call is consequential, whenever `com.vaikor/capability` is present. *Rationale: MCP itself says annotations are hints and are untrusted from an untrusted server. The descriptor is the statement the Core checks. If a hint contradicts the descriptor, the descriptor wins.*
 
-**R17.** A Core MUST NOT authorise a tool call from `ToolAnnotations` alone when `io.sidged/capability` is absent. It MAY refuse the call, or it MAY show the tool as an unannotated legacy tool that still needs a grant and, if the Core cannot classify it, a Trusted UI approval. *Rationale: E2. Hints are not a capability. `destructiveHint` defaults to true and would both over-block and, if trusted, under-specify data classes.*
+**R17.** A Core MUST NOT authorise a tool call from `ToolAnnotations` alone when `com.vaikor/capability` is absent. It MAY refuse the call, or it MAY show the tool as an unannotated legacy tool that still needs a grant and, if the Core cannot classify it, a Trusted UI approval. *Rationale: E2. Hints are not a capability. `destructiveHint` defaults to true and would both over-block and, if trusted, under-specify data classes.*
 
-**R18.** Servers that attach the descriptor SHOULD set the MCP hints so they do not contradict it: `readOnlyHint` true only when every effect is `read`; `destructiveHint` true when `delete` is present; `openWorldHint` true when `egress` is present. *Rationale: clients that do not understand Sidged still see a hint. The hint is not the security check.*
+**R18.** Servers that attach the descriptor SHOULD set the MCP hints so they do not contradict it: `readOnlyHint` true only when every effect is `read`; `destructiveHint` true when `delete` is present; `openWorldHint` true when `egress` is present. *Rationale: clients that do not understand Vaikor still see a hint. The hint is not the security check.*
 
 Non-normative hint map, for authors migrating a server. It is not an authorisation rule.
 
@@ -102,7 +102,7 @@ Non-normative hint map, for authors migrating a server. It is not an authorisati
 | `destructiveHint: true` | include `delete` or `write`, `consequential: true` |
 | `openWorldHint: true` | include `egress`, name data classes, `consequential: true` |
 
-A SEP submission would ask the MCP project to register the extension id `io.sidged/capability`, to document `_meta` carriage, and to state R16 and R17 as client requirements. This repository does not file that SEP in phase 2.
+A SEP submission would ask the MCP project to register the extension id `com.vaikor/capability`, to document `_meta` carriage, and to state R16 and R17 as client requirements. This repository does not file that SEP in phase 2.
 
 ## 4. What a Core does with a descriptor in v0.1
 
@@ -110,7 +110,7 @@ A SEP submission would ask the MCP project to register the extension id `io.sidg
 
 **R20.** The Core MUST refuse the call when the descriptor fails R6, R7, R8, R9, or R10. *Rationale: fail closed.*
 
-**R21.** The Core MUST still require a grant for every effect (SDG-L2) and a Trusted UI approval when `consequential` is true (SDG-L5). This document does not define the grant or the approval UI. *Rationale: the descriptor says what the call is. It does not say that this caller may make it.*
+**R21.** The Core MUST still require a grant for every effect (VKR-L2) and a Trusted UI approval when `consequential` is true (VKR-L5). This document does not define the grant or the approval UI. *Rationale: the descriptor says what the call is. It does not say that this caller may make it.*
 
 ## 5. Conformance
 
@@ -120,13 +120,13 @@ The demo in [docs/demo/mcp-server-time](../demo/mcp-server-time/README.md) annot
 
 ## 6. Out of scope
 
-- Grants, attenuation, delegation, budgets on a token, and Cedar policies (SDG-L2).
-- The plan language and the verifier's data-flow proof (SDG-L3). v0.1 only gives the verifier a descriptor to read.
-- Views, A2UI, and Trusted UI rendering (SDG-L4).
-- The core contract beyond R21 (SDG-L5).
-- Envelopes and peer-to-peer transport (SDG-L6). Canonical JSON and `dcbor` are L0 encodings. v0.1 conformance for this layer is JSON.
-- Privacy reports, provider profiles, and OHTTP (SDG-L7).
-- The native image (SDG-L8).
+- Grants, attenuation, delegation, budgets on a token, and Cedar policies (VKR-L2).
+- The plan language and the verifier's data-flow proof (VKR-L3). v0.1 only gives the verifier a descriptor to read.
+- Views, A2UI, and Trusted UI rendering (VKR-L4).
+- The core contract beyond R21 (VKR-L5).
+- Envelopes and peer-to-peer transport (VKR-L6). Canonical JSON and `dcbor` are L0 encodings. v0.1 conformance for this layer is JSON.
+- Privacy reports, provider profiles, and OHTTP (VKR-L7).
+- The native image (VKR-L8).
 - Filing the MCP SEP, and any MCP feature other than tools (`resources`, `prompts`, `tasks`, MCP Apps).
 - Replacing MCP `ToolAnnotations`. They stay hints.
 - The hosted crates under `runtime/`. They exist. This spec does not describe them.

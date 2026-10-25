@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """The output form a linguist GGUF declares (0017 L3b, ROADMAP 13e). Stdlib only.
 
-A linguist GGUF carries the string metadata key `sidged.linguist.output`, `compact` or `full`
+A linguist GGUF carries the string metadata key `vaikor.linguist.output`, `compact` or `full`
 (absent means full), inside the weights, so the SHA-256 that pins them (0011 R8) covers it.
 release_gate.sh stamps each GGUF it exports from the run manifest's `target_format` and checks
 the served form against it; scripts/serve-local-linguist.sh --workspace sets `model.output` from it.
@@ -10,7 +10,7 @@ the served form against it; scripts/serve-local-linguist.sh --workspace sets `mo
 Stamping rewrites the header (pairs and tensor infos) with the key added or replaced, pads to the
 file's alignment and copies the tensor data unchanged; tensor offsets are relative to the data
 section, so they stay valid. The file is replaced atomically. The Rust reader the app uses is
-runtime/sidged-cli/src/gguf.rs; both refuse the same malformed headers.
+runtime/vaikor-cli/src/gguf.rs; both refuse the same malformed headers.
 
 Usage: python3 -I gguf_output_form.py read <model.gguf>                  # prints compact or full
        python3 -I gguf_output_form.py stamp (--form F | --manifest M) <model.gguf>...
@@ -25,7 +25,7 @@ import struct
 import sys
 import tempfile
 
-KEY = "sidged.linguist.output"
+KEY = "vaikor.linguist.output"
 FORMS = ("compact", "full")
 
 # The limits of the Rust reader.

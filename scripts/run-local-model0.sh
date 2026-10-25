@@ -3,14 +3,14 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 # run-local-model0.sh: start the local Edge LLM ("Model 0" / Thinking Planner)
-# over an AF_UNIX domain socket so `sidged-gateway` connects with SO_PEERCRED
+# over an AF_UNIX domain socket so `vaikor-gateway` connects with SO_PEERCRED
 # verification (0004 R9, 0005 R8) and zero open TCP ports.
 #
-# Usage: scripts/run-local-model0.sh --model <path/to/model.gguf> [--socket /run/sidged/model0.sock] [--lora <adapter.gguf>]
+# Usage: scripts/run-local-model0.sh --model <path/to/model.gguf> [--socket /run/vaikor/model0.sock] [--lora <adapter.gguf>]
 set -euo pipefail
 
 model=""
-socket="/run/sidged/model0.sock"
+socket="/run/vaikor/model0.sock"
 lora=""
 
 while [[ $# -gt 0 ]]; do

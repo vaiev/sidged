@@ -1,4 +1,4 @@
-# 0014 – Bundle package (`sdg.bundle/v0`)
+# 0014 – Bundle package (`vkr.bundle/v0`)
 
 > **Status:** Draft v0. Not a layer and not a conformance target yet. No schema, no vectors in this draft.
 > **Date:** 2026-10-15
@@ -11,7 +11,7 @@ The key words MUST, MUST NOT, SHOULD, and MAY are to be interpreted as in BCP 14
 
 ## 1. Package vs bundle
 
-| | Bundle package (`sdg.bundle/v0`, this spec) | Agent bundle (0011) |
+| | Bundle package (`vkr.bundle/v0`, this spec) | Agent bundle (0011) |
 |---|---|---|
 | Who signs | Publisher (or owner) | Owner's Core |
 | Authority | None. `grant_asks` are templates | Issued capability tokens |
@@ -27,13 +27,13 @@ The body is one document. Canonical bytes are `dcbor` v0.1 (0012 §2). The packa
 
 | Member | Required | Meaning |
 |---|---|---|
-| `v` | yes | `"sdg.bundle/v0"`. |
-| `id` | yes | `urn:sidged:agent:` plus the capability-id character set (0011 manifest `id`). |
+| `v` | yes | `"vkr.bundle/v0"`. |
+| `id` | yes | `tag:vaikor.com,2026:agent:` plus the capability-id character set (0011 manifest `id`). |
 | `name` | yes | Human-facing name. `description` MAY be present. |
 | `agent` | yes | `{did, kind: "agent"}`. The publisher-proposed Agent identity. Never the owner, never ambient root. |
 | `capabilities` | yes | Array of capability ids the package uses, each with an optional descriptor digest. The publisher MAY include descriptors as hints; they are never authoritative (R7 step 3). |
-| `grant_asks` | yes | Array of at least one `{capability, scope, budget, consequential, reason}` (0011 R1 requires one or more Grants). `scope` uses SDG-L2 resource syntax. `reason` is plain language shown on Trusted UI. |
-| `plan_templates` | yes | Array of at least one template (0011 R1 requires one or more Plans). Each is an SDG-L3 plan whose `lit` values MAY be holes `{"hole": "<name>"}` filled at run time. |
+| `grant_asks` | yes | Array of at least one `{capability, scope, budget, consequential, reason}` (0011 R1 requires one or more Grants). `scope` uses VKR-L2 resource syntax. `reason` is plain language shown on Trusted UI. |
+| `plan_templates` | yes | Array of at least one template (0011 R1 requires one or more Plans). Each is an VKR-L3 plan whose `lit` values MAY be holes `{"hole": "<name>"}` filled at run time. |
 | `modules` | no | Digests of signed module manifests. |
 | `prefs` | no | Array of Record bodies (0012 §3, unsigned) with classes under `adaptation.prefs.*` (0012 requires a registered class root; `adaptation` is the registered root for what the agent learns or is told about the user): tone, language, routing hints, system-prompt text. |
 | `personal_model` | no | As in 0011 §4: `{module, adaptation}`. `module` is the digest of a module manifest of kind `model` that MUST also be listed in `modules`. `adaptation` is an array of Record bodies (0012 §3, unsigned). A proposer only, subject to 0011 R8. |
@@ -42,7 +42,7 @@ The body is one document. Canonical bytes are `dcbor` v0.1 (0012 §2). The packa
 
 **R2.** A Core MUST refuse a package with an unknown `v`, with any member not listed in the §2 table (including `views` and `adapters`, which v0 does not define), or with a signature that does not verify over the `dcbor` bytes of the body without `sig`. Unknown members are refused, not ignored. *Rationale: same signing-input rule as tokens, manifests, Records.*
 
-**R3.** Every `plan_templates` step MUST name a capability listed in `capabilities`, and every such capability MUST have a matching `grant_ask`. Holes MUST NOT appear in `capability`, `approval`, `bound`, or `budget`. Only the Core fills holes, at run time, from the owner's input or from Records. A value from a Record keeps that Record's class as its label (0003 R10). It is never an unlabelled `lit`. The filled plan MUST pass the SDG-L3 verifier against the Core catalog. Install consent is not run approval: every consequential step still waits on Trusted UI (invariant 4), and that approval binds to the digest of the filled plan (0013 R2). *Rationale: effects, approval, cost and labels stay static (0003 R3, R6, R7, R10, R13).*
+**R3.** Every `plan_templates` step MUST name a capability listed in `capabilities`, and every such capability MUST have a matching `grant_ask`. Holes MUST NOT appear in `capability`, `approval`, `bound`, or `budget`. Only the Core fills holes, at run time, from the owner's input or from Records. A value from a Record keeps that Record's class as its label (0003 R10). It is never an unlabelled `lit`. The filled plan MUST pass the VKR-L3 verifier against the Core catalog. Install consent is not run approval: every consequential step still waits on Trusted UI (invariant 4), and that approval binds to the digest of the filled plan (0013 R2). *Rationale: effects, approval, cost and labels stay static (0003 R3, R6, R7, R10, R13).*
 
 **R4.** `prefs` and any other text MUST be stored as Records and MUST NOT authorize an effect, widen a grant, or satisfy an approval. *Rationale: 0011 R2. Prompts are data.*
 
@@ -69,7 +69,7 @@ The package does not define a second agent shape. Install (R7) produces exactly 
 | `sbom` | not in the manifest. The Core stores it as a Record of class `documents.sbom` and lists its digest in `records` |
 | `sig` (publisher, `dcbor`) | not copied. The manifest gets a new `sig` from the Core, with the canon 0011 R4 requires (`jcs` in v0.1) |
 
-**R2a.** A package MUST NOT carry views. As 0011 R1 says, views are generated per task by SDG-L4 and are not a bundle member. Presentation hints MAY travel as `adaptation.prefs.view.*` Records and are data (R4). Copy for consequential steps always comes from the Core's Trusted UI. *Rationale: one agent shape. A package member with no 0011 counterpart would fork agent = bundle.*
+**R2a.** A package MUST NOT carry views. As 0011 R1 says, views are generated per task by VKR-L4 and are not a bundle member. Presentation hints MAY travel as `adaptation.prefs.view.*` Records and are data (R4). Copy for consequential steps always comes from the Core's Trusted UI. *Rationale: one agent shape. A package member with no 0011 counterpart would fork agent = bundle.*
 
 ## 3. Install
 
@@ -102,12 +102,12 @@ Every refusal at any step MUST be appended to the audit log with the package dig
 |---|---|
 | `SKILL.md` name/description | `name`, `description`, one `plan_templates` stub |
 | Skill steps ("call tool X") | Plan template steps; unknown tools become capability stubs marked legacy/unattested plus a `grant_ask` |
-| Tool allowlist, MCP server | `capabilities` via the MCP binding (SDG-L1) |
+| Tool allowlist, MCP server | `capabilities` via the MCP binding (VKR-L1) |
 | "You may never …" in a system prompt | Dropped as policy; rewritten as Cedar `forbid` rules or an absent `grant_ask`. Tone moves to `prefs` |
 | Shell hooks | A module the owner invokes through a plan; event hooks are not in v0 (§5) |
 | Memory, `AGENTS.md` | `prefs` Records |
 
-A converter is tooling outside the Core TCB. Its first exit criterion: one skill from a public skill pack converts into a package whose templates pass `sidged-verify` with no ambient rights and run offline with the stub planner.
+A converter is tooling outside the Core TCB. Its first exit criterion: one skill from a public skill pack converts into a package whose templates pass `vaikor-verify` with no ambient rights and run offline with the stub planner.
 
 ## 5. Out of scope
 

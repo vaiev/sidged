@@ -52,17 +52,17 @@
     const enc = new TextEncoder();
     const opBytes = enc.encode(op);
     const inBytes = enc.encode(JSON.stringify(data));
-    const opPtr = ex.sdg_alloc(opBytes.length);
+    const opPtr = ex.vkr_alloc(opBytes.length);
     new Uint8Array(ex.memory.buffer, opPtr, opBytes.length).set(opBytes);
-    const inPtr = ex.sdg_alloc(inBytes.length);
+    const inPtr = ex.vkr_alloc(inBytes.length);
     new Uint8Array(ex.memory.buffer, inPtr, inBytes.length).set(inBytes);
-    const packed = BigInt.asUintN(64, ex.sdg_call(opPtr, opBytes.length, inPtr, inBytes.length));
-    ex.sdg_free(opPtr, opBytes.length);
-    ex.sdg_free(inPtr, inBytes.length);
+    const packed = BigInt.asUintN(64, ex.vkr_call(opPtr, opBytes.length, inPtr, inBytes.length));
+    ex.vkr_free(opPtr, opBytes.length);
+    ex.vkr_free(inPtr, inBytes.length);
     const ptr = Number(packed >> 32n);
     const len = Number(packed & 0xffffffffn);
     const text = new TextDecoder().decode(new Uint8Array(ex.memory.buffer, ptr, len).slice());
-    ex.sdg_free(ptr, len);
+    ex.vkr_free(ptr, len);
     return JSON.parse(text);
   }
 
@@ -127,7 +127,7 @@
   }
 
   Promise.all([
-    WebAssembly.instantiateStreaming(fetch("../wasm/sidged_wasm.wasm", { credentials: "omit" }), {}),
+    WebAssembly.instantiateStreaming(fetch("../wasm/vaikor_wasm.wasm", { credentials: "omit" }), {}),
     loadJson("../spec/test-vectors/keys/public-keys.json"),
     Promise.all(VECTOR_FILES.map(function (f) { return loadJson("../spec/test-vectors/" + f); }))
   ]).then(function (loaded) {

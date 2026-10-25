@@ -19,16 +19,16 @@ learns to emit one JSON tool call against the v1 A2UI registry:
 - components: `TaskList`, `CountdownWidget`, `NoteEditor`, `WebResult`, `CloudCallTrace`;
 - routes: `local-ui`, `worker-tool`, `cloud:grok`.
 
-The model only proposes. The Sidged Core checks grants, Cedar policy, residency, the Privacy Gateway and human
+The model only proposes. The Vaikor Core checks grants, Cedar policy, residency, the Privacy Gateway and human
 approval (0009 R1/R2, 0007 §5.1). Training data therefore carries no residency, approval or grant fields, no IP
-literals and nothing the sdg.pii/1 detectors (0007 R12) match; `validate_dataset.py` refuses all of that.
+literals and nothing the vkr.pii/1 detectors (0007 R12) match; `validate_dataset.py` refuses all of that.
 
 ## Steps
 
 ```
 cd local-training
 bash setup_gpu_cu128.sh                       # uses the hashed lock below
-. .venv-sidged-train/bin/activate
+. .venv-vaikor-train/bin/activate
 python3 -I make_dataset.py --out data.jsonl   # deterministic; prints its SHA-256
 python3 -I validate_dataset.py data.jsonl
 python3 experimental/train_edge_llm.py --dataset data.jsonl --base-model Qwen/Qwen3-0.6B \
@@ -73,7 +73,7 @@ Do not hand-write hashes or bypass hash checking.
 
 ## Not in this package
 
-Copying the GGUF to a Sidged host: the local-mode model endpoint (`model.endpoint`, AF_UNIX + SO_PEERCRED) and
+Copying the GGUF to a Vaikor host: the local-mode model endpoint (`model.endpoint`, AF_UNIX + SO_PEERCRED) and
 module packaging (0011, 0014) come first.
 
 ## Companion linguist (Model -1, `lora-linguist-ch`)
@@ -83,13 +83,13 @@ Model 1). It reads one utterance in English, German or Swiss German (`gsw`) plus
 one linguist envelope (`spec/schemas/linguist-envelope.schema.json`): language, catalog intent, slot values in
 canonical English, missing required slots, and a local clarification question.
 
-Everything is driven by the runtime intent catalog `runtime/sidged-cli/assets/intent-catalog.json`
+Everything is driven by the runtime intent catalog `runtime/vaikor-cli/assets/intent-catalog.json`
 (`spec/schemas/intent-catalog.schema.json`): each intent declares its slots as JSON Schema, a canonical English
 template, capabilities, data classes, a route and one clarification question per locale. Adding an intent to the
 catalog changes the prompt; nothing in the code names an intent.
 
-- `linguist.py`: prompt renderer and the Core derivation rules, byte-identical to `runtime/sidged-cli/src/linguist.rs`
-  (both pinned by `runtime/sidged-cli/tests/fixtures/linguist-prompt.json`).
+- `linguist.py`: prompt renderer and the Core derivation rules, byte-identical to `runtime/vaikor-cli/src/linguist.rs`
+  (both pinned by `runtime/vaikor-cli/tests/fixtures/linguist-prompt.json`).
 - `linguist_phrasebook.json`: synthetic surface forms only (frames with `{slot}` placeholders, value pools with a
   canonical English value). Which slots a frame names decides which required slots are missing, so clarification
   targets come from the schema. `eval_frames` are phrasings that never appear in training.
@@ -106,7 +106,7 @@ re-derives missing slots, the question, the canonical intent, the route and the 
 
 A release number measures the artifact that ships, judged by the code that runs:
 
-- **Scoring through the Core.** `sidged linguist-eval` (Rust, in the shipped binary) runs every reply through the
+- **Scoring through the Core.** `vaikor linguist-eval` (Rust, in the shipped binary) runs every reply through the
   runtime path (`IntentCatalog::understand`: utterance check, full-catalog prompt, chat request, reply
   post-processing, `verify_proposal_for`). `core_bridge.py` calls it; Python renders no prompt and judges nothing
   itself. `eval_linguist.py` lists the metrics: `core_accepted`, `accepted_unchanged`, `semantic_ok`,
@@ -251,9 +251,12 @@ invented slots are higher (5.2 against 4.5 %): on new phrasings the model picks 
 intent's slots ("Buzz me … about X" as a message, "Pencil in Laura" as a message, "For my notes: …" as a summary).
 Run 8 q8_0 scores 88.9 % on blind v2.
 
-The companion now reads the form from the GGUF key `sidged.linguist.output` (0017 L3b). The soup files are stamped
+The companion now reads the form from the GGUF key `vaikor.linguist.output` (0017 L3b). The soup files are stamped
 `compact` with `gguf_output_form.py stamp`, which changed their digests (Q6_K `0fa313fbe60f5af8…`). The backup release
-`models-2026-10-23-r12-soup` holds the unstamped files: stamping them again gives the same bytes. Q6_K latency on the
+`models-2026-10-23-r12-soup` holds the unstamped files: stamping them again gives the same bytes. After the rename
+(2026-10-24) the system prompt names Vaikor and the key is `vaikor.linguist.output`: exported again from `merged/`,
+q8_0, Q6_K and Q4_K_M are byte-identical to the backup before stamping; stamped, Q6_K is `eec86f43e0427b46…`. Gate on
+blind v2 with the new prompt: Q6_K 91.2 % (invented 4.6 %, missing-slot 7 of 196, unintended 4.0 %), Q4_K_M 87.9 %. Q6_K latency on the
 device: on a Galaxy S25 Ultra (debug APK, 2026-10-24) the owner measured about 1 s per utterance for four utterances
 (run 6 with the full form: 1.2 to 1.7 s). Seen there: a dropped optional slot ("Timer für 5 Minute fürs zähnputze"
 without `label`) and a lost recipient ("Schick das Bild a lea" asks for item and recipient).
@@ -297,13 +300,13 @@ python3 train_companion_linguist.py --eval-only [same options, so the eval split
 ```
 
 `--chat-negatives` optionally adds owner-supplied Swiss German chat lines as intent-null examples. They stay on the
-training PC: the generated splits live in the ignored `out/` directory, and lines are dropped when an sdg.pii/1
+training PC: the generated splits live in the ignored `out/` directory, and lines are dropped when an vkr.pii/1
 detector matches, when they contain a request verb, or when they match a term from `--exclude-terms-file`.
 
 GGUF for the node's local endpoint: `python <llama.cpp>/convert_hf_to_gguf.py out/qwen3-0.6b-linguist/merged --outtype q8_0
---outfile out/qwen3-0.6b-linguist/sidged-linguist-q8_0.gguf` (639 MB); see `companion/README.md` for serving it.
+--outfile out/qwen3-0.6b-linguist/vaikor-linguist-q8_0.gguf` (639 MB); see `companion/README.md` for serving it.
 The GGUF declares the output form it was trained on (0017 L3b): `python3 -I gguf_output_form.py stamp --manifest
-out/qwen3-0.6b-linguist/manifest.json <model.gguf>` writes `sidged.linguist.output` (`compact` for `target_format`
+out/qwen3-0.6b-linguist/manifest.json <model.gguf>` writes `vaikor.linguist.output` (`compact` for `target_format`
 compact, else `full`) before the SHA-256 is taken; `release_gate.sh` stamps every export itself and refuses to gate a
 GGUF whose key differs from the form of the blind split. The app and `serve-local-linguist.sh --workspace` set
 `model.output` from the key.

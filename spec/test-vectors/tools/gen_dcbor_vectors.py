@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Reproducible generator for the dcbor, record (SDG-L0, spec 0012) and signed-plan
-(SDG-L3, spec 0013) test vectors.
+"""Reproducible generator for the dcbor, record (VKR-L0, spec 0012) and signed-plan
+(VKR-L3, spec 0013) test vectors.
 
 Deterministic: the same inputs and the RFC 8032 test keys always give the same bytes,
 digests and Ed25519 signatures. Requires only `cryptography` (spec/validate/requirements.txt).
@@ -218,10 +218,10 @@ def class_ok(c):
 
 
 def class_resource(c):
-    """0012 R9: urn:sidged:record:<class with '.' -> '/'>."""
+    """0012 R9: tag:vaikor.com,2026:record:<class with '.' -> '/'>."""
     if not class_ok(c):
         raise DcborError("malformed")
-    return "urn:sidged:record:" + c.replace(".", "/")
+    return "tag:vaikor.com,2026:record:" + c.replace(".", "/")
 
 
 def covers(parent, child):
@@ -282,10 +282,10 @@ def retention_state(rec, now):
 def base_record():
     return {
         "v": "0.1",
-        "type": "application/vnd.sidged.note+json",
+        "type": "application/vnd.vaikor.note+json",
         "class": "health.records.notes",
         "owner": OWNER_DID,
-        "provenance": {"source": "urn:sidged:capability:notes.write", "created": "2026-10-15T08:00:00Z",
+        "provenance": {"source": "tag:vaikor.com,2026:capability:notes.write", "created": "2026-10-15T08:00:00Z",
                        "derived_from": [], "plan": None},
         "residency": {"tags": ["CH"]},
         "retention": {"until": "2027-10-15T08:00:00Z", "on_expiry": "delete"},
@@ -373,19 +373,19 @@ def records_vectors():
         v.append(vec(f"record.derive.{i:03d}", "L0", "0012 R10", "record-derive",
                      {"inputs": [{"class": c, "tags": t} for c, t in ins]},
                      ok(value=exp) if exp else refuse("data-class-forbidden"), None, note))
-    for i, (c, exp) in enumerate([("health.records.notes", "urn:sidged:record:health/records/notes"),
-                                  ("x-acme", "urn:sidged:record:x-acme"), ("health/records", None), ("healthx", None)], 1):
+    for i, (c, exp) in enumerate([("health.records.notes", "tag:vaikor.com,2026:record:health/records/notes"),
+                                  ("x-acme", "tag:vaikor.com,2026:record:x-acme"), ("health/records", None), ("healthx", None)], 1):
         v.append(vec(f"record.resource.{i:03d}", "L0", "0012 R9", "record-resource", {"class": c},
                      ok(value=exp) if exp else refuse("malformed"), None, None if exp else "bad class grammar or root"))
     for i, (right, res, exp) in enumerate([
-            ("urn:sidged:record:health/*", "urn:sidged:record:health/records/notes", True),
-            ("urn:sidged:record:health/records/*", "urn:sidged:record:health/records/notes", True),
-            ("urn:sidged:record:health/*", "urn:sidged:record:health", False),
-            ("urn:sidged:record:health/*", "urn:sidged:record:healthx/notes", False),
-            ("urn:sidged:record:health/records", "urn:sidged:record:health/records/notes", False)], 1):
+            ("tag:vaikor.com,2026:record:health/*", "tag:vaikor.com,2026:record:health/records/notes", True),
+            ("tag:vaikor.com,2026:record:health/records/*", "tag:vaikor.com,2026:record:health/records/notes", True),
+            ("tag:vaikor.com,2026:record:health/*", "tag:vaikor.com,2026:record:health", False),
+            ("tag:vaikor.com,2026:record:health/*", "tag:vaikor.com,2026:record:healthx/notes", False),
+            ("tag:vaikor.com,2026:record:health/records", "tag:vaikor.com,2026:record:health/records/notes", False)], 1):
         v.append(vec(f"record.coverage.{i:03d}", "L2", "R9", "resource-covers", {"right": right, "resource": res},
-                     ok(value=exp), None, "record class resources under SDG-L2 R9 (0012 R9)"))
-    return {"category": "records", "description": "Deterministic CBOR encoding and decoding and typed Records (spec 0012, SDG-L0). Real Ed25519 signatures over dcbor with the RFC 8032 test keys; generated and self-checked by tools/gen_dcbor_vectors.py.", "vectors": v}
+                     ok(value=exp), None, "record class resources under VKR-L2 R9 (0012 R9)"))
+    return {"category": "records", "description": "Deterministic CBOR encoding and decoding and typed Records (spec 0012, VKR-L0). Real Ed25519 signatures over dcbor with the RFC 8032 test keys; generated and self-checked by tools/gen_dcbor_vectors.py.", "vectors": v}
 
 
 def selfcheck_records(f):
@@ -421,20 +421,20 @@ def selfcheck_records(f):
 
 
 # ---------------------------------------------------------------- signed plans (0013)
-SEND = "urn:sidged:capability:message.send"
+SEND = "tag:vaikor.com,2026:capability:message.send"
 CATALOG = [
-    {"id": "urn:sidged:capability:calendar.free_slots", "effects": ["read"], "data_classes": ["calendar.availability"], "consequential": False, "cost": {"class": "free"}},
+    {"id": "tag:vaikor.com,2026:capability:calendar.free_slots", "effects": ["read"], "data_classes": ["calendar.availability"], "consequential": False, "cost": {"class": "free"}},
     {"id": SEND, "effects": ["egress"], "data_classes": ["communications.content"], "consequential": True, "cost": {"class": "free"}},
 ]
 PLAN = {"v": "0.1", "goal": "Propose a time", "budget": {"max": {"amount": "0.01", "currency": "CHF"}}, "steps": [
-    {"id": "free", "kind": "call", "capability": "urn:sidged:capability:calendar.free_slots", "args": {"range": {"lit": "next_week"}}},
+    {"id": "free", "kind": "call", "capability": "tag:vaikor.com,2026:capability:calendar.free_slots", "args": {"range": {"lit": "next_week"}}},
     {"id": "pick", "kind": "expr", "expr": "free.slots"},
     {"id": "send", "kind": "call", "capability": SEND, "approval": True,
      "args": {"to": {"lit": "contact:bea"}, "body": {"ref": "pick"}}}]}
 
 
 def is_sensitive(c):
-    """Same rule as runtime/sidged-verify/src/plan.rs `sensitive` (exact name or '.' boundary)."""
+    """Same rule as runtime/vaikor-verify/src/plan.rs `sensitive` (exact name or '.' boundary)."""
     return any(c == r or c.startswith(r + ".") for r in ("health.records", "secrets"))
 
 
@@ -452,31 +452,31 @@ def policy_digest(policies):
 
 
 def stored_plan(plan=PLAN, catalog=CATALOG, **over):
-    sp = {"v": "0.1", "kind": "sdg.plan.stored", "plan": plan, "plan_digest": digest(plan),
+    sp = {"v": "0.1", "kind": "vkr.plan.stored", "plan": plan, "plan_digest": digest(plan),
           "catalog_digest": catalog_digest(catalog, plan), "owner": OWNER_DID,
           "issued": "2026-10-15T08:00:00Z", "expires": "2027-01-15T08:00:00Z", "flow_policy": "default"}
     sp.update(over)
     return sp
 
 
-DEFAULT_POLICY = ('@id("default-flow")\npermit (principal, action == Sidged::Action::"flow", resource)\n'
+DEFAULT_POLICY = ('@id("default-flow")\npermit (principal, action == Vaikor::Action::"flow", resource)\n'
                   'unless { context.sensitive };')
 
 
 def permit(pid, cls, dest):
-    return (f'@id("{pid}")\npermit (principal, action == Sidged::Action::"flow", resource == Sidged::Capability::"{SEND}")\n'
+    return (f'@id("{pid}")\npermit (principal, action == Vaikor::Action::"flow", resource == Vaikor::Capability::"{SEND}")\n'
             f'when {{ context.class == "{cls}" && context.destination == "{dest}" }};')
 
 
 def forbid(pid, cond):
-    return f'@id("{pid}")\nforbid (principal, action == Sidged::Action::"flow", resource)\nwhen {{ {cond} }};'
+    return f'@id("{pid}")\nforbid (principal, action == Vaikor::Action::"flow", resource)\nwhen {{ {cond} }};'
 
 
 def flow_plan(cls, dests):
     """A plan that reads one class and sends it to each destination (one egress step per destination)."""
-    cat = [{"id": "urn:sidged:capability:notes.read", "effects": ["read"], "data_classes": [cls], "consequential": False, "cost": {"class": "free"}},
+    cat = [{"id": "tag:vaikor.com,2026:capability:notes.read", "effects": ["read"], "data_classes": [cls], "consequential": False, "cost": {"class": "free"}},
            CATALOG[1]]
-    steps = [{"id": "read", "kind": "call", "capability": "urn:sidged:capability:notes.read", "args": {}}]
+    steps = [{"id": "read", "kind": "call", "capability": "tag:vaikor.com,2026:capability:notes.read", "args": {}}]
     for i, d in enumerate(dests, 1):
         steps.append({"id": f"send{i}", "kind": "call", "capability": SEND, "approval": True,
                       "args": {"to": {"lit": d}, "body": {"ref": "read"}}})
@@ -506,7 +506,7 @@ def plan_vectors():
         (sign(stored_plan(expires="2027-10-16T08:00:00Z"), OWNER), {}, "lifetime-too-long", "366 days"),
         (sign(stored_plan(owner=CORE_DID), CORE), {}, "bad-signature", "self-consistent owner/kid/signer = Core DID; configured owner key is rfc8032-test-3"),
         (sign(stored_plan(issued="2026-12-01T00:00:00Z"), OWNER), {}, "not-yet-valid", "issued after now"),
-        (sign(stored_plan(kind="sdg.plan"), OWNER), {}, "unsupported-version", "unknown kind"),
+        (sign(stored_plan(kind="vkr.plan"), OWNER), {}, "unsupported-version", "unknown kind"),
     ]
     # The rule each fault breaks, in case order.
     rules = ['R4', 'R4', 'R5', 'R3', 'R6', 'R5', 'R4', 'R5', 'R3']
@@ -537,7 +537,7 @@ def plan_vectors():
         v.append(vec(f"plan.flow.{i:03d}", "L3", ["0013 §4", f"0013 {rule}"], "flow-check",
                      {"plan": plan, "catalog": cat, "policies": pols},
                      ok() if allow else refuse("flow-denied"), ["cedar"], note))
-    return {"category": "plan", "description": "dcbor plan digests, owner-signed stored plans and the Cedar flow policy (spec 0013, SDG-L3). Real Ed25519 signatures over dcbor with the RFC 8032 test keys; generated by tools/gen_dcbor_vectors.py.", "vectors": v}
+    return {"category": "plan", "description": "dcbor plan digests, owner-signed stored plans and the Cedar flow policy (spec 0013, VKR-L3). Real Ed25519 signatures over dcbor with the RFC 8032 test keys; generated by tools/gen_dcbor_vectors.py.", "vectors": v}
 
 
 def stored_plan_faults(sp, catalog, owner_key, now):
@@ -545,7 +545,7 @@ def stored_plan_faults(sp, catalog, owner_key, now):
     from datetime import datetime
     t = lambda s: datetime.strptime(s, "%Y-%m-%dT%H:%M:%SZ")
     f = []
-    if sp.get("v") != "0.1" or sp.get("kind") != "sdg.plan.stored":
+    if sp.get("v") != "0.1" or sp.get("kind") != "vkr.plan.stored":
         f.append("unsupported-version")
     if sp.get("plan_digest") != digest(sp["plan"]):
         f.append("digest-mismatch")

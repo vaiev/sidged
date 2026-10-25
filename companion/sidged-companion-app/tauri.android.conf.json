@@ -1,8 +1,0 @@
-{
-  "productName": "sidged-android",
-  "bundle": {
-    "android": {
-      "minSdkVersion": 26
-    }
-  }
-}

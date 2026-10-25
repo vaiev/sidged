@@ -7,8 +7,8 @@
 #   local-training/release_gate.sh <run-dir> <blind.jsonl> [--manifest <manifest.json>]
 #
 # <run-dir> holds `merged/` (train_companion_linguist.py output). Writes in <run-dir>:
-# sidged-linguist-{f16,q8_0,q4_k_m}.gguf, gate-<quant>.json and gate-<quant>.txt.
-# Each GGUF declares its output form in `sidged.linguist.output` (0017 L3b): compact when the run
+# vaikor-linguist-{f16,q8_0,q4_k_m}.gguf, gate-<quant>.json and gate-<quant>.txt.
+# Each GGUF declares its output form in `vaikor.linguist.output` (0017 L3b): compact when the run
 # manifest (--manifest, else <run-dir>/manifest.json) has target_format compact, else full. The gate
 # refuses to run when the form it serves (compact for a compact blind split) differs from the key.
 # Needs the companion toolchain (llama.cpp with llama-server and llama-quantize).
@@ -20,7 +20,7 @@ blind=${2:?usage: release_gate.sh <run-dir> <blind.jsonl> [--manifest <file>]}
 shift 2
 manifest=()
 [[ ${1:-} == --manifest ]] && manifest=(--manifest "${2:?--manifest needs a file}")
-llama=${SIDGED_LLAMA:-$HOME/.local/share/sidged-toolchain/llama.cpp}
+llama=${VAIKOR_LLAMA:-$HOME/.local/share/vaikor-toolchain/llama.cpp}
 python=${PYTHON:-python3}
 [[ -d $run/merged ]] || { echo "release_gate: $run/merged missing" >&2; exit 2; }
 [[ -f $blind ]] || { echo "release_gate: $blind missing" >&2; exit 2; }
@@ -29,16 +29,16 @@ run_manifest=${manifest[1]:-$run/manifest.json}
 stamp=(--form full)
 [[ -f $run_manifest ]] && stamp=(--manifest "$run_manifest")
 
-f16=$run/sidged-linguist-f16.gguf
+f16=$run/vaikor-linguist-f16.gguf
 if [[ ! -f $f16 ]]; then
   "$python" "$llama/convert_hf_to_gguf.py" "$run/merged" --outtype f16 --outfile "$f16"
   "$python" -I "$here/gguf_output_form.py" stamp "${stamp[@]}" "$f16"
 fi
-[[ -f $run/sidged-linguist-q8_0.gguf ]] || "$llama/build/bin/llama-quantize" "$f16" "$run/sidged-linguist-q8_0.gguf" q8_0
-[[ -f $run/sidged-linguist-q4_k_m.gguf ]] || "$llama/build/bin/llama-quantize" "$f16" "$run/sidged-linguist-q4_k_m.gguf" Q4_K_M
+[[ -f $run/vaikor-linguist-q8_0.gguf ]] || "$llama/build/bin/llama-quantize" "$f16" "$run/vaikor-linguist-q8_0.gguf" q8_0
+[[ -f $run/vaikor-linguist-q4_k_m.gguf ]] || "$llama/build/bin/llama-quantize" "$f16" "$run/vaikor-linguist-q4_k_m.gguf" Q4_K_M
 # The quantised files inherit the key; stamping again also covers files exported before it existed.
 "$python" -I "$here/gguf_output_form.py" stamp "${stamp[@]}" "$f16" \
-  "$run/sidged-linguist-q8_0.gguf" "$run/sidged-linguist-q4_k_m.gguf"
+  "$run/vaikor-linguist-q8_0.gguf" "$run/vaikor-linguist-q4_k_m.gguf"
 sync
 
 # A blind split of compact targets (0017 L3a) is served with the compact request and its decoding grammar.
@@ -47,15 +47,15 @@ served=full
 head -n1 "$blind" | "$python" -I -c 'import json,sys; r=json.loads(sys.stdin.read()); sys.exit(json.loads(r["messages"][2]["content"])["v"] != "0.2")' \
   && form=(--compact) && served=compact
 "$python" -I "$here/gguf_output_form.py" check --form "$served" \
-  "$run/sidged-linguist-q8_0.gguf" "$run/sidged-linguist-q4_k_m.gguf" \
+  "$run/vaikor-linguist-q8_0.gguf" "$run/vaikor-linguist-q4_k_m.gguf" \
   || { echo "release_gate: the blind split is $served, the GGUFs declare otherwise" >&2; exit 1; }
 
-cargo build -q --locked --release --manifest-path "$root/runtime/Cargo.toml" -p sidged-guard --bin sidged
-export SIDGED_BIN=$root/runtime/target/release/sidged
-socket=${XDG_RUNTIME_DIR:-$HOME/.cache}/sidged/linguist.sock
+cargo build -q --locked --release --manifest-path "$root/runtime/Cargo.toml" -p vaikor-guard --bin vaikor
+export VAIKOR_BIN=$root/runtime/target/release/vaikor
+socket=${XDG_RUNTIME_DIR:-$HOME/.cache}/vaikor/linguist.sock
 
 for quant in q8_0 q4_k_m; do
-  gguf=$run/sidged-linguist-$quant.gguf
+  gguf=$run/vaikor-linguist-$quant.gguf
   bash "$root/scripts/serve-local-linguist.sh" "$gguf" >"$run/server-$quant.log" 2>&1 &
   server=$!
   trap 'kill $server 2>/dev/null || true' EXIT

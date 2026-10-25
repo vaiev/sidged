@@ -1,4 +1,4 @@
-# Sidged Validator
+# Vaikor Validator
 
 > **Status: Draft, not for implementation.** Licensed under Apache-2.0 ([LICENSE-CODE](../../LICENSE-CODE)).
 
@@ -17,13 +17,13 @@ The tests check that every schema is valid JSON Schema 2020-12 with the required
 
 ## Checking a published copy
 
-A site that serves the spec (sidged.com/spec/) checks its copy against a pinned commit:
+A site that serves the spec (vaikor.com/spec/) checks its copy against a pinned commit:
 
 ```sh
 python spec/validate/check_published.py <dir-with-schemas-and-registries>
 ```
 
-It passes only when the copy is that commit's spec byte for byte, every `$id` is `https://sidged.com/spec/schemas/<name>.schema.json`, every `$ref` resolves within the copy without network access, and every example validates against the copy as it does against the repository. `test_published.py` covers a changed byte, a missing or extra file, a wrong `$id`, an unresolvable `$ref` and a missing directory.
+It passes only when the copy is that commit's spec byte for byte, every `$id` is `https://vaikor.com/spec/schemas/<name>.schema.json`, every `$ref` resolves within the copy without network access, and every example validates against the copy as it does against the repository. `test_published.py` covers a changed byte, a missing or extra file, a wrong `$id`, an unresolvable `$ref` and a missing directory.
 
 ## Continuous Integration
 

@@ -1,6 +1,6 @@
 {
   "v": "4.0",
-  "about": "Machine-readable catalog of the atomic @vaiev/ui v4 primitives for the Sidged morphing surface. A surface is assembled from capability input_schema and output_schema, from intent-catalog slots, and from signed artifact records: the composer picks, in catalog order, the first primitive whose bind matches the data. No primitive renders or triggers a consequential confirmation; that belongs to the Core-owned Trusted UI bar outside every surface.",
+  "about": "Machine-readable catalog of the atomic @vaiev/ui v4 primitives for the Vaikor morphing surface. A surface is assembled from capability input_schema and output_schema, from intent-catalog slots, and from signed artifact records: the composer picks, in catalog order, the first primitive whose bind matches the data. No primitive renders or triggers a consequential confirmation; that belongs to the Core-owned Trusted UI bar outside every surface.",
   "token_source": "ui/vaiev-ui/tokens/tokens.css",
   "limits": {
     "max_nodes": 64,
@@ -51,14 +51,14 @@
       "role": "artifact",
       "description": "A signed artifact record (mail, code, solution) shown by record id; its consequential action is only named, never triggered here.",
       "children": {"min": 0, "max": 0},
-      "binds": [{"mime_prefix": "application/vnd.sidged.artifact."}],
+      "binds": [{"mime_prefix": "application/vnd.vaikor.artifact."}],
       "tokens": ["--vv-color-surface-container", "--vv-shape-md", "--vv-type-title", "--vv-type-body", "--vv-space-4"],
       "props_schema": {
         "type": "object",
         "additionalProperties": false,
         "required": ["artifact_type", "record_id", "title"],
         "properties": {
-          "artifact_type": {"type": "string", "pattern": "^application/vnd\\.sidged\\.artifact\\.[a-z0-9.-]+\\+json$"},
+          "artifact_type": {"type": "string", "pattern": "^application/vnd\\.vaikor\\.artifact\\.[a-z0-9.-]+\\+json$"},
           "record_id": {"type": "string", "minLength": 1, "maxLength": 128},
           "title": {"type": "string", "minLength": 1, "maxLength": 256},
           "subtitle": {"type": "string", "maxLength": 512},
@@ -73,7 +73,7 @@
               "properties": {"path": {"type": "string", "maxLength": 512}, "diff": {"type": "string", "maxLength": 4096}}
             }
           },
-          "consequential_capability": {"type": "string", "pattern": "^urn:sidged:capability:[A-Za-z0-9._-]{1,128}$"}
+          "consequential_capability": {"type": "string", "pattern": "^tag:vaikor\\.com,2026:capability:[A-Za-z0-9._-]{1,128}$"}
         }
       }
     },

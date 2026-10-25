@@ -1,6 +1,6 @@
-# Contributing to Sidged
+# Contributing to Vaikor
 
-Thank you for your interest. Sidged is a pre-alpha research preview; the specifications in `docs/specs/` lead the code.
+Thank you for your interest. Vaikor is a pre-alpha research preview; the specifications in `docs/specs/` lead the code.
 
 ## Before you start
 
@@ -20,14 +20,14 @@ Thank you for your interest. Sidged is a pre-alpha research preview; the specifi
 
 ## AI-assisted contributions
 
-Using AI coding assistants is fine; Sidged itself is built with them (see
-[How Sidged Is Built](README.md#how-sidged-is-built)). The rules stay the same:
+Using AI coding assistants is fine; Vaikor itself is built with them (see
+[How Vaikor Is Built](README.md#how-vaikor-is-built)). The rules stay the same:
 
 - You understand every line you submit and can explain it in review. You ran the checks below yourself.
 - Your `Signed-off-by` certifies the DCO for the whole change, including what an assistant drafted: you have the
   right to submit it under the project's licenses.
 - Say in the pull request description when an assistant wrote a substantial part of the change.
-- Never paste secrets, personal data or private chat content into a hosted assistant for work on Sidged.
+- Never paste secrets, personal data or private chat content into a hosted assistant for work on Vaikor.
 
 ## Checks to run
 

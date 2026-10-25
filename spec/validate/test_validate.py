@@ -13,7 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Tests for the Sidged schemas, examples, and validator.
+"""Tests for the Vaikor schemas, examples, and validator.
 
 Run from the repository root:
   python -m unittest discover -s spec/validate -v
@@ -86,20 +86,20 @@ class SchemaTests(unittest.TestCase):
         checker = Draft202012Validator(tag_schema, registry=self.registry)
         for good in ("CH", "EU", "CH-EU", "x-home-only", "x-" + "a" * 62):
             self.assertTrue(checker.is_valid(good), good)
-        # Sidged L7: owner-defined tags have at most 64 characters in total.
+        # Vaikor L7: owner-defined tags have at most 64 characters in total.
         for bad in ("ch", "EU-CH", "Switzerland", "x-", "", "x-" + "a" * 63):
             self.assertFalse(checker.is_valid(bad), bad)
 
     def test_map_over_is_a_ref_to_a_whole_output(self):
-        # SDG-L3 R6, R4a: `over` names an earlier step's whole output; `field` is for arguments.
+        # VKR-L3 R6, R4a: `over` names an earlier step's whole output; `field` is for arguments.
         validator = validate.make_validator("plan", self.schemas, self.registry)
 
         def plan(over):
             return {"v": "0.1", "steps": [
-                {"id": "free", "kind": "call", "capability": "urn:sidged:capability:calendar.free_slots",
+                {"id": "free", "kind": "call", "capability": "tag:vaikor.com,2026:capability:calendar.free_slots",
                  "args": {"range": {"lit": "next_week"}}},
                 {"id": "each", "kind": "map", "over": over, "bound": 2,
-                 "capability": "urn:sidged:capability:calendar.free_slots",
+                 "capability": "tag:vaikor.com,2026:capability:calendar.free_slots",
                  "args": {"range": {"item": True}, "note": {"ref": "free", "field": "slots"}}},
             ]}
 
@@ -119,7 +119,7 @@ def registry_codes(name: str) -> list[str]:
 
 
 class EgressResidencyTests(unittest.TestCase):
-    """SDG-L1 R8 v0.2: egress capabilities need explicit residency."""
+    """VKR-L1 R8 v0.2: egress capabilities need explicit residency."""
 
     base = {"effects": ["egress"], "data_classes": ["query.text"], "consequential": True}
 
@@ -148,10 +148,10 @@ class RegistryTests(unittest.TestCase):
         enum = self.common["refusalReason"]["anyOf"][0]["enum"]
         self.assertEqual(sorted(registry_codes("refusal-reasons.md")), sorted(enum))
 
-    def test_sdg_intents_and_domains_match(self):
+    def test_vkr_intents_and_domains_match(self):
         codes = registry_codes("intents.md")
-        reserved = [c for c in codes if c.startswith("sdg.")]
-        domains = [c for c in codes if not c.startswith("sdg.")]
+        reserved = [c for c in codes if c.startswith("vkr.")]
+        domains = [c for c in codes if not c.startswith("vkr.")]
         self.assertEqual(sorted(reserved), sorted(self.common["intent"]["anyOf"][0]["enum"]))
         pattern = self.common["intent"]["anyOf"][1]["pattern"]
         self.assertEqual(sorted(domains), sorted(re.match(r"^\^\(([^)]*)\)", pattern).group(1).split("|")))
@@ -171,14 +171,14 @@ class RegistryTests(unittest.TestCase):
 
 
 class TimeServerDemoTests(unittest.TestCase):
-    """The mcp-server-time overlay matches SDG-L1 and the published tool names."""
+    """The mcp-server-time overlay matches VKR-L1 and the published tool names."""
 
     def test_annotated_tools_are_valid_capabilities(self):
         demo = validate.load_json(validate.REPO / "docs/demo/mcp-server-time/annotated-tools.json")
         schemas = validate.load_schemas()
         registry = validate.build_registry(schemas)
         for tool in demo["tools"]:
-            descriptor = tool["_meta"]["io.sidged/capability"]
+            descriptor = tool["_meta"]["com.vaikor/capability"]
             with self.subTest(tool=tool["name"]):
                 self.assertEqual(descriptor["id"].rsplit(":", 1)[-1], tool["name"])
                 self.assertEqual(tool["inputSchema"], descriptor["input_schema"])
@@ -193,14 +193,14 @@ class IntentCatalogTests(unittest.TestCase):
     """The intent catalog the runtime embeds is the one the companion linguist trains on."""
 
     def test_runtime_intent_catalog_is_valid(self):
-        catalog = validate.load_json(validate.REPO / "runtime/sidged-cli/assets/intent-catalog.json")
+        catalog = validate.load_json(validate.REPO / "runtime/vaikor-cli/assets/intent-catalog.json")
         schemas = validate.load_schemas()
         registry = validate.build_registry(schemas)
         self.assertEqual(validate.validate_document(catalog, "intent-catalog", schemas, registry), [])
 
     def test_every_intent_capability_has_a_descriptor(self):
-        intents = validate.load_json(validate.REPO / "runtime/sidged-cli/assets/intent-catalog.json")
-        capabilities = validate.load_json(validate.REPO / "runtime/sidged-cli/assets/capability-catalog.json")
+        intents = validate.load_json(validate.REPO / "runtime/vaikor-cli/assets/intent-catalog.json")
+        capabilities = validate.load_json(validate.REPO / "runtime/vaikor-cli/assets/capability-catalog.json")
         known = {descriptor["id"] for descriptor in capabilities}
         for entry in intents["intents"]:
             for capability in entry["capabilities"]:
@@ -208,7 +208,7 @@ class IntentCatalogTests(unittest.TestCase):
                     self.assertIn(capability, known)
 
     def test_runtime_capability_catalog_is_valid(self):
-        catalog = validate.load_json(validate.REPO / "runtime/sidged-cli/assets/capability-catalog.json")
+        catalog = validate.load_json(validate.REPO / "runtime/vaikor-cli/assets/capability-catalog.json")
         schemas = validate.load_schemas()
         registry = validate.build_registry(schemas)
         for descriptor in catalog:
@@ -239,7 +239,7 @@ class LinguistProposalTests(unittest.TestCase):
         self.assertIn("linguist-proposal", validate.SCHEMA_NAMES)
 
     def test_the_shared_compact_fixture_proposals_are_valid(self):
-        fixture = validate.load_json(validate.REPO / "runtime/sidged-cli/tests/fixtures/linguist-prompt-compact.json")
+        fixture = validate.load_json(validate.REPO / "runtime/vaikor-cli/tests/fixtures/linguist-prompt-compact.json")
         for vector in fixture["proposals"]:
             with self.subTest(utterance=vector["utterance"]):
                 self.assertEqual(self.problems(vector["proposal"]), [])

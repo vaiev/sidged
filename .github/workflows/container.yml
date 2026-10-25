@@ -26,15 +26,15 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-          # Build exactly the commit the SIDGED_GIT_SHA label names (not the merge ref).
+          # Build exactly the commit the VAIKOR_GIT_SHA label names (not the merge ref).
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - name: Check podman
         run: podman --version
       - name: Verify every FROM digest is an index with amd64 and arm64
         env:
           # Cache trust split: trusted events inspect from a throwaway podman store.
-          SIDGED_CACHE_SCOPE: ${{ github.event_name == 'pull_request' && format('pr{0}', github.event.pull_request.number) || '' }}
-          SIDGED_CI_RUN: ${{ github.run_id }}-${{ github.run_attempt }}
+          VAIKOR_CACHE_SCOPE: ${{ github.event_name == 'pull_request' && format('pr{0}', github.event.pull_request.number) || '' }}
+          VAIKOR_CI_RUN: ${{ github.run_id }}-${{ github.run_attempt }}
         run: |
           scripts/test-check-base-index.sh
           scripts/check-base-index.sh
@@ -44,9 +44,9 @@ jobs:
         if: always()
         run: |
           # Cache trust split: remove any throwaway trusted store left by a killed step.
-          # sidged_store_remove also removes a podman 5 runroot linked from the store.
+          # vaikor_store_remove also removes a podman 5 runroot linked from the store.
           . scripts/podman-store.sh
-          for d in "$RUNNER_TEMP"/sidged-store.*; do sidged_store_remove "$d"; done
+          for d in "$RUNNER_TEMP"/vaikor-store.*; do vaikor_store_remove "$d"; done
 
   # amd64 and arm64 run in every run. The Containerfile cross-compiles on the
   # build platform (rust musl target, clang + lld), so qemu only runs the arm64
@@ -59,7 +59,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-          # Build exactly the commit the SIDGED_GIT_SHA label names (not the merge ref).
+          # Build exactly the commit the VAIKOR_GIT_SHA label names (not the merge ref).
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
       # Rootless podman is preinstalled on the runner (no setup-qemu/buildx
       # actions: they need docker).
@@ -71,11 +71,11 @@ jobs:
         env:
           COMPOSE_UP: "1"
           # The image and the version check use the PR head commit.
-          SIDGED_GIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          VAIKOR_GIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
           # Cache trust split: same cache scope and run label as the image build;
           # the job's always() cleanup removes the labelled compose image.
-          SIDGED_CACHE_SCOPE: ${{ github.event_name == 'pull_request' && format('pr{0}', github.event.pull_request.number) || '' }}
-          SIDGED_CI_RUN: ${{ github.run_id }}-${{ github.run_attempt }}
+          VAIKOR_CACHE_SCOPE: ${{ github.event_name == 'pull_request' && format('pr{0}', github.event.pull_request.number) || '' }}
+          VAIKOR_CI_RUN: ${{ github.run_id }}-${{ github.run_attempt }}
         run: |
           venv="$RUNNER_TEMP/compose-venv"
           python3 -m venv "$venv"
@@ -90,25 +90,25 @@ jobs:
         env:
           PLATFORM: linux/amd64
           # Provenance: the PR head commit, not the synthetic merge commit.
-          SIDGED_GIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
-          SIDGED_MANIFEST: localhost/sidged-ci-${{ github.run_id }}-${{ github.run_attempt }}:${{ github.job }}
+          VAIKOR_GIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          VAIKOR_MANIFEST: localhost/vaikor-ci-${{ github.run_id }}-${{ github.run_attempt }}:${{ github.job }}
           # Cache trust split: pull requests get cache mounts scoped to their
-          # PR number (sidged-cargo-{reg,target}-pr<N>); every other event
+          # PR number (vaikor-cargo-{reg,target}-pr<N>); every other event
           # (push to main, schedule, release, workflow_dispatch) builds from
           # the committed Containerfile with no cache mounts and --no-cache.
-          SIDGED_CACHE_SCOPE: ${{ github.event_name == 'pull_request' && format('pr{0}', github.event.pull_request.number) || '' }}
-          SIDGED_CI_RUN: ${{ github.run_id }}-${{ github.run_attempt }}
+          VAIKOR_CACHE_SCOPE: ${{ github.event_name == 'pull_request' && format('pr{0}', github.event.pull_request.number) || '' }}
+          VAIKOR_CI_RUN: ${{ github.run_id }}-${{ github.run_attempt }}
         run: scripts/container-test.sh "$PLATFORM"
       # Scan what ships for this platform (musl binary, core image
       # filesystem) plus the effective build context, with the same head
-      # checkout and SIDGED_GIT_SHA as the image test.
+      # checkout and VAIKOR_GIT_SHA as the image test.
       - name: No RFC 8032 test seeds in shipped binary, image or build context
         env:
-          SIDGED_GIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
-          SIDGED_MANIFEST: localhost/sidged-ci-${{ github.run_id }}-${{ github.run_attempt }}:${{ github.job }}
+          VAIKOR_GIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          VAIKOR_MANIFEST: localhost/vaikor-ci-${{ github.run_id }}-${{ github.run_attempt }}:${{ github.job }}
           # Cache trust split: same cache scope and run label as the image build.
-          SIDGED_CACHE_SCOPE: ${{ github.event_name == 'pull_request' && format('pr{0}', github.event.pull_request.number) || '' }}
-          SIDGED_CI_RUN: ${{ github.run_id }}-${{ github.run_attempt }}
+          VAIKOR_CACHE_SCOPE: ${{ github.event_name == 'pull_request' && format('pr{0}', github.event.pull_request.number) || '' }}
+          VAIKOR_CI_RUN: ${{ github.run_id }}-${{ github.run_attempt }}
         run: |
           scripts/test-check-no-test-keys.sh
           scripts/scan-shipped-test-keys.sh linux/amd64
@@ -116,20 +116,20 @@ jobs:
       - name: Clean up this run's images
         if: always()
         env:
-          SIDGED_MANIFEST: localhost/sidged-ci-${{ github.run_id }}-${{ github.run_attempt }}:${{ github.job }}
-          SIDGED_CI_RUN: ${{ github.run_id }}-${{ github.run_attempt }}
+          VAIKOR_MANIFEST: localhost/vaikor-ci-${{ github.run_id }}-${{ github.run_attempt }}:${{ github.job }}
+          VAIKOR_CI_RUN: ${{ github.run_id }}-${{ github.run_attempt }}
         run: |
-          podman manifest rm "$SIDGED_MANIFEST" || true
-          podman rmi -f "$SIDGED_MANIFEST-linux-amd64" "$SIDGED_MANIFEST-linux-arm64" || true
+          podman manifest rm "$VAIKOR_MANIFEST" || true
+          podman rmi -f "$VAIKOR_MANIFEST-linux-amd64" "$VAIKOR_MANIFEST-linux-arm64" || true
           # Remove only images labelled with this run (builds use
           # --layers=false, so no unlabelled intermediates are kept). PR
           # cache mounts stay for that PR's next run.
-          podman images -q --filter "label=sidged.ci.run=$SIDGED_CI_RUN" | sort -u | xargs -r podman rmi -f >/dev/null || true
-          podman image prune -f --filter "label=sidged.ci.run=$SIDGED_CI_RUN" >/dev/null || true
+          podman images -q --filter "label=vaikor.ci.run=$VAIKOR_CI_RUN" | sort -u | xargs -r podman rmi -f >/dev/null || true
+          podman image prune -f --filter "label=vaikor.ci.run=$VAIKOR_CI_RUN" >/dev/null || true
           # Cache trust split: remove any throwaway trusted store left by a killed step.
-          # sidged_store_remove also removes a podman 5 runroot linked from the store.
+          # vaikor_store_remove also removes a podman 5 runroot linked from the store.
           . scripts/podman-store.sh
-          for d in "$RUNNER_TEMP"/sidged-store.*; do sidged_store_remove "$d"; done
+          for d in "$RUNNER_TEMP"/vaikor-store.*; do vaikor_store_remove "$d"; done
           echo "disk after build and cleanup:"
           df -h --output=size,used,avail,pcent "$(podman info --format '{{.Store.GraphRoot}}')"
 
@@ -145,7 +145,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-          # Build exactly the commit the SIDGED_GIT_SHA label names (not the merge ref).
+          # Build exactly the commit the VAIKOR_GIT_SHA label names (not the merge ref).
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
       # Rootless podman; qemu-user-static provides the arm64 binfmt handler.
       - name: Check podman and emulation
@@ -170,25 +170,25 @@ jobs:
         env:
           PLATFORM: linux/arm64
           # Provenance: the PR head commit, not the synthetic merge commit.
-          SIDGED_GIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
-          SIDGED_MANIFEST: localhost/sidged-ci-${{ github.run_id }}-${{ github.run_attempt }}:${{ github.job }}
+          VAIKOR_GIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          VAIKOR_MANIFEST: localhost/vaikor-ci-${{ github.run_id }}-${{ github.run_attempt }}:${{ github.job }}
           # Cache trust split: pull requests get cache mounts scoped to their
-          # PR number (sidged-cargo-{reg,target}-pr<N>); every other event
+          # PR number (vaikor-cargo-{reg,target}-pr<N>); every other event
           # (push to main, schedule, release, workflow_dispatch) builds from
           # the committed Containerfile with no cache mounts and --no-cache.
-          SIDGED_CACHE_SCOPE: ${{ github.event_name == 'pull_request' && format('pr{0}', github.event.pull_request.number) || '' }}
-          SIDGED_CI_RUN: ${{ github.run_id }}-${{ github.run_attempt }}
+          VAIKOR_CACHE_SCOPE: ${{ github.event_name == 'pull_request' && format('pr{0}', github.event.pull_request.number) || '' }}
+          VAIKOR_CI_RUN: ${{ github.run_id }}-${{ github.run_attempt }}
         run: scripts/container-test.sh "$PLATFORM"
       # Scan what ships for this platform (musl binary, core image
       # filesystem) plus the effective build context, with the same head
-      # checkout and SIDGED_GIT_SHA as the image test.
+      # checkout and VAIKOR_GIT_SHA as the image test.
       - name: No RFC 8032 test seeds in shipped binary, image or build context
         env:
-          SIDGED_GIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
-          SIDGED_MANIFEST: localhost/sidged-ci-${{ github.run_id }}-${{ github.run_attempt }}:${{ github.job }}
+          VAIKOR_GIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          VAIKOR_MANIFEST: localhost/vaikor-ci-${{ github.run_id }}-${{ github.run_attempt }}:${{ github.job }}
           # Cache trust split: same cache scope and run label as the image build.
-          SIDGED_CACHE_SCOPE: ${{ github.event_name == 'pull_request' && format('pr{0}', github.event.pull_request.number) || '' }}
-          SIDGED_CI_RUN: ${{ github.run_id }}-${{ github.run_attempt }}
+          VAIKOR_CACHE_SCOPE: ${{ github.event_name == 'pull_request' && format('pr{0}', github.event.pull_request.number) || '' }}
+          VAIKOR_CI_RUN: ${{ github.run_id }}-${{ github.run_attempt }}
         run: |
           scripts/test-check-no-test-keys.sh
           scripts/scan-shipped-test-keys.sh linux/arm64
@@ -196,19 +196,19 @@ jobs:
       - name: Clean up this run's images
         if: always()
         env:
-          SIDGED_MANIFEST: localhost/sidged-ci-${{ github.run_id }}-${{ github.run_attempt }}:${{ github.job }}
-          SIDGED_CI_RUN: ${{ github.run_id }}-${{ github.run_attempt }}
+          VAIKOR_MANIFEST: localhost/vaikor-ci-${{ github.run_id }}-${{ github.run_attempt }}:${{ github.job }}
+          VAIKOR_CI_RUN: ${{ github.run_id }}-${{ github.run_attempt }}
         run: |
-          podman manifest rm "$SIDGED_MANIFEST" || true
-          podman rmi -f "$SIDGED_MANIFEST-linux-amd64" "$SIDGED_MANIFEST-linux-arm64" || true
+          podman manifest rm "$VAIKOR_MANIFEST" || true
+          podman rmi -f "$VAIKOR_MANIFEST-linux-amd64" "$VAIKOR_MANIFEST-linux-arm64" || true
           # Remove only images labelled with this run (builds use
           # --layers=false, so no unlabelled intermediates are kept). PR
           # cache mounts stay for that PR's next run.
-          podman images -q --filter "label=sidged.ci.run=$SIDGED_CI_RUN" | sort -u | xargs -r podman rmi -f >/dev/null || true
-          podman image prune -f --filter "label=sidged.ci.run=$SIDGED_CI_RUN" >/dev/null || true
+          podman images -q --filter "label=vaikor.ci.run=$VAIKOR_CI_RUN" | sort -u | xargs -r podman rmi -f >/dev/null || true
+          podman image prune -f --filter "label=vaikor.ci.run=$VAIKOR_CI_RUN" >/dev/null || true
           # Cache trust split: remove any throwaway trusted store left by a killed step.
-          # sidged_store_remove also removes a podman 5 runroot linked from the store.
+          # vaikor_store_remove also removes a podman 5 runroot linked from the store.
           . scripts/podman-store.sh
-          for d in "$RUNNER_TEMP"/sidged-store.*; do sidged_store_remove "$d"; done
+          for d in "$RUNNER_TEMP"/vaikor-store.*; do vaikor_store_remove "$d"; done
           echo "disk after build and cleanup:"
           df -h --output=size,used,avail,pcent "$(podman info --format '{{.Store.GraphRoot}}')"

@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sidged.com/spec/schemas/privacy-report.schema.json",
-  "title": "Sidged Privacy Report (v0.1)",
-  "description": "User-visible report produced by the Privacy Gateway for each cloud call (Sidged L7, REQUIRED at R1, the same profile as the Privacy Gateway). It states the provider, provider profile (P0 to P3), relay used, data classes and fields sent after redaction, what was redacted, network identity exposed (relay or direct), account linkage, and the provider's declared retention window (Sidged L7, section 13; Sidged L7). It lists field names and data classes, never values, plus residency, model identity where returned, and a hash of the exact outbound payload, which links to the protected egress log at R2 (verifiable minimisation, Sidged L7). Redaction maps MUST NOT leave the device and are never part of a report. A profile downgrade is shown here (Sidged L7). The report is itself sensitive and is stored under the log protections of Sidged L7. Status: Draft, not for implementation.",
+  "$id": "https://vaikor.com/spec/schemas/privacy-report.schema.json",
+  "title": "Vaikor Privacy Report (v0.1)",
+  "description": "User-visible report produced by the Privacy Gateway for each cloud call (Vaikor L7, REQUIRED at R1, the same profile as the Privacy Gateway). It states the provider, provider profile (P0 to P3), relay used, data classes and fields sent after redaction, what was redacted, network identity exposed (relay or direct), account linkage, and the provider's declared retention window (Vaikor L7, section 13; Vaikor L7). It lists field names and data classes, never values, plus residency, model identity where returned, and a hash of the exact outbound payload, which links to the protected egress log at R2 (verifiable minimisation, Vaikor L7). Redaction maps MUST NOT leave the device and are never part of a report. A profile downgrade is shown here (Vaikor L7). The report is itself sensitive and is stored under the log protections of Vaikor L7. Status: Draft, not for implementation.",
   "type": "object",
   "required": [
     "v",
@@ -61,7 +61,7 @@
       }
     },
     "provider_profile": {
-      "description": "Profile used for this call. effective is P0 unless the runtime verified the claim (Sidged L7, Sidged L7).",
+      "description": "Profile used for this call. effective is P0 unless the runtime verified the claim (Vaikor L7, Vaikor L7).",
       "type": "object",
       "required": [
         "claimed",
@@ -88,7 +88,7 @@
           "type": "boolean"
         },
         "downgrade": {
-          "description": "Present when the effective profile is lower than the pinned or claimed profile (Sidged L7).",
+          "description": "Present when the effective profile is lower than the pinned or claimed profile (Vaikor L7).",
           "type": "object",
           "required": [
             "from",
@@ -140,7 +140,7 @@
       "maximum": 3
     },
     "gateway_mode": {
-      "description": "full: full gateway mode (Sidged L7). verified-provider: reduced protections allowed by a verified P1 to P3 profile and owner policy.",
+      "description": "full: full gateway mode (Vaikor L7). verified-provider: reduced protections allowed by a verified P1 to P3 profile and owner policy.",
       "enum": [
         "full",
         "verified-provider"
@@ -196,7 +196,7 @@
       ]
     },
     "account": {
-      "description": "Account linkage (Sidged L7, section 2). In identified mode the provider can link requests to the account, and the runtime labels this clearly (Sidged L7).",
+      "description": "Account linkage (Vaikor L7, section 2). In identified mode the provider can link requests to the account, and the runtime labels this clearly (Vaikor L7).",
       "type": "object",
       "required": [
         "mode",
@@ -316,7 +316,7 @@
       "additionalProperties": false,
       "properties": {
         "steps": {
-          "description": "Minimisation steps applied (Sidged L7 full gateway mode list).",
+          "description": "Minimisation steps applied (Vaikor L7 full gateway mode list).",
           "type": "array",
           "uniqueItems": true,
           "items": {
@@ -333,7 +333,7 @@
           }
         },
         "payload_digest": {
-          "description": "Hash of the exact outbound payload, linking this report to the protected egress log entry (Sidged L7 verifiable minimisation).",
+          "description": "Hash of the exact outbound payload, linking this report to the protected egress log entry (Vaikor L7 verifiable minimisation).",
           "$ref": "common.schema.json#/$defs/digest"
         },
         "egress_log_ref": {
@@ -366,7 +366,7 @@
       }
     },
     "retention": {
-      "description": "Provider's declared retention window (Sidged L7) as an ISO 8601 duration (PT0S for none), or undeclared when the provider publishes no manifest or no window (Sidged L7).",
+      "description": "Provider's declared retention window (Vaikor L7) as an ISO 8601 duration (PT0S for none), or undeclared when the provider publishes no manifest or no window (Vaikor L7).",
       "type": "object",
       "required": [
         "declared"
@@ -396,7 +396,7 @@
       }
     },
     "model": {
-      "description": "Model identity returned with the response (Sidged L7, Sidged L7). Below P3 this is an unverified declaration.",
+      "description": "Model identity returned with the response (Vaikor L7, Vaikor L7). Below P3 this is an unverified declaration.",
       "type": "object",
       "required": [
         "name",
@@ -424,7 +424,7 @@
   },
   "allOf": [
     {
-      "description": "Sidged L7: a P0 provider is called in full gateway mode, or in identified mode by explicit user choice.",
+      "description": "Vaikor L7: a P0 provider is called in full gateway mode, or in identified mode by explicit user choice.",
       "if": {
         "properties": {
           "provider_profile": {
@@ -460,7 +460,7 @@
       }
     },
     {
-      "description": "Full gateway mode means no account and no persistent identifiers (Sidged L7). If no relay was available the call still appears here with relay.used false and network_identity direct, so the missing relay is visible.",
+      "description": "Full gateway mode means no account and no persistent identifiers (Vaikor L7). If no relay was available the call still appears here with relay.used false and network_identity direct, so the missing relay is visible.",
       "if": {
         "properties": {
           "gateway_mode": {

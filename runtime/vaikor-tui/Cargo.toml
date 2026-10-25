@@ -1,0 +1,20 @@
+[package]
+name = "vaikor-tui"
+version = "0.2.0"
+edition = "2021"
+license = "Apache-2.0"
+description = "Demo 1: unsigned preview TUI (task, countdown, one approved cloud call (Gemini) via vaikor-gateway)"
+publish = false
+
+[dependencies]
+vaikor-gateway = { path = "../vaikor-gateway" }
+serde_json = "1"
+ratatui = "0.29"
+vaikor-cli = { path = "../vaikor-cli" }
+vaikor-core = { path = "../vaikor-core" }
+vaikor-grant = { path = "../vaikor-grant" }
+vaikor-log = { path = "../vaikor-log" }
+sha2 = "0.10"
+libc = "0.2"
+getrandom = "0.2"
+zeroize = "1"

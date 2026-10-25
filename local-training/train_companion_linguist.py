@@ -7,7 +7,7 @@ that one English, German or Swiss German utterance plus the intent catalog becom
 linguist envelope (spec/schemas/linguist-envelope.schema.json), or with --format compact the
 compact proposal the Core derives it from (linguist-proposal.schema.json, 0017 L3a). Loss is on the
 completion only. The prompt is the runtime prompt, rendered by the Rust Core
-(core_bridge, `sidged linguist-eval render-prompt`), wrapped in the Qwen3 chat template
+(core_bridge, `vaikor linguist-eval render-prompt`), wrapped in the Qwen3 chat template
 with thinking disabled.
 
 Data: make_dataset_linguist.write_splits() writes train, dev and blind (split by paraphrase
@@ -19,7 +19,7 @@ the seeds and library versions go into the manifest.
 The check after training is a TRAINING-TIME CHECK: the merged bf16 Transformers weights on
 the dev split, greedy, with the runtime's max_tokens, without the runtime's decoding grammar
 (compact form). It is not the shipped artifact. Every
-reply is judged by the Rust Core (eval_linguist, `sidged linguist-eval score`). The release
+reply is judged by the Rust Core (eval_linguist, `vaikor linguist-eval score`). The release
 gate is eval_linguist.py on the blind split against the served GGUF.
 
 Usage (user PC with GPU, after explicit approval):
@@ -208,10 +208,10 @@ def write_provenance(args, paths, out, reports, seeds):
         "role": "Model -1 companion linguist",
         "base_model": {"id": args.base_model, "revision": args.revision,
                        "licence": write_manifest.LICENCES[args.base_model]},
-        "catalog": {"path": "runtime/sidged-cli/assets/intent-catalog.json",
+        "catalog": {"path": "runtime/vaikor-cli/assets/intent-catalog.json",
                     "digest": write_manifest.digest(linguist.CATALOG_PATH)},
-        "prompt_renderer": {"path": "sidged", "command": "sidged linguist-eval render-prompt",
-                            "digest": write_manifest.digest(core_bridge.sidged_binary())},
+        "prompt_renderer": {"path": "vaikor", "command": "vaikor linguist-eval render-prompt",
+                            "digest": write_manifest.digest(core_bridge.vaikor_binary())},
         "datasets": write_manifest.split_digests(paths),
         "splits": {"family_key": "(kind, owner, language, source text)",
                    "dedup": "case folded, punctuation and symbols stripped, whitespace collapsed; "

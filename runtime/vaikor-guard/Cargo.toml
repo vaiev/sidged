@@ -1,0 +1,30 @@
+[package]
+name = "vaikor-guard"
+version = "0.2.0"
+edition = "2021"
+license = "Apache-2.0"
+publish = false
+description = "CH residency scenario: moderate and monitor a test app through the hosted runtime."
+
+[features]
+# `vaikor swarm measure` of the v0.1 swarm prototype (ROADMAP v0.5, 11g); off by default.
+experimental = ["vaikor-cli/experimental"]
+
+[[bin]]
+name = "vaikor"
+path = "src/main.rs"
+
+[dependencies]
+vaikor-capability = { path = "../vaikor-capability" }
+vaikor-cli = { path = "../vaikor-cli" }
+vaikor-core = { path = "../vaikor-core" }
+vaikor-gateway = { path = "../vaikor-gateway" }
+vaikor-grant = { path = "../vaikor-grant" }
+vaikor-log = { path = "../vaikor-log" }
+vaikor-mcp = { path = "../vaikor-mcp" }
+vaikor-record = { path = "../vaikor-record" }
+vaikor-model = { path = "../vaikor-model" }
+serde_json = "1"
+# geteuid for `vaikor init` and --system-config (owner check). Already in the
+# lock file via vaikor-cli and vaikor-gateway (no new crate).
+libc = "0.2"

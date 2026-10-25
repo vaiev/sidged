@@ -13,7 +13,7 @@
 set -euo pipefail
 
 here=$(cd "$(dirname "$0")" && pwd)
-venv=$here/.venv-sidged-train
+venv=$here/.venv-vaikor-train
 python=${PYTHON:-python3}
 
 die() { echo "setup_gpu_cu128: $*" >&2; exit 1; }

@@ -1,6 +1,6 @@
 # Copyright 2026 VAIEV
 # SPDX-License-Identifier: Apache-2.0
-"""Build the companion linguist (Model -1) dataset from the intent catalog. Stdlib only (plus the sidged binary).
+"""Build the companion linguist (Model -1) dataset from the intent catalog. Stdlib only (plus the vaikor binary).
 
 Every target is derived from the runtime intent catalog by linguist.derive_envelope(),
 so labels follow the Core rules by construction. The phrasebook only supplies surface
@@ -47,7 +47,7 @@ so every frame and region is covered before any repeats; Swiss German cells get
 --dialect-profile) weights each form by how often it occurs in the local corpora.
 
 Optional owner-supplied chat lines (--chat-negatives, never committed) become extra
-Swiss German intent-null examples after filtering: no sdg.pii/1 detector hit, no request
+Swiss German intent-null examples after filtering: no vkr.pii/1 detector hit, no request
 verb, no term from --exclude-terms-file. The filtered lines are shuffled once and cut
 into consecutive ranges: train, then dev, then blind.
 

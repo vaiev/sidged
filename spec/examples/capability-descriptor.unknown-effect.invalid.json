@@ -1,6 +1,6 @@
 {
   "v": "0.1",
-  "id": "urn:sidged:capability:ping",
+  "id": "tag:vaikor.com,2026:capability:ping",
   "title": "Ping",
   "input_schema": {
     "type": "object",

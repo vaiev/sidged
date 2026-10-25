@@ -1,4 +1,4 @@
-# Sidged spec corpus
+# Vaikor spec corpus
 
 Machine-readable material for the draft standard. Status: draft, not for implementation. No certification program exists.
 

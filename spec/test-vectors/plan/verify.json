@@ -1,6 +1,6 @@
 {
   "category": "plan",
-  "description": "SDG-L3 plan verification: effects, data-flow labels, bounded map, approvals, and cost.",
+  "description": "VKR-L3 plan verification: effects, data-flow labels, bounded map, approvals, and cost.",
   "vectors": [
     {
       "id": "plan.verify.001",
@@ -9,14 +9,14 @@
       "input": {
         "catalog": [
           {
-            "id": "urn:sidged:capability:calendar.free_slots",
+            "id": "tag:vaikor.com,2026:capability:calendar.free_slots",
             "effects": ["read"],
             "data_classes": ["calendar.availability"],
             "consequential": false,
             "cost": { "class": "free" }
           },
           {
-            "id": "urn:sidged:capability:message.send",
+            "id": "tag:vaikor.com,2026:capability:message.send",
             "effects": ["egress"],
             "data_classes": ["communications.content"],
             "consequential": true,
@@ -31,14 +31,14 @@
             {
               "id": "free",
               "kind": "call",
-              "capability": "urn:sidged:capability:calendar.free_slots",
+              "capability": "tag:vaikor.com,2026:capability:calendar.free_slots",
               "args": { "range": { "lit": "next_week" } }
             },
             { "id": "pick", "kind": "expr", "expr": "free.slots" },
             {
               "id": "send",
               "kind": "call",
-              "capability": "urn:sidged:capability:message.send",
+              "capability": "tag:vaikor.com,2026:capability:message.send",
               "approval": true,
               "args": { "to": { "lit": "contact:bea" }, "body": { "ref": "pick" } }
             }
@@ -55,14 +55,14 @@
       "input": {
         "catalog": [
           {
-            "id": "urn:sidged:capability:records.read",
+            "id": "tag:vaikor.com,2026:capability:records.read",
             "effects": ["read"],
             "data_classes": ["health.records"],
             "consequential": false,
             "cost": { "class": "free" }
           },
           {
-            "id": "urn:sidged:capability:message.send",
+            "id": "tag:vaikor.com,2026:capability:message.send",
             "effects": ["egress"],
             "data_classes": ["communications.content"],
             "consequential": true,
@@ -75,13 +75,13 @@
             {
               "id": "notes",
               "kind": "call",
-              "capability": "urn:sidged:capability:records.read",
+              "capability": "tag:vaikor.com,2026:capability:records.read",
               "args": {}
             },
             {
               "id": "send",
               "kind": "call",
-              "capability": "urn:sidged:capability:message.send",
+              "capability": "tag:vaikor.com,2026:capability:message.send",
               "approval": true,
               "args": { "body": { "ref": "notes" } }
             }
@@ -99,7 +99,7 @@
       "input": {
         "catalog": [
           {
-            "id": "urn:sidged:capability:message.send",
+            "id": "tag:vaikor.com,2026:capability:message.send",
             "effects": ["egress"],
             "data_classes": ["communications.content"],
             "consequential": true,
@@ -112,7 +112,7 @@
             {
               "id": "send",
               "kind": "call",
-              "capability": "urn:sidged:capability:message.send",
+              "capability": "tag:vaikor.com,2026:capability:message.send",
               "args": { "to": { "lit": "contact:bea" } }
             }
           ]
@@ -129,7 +129,7 @@
       "input": {
         "catalog": [
           {
-            "id": "urn:sidged:capability:message.send",
+            "id": "tag:vaikor.com,2026:capability:message.send",
             "effects": ["egress"],
             "data_classes": ["communications.content"],
             "consequential": true,
@@ -145,7 +145,7 @@
               "kind": "map",
               "over": { "ref": "slots" },
               "bound": 100,
-              "capability": "urn:sidged:capability:message.send",
+              "capability": "tag:vaikor.com,2026:capability:message.send",
               "approval": true,
               "args": { "body": { "item": true } }
             }
@@ -168,7 +168,7 @@
             {
               "id": "send",
               "kind": "call",
-              "capability": "urn:sidged:capability:message.send",
+              "capability": "tag:vaikor.com,2026:capability:message.send",
               "approval": true,
               "args": { "body": { "ref": "later" } }
             },
@@ -186,7 +186,7 @@
       "input": {
         "catalog": [
           {
-            "id": "urn:sidged:capability:message.send",
+            "id": "tag:vaikor.com,2026:capability:message.send",
             "effects": ["egress"],
             "data_classes": ["communications.content"],
             "consequential": true,
@@ -200,7 +200,7 @@
             {
               "id": "send",
               "kind": "call",
-              "capability": "urn:sidged:capability:message.send",
+              "capability": "tag:vaikor.com,2026:capability:message.send",
               "approval": true,
               "args": { "to": { "lit": "contact:bea" } }
             }
@@ -218,7 +218,7 @@
       "input": {
         "catalog": [
           {
-            "id": "urn:sidged:capability:message.send",
+            "id": "tag:vaikor.com,2026:capability:message.send",
             "effects": ["egress"],
             "data_classes": ["communications.content"],
             "consequential": true,
@@ -234,7 +234,7 @@
               "kind": "map",
               "over": { "ref": "slots" },
               "bound": 3,
-              "capability": "urn:sidged:capability:message.send",
+              "capability": "tag:vaikor.com,2026:capability:message.send",
               "approval": true,
               "args": { "body": { "item": true } }
             }
@@ -250,18 +250,18 @@
       "operation": "plan-check",
       "input": {
         "allow": [
-          { "class": "health.records", "capability": "urn:sidged:capability:message.send" }
+          { "class": "health.records", "capability": "tag:vaikor.com,2026:capability:message.send" }
         ],
         "catalog": [
           {
-            "id": "urn:sidged:capability:records.read",
+            "id": "tag:vaikor.com,2026:capability:records.read",
             "effects": ["read"],
             "data_classes": ["health.records"],
             "consequential": false,
             "cost": { "class": "free" }
           },
           {
-            "id": "urn:sidged:capability:message.send",
+            "id": "tag:vaikor.com,2026:capability:message.send",
             "effects": ["egress"],
             "data_classes": ["communications.content"],
             "consequential": true,
@@ -274,13 +274,13 @@
             {
               "id": "notes",
               "kind": "call",
-              "capability": "urn:sidged:capability:records.read",
+              "capability": "tag:vaikor.com,2026:capability:records.read",
               "args": {}
             },
             {
               "id": "send",
               "kind": "call",
-              "capability": "urn:sidged:capability:message.send",
+              "capability": "tag:vaikor.com,2026:capability:message.send",
               "approval": true,
               "args": { "body": { "ref": "notes" } }
             }
@@ -317,7 +317,7 @@
       "input": {
         "catalog": [
           {
-            "id": "urn:sidged:capability:message.send",
+            "id": "tag:vaikor.com,2026:capability:message.send",
             "effects": ["egress"],
             "data_classes": ["communications.content"],
             "consequential": true,
@@ -331,7 +331,7 @@
             {
               "id": "send",
               "kind": "call",
-              "capability": "urn:sidged:capability:message.send",
+              "capability": "tag:vaikor.com,2026:capability:message.send",
               "approval": true,
               "args": { "to": { "lit": "contact:bea" } }
             }
@@ -349,7 +349,7 @@
       "input": {
         "catalog": [
           {
-            "id": "urn:sidged:capability:message.send",
+            "id": "tag:vaikor.com,2026:capability:message.send",
             "effects": ["egress"],
             "data_classes": ["communications.content"],
             "consequential": true,
@@ -363,7 +363,7 @@
             {
               "id": "send",
               "kind": "call",
-              "capability": "urn:sidged:capability:message.send",
+              "capability": "tag:vaikor.com,2026:capability:message.send",
               "approval": true,
               "args": { "to": { "lit": "contact:bea" } }
             }
@@ -381,7 +381,7 @@
       "input": {
         "catalog": [
           {
-            "id": "urn:sidged:capability:message.send",
+            "id": "tag:vaikor.com,2026:capability:message.send",
             "effects": ["egress"],
             "data_classes": ["communications.content"],
             "consequential": true,
@@ -395,7 +395,7 @@
             {
               "id": "send",
               "kind": "call",
-              "capability": "urn:sidged:capability:message.send",
+              "capability": "tag:vaikor.com,2026:capability:message.send",
               "approval": true,
               "args": { "to": { "lit": "contact:bea" } }
             }
@@ -449,14 +449,14 @@
       "input": {
         "catalog": [
           {
-            "id": "urn:sidged:capability:records.read",
+            "id": "tag:vaikor.com,2026:capability:records.read",
             "effects": ["read"],
             "data_classes": ["health.records"],
             "consequential": false,
             "cost": { "class": "free" }
           },
           {
-            "id": "urn:sidged:capability:message.send",
+            "id": "tag:vaikor.com,2026:capability:message.send",
             "effects": ["egress"],
             "data_classes": ["communications.content"],
             "consequential": true,
@@ -466,13 +466,13 @@
         "plan": {
           "v": "0.1",
           "steps": [
-            { "id": "notes", "kind": "call", "capability": "urn:sidged:capability:records.read", "args": {} },
+            { "id": "notes", "kind": "call", "capability": "tag:vaikor.com,2026:capability:records.read", "args": {} },
             {
               "id": "each",
               "kind": "map",
               "over": { "ref": "notes" },
               "bound": 5,
-              "capability": "urn:sidged:capability:message.send",
+              "capability": "tag:vaikor.com,2026:capability:message.send",
               "approval": true,
               "args": { "to": { "lit": "contact:bea" }, "body": { "lit": "ping" } }
             }
@@ -496,7 +496,7 @@
       "input": {
         "catalog": [
           {
-            "id": "urn:sidged:capability:workspace.read",
+            "id": "tag:vaikor.com,2026:capability:workspace.read",
             "effects": [
               "read"
             ],
@@ -520,7 +520,7 @@
             }
           },
           {
-            "id": "urn:sidged:capability:notes.append",
+            "id": "tag:vaikor.com,2026:capability:notes.append",
             "effects": [
               "write"
             ],
@@ -540,7 +540,7 @@
             {
               "id": "read",
               "kind": "call",
-              "capability": "urn:sidged:capability:workspace.read",
+              "capability": "tag:vaikor.com,2026:capability:workspace.read",
               "args": {
                 "path": {
                   "lit": "report.md"
@@ -555,7 +555,7 @@
             {
               "id": "note",
               "kind": "call",
-              "capability": "urn:sidged:capability:notes.append",
+              "capability": "tag:vaikor.com,2026:capability:notes.append",
               "args": {
                 "text": {
                   "ref": "read",
@@ -585,7 +585,7 @@
       "input": {
         "catalog": [
           {
-            "id": "urn:sidged:capability:workspace.read",
+            "id": "tag:vaikor.com,2026:capability:workspace.read",
             "effects": [
               "read"
             ],
@@ -609,7 +609,7 @@
             }
           },
           {
-            "id": "urn:sidged:capability:notes.append",
+            "id": "tag:vaikor.com,2026:capability:notes.append",
             "effects": [
               "write"
             ],
@@ -629,7 +629,7 @@
             {
               "id": "read",
               "kind": "call",
-              "capability": "urn:sidged:capability:workspace.read",
+              "capability": "tag:vaikor.com,2026:capability:workspace.read",
               "args": {
                 "path": {
                   "lit": "report.md"
@@ -644,7 +644,7 @@
             {
               "id": "note",
               "kind": "call",
-              "capability": "urn:sidged:capability:notes.append",
+              "capability": "tag:vaikor.com,2026:capability:notes.append",
               "args": {
                 "text": {
                   "ref": "read",
@@ -674,7 +674,7 @@
       "input": {
         "catalog": [
           {
-            "id": "urn:sidged:capability:workspace.read",
+            "id": "tag:vaikor.com,2026:capability:workspace.read",
             "effects": [
               "read"
             ],
@@ -698,7 +698,7 @@
             }
           },
           {
-            "id": "urn:sidged:capability:notes.append",
+            "id": "tag:vaikor.com,2026:capability:notes.append",
             "effects": [
               "write"
             ],
@@ -718,7 +718,7 @@
             {
               "id": "read",
               "kind": "call",
-              "capability": "urn:sidged:capability:workspace.read",
+              "capability": "tag:vaikor.com,2026:capability:workspace.read",
               "args": {
                 "path": {
                   "lit": "report.md"
@@ -733,7 +733,7 @@
             {
               "id": "note",
               "kind": "call",
-              "capability": "urn:sidged:capability:notes.append",
+              "capability": "tag:vaikor.com,2026:capability:notes.append",
               "args": {
                 "text": {
                   "ref": "pick",
@@ -768,7 +768,7 @@
       "input": {
         "catalog": [
           {
-            "id": "urn:sidged:capability:calendar.free_slots",
+            "id": "tag:vaikor.com,2026:capability:calendar.free_slots",
             "effects": [
               "read"
             ],
@@ -796,7 +796,7 @@
             {
               "id": "free",
               "kind": "call",
-              "capability": "urn:sidged:capability:calendar.free_slots",
+              "capability": "tag:vaikor.com,2026:capability:calendar.free_slots",
               "args": {
                 "range": {
                   "lit": "next_week"
@@ -811,7 +811,7 @@
                 "field": "slots"
               },
               "bound": 4,
-              "capability": "urn:sidged:capability:calendar.free_slots",
+              "capability": "tag:vaikor.com,2026:capability:calendar.free_slots",
               "args": {
                 "range": {
                   "item": true
@@ -840,7 +840,7 @@
       "input": {
         "catalog": [
           {
-            "id": "urn:sidged:capability:calendar.free_slots",
+            "id": "tag:vaikor.com,2026:capability:calendar.free_slots",
             "effects": [
               "read"
             ],
@@ -859,7 +859,7 @@
             {
               "id": "free",
               "kind": "call",
-              "capability": "urn:sidged:capability:calendar.free_slots",
+              "capability": "tag:vaikor.com,2026:capability:calendar.free_slots",
               "args": {
                 "range": {
                   "lit": "next_week"

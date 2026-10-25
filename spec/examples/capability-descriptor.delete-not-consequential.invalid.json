@@ -1,6 +1,6 @@
 {
   "v": "0.1",
-  "id": "urn:sidged:capability:drop_file",
+  "id": "tag:vaikor.com,2026:capability:drop_file",
   "title": "Drop a file",
   "input_schema": {
     "type": "object",

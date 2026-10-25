@@ -1,14 +1,14 @@
 # Copyright 2026 VAIEV
 # SPDX-License-Identifier: Apache-2.0
-"""Bounded-Thinking SDG-L3 Plan Architect & Self-Repair LoRA trainer (Model 1).
+"""Bounded-Thinking VKR-L3 Plan Architect & Self-Repair LoRA trainer (Model 1).
 
 Trains Qwen/Qwen3-0.6B with concise <think>...</think> traces (40-80 tokens)
-followed by a strict SDG-L3 v0.1 JSON plan (call, expr, map, budget, approval)
+followed by a strict VKR-L3 v0.1 JSON plan (call, expr, map, budget, approval)
 or a self-repaired plan when given a deterministic verifier refusal
 (e.g. data-class-forbidden or missing approval).
 
 Designed so the resulting merged model or ~25 MB LoRA adapter runs fast even on
-pure CPU (zero GPU required at inference time) while respecting all 9 Sidged
+pure CPU (zero GPU required at inference time) while respecting all 9 Vaikor
 security invariants.
 """
 import argparse
@@ -25,11 +25,11 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
 import seeding  # noqa: E402
 
 SYSTEM_PROMPT = (
-    "You are Sidged Model 1 (Thinking Plan Architect). "
+    "You are Vaikor Model 1 (Thinking Plan Architect). "
     "Reason briefly in <think>...</think> about capability effects, data_classes, "
     "Cedar flow rules (secrets and health.records cannot reach egress under default-flow), "
     "CEL expressions (no filter/map/all/exists macros), and consequential=true -> approval=true. "
-    "Then output ONLY a valid SDG-L3 v0.1 JSON plan object with keys v, goal, and steps (and optional budget)."
+    "Then output ONLY a valid VKR-L3 v0.1 JSON plan object with keys v, goal, and steps (and optional budget)."
 )
 
 TEMPLATES = [
@@ -38,13 +38,13 @@ TEMPLATES = [
         "user": (
             "Goal: Propose a meeting slot next week to contact:bea\n"
             "Capabilities:\n"
-            "- urn:sidged:capability:calendar.free_slots (effects=[read], data_classes=[calendar.availability], consequential=false, cost=free)\n"
-            "- urn:sidged:capability:message.send (effects=[egress], data_classes=[communications.content], consequential=true, cost=free)"
+            "- tag:vaikor.com,2026:capability:calendar.free_slots (effects=[read], data_classes=[calendar.availability], consequential=false, cost=free)\n"
+            "- tag:vaikor.com,2026:capability:message.send (effects=[egress], data_classes=[communications.content], consequential=true, cost=free)"
         ),
         "think": (
-            "1. Read free slots via urn:sidged:capability:calendar.free_slots (non-sensitive calendar.availability). "
+            "1. Read free slots via tag:vaikor.com,2026:capability:calendar.free_slots (non-sensitive calendar.availability). "
             "2. Select slots with CEL expr free.slots (no macros). "
-            "3. Send via urn:sidged:capability:message.send: effects=[egress], consequential=true requires approval=true. "
+            "3. Send via tag:vaikor.com,2026:capability:message.send: effects=[egress], consequential=true requires approval=true. "
             "calendar.availability is non-sensitive so default-flow permits egress."
         ),
         "plan": {
@@ -54,7 +54,7 @@ TEMPLATES = [
                 {
                     "id": "free",
                     "kind": "call",
-                    "capability": "urn:sidged:capability:calendar.free_slots",
+                    "capability": "tag:vaikor.com,2026:capability:calendar.free_slots",
                     "args": {"range": {"lit": "next_week"}},
                 },
                 {
@@ -65,7 +65,7 @@ TEMPLATES = [
                 {
                     "id": "send",
                     "kind": "call",
-                    "capability": "urn:sidged:capability:message.send",
+                    "capability": "tag:vaikor.com,2026:capability:message.send",
                     "approval": True,
                     "args": {"to": {"lit": "contact:bea"}, "body": {"ref": "pick"}},
                 },
@@ -77,12 +77,12 @@ TEMPLATES = [
         "user": (
             "Goal: Check Zurich weather and summarize\n"
             "Capabilities:\n"
-            "- urn:sidged:capability:weather.lookup (effects=[egress], data_classes=[x-public.weather], consequential=true, cost=free)\n"
-            "- urn:sidged:capability:model.complete (effects=[egress], data_classes=[x-public.weather], consequential=true, cost=0.01 CHF)"
+            "- tag:vaikor.com,2026:capability:weather.lookup (effects=[egress], data_classes=[x-public.weather], consequential=true, cost=free)\n"
+            "- tag:vaikor.com,2026:capability:model.complete (effects=[egress], data_classes=[x-public.weather], consequential=true, cost=0.01 CHF)"
         ),
         "think": (
-            "1. Call urn:sidged:capability:weather.lookup with approval=true (consequential=true). "
-            "2. Call urn:sidged:capability:model.complete referencing weather step with approval=true. "
+            "1. Call tag:vaikor.com,2026:capability:weather.lookup with approval=true (consequential=true). "
+            "2. Call tag:vaikor.com,2026:capability:model.complete referencing weather step with approval=true. "
             "3. model.complete is metered (0.01 CHF), so include budget.max = 0.02 CHF. "
             "x-public.weather is non-sensitive, permitted by default-flow."
         ),
@@ -94,14 +94,14 @@ TEMPLATES = [
                 {
                     "id": "wx",
                     "kind": "call",
-                    "capability": "urn:sidged:capability:weather.lookup",
+                    "capability": "tag:vaikor.com,2026:capability:weather.lookup",
                     "approval": True,
                     "args": {"city": {"lit": "Zurich"}},
                 },
                 {
                     "id": "sum",
                     "kind": "call",
-                    "capability": "urn:sidged:capability:model.complete",
+                    "capability": "tag:vaikor.com,2026:capability:model.complete",
                     "approval": True,
                     "args": {"prompt": {"ref": "wx"}},
                 },
@@ -112,15 +112,15 @@ TEMPLATES = [
     {
         "user": (
             "Goal: Summarize my health notes and share them\n"
-            "Verifier Refusal: data-class-forbidden on step send1 (health.records.notes -> urn:sidged:capability:message.send)\n"
+            "Verifier Refusal: data-class-forbidden on step send1 (health.records.notes -> tag:vaikor.com,2026:capability:message.send)\n"
             "Capabilities:\n"
-            "- urn:sidged:capability:notes.read (effects=[read], data_classes=[health.records.notes], consequential=false, cost=free)\n"
-            "- urn:sidged:capability:notes.summarize_local (effects=[read], data_classes=[health.records.notes], consequential=false, cost=free)\n"
-            "- urn:sidged:capability:message.send (effects=[egress], data_classes=[communications.content], consequential=true, cost=free)"
+            "- tag:vaikor.com,2026:capability:notes.read (effects=[read], data_classes=[health.records.notes], consequential=false, cost=free)\n"
+            "- tag:vaikor.com,2026:capability:notes.summarize_local (effects=[read], data_classes=[health.records.notes], consequential=false, cost=free)\n"
+            "- tag:vaikor.com,2026:capability:message.send (effects=[egress], data_classes=[communications.content], consequential=true, cost=free)"
         ),
         "think": (
-            "1. Verifier refused step send1 with data-class-forbidden because health.records.notes is sensitive and cannot reach egress capability urn:sidged:capability:message.send under default-flow. "
-            "2. Repair plan by removing the egress step and only reading and summarizing locally via urn:sidged:capability:notes.summarize_local."
+            "1. Verifier refused step send1 with data-class-forbidden because health.records.notes is sensitive and cannot reach egress capability tag:vaikor.com,2026:capability:message.send under default-flow. "
+            "2. Repair plan by removing the egress step and only reading and summarizing locally via tag:vaikor.com,2026:capability:notes.summarize_local."
         ),
         "plan": {
             "v": "0.1",
@@ -129,13 +129,13 @@ TEMPLATES = [
                 {
                     "id": "read",
                     "kind": "call",
-                    "capability": "urn:sidged:capability:notes.read",
+                    "capability": "tag:vaikor.com,2026:capability:notes.read",
                     "args": {},
                 },
                 {
                     "id": "local_sum",
                     "kind": "call",
-                    "capability": "urn:sidged:capability:notes.summarize_local",
+                    "capability": "tag:vaikor.com,2026:capability:notes.summarize_local",
                     "args": {"text": {"ref": "read"}},
                 },
             ],
@@ -145,14 +145,14 @@ TEMPLATES = [
     {
         "user": (
             "Goal: Send status update to contact:team\n"
-            "Verifier Refusal: data-class-forbidden on step send1 (secrets.token -> urn:sidged:capability:message.send)\n"
+            "Verifier Refusal: data-class-forbidden on step send1 (secrets.token -> tag:vaikor.com,2026:capability:message.send)\n"
             "Capabilities:\n"
-            "- urn:sidged:capability:tasks.list (effects=[read], data_classes=[calendar.availability], consequential=false, cost=free)\n"
-            "- urn:sidged:capability:message.send (effects=[egress], data_classes=[communications.content], consequential=true, cost=free)"
+            "- tag:vaikor.com,2026:capability:tasks.list (effects=[read], data_classes=[calendar.availability], consequential=false, cost=free)\n"
+            "- tag:vaikor.com,2026:capability:message.send (effects=[egress], data_classes=[communications.content], consequential=true, cost=free)"
         ),
         "think": (
             "1. Spec 0013 R10 forbids secrets.* from ever reaching egress. "
-            "2. Repair plan to read only urn:sidged:capability:tasks.list (non-sensitive calendar.availability) and send with approval=true."
+            "2. Repair plan to read only tag:vaikor.com,2026:capability:tasks.list (non-sensitive calendar.availability) and send with approval=true."
         ),
         "plan": {
             "v": "0.1",
@@ -161,13 +161,13 @@ TEMPLATES = [
                 {
                     "id": "tasks",
                     "kind": "call",
-                    "capability": "urn:sidged:capability:tasks.list",
+                    "capability": "tag:vaikor.com,2026:capability:tasks.list",
                     "args": {"scope": {"lit": "today"}},
                 },
                 {
                     "id": "send1",
                     "kind": "call",
-                    "capability": "urn:sidged:capability:message.send",
+                    "capability": "tag:vaikor.com,2026:capability:message.send",
                     "approval": True,
                     "args": {"to": {"lit": "contact:team"}, "body": {"ref": "tasks"}},
                 },
@@ -179,11 +179,11 @@ TEMPLATES = [
         "user": (
             "Goal: Fetch headlines for each feed item\n"
             "Capabilities:\n"
-            "- urn:sidged:capability:feeds.list (effects=[read], data_classes=[public.web], consequential=false, cost=free)\n"
-            "- urn:sidged:capability:worker.fetch (effects=[read], data_classes=[public.web], consequential=false, cost=free)"
+            "- tag:vaikor.com,2026:capability:feeds.list (effects=[read], data_classes=[public.web], consequential=false, cost=free)\n"
+            "- tag:vaikor.com,2026:capability:worker.fetch (effects=[read], data_classes=[public.web], consequential=false, cost=free)"
         ),
         "think": (
-            "1. Read feed list via urn:sidged:capability:feeds.list. "
+            "1. Read feed list via tag:vaikor.com,2026:capability:feeds.list. "
             "2. Use a map step over feeds with bound=8 (1..32 allowed by 0003) and item=true argument."
         ),
         "plan": {
@@ -193,7 +193,7 @@ TEMPLATES = [
                 {
                     "id": "feeds",
                     "kind": "call",
-                    "capability": "urn:sidged:capability:feeds.list",
+                    "capability": "tag:vaikor.com,2026:capability:feeds.list",
                     "args": {},
                 },
                 {
@@ -201,7 +201,7 @@ TEMPLATES = [
                     "kind": "map",
                     "over": {"ref": "feeds"},
                     "bound": 8,
-                    "capability": "urn:sidged:capability:worker.fetch",
+                    "capability": "tag:vaikor.com,2026:capability:worker.fetch",
                     "args": {"url": {"item": True}},
                 },
             ],
@@ -347,7 +347,7 @@ def train_and_benchmark(base_model: str, revision: str, out_dir: pathlib.Path):
         plan_obj = json.loads(json_part)
         assert plan_obj.get("v") == "0.1" and isinstance(plan_obj.get("steps"), list)
         print(
-            f"  [CPU Case {idx}] has_think={has_think}, valid_sdg_l3_json=True, "
+            f"  [CPU Case {idx}] has_think={has_think}, valid_vkr_l3_json=True, "
             f"steps={len(plan_obj['steps'])}, tokens={n_tok}, cpu_time={dt_cpu:.2f}s ({n_tok/dt_cpu:.1f} tok/s)",
             flush=True,
         )

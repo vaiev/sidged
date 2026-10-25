@@ -22,7 +22,7 @@ import linguist  # noqa: E402
 import make_dataset_linguist  # noqa: E402
 import validate_dataset_linguist  # noqa: E402
 
-FIXTURES = linguist.HERE.parent / "runtime" / "sidged-cli" / "tests" / "fixtures"
+FIXTURES = linguist.HERE.parent / "runtime" / "vaikor-cli" / "tests" / "fixtures"
 SIZES = {"train": (2, 1.0), "dev": (2, 1.0), "blind": (2, 1.0)}
 
 

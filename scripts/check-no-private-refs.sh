@@ -5,7 +5,7 @@
 # Tracked files must not cite issues or pull requests of the private
 # development repository: in the public repository such a number would link to
 # a missing or unrelated issue. Fails on a "#" followed by 1-3 digits (and an
-# optional letter suffix) after "(", after whitespace, after "sidged" (a
+# optional letter suffix) after "(", after whitespace, after "vaikor" (a
 # cross-repository reference) or at line start.
 #   scripts/check-no-private-refs.sh [ROOT]   ROOT: a git work tree (default: this repo)
 #
@@ -19,7 +19,7 @@ set -euo pipefail
 
 root=${1:-$(cd "$(dirname "$0")/.." && pwd)}
 allow=$root/scripts/private-refs-allow.txt
-pattern='(^|\(|[[:space:]]|sidged)#[0-9]{1,3}[a-z]?\b'
+pattern='(^|\(|[[:space:]]|vaikor)#[0-9]{1,3}[a-z]?\b'
 
 # git grep exits 1 when nothing matches; any other non-zero status is an error.
 status=0
@@ -53,7 +53,7 @@ left=$(awk -v allowfile="$allow" '
       }
     }
     # The same pattern as above, with the trailing \b spelled out for awk.
-    if (allowed && text !~ /(^|[(]|[[:space:]]|sidged)#[0-9][0-9]?[0-9]?[a-z]?([^[:alnum:]_]|$)/) next
+    if (allowed && text !~ /(^|[(]|[[:space:]]|vaikor)#[0-9][0-9]?[0-9]?[a-z]?([^[:alnum:]_]|$)/) next
     print
   }' <<< "$hits")
 

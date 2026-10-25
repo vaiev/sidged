@@ -1,12 +1,12 @@
 /* Copyright 2026 VAIEV
  * SPDX-License-Identifier: Apache-2.0
- * Playground layout on top of @vaiev/ui v4 and the Sidged theme (/assets). Content flat and
+ * Playground layout on top of @vaiev/ui v4 and the Vaikor theme (/assets). Content flat and
  * tonal; the nav pill is the one glass layer. Only layout lives here. */
 body { margin: 0; }
 .vv-nav__bar { max-width: 560px; }
 .vv-nav__bar .vv-btn--text { text-decoration: none; }
 .pg-head { display: grid; gap: var(--vv-space-3); padding-block: var(--vv-space-12) var(--vv-space-8); max-width: calc(52rem + 2 * var(--vv-layout-margin)); }
-.pg-over { color: var(--sdg-sodium-300); }
+.pg-over { color: var(--vkr-sodium-300); }
 .pg-main { display: grid; gap: var(--vv-layout-gutter); align-items: start; }
 @media (min-width: 960px) { .pg-main { grid-template-columns: 1fr 1fr; } }
 .pg-pane { gap: var(--vv-space-5); }

@@ -1,7 +1,7 @@
 /* Copyright 2026 VAIEV
  * SPDX-License-Identifier: Apache-2.0
  *
- * Sidged offline UI shell. Tokens follow vaiev/ui commit 0bb03ba; see TOKENS-SOURCE.md.
+ * Vaikor offline UI shell. Tokens follow vaiev/ui commit 0bb03ba; see TOKENS-SOURCE.md.
  * Content is flat (tonal surfaces, no shadows); only the floating control
  * bar is glass (0000 L4, 0004 R7). No font is downloaded: IBM Plex is used
  * only when it is installed locally, otherwise the system stack. */

@@ -5,9 +5,9 @@
 The linguist reads one utterance plus the intent catalog and proposes a
 linguist envelope (spec/schemas/linguist-envelope.schema.json). Only lang,
 intent and slots are its own judgement: everything else is derived from the
-catalog with the same rules the Core applies (runtime/sidged-cli/src/linguist.rs);
+catalog with the same rules the Core applies (runtime/vaikor-cli/src/linguist.rs);
 derive_envelope() and derive_with_then() are pinned against the Rust rules by
-runtime/sidged-cli/tests/fixtures/linguist-prompt.json. Prompts are not rendered
+runtime/vaikor-cli/tests/fixtures/linguist-prompt.json. Prompts are not rendered
 here: core_bridge.render_prompts() asks the Rust Core for the exact runtime prompt.
 
 A model trained on the compact form (0017 L3a) proposes only v "0.2", lang, intent,
@@ -20,7 +20,7 @@ import re
 import unicodedata
 
 HERE = pathlib.Path(__file__).resolve().parent
-CATALOG_PATH = HERE.parent / "runtime" / "sidged-cli" / "assets" / "intent-catalog.json"
+CATALOG_PATH = HERE.parent / "runtime" / "vaikor-cli" / "assets" / "intent-catalog.json"
 PHRASEBOOK_PATH = HERE / "linguist_phrasebook.json"
 
 ENVELOPE_KEYS = (

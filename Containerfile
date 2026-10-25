@@ -1,11 +1,11 @@
 # Copyright 2026 VAIEV
 # SPDX-License-Identifier: Apache-2.0
 #
-# Multi-stage, multi-arch (linux/amd64, linux/arm64) image for Sidged v1
+# Multi-stage, multi-arch (linux/amd64, linux/arm64) image for Vaikor v1
 # (V1 spec L1). The builder cross-compiles on the build platform; only the
 # runtime stage is per target. Build per platform, e.g.:
 #   podman build --platform linux/arm64 --target core \
-#     --build-arg SIDGED_GIT_SHA="$(git rev-parse HEAD)" -t sidged-core .
+#     --build-arg VAIKOR_GIT_SHA="$(git rev-parse HEAD)" -t vaikor-core .
 # Targets: core, musl (static binary export only).
 # No keys or secrets are baked in: keys are mounted at runtime under /keys.
 
@@ -35,8 +35,8 @@ COPY spec/registries ./spec/registries
 COPY docs/demo/mcp-server-time ./docs/demo/mcp-server-time
 # .git is not in the build context; the commit comes in as a build arg and
 # build.rs falls back to "unknown" if it is not a full 40-char SHA.
-ARG SIDGED_GIT_SHA=unknown
-ENV SIDGED_GIT_SHA=${SIDGED_GIT_SHA} \
+ARG VAIKOR_GIT_SHA=unknown
+ENV VAIKOR_GIT_SHA=${VAIKOR_GIT_SHA} \
     RUSTUP_TOOLCHAIN=1.89.0 \
     CARGO_INCREMENTAL=0
 # Trust split for caches. This committed file is the trusted build
@@ -45,38 +45,38 @@ ENV SIDGED_GIT_SHA=${SIDGED_GIT_SHA} \
 # a trusted image. target/ is deleted in the same RUN, so it never lands in
 # a layer. Pull-request builds run scripts/containerfile-scope.sh pr<N>,
 # which rewrites the two marked lines below into cache mounts with literal
-# per-PR ids (sidged-cargo-reg-pr<N>, sidged-cargo-target-pr<N>); trusted
+# per-PR ids (vaikor-cargo-reg-pr<N>, vaikor-cargo-target-pr<N>); trusted
 # builds never mount those. Literal ids avoid relying on build-arg expansion
 # inside --mount options.
-# sidged-cache: run
+# vaikor-cache: run
 RUN read -r _ triple clang_target < /target \
  && rustup target add "$triple" \
  && env_triple="$(echo "$triple" | tr 'a-z-' 'A-Z_')" \
  && export "CC_$(echo "$triple" | tr '-' '_')=clang --target=$clang_target --sysroot=/sysroot" \
            "CARGO_TARGET_${env_triple}_LINKER=clang" \
            "CARGO_TARGET_${env_triple}_RUSTFLAGS=-C link-arg=--target=$clang_target -C link-arg=--sysroot=/sysroot -C link-arg=-fuse-ld=lld" \
- && cargo build --manifest-path runtime/Cargo.toml --locked --release -p sidged-guard -p sidged-tui --target "$triple" \
- && install -D -m 0555 "runtime/target/$triple/release/sidged" /out/sidged \
- && install -D -m 0555 "runtime/target/$triple/release/sidged-tui" /out/sidged-tui \
+ && cargo build --manifest-path runtime/Cargo.toml --locked --release -p vaikor-guard -p vaikor-tui --target "$triple" \
+ && install -D -m 0555 "runtime/target/$triple/release/vaikor" /out/vaikor \
+ && install -D -m 0555 "runtime/target/$triple/release/vaikor-tui" /out/vaikor-tui \
  && rm -rf runtime/target
 
 # Static musl fallback artifact: `--target musl --output type=local,dest=dist`
-# (or podman build ... -o dist) yields dist/sidged and dist/sidged-tui.
+# (or podman build ... -o dist) yields dist/vaikor and dist/vaikor-tui.
 FROM scratch AS musl
-COPY --from=build /out/sidged /sidged
-COPY --from=build /out/sidged-tui /sidged-tui
+COPY --from=build /out/vaikor /vaikor
+COPY --from=build /out/vaikor-tui /vaikor-tui
 
 # Minimal runtime: distroless static, non-root (uid 65532), no shell.
 FROM gcr.io/distroless/static-debian12:nonroot@sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab AS runtime
-COPY --from=build /out/sidged /usr/local/bin/sidged
-COPY --from=build /out/sidged-tui /usr/local/bin/sidged-tui
+COPY --from=build /out/vaikor /usr/local/bin/vaikor
+COPY --from=build /out/vaikor-tui /usr/local/bin/vaikor-tui
 USER 65532:65532
 WORKDIR /home/nonroot
 VOLUME ["/keys"]
-ENTRYPOINT ["/usr/local/bin/sidged"]
+ENTRYPOINT ["/usr/local/bin/vaikor"]
 
 # Core image; Edge 1 and Edges 2..n run this same signed image (V1 spec).
 FROM runtime AS core
-LABEL org.opencontainers.image.title="sidged-core" \
-      org.opencontainers.image.source="https://github.com/vaiev/sidged" \
+LABEL org.opencontainers.image.title="vaikor-core" \
+      org.opencontainers.image.source="https://github.com/vaiev/vaikor" \
       org.opencontainers.image.licenses="Apache-2.0"

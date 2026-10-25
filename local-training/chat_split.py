@@ -11,7 +11,7 @@ Output (under --out-dir, which must be git-ignored; nothing here is ever committ
 Names never leave this script: the owner is the sender who appears in the most chats, every
 other sender is "peer", and a chat is named by a hash of its file name. A message is split
 into lines and sentences; a part is dropped if it holds a URL, an @ or #, a media or deletion
-placeholder, an sdg.pii/1 detector hit or a term from --exclude-terms-file.
+placeholder, an vkr.pii/1 detector hit or a term from --exclude-terms-file.
 
 Usage: python3 -I chat_split.py --out-dir out/chat --exclude-terms-file FILE CHAT.txt [...]
 """

@@ -1,6 +1,6 @@
 {
   "category": "records",
-  "description": "Deterministic CBOR encoding and decoding and typed Records (spec 0012, SDG-L0). Real Ed25519 signatures over dcbor with the RFC 8032 test keys; generated and self-checked by tools/gen_dcbor_vectors.py.",
+  "description": "Deterministic CBOR encoding and decoding and typed Records (spec 0012, VKR-L0). Real Ed25519 signatures over dcbor with the RFC 8032 test keys; generated and self-checked by tools/gen_dcbor_vectors.py.",
   "vectors": [
     {
       "id": "dcbor.encode.001",
@@ -549,11 +549,11 @@
       "input": {
         "record": {
           "v": "0.1",
-          "type": "application/vnd.sidged.note+json",
+          "type": "application/vnd.vaikor.note+json",
           "class": "health.records.notes",
           "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
           "provenance": {
-            "source": "urn:sidged:capability:notes.write",
+            "source": "tag:vaikor.com,2026:capability:notes.write",
             "created": "2026-10-15T08:00:00Z",
             "derived_from": [],
             "plan": null
@@ -574,15 +574,15 @@
             "alg": "EdDSA",
             "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
             "canon": "dcbor",
-            "value": "cYZLoDibia-1OruFLa-gp20bU27CuV8WtIbDdu5IyHDsu4tBaMCpKKSPv_1wSobFjVmaO-jq3eB9i_A3lXg4Ag",
+            "value": "chcZIH2chfpQVUEczhHPvle1x_xeea53sUUfbqSrS7rpkyCZH_shFTf8Wxf-_2I6Fq4Q3hU35NF50EP7iZN9DA",
             "signer": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw"
           }
         }
       },
       "expected": {
         "value": {
-          "digest": "kcHiSq8w2q20D_lvH9l7BRFn2CJwELSQaFwkbgzwvZI",
-          "dcbor_hex": "a8617663302e31647479706578206170706c69636174696f6e2f766e642e7369646765642e6e6f74652b6a736f6e65636c617373746865616c74682e7265636f7264732e6e6f746573656f776e657278386469643a6b65793a7a364d6b77534438644264716358517a4b4a5a5146507932686832697a7a78736b6e644b436a646d4332644270664d4567636f6e74656e74a164746578747450687973696f20547565736461792031343a3030697265736964656e6379a164746167738162434869726574656e74696f6ea265756e74696c74323032372d31302d31355430383a30303a30305a696f6e5f6578706972796664656c6574656a70726f76656e616e6365a464706c616ef666736f75726365782175726e3a7369646765643a6361706162696c6974793a6e6f7465732e7772697465676372656174656474323032362d31302d31355430383a30303a30305a6c646572697665645f66726f6d80"
+          "digest": "OxK3wdu7r2Dg_rfXHcnKUzC4wzD_JUoSPnEkMMeUyfA",
+          "dcbor_hex": "a8617663302e31647479706578206170706c69636174696f6e2f766e642e7661696b6f722e6e6f74652b6a736f6e65636c617373746865616c74682e7265636f7264732e6e6f746573656f776e657278386469643a6b65793a7a364d6b77534438644264716358517a4b4a5a5146507932686832697a7a78736b6e644b436a646d4332644270664d4567636f6e74656e74a164746578747450687973696f20547565736461792031343a3030697265736964656e6379a164746167738162434869726574656e74696f6ea265756e74696c74323032372d31302d31355430383a30303a30305a696f6e5f6578706972796664656c6574656a70726f76656e616e6365a464706c616ef666736f75726365782a7461673a7661696b6f722e636f6d2c323032363a6361706162696c6974793a6e6f7465732e7772697465676372656174656474323032362d31302d31355430383a30303a30305a6c646572697665645f66726f6d80"
         }
       },
       "status": "normative",
@@ -605,11 +605,11 @@
       "input": {
         "record": {
           "v": "0.1",
-          "type": "application/vnd.sidged.note+json",
+          "type": "application/vnd.vaikor.note+json",
           "class": "health.records.notes",
           "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
           "provenance": {
-            "source": "urn:sidged:capability:notes.write",
+            "source": "tag:vaikor.com,2026:capability:notes.write",
             "created": "2026-10-15T08:00:00Z",
             "derived_from": [],
             "plan": null
@@ -630,7 +630,7 @@
             "alg": "EdDSA",
             "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
             "canon": "dcbor",
-            "value": "cYZLoDibia-1OruFLa-gp20bU27CuV8WtIbDdu5IyHDsu4tBaMCpKKSPv_1wSobFjVmaO-jq3eB9i_A3lXg4Ag",
+            "value": "chcZIH2chfpQVUEczhHPvle1x_xeea53sUUfbqSrS7rpkyCZH_shFTf8Wxf-_2I6Fq4Q3hU35NF50EP7iZN9DA",
             "signer": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw"
           }
         },
@@ -661,11 +661,11 @@
       "input": {
         "record": {
           "v": "0.1",
-          "type": "application/vnd.sidged.note+json",
+          "type": "application/vnd.vaikor.note+json",
           "class": "calendar.availability",
           "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
           "provenance": {
-            "source": "urn:sidged:capability:notes.write",
+            "source": "tag:vaikor.com,2026:capability:notes.write",
             "created": "2026-10-15T08:00:00Z",
             "derived_from": [],
             "plan": null
@@ -686,7 +686,7 @@
             "alg": "EdDSA",
             "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
             "canon": "dcbor",
-            "value": "cYZLoDibia-1OruFLa-gp20bU27CuV8WtIbDdu5IyHDsu4tBaMCpKKSPv_1wSobFjVmaO-jq3eB9i_A3lXg4Ag",
+            "value": "chcZIH2chfpQVUEczhHPvle1x_xeea53sUUfbqSrS7rpkyCZH_shFTf8Wxf-_2I6Fq4Q3hU35NF50EP7iZN9DA",
             "signer": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw"
           }
         },
@@ -718,10 +718,10 @@
       "input": {
         "record": {
           "v": "0.1",
-          "type": "application/vnd.sidged.note+json",
+          "type": "application/vnd.vaikor.note+json",
           "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
           "provenance": {
-            "source": "urn:sidged:capability:notes.write",
+            "source": "tag:vaikor.com,2026:capability:notes.write",
             "created": "2026-10-15T08:00:00Z",
             "derived_from": [],
             "plan": null
@@ -742,7 +742,7 @@
             "alg": "EdDSA",
             "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
             "canon": "dcbor",
-            "value": "ccTB7NB9TWJw1Y9_g8wWwxRej40cWJR98u74MrqJZwM7Jsf8vIIWhwyPoBOuD9MK7paJAr5vGHh9RYw2PSfgDw",
+            "value": "TnXTeXkPmWlKpeRj0dJ2bPKgoj9_6XTRwgbW29m1pvckcRhHGnUnpYr_7OlrJKsKbaaaFKosc_c3E5K-hzarBw",
             "signer": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw"
           }
         },
@@ -774,11 +774,11 @@
       "input": {
         "record": {
           "v": "0.1",
-          "type": "application/vnd.sidged.note+json",
+          "type": "application/vnd.vaikor.note+json",
           "class": "health.records.notes",
           "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
           "provenance": {
-            "source": "urn:sidged:capability:notes.write",
+            "source": "tag:vaikor.com,2026:capability:notes.write",
             "created": "2026-10-15T08:00:00Z",
             "derived_from": [],
             "plan": null
@@ -795,7 +795,7 @@
             "alg": "EdDSA",
             "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
             "canon": "dcbor",
-            "value": "P37qlw9bxScet7EfXdI8HOI4xBhaRMxAgFyYHrwS321jQrAWUlTW1xyNhQpgoAR31eEJnv6ozmBA5pXaMX6WDg",
+            "value": "RSuctjvMx8l6pPImE5GsQAeTKoEVxAOH10qzyyKWz7jXh9vnfvsiAL7tkOMm7NepGsZkZPjmnx9MWob3hDwrCQ",
             "signer": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw"
           }
         },
@@ -827,7 +827,7 @@
       "input": {
         "record": {
           "v": "0.1",
-          "type": "application/vnd.sidged.note+json",
+          "type": "application/vnd.vaikor.note+json",
           "class": "health.records.notes",
           "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
           "provenance": {
@@ -851,7 +851,7 @@
             "alg": "EdDSA",
             "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
             "canon": "dcbor",
-            "value": "AaJ6WLY0xir-wd196NL1uN_KtA-FQoeowXV-OuqOHRoCE59v0kH4OnDcqxIYpaIEoQdF5zLv5MOyoalNRBaWBw",
+            "value": "U-zjud5oAm315mT71DccMz43noUKBkw0wIH1ieuPzNagoTK_hpJ2zHRFkMe8PwSut6Wt4M91efu3GZVJC4vwBQ",
             "signer": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw"
           }
         },
@@ -883,11 +883,11 @@
       "input": {
         "record": {
           "v": "0.1",
-          "type": "application/vnd.sidged.note+json",
+          "type": "application/vnd.vaikor.note+json",
           "class": "health.records.notes",
           "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
           "provenance": {
-            "source": "urn:sidged:capability:notes.write",
+            "source": "tag:vaikor.com,2026:capability:notes.write",
             "created": "2026-10-15T08:00:00Z",
             "derived_from": [],
             "plan": null
@@ -908,7 +908,7 @@
             "alg": "EdDSA",
             "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
             "canon": "dcbor",
-            "value": "LhNyKgw-oYV4Hj8yaSAWUruwJRfbo0YIskavfX2s7EAcTmgctBVAg5MA3ybu5SuWFAWlrieCIfaAOWLi7sdIBA",
+            "value": "Zgc8pbBSjvKIeLx2PWKrS-y1ssMmhy8k42QtrjKvh-iX2s57GkE03qskzwunoLd_VghHr64suIIDAFxCQhQjBQ",
             "signer": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw"
           }
         },
@@ -940,11 +940,11 @@
       "input": {
         "record": {
           "v": "0.1",
-          "type": "application/vnd.sidged.note+json",
+          "type": "application/vnd.vaikor.note+json",
           "class": "health.records.notes",
           "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
           "provenance": {
-            "source": "urn:sidged:capability:notes.write",
+            "source": "tag:vaikor.com,2026:capability:notes.write",
             "created": "2026-10-15T08:00:00Z",
             "derived_from": [],
             "plan": null
@@ -965,7 +965,7 @@
             "alg": "EdDSA",
             "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
             "canon": "dcbor",
-            "value": "NfPxVEP1-gj-Na9kLRSD03da8QbjwsfPx30LnUf2GxJRTRhNarIaL-LOAfji48jS9h9fMo9h4jYvFbNtovIcDQ",
+            "value": "aWtZ03IxYcfZfL40Gi13T_Z2NUJginkIpg9-zGLOXxSs2qj3JhSqdTpQGJpOwgugi08aCiuNFt_J9_trB0jDAg",
             "signer": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw"
           }
         },
@@ -997,11 +997,11 @@
       "input": {
         "record": {
           "v": "0.2",
-          "type": "application/vnd.sidged.note+json",
+          "type": "application/vnd.vaikor.note+json",
           "class": "health.records.notes",
           "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
           "provenance": {
-            "source": "urn:sidged:capability:notes.write",
+            "source": "tag:vaikor.com,2026:capability:notes.write",
             "created": "2026-10-15T08:00:00Z",
             "derived_from": [],
             "plan": null
@@ -1022,7 +1022,7 @@
             "alg": "EdDSA",
             "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
             "canon": "dcbor",
-            "value": "fxGFdLZ_QI1DS-IwJmtNfXjSBGP7ycdY7Mks4C_05NqkZrQTq9bREEFZiTE8Fi88xh37Nk02g3SMJmQi2PySAw",
+            "value": "gDvFJSpCFGKCpQD-9b2XkNlCUYxNuYZhOU_ipMWRbaeYO0FtjR5QCe-s4sAPI6tR0nFV9DnWlncu-TL96ZsxCQ",
             "signer": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw"
           }
         },
@@ -1054,11 +1054,11 @@
       "input": {
         "record": {
           "v": "0.1",
-          "type": "application/vnd.sidged.note+json",
+          "type": "application/vnd.vaikor.note+json",
           "class": "healthx.notes",
           "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
           "provenance": {
-            "source": "urn:sidged:capability:notes.write",
+            "source": "tag:vaikor.com,2026:capability:notes.write",
             "created": "2026-10-15T08:00:00Z",
             "derived_from": [],
             "plan": null
@@ -1079,7 +1079,7 @@
             "alg": "EdDSA",
             "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
             "canon": "dcbor",
-            "value": "xQQxc_h_P4BOS8EzOUM0I5b9vflUAFR39cBFoC5H6jxkmpCL8IJA1iJuhfAegHKNuM0utd3i5u6dg3bbDQjJBw",
+            "value": "XNT0Em1G45gkjFVeDzLAu3k5NA__i9nrqkJ593WrptVOsN5k8kvk-bB0LRU7xk0z7Rh_NOXG3HL9J2KZrgQpDA",
             "signer": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw"
           }
         },
@@ -1111,11 +1111,11 @@
       "input": {
         "record": {
           "v": "0.1",
-          "type": "application/vnd.sidged.note+json",
+          "type": "application/vnd.vaikor.note+json",
           "class": "health/records",
           "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
           "provenance": {
-            "source": "urn:sidged:capability:notes.write",
+            "source": "tag:vaikor.com,2026:capability:notes.write",
             "created": "2026-10-15T08:00:00Z",
             "derived_from": [],
             "plan": null
@@ -1136,7 +1136,7 @@
             "alg": "EdDSA",
             "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
             "canon": "dcbor",
-            "value": "TxuOBOqLsbSV4EoEeSrHvBFQDgy_LaeHwGIzunMbnuYrSTfYh4ku-0pnRwkFawxf3zVRocy8uXxkGAC8FyvoAQ",
+            "value": "5SgElSK9PjZlt6Bofaatkbz-2qY0gqyMiVruAW8bwYhZ-NE4AnUdktvLdb-iiXlONS5ac7hHGZBO_4EcKKK9AA",
             "signer": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw"
           }
         },
@@ -1168,11 +1168,11 @@
       "input": {
         "record": {
           "v": "0.1",
-          "type": "application/vnd.sidged.note+json",
+          "type": "application/vnd.vaikor.note+json",
           "class": "health..notes",
           "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
           "provenance": {
-            "source": "urn:sidged:capability:notes.write",
+            "source": "tag:vaikor.com,2026:capability:notes.write",
             "created": "2026-10-15T08:00:00Z",
             "derived_from": [],
             "plan": null
@@ -1193,7 +1193,7 @@
             "alg": "EdDSA",
             "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
             "canon": "dcbor",
-            "value": "8IOKESzvr86d_x2zfKpEWghejQBwfqguO8ccSJiXEMFzal5gmdomOn8Ln9D0aML_503tUG37Tq9CSVKi0GrMDw",
+            "value": "Ht4GPLvVrRic3YwQPiXwp5hixLlKUuRw0FMCVqaQUVJbtSAWYh-K5fwNoXWvW9VlF_xOJeoP9myTMZGiSDeIBg",
             "signer": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw"
           }
         },
@@ -1225,11 +1225,11 @@
       "input": {
         "record": {
           "v": "0.1",
-          "type": "application/vnd.sidged.note+json",
+          "type": "application/vnd.vaikor.note+json",
           "class": "x-acme.notes",
           "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
           "provenance": {
-            "source": "urn:sidged:capability:notes.write",
+            "source": "tag:vaikor.com,2026:capability:notes.write",
             "created": "2026-10-15T08:00:00Z",
             "derived_from": [],
             "plan": null
@@ -1250,7 +1250,7 @@
             "alg": "EdDSA",
             "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
             "canon": "dcbor",
-            "value": "-CCriWT5aKInUGJNdEOTTI3RmWobFDDPXpSW9TxUAPwjc96-BtKRsuy10BJtYHqmKsiUoaU4KJTrkcJlIDAFBQ",
+            "value": "BvmcRfFT33GHBPo0zjkDPnqSVwAwyV25HFX2NslxUWH6CH63XhSjqli4AmNeR_6_itRV7gt3hl3Sod7lhzj7Dg",
             "signer": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw"
           }
         },
@@ -1281,11 +1281,11 @@
       "input": {
         "record": {
           "v": "0.1",
-          "type": "application/vnd.sidged.note+json",
+          "type": "application/vnd.vaikor.note+json",
           "class": "health.records.notes",
           "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
           "provenance": {
-            "source": "urn:sidged:capability:notes.write",
+            "source": "tag:vaikor.com,2026:capability:notes.write",
             "created": "2026-10-15T08:00:00Z",
             "derived_from": [],
             "plan": null
@@ -1306,7 +1306,7 @@
             "alg": "EdDSA",
             "kid": "did:key:z6MkiaMbhXHNA4eJVCCj8dbzKzTgYDKf6crKgHVHid1F1WCT",
             "canon": "dcbor",
-            "value": "EH0n4CGTiLDdjo03xYoXadkELbETp2MfXweuJd6RhWhblb9e5pDhheAHlF93yrrlOEeiP5CDuOX2mfCcOQBqDA",
+            "value": "PfoAD1q_zB_R2CW9x_GTh1a8XA9j4Tmlbsxj8HpZIAr6sUU8kVEa0UEUX7KpodKeQC4Q5Lf9065eZS083axoAw",
             "signer": "did:key:z6MkiaMbhXHNA4eJVCCj8dbzKzTgYDKf6crKgHVHid1F1WCT"
           }
         },
@@ -1338,11 +1338,11 @@
       "input": {
         "record": {
           "v": "0.1",
-          "type": "application/vnd.sidged.note+json",
+          "type": "application/vnd.vaikor.note+json",
           "class": "health.records.notes",
           "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
           "provenance": {
-            "source": "urn:sidged:capability:notes.write",
+            "source": "tag:vaikor.com,2026:capability:notes.write",
             "created": "2026-10-15T08:00:00Z",
             "derived_from": [],
             "plan": null
@@ -1363,7 +1363,7 @@
             "alg": "EdDSA",
             "kid": "did:key:z6MkiaMbhXHNA4eJVCCj8dbzKzTgYDKf6crKgHVHid1F1WCT",
             "canon": "dcbor",
-            "value": "cYZLoDibia-1OruFLa-gp20bU27CuV8WtIbDdu5IyHDsu4tBaMCpKKSPv_1wSobFjVmaO-jq3eB9i_A3lXg4Ag",
+            "value": "chcZIH2chfpQVUEczhHPvle1x_xeea53sUUfbqSrS7rpkyCZH_shFTf8Wxf-_2I6Fq4Q3hU35NF50EP7iZN9DA",
             "signer": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw"
           }
         },
@@ -1391,11 +1391,11 @@
       "input": {
         "record": {
           "v": "0.1",
-          "type": "application/vnd.sidged.note+json",
+          "type": "application/vnd.vaikor.note+json",
           "class": "health.records.notes",
           "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
           "provenance": {
-            "source": "urn:sidged:capability:notes.write",
+            "source": "tag:vaikor.com,2026:capability:notes.write",
             "created": "2026-10-15T08:00:00Z",
             "derived_from": [],
             "plan": null
@@ -1416,7 +1416,7 @@
             "alg": "EdDSA",
             "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
             "canon": "dcbor",
-            "value": "cYZLoDibia-1OruFLa-gp20bU27CuV8WtIbDdu5IyHDsu4tBaMCpKKSPv_1wSobFjVmaO-jq3eB9i_A3lXg4Ag",
+            "value": "chcZIH2chfpQVUEczhHPvle1x_xeea53sUUfbqSrS7rpkyCZH_shFTf8Wxf-_2I6Fq4Q3hU35NF50EP7iZN9DA",
             "signer": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw"
           }
         },
@@ -1440,11 +1440,11 @@
       "input": {
         "record": {
           "v": "0.1",
-          "type": "application/vnd.sidged.note+json",
+          "type": "application/vnd.vaikor.note+json",
           "class": "health.records.notes",
           "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
           "provenance": {
-            "source": "urn:sidged:capability:notes.write",
+            "source": "tag:vaikor.com,2026:capability:notes.write",
             "created": "2026-10-15T08:00:00Z",
             "derived_from": [],
             "plan": null
@@ -1465,7 +1465,7 @@
             "alg": "EdDSA",
             "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
             "canon": "dcbor",
-            "value": "cYZLoDibia-1OruFLa-gp20bU27CuV8WtIbDdu5IyHDsu4tBaMCpKKSPv_1wSobFjVmaO-jq3eB9i_A3lXg4Ag",
+            "value": "chcZIH2chfpQVUEczhHPvle1x_xeea53sUUfbqSrS7rpkyCZH_shFTf8Wxf-_2I6Fq4Q3hU35NF50EP7iZN9DA",
             "signer": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw"
           }
         },
@@ -1489,11 +1489,11 @@
       "input": {
         "record": {
           "v": "0.1",
-          "type": "application/vnd.sidged.note+json",
+          "type": "application/vnd.vaikor.note+json",
           "class": "health.records.notes",
           "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
           "provenance": {
-            "source": "urn:sidged:capability:notes.write",
+            "source": "tag:vaikor.com,2026:capability:notes.write",
             "created": "2026-10-15T08:00:00Z",
             "derived_from": [],
             "plan": null
@@ -1514,7 +1514,7 @@
             "alg": "EdDSA",
             "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
             "canon": "dcbor",
-            "value": "cYZLoDibia-1OruFLa-gp20bU27CuV8WtIbDdu5IyHDsu4tBaMCpKKSPv_1wSobFjVmaO-jq3eB9i_A3lXg4Ag",
+            "value": "chcZIH2chfpQVUEczhHPvle1x_xeea53sUUfbqSrS7rpkyCZH_shFTf8Wxf-_2I6Fq4Q3hU35NF50EP7iZN9DA",
             "signer": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw"
           }
         },
@@ -1538,11 +1538,11 @@
       "input": {
         "record": {
           "v": "0.1",
-          "type": "application/vnd.sidged.note+json",
+          "type": "application/vnd.vaikor.note+json",
           "class": "health.records.notes",
           "owner": "did:key:z6MkwSD8dBdqcXQzKJZQFPy2hh2izzxskndKCjdmC2dBpfME",
           "provenance": {
-            "source": "urn:sidged:capability:notes.write",
+            "source": "tag:vaikor.com,2026:capability:notes.write",
             "created": "2026-10-15T08:00:00Z",
             "derived_from": [],
             "plan": null
@@ -1563,7 +1563,7 @@
             "alg": "EdDSA",
             "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
             "canon": "dcbor",
-            "value": "wJsAb_bSIPBPxeoYRvVdv_ox8Op0a6u7Vx_0PodCevTc7Q6PQZyrT9YmcRJNhLkYnKqNTYDjpd86PqHrBmuxAQ",
+            "value": "0LRWchkWMaw_FkDvUJJAO3Z0fmBBTwphLrFVYhhpK7JmjlslLsdscTrcPOhCyFC70fmZ2ih6pI1yYZKyMAdDBg",
             "signer": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw"
           }
         },
@@ -1839,7 +1839,7 @@
         "class": "health.records.notes"
       },
       "expected": {
-        "value": "urn:sidged:record:health/records/notes"
+        "value": "tag:vaikor.com,2026:record:health/records/notes"
       },
       "status": "normative"
     },
@@ -1857,7 +1857,7 @@
         "class": "x-acme"
       },
       "expected": {
-        "value": "urn:sidged:record:x-acme"
+        "value": "tag:vaikor.com,2026:record:x-acme"
       },
       "status": "normative"
     },
@@ -1912,14 +1912,14 @@
       ],
       "operation": "resource-covers",
       "input": {
-        "right": "urn:sidged:record:health/*",
-        "resource": "urn:sidged:record:health/records/notes"
+        "right": "tag:vaikor.com,2026:record:health/*",
+        "resource": "tag:vaikor.com,2026:record:health/records/notes"
       },
       "expected": {
         "value": true
       },
       "status": "normative",
-      "note": "record class resources under SDG-L2 R9 (0012 R9)"
+      "note": "record class resources under VKR-L2 R9 (0012 R9)"
     },
     {
       "id": "record.coverage.002",
@@ -1932,14 +1932,14 @@
       ],
       "operation": "resource-covers",
       "input": {
-        "right": "urn:sidged:record:health/records/*",
-        "resource": "urn:sidged:record:health/records/notes"
+        "right": "tag:vaikor.com,2026:record:health/records/*",
+        "resource": "tag:vaikor.com,2026:record:health/records/notes"
       },
       "expected": {
         "value": true
       },
       "status": "normative",
-      "note": "record class resources under SDG-L2 R9 (0012 R9)"
+      "note": "record class resources under VKR-L2 R9 (0012 R9)"
     },
     {
       "id": "record.coverage.003",
@@ -1952,14 +1952,14 @@
       ],
       "operation": "resource-covers",
       "input": {
-        "right": "urn:sidged:record:health/*",
-        "resource": "urn:sidged:record:health"
+        "right": "tag:vaikor.com,2026:record:health/*",
+        "resource": "tag:vaikor.com,2026:record:health"
       },
       "expected": {
         "value": false
       },
       "status": "normative",
-      "note": "record class resources under SDG-L2 R9 (0012 R9)"
+      "note": "record class resources under VKR-L2 R9 (0012 R9)"
     },
     {
       "id": "record.coverage.004",
@@ -1972,14 +1972,14 @@
       ],
       "operation": "resource-covers",
       "input": {
-        "right": "urn:sidged:record:health/*",
-        "resource": "urn:sidged:record:healthx/notes"
+        "right": "tag:vaikor.com,2026:record:health/*",
+        "resource": "tag:vaikor.com,2026:record:healthx/notes"
       },
       "expected": {
         "value": false
       },
       "status": "normative",
-      "note": "record class resources under SDG-L2 R9 (0012 R9)"
+      "note": "record class resources under VKR-L2 R9 (0012 R9)"
     },
     {
       "id": "record.coverage.005",
@@ -1992,14 +1992,14 @@
       ],
       "operation": "resource-covers",
       "input": {
-        "right": "urn:sidged:record:health/records",
-        "resource": "urn:sidged:record:health/records/notes"
+        "right": "tag:vaikor.com,2026:record:health/records",
+        "resource": "tag:vaikor.com,2026:record:health/records/notes"
       },
       "expected": {
         "value": false
       },
       "status": "normative",
-      "note": "record class resources under SDG-L2 R9 (0012 R9)"
+      "note": "record class resources under VKR-L2 R9 (0012 R9)"
     }
   ]
 }

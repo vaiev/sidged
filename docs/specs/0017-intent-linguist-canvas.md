@@ -1,6 +1,6 @@
 # 0017 – Intent Catalog, Companion Linguist, Morphing Canvas and Browser Verifier
 
-> **Status:** Draft v0.1. Implemented in `v0.2.0`: `runtime/sidged-cli/src/linguist.rs`, `local-training/` (Model -1), `companion/sidged-companion-core`, `companion/sidged-companion-app`, `site/sidged-wasm`.
+> **Status:** Draft v0.1. Implemented in `v0.2.0`: `runtime/vaikor-cli/src/linguist.rs`, `local-training/` (Model -1), `companion/vaikor-companion-core`, `companion/vaikor-companion-app`, `site/vaikor-wasm`.
 > **Date:** 2026-10-20
 > **Basis:** [VISION.md](../vision/VISION.md) section 5 (invariants 1–9), [0001-capability.md](0001-capability.md), [0003-plan.md](0003-plan.md), [0004-view.md](0004-view.md), [0009-models.md](0009-models.md), [0013-cbor-plans-ifc.md](0013-cbor-plans-ifc.md), [0016-companion-swiyu-iso27090.md](0016-companion-swiyu-iso27090.md).
 > **Schemas:** [`intent-catalog.schema.json`](../../spec/schemas/intent-catalog.schema.json), [`linguist-envelope.schema.json`](../../spec/schemas/linguist-envelope.schema.json); UI catalog [`ui/a2ui-catalog.v4.json`](../../ui/a2ui-catalog.v4.json).
@@ -19,13 +19,13 @@ An intent catalog lists generic user intents. Each intent declares its slots as 
 - **I2.** Slot order is the order of `slots_schema.properties`; the Core asks for missing required slots in the order of `slots_schema.required`.
 - **I3.** `route` is `edge-local` (Edge 1 plans and runs) or `swarm-worker` (Edge 1 plans, swarm workers run steps). A catalog grants nothing: capabilities still need grants (0002) and plans still need the verifier (0003, 0013).
 - **I4.** Locales are BCP 47 tags without script. `gsw` is Swiss German; `de` is Standard German, including Swiss Standard German.
-- **I5.** The catalog a Core uses is part of its build (`runtime/sidged-cli/assets/intent-catalog.json`) and of the model's training data. A catalog change MUST be followed by retraining or by re-evaluation of the deployed linguist on the held-out split.
+- **I5.** The catalog a Core uses is part of its build (`runtime/vaikor-cli/assets/intent-catalog.json`) and of the model's training data. A catalog change MUST be followed by retraining or by re-evaluation of the deployed linguist on the held-out split.
 
 ## 2. Linguist envelope (Model -1)
 
 The companion linguist reads one utterance plus the rendered catalog and proposes one envelope (`linguist-envelope.schema.json`).
 
-- **L1.** The prompt is `SYSTEM_PROMPT` plus `Catalog:\n<one line per intent>\nUtterance: <text>`, byte-identical in every implementation (pinned by `runtime/sidged-cli/tests/fixtures/linguist-prompt.json`). A catalog line names the intent, title, route, data classes, template, and each slot with `*` for required and its description.
+- **L1.** The prompt is `SYSTEM_PROMPT` plus `Catalog:\n<one line per intent>\nUtterance: <text>`, byte-identical in every implementation (pinned by `runtime/vaikor-cli/tests/fixtures/linguist-prompt.json`). A catalog line names the intent, title, route, data classes, template, and each slot with `*` for required and its description.
 - **L2.** The Core MUST keep only `lang`, `intent` and `slots` from a proposal and MUST derive every other member from the catalog:
   - `missing_slots` = required slots not in `slots`, in catalog order;
   - `clarification_needed` = `intent` is null or `missing_slots` is not empty;
@@ -35,7 +35,7 @@ The companion linguist reads one utterance plus the rendered catalog and propose
   - `required_data_classes` = the intent's data classes.
 - **L3.** A proposal with any member outside the envelope (for example `residency`, `approval`, `grant`), a missing member, a non-object `slots`, or a `lang` outside the catalog locales MUST be refused. The one optional member is `then` (§2c); a `then` that is not an array of at most two `{intent, slots}` objects MUST be refused.
 - **L3a.** *Compact proposal (lead decision 2026-10-23, ROADMAP 13e B).* A proposal with `v` `"0.2"` carries only `v`, `lang`, `intent`, `missing`, `slots` and the optional `then`, in this order; the Core derives the full envelope (L2) from it. `missing` lists the intent's required slots the utterance does not give, in catalog order (empty for intent null); it is the model's commitment before it writes slots, not a derived member: the Core still derives `missing_slots` itself, drops a slot the proposal lists in `missing` and also gives (correction `slot-declared-missing`), and records a disagreement with its own derivation as `missing-corrected`. Follow-ups in `then` carry only `intent` and `slots`. Any other member MUST be refused as in L3. Proposals with `v` `"0.1"` (the full envelope) remain accepted, so a deployed model keeps working until it is retrained. *Rationale: L2 already discards every other member; generating them costs a small model tokens, latency and format errors for nothing. `missing` stays because without it a small model invents values for absent required slots (blind v1, run 10: 6 to 15 % of missing-slot utterances against 0 to 1 % with the full envelope), and it costs a few tokens.*
-- **L3b.** *Declared output form (lead decision 2026-10-23, ROADMAP 13e).* A served linguist GGUF MAY carry the string metadata key `sidged.linguist.output` with the value `"compact"` (L3a) or `"full"` (v0.1); absent means `"full"`. The key sits inside the weights, so the SHA-256 that identifies them (0011 R8) covers it. A runtime that bundles or serves weights MUST set `model.output` from it, and MUST refuse any other value or type (the model is not started). The key is not a security boundary: the Core checks every reply as in L3 to L7, whatever form it was asked for.
+- **L3b.** *Declared output form (lead decision 2026-10-23, ROADMAP 13e).* A served linguist GGUF MAY carry the string metadata key `vaikor.linguist.output` with the value `"compact"` (L3a) or `"full"` (v0.1); absent means `"full"`. The key sits inside the weights, so the SHA-256 that identifies them (0011 R8) covers it. A runtime that bundles or serves weights MUST set `model.output` from it, and MUST refuse any other value or type (the model is not started). The key is not a security boundary: the Core checks every reply as in L3 to L7, whatever form it was asked for.
 - **L8.** *Constrained decoding.* A runtime that serves the linguist SHOULD constrain decoding with a JSON Schema the Core generates from the catalog: `lang` one of the locales, `intent` a catalog id or null, `slots` only that intent's declared slots as strings of 1 to 512 characters, with one branch per subset of the intent's required slots for `missing` in which the slots named there are absent and every other required slot is present, `then` only declared compositions (§2c) with their slots. The schema is an efficiency and robustness measure, not a security boundary: the Core checks every proposal as in L3 to L7, constrained or not.
 - **L4.** An unknown intent MUST become `intent: null`. A slot not declared by the intent, an empty slot, a slot longer than 512 characters, or a slot with a control character MUST be dropped. Every such change and every disagreement between the proposal and the derivation MUST be reported as a correction; the proposal is never trusted.
 - **L5.** A clarification-needed envelope MUST NOT wake Edge 1 or any planner. A complete envelope enters planning with residency supplied by the Core (`to_canonical_intent`), never by the linguist.
@@ -44,10 +44,10 @@ The companion linguist reads one utterance plus the rendered catalog and propose
 
 ## 2b. Intent plans
 
-An intent MAY declare a plan in the catalog: SDG-L3 steps whose arguments are `{"slot": name}` (a verified slot),
+An intent MAY declare a plan in the catalog: VKR-L3 steps whose arguments are `{"slot": name}` (a verified slot),
 `{"intent": "canonical"}` (the canonical English intent) or `{"ref": step}` (an earlier step's result). The Core
-instantiates it into a plain SDG-L3 plan (`{"lit": value}` / `{"ref": step}`); an optional slot the utterance did not give
-is left out. Implemented in `runtime/sidged-cli/src/intent_plan.rs`.
+instantiates it into a plain VKR-L3 plan (`{"lit": value}` / `{"ref": step}`); an optional slot the utterance did not give
+is left out. Implemented in `runtime/vaikor-cli/src/intent_plan.rs`.
 
 - **PL1.** Only a complete, Core-verified intent is planned; a clarification-needed envelope is refused.
 - **PL2.** Every step MUST use a capability the intent names (bound) and the capability catalog describes.
@@ -55,7 +55,7 @@ is left out. Implemented in `runtime/sidged-cli/src/intent_plan.rs`.
   planner model proposes (`check_plan`, WP 11d).
 - **PL4.** Every literal MUST satisfy its property in the capability `input_schema`; arguments outside the schema are
   refused and required arguments MUST be present (a `ref` counts as present).
-- **PL5.** The plan then passes the SDG-L3 verifier (structure, budgets, approval for every consequential step) and the
+- **PL5.** The plan then passes the VKR-L3 verifier (structure, budgets, approval for every consequential step) and the
   owner's Cedar flow policy; a refusal names its stage, step and deciding policies. A new workspace starts with the
   specified `default-flow` policy (0013 §4).
 
@@ -112,21 +112,21 @@ A surface is a JSON document `{v: "4.0", kind, source, nodes}` whose nodes refer
 - **C3.** Which primitive renders data is decided by `binds` in catalog order: the first primitive whose `shape` pattern matches the data's JSON Schema (`type`, `items`, `required` subset), or whose `mime_prefix` matches an artifact media type. No capability or intent name selects a primitive.
 - **C4.** Surface kinds: `input` (capability `input_schema` as a form), `output` (capability result bound by `output_schema` or by the value's shape; a complete intent; a signed-record `ResultSurface`), `clarification` (missing intent slots, labelled with the catalog question).
 - **C5.** No primitive renders or triggers a consequential confirmation. Approval, the residency indicator and the kill switch belong to the Core-owned Trusted UI outside every surface (0004).
-- **C6.** Design: the canvas uses `@vaiev/ui` v4 with the Sidged theme (accent Sodium, dark only; `ui/vaiev-ui/`). Content is flat and tonal; navigation and floating controls form one glass layer; touch targets are 48 px; safe areas are respected.
+- **C6.** Design: the canvas uses `@vaiev/ui` v4 with the Vaikor theme (accent Sodium, dark only; `ui/vaiev-ui/`). Content is flat and tonal; navigation and floating controls form one glass layer; touch targets are 48 px; safe areas are respected.
 
 ## 4. Companion IPC
 
 - **P1.** The webview of a companion node may call exactly one command (`companion`) that dispatches an allowlist: `catalog.describe`, `node.status`, `node.init`, `intent.list`, `intent.run`, `linguist.prompt`, `linguist.run`, `linguist.verify`, `surface.capability_input`, `surface.capability_output`, `surface.input_submit`, `surface.clarification_submit`.
 - **P2.** No allowlisted command approves, signs, pairs or sends, and none confirms a consequential step. `surface.input_submit` validates values against the capability `input_schema` and returns a `pending-plan` invocation. `intent.run` runs a complete, Core-verified intent's catalog plan on the node under X1–X5; its consequential steps are denied, because the webview is not a Trusted UI (invariant 4). A complete intent's surface shows the plan the Core would run (`StepTimeline`, owner-gate marks) or the planning refusal.
-- **P3.** `node.init` is the only writing command. It creates the node's workspace (owner and edge identities, default flow policy, SDG-L1 capability catalog, record store, audit log) once, returns only public identifiers, and MUST refuse when a node exists.
+- **P3.** `node.init` is the only writing command. It creates the node's workspace (owner and edge identities, default flow policy, VKR-L1 capability catalog, record store, audit log) once, returns only public identifiers, and MUST refuse when a node exists.
 - **P5.** `linguist.run` sends the rendered prompt to the node's local model endpoint (`model.endpoint` in the workspace `config.json`; `unix:<path>` with the model uid by default, 0004 R9d) through the runtime's `LocalModel` client and returns the Core-verified envelope with its corrections and the next surface. The endpoint is node configuration, so `linguist.run` refuses before the node exists. The call does not need local mode: an `AF_UNIX` endpoint with the peer-uid check is not egress (0004 R9d); TCP loopback is refused outside local mode.
 - **P4.** The webview CSP MUST restrict `connect-src` to the IPC origin; the canvas uses safe DOM APIs only (no HTML injection, no eval, no browser storage, no dialogs). `scripts/tests/companion_ui_check.sh` enforces this.
 
-## 5. Browser verifier (sidged.com)
+## 5. Browser verifier (vaikor.com)
 
-- **W1.** The playground module is built from the pure verification crates (`sidged-verify`, `sidged-record` without its file-backed store, `sidged-grant`) for `wasm32-unknown-unknown` and MUST have no imports: it cannot reach the network, a clock, files or randomness.
-- **W2.** ABI: `sdg_alloc(len) -> ptr`, `sdg_free(ptr, len)`, `sdg_call(op_ptr, op_len, in_ptr, in_len) -> u64` with JSON in and out, the result packed as `ptr << 32 | len`. Operations: `about`, `plan.verify`, `flow.check`, `record.verify`, `dcbor.encode`, `dcbor.decode`, `did.resolve`. Malformed input yields a `refuse` verdict, never a trap.
-- **W3.** `plan.verify` runs the SDG-L3 structural verifier with flows delegated to the Cedar stage, then `check_plan_flows`; `secrets.*` never reaches egress, even under an owner permit (0013 R10). A refusal names its stage, reason, step, class and the deciding policies.
+- **W1.** The playground module is built from the pure verification crates (`vaikor-verify`, `vaikor-record` without its file-backed store, `vaikor-grant`) for `wasm32-unknown-unknown` and MUST have no imports: it cannot reach the network, a clock, files or randomness.
+- **W2.** ABI: `vkr_alloc(len) -> ptr`, `vkr_free(ptr, len)`, `vkr_call(op_ptr, op_len, in_ptr, in_len) -> u64` with JSON in and out, the result packed as `ptr << 32 | len`. Operations: `about`, `plan.verify`, `flow.check`, `record.verify`, `dcbor.encode`, `dcbor.decode`, `did.resolve`. Malformed input yields a `refuse` verdict, never a trap.
+- **W3.** `plan.verify` runs the VKR-L3 structural verifier with flows delegated to the Cedar stage, then `check_plan_flows`; `secrets.*` never reaches egress, even under an owner permit (0013 R10). A refusal names its stage, reason, step, class and the deciding policies.
 - **W4.** The site publishes every JSON Schema at its `$id`, the test vectors with only the public halves of the test keys, and a SHA-256 manifest. A build that publishes an RFC 8032 test seed MUST fail.
 
 ## 6. Measured state (v0.2.0) and known limits

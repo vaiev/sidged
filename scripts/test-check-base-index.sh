@@ -35,11 +35,11 @@ run1() { # mode want reason file-content label
   : > "$t/calls"
   printf '%b' "$4" > "$t/Containerfile"
   if [ "$mode" = trusted ]; then
-    env -u SIDGED_PODMAN_WRAPPER SIDGED_CI_RUN=t-1 SIDGED_CACHE_SCOPE= RUNNER_TEMP="$t/rt" \
+    env -u VAIKOR_PODMAN_WRAPPER VAIKOR_CI_RUN=t-1 VAIKOR_CACHE_SCOPE= RUNNER_TEMP="$t/rt" \
       PATH="$t/bin:$PATH" FAKE_CALLS="$t/calls" CONTAINERFILE="$t/Containerfile" \
       scripts/check-base-index.sh >"$t/out" 2>&1; got=$?
   else
-    env -u SIDGED_PODMAN_WRAPPER -u SIDGED_CI_RUN -u SIDGED_CACHE_SCOPE \
+    env -u VAIKOR_PODMAN_WRAPPER -u VAIKOR_CI_RUN -u VAIKOR_CACHE_SCOPE \
       PATH="$t/bin:$PATH" FAKE_CALLS="$t/calls" CONTAINERFILE="$t/Containerfile" \
       scripts/check-base-index.sh >"$t/out" 2>&1; got=$?
   fi
@@ -48,9 +48,9 @@ run1() { # mode want reason file-content label
   else [ "$got" != 0 ] || why="exit 0"; fi
   [ -n "$why" ] || grep -qF -- "$reason" "$t/out" || why="output lacks '$reason'"
   if [ -n "$why" ] || [ "$mode" != trusted ]; then :
-  elif grep -Ev -- "^--root $t/rt/sidged-store\.[^ /]+/root --runroot $t/rt/sidged-store\.[^ /]+/run " "$t/calls" | grep -q .; then
+  elif grep -Ev -- "^--root $t/rt/vaikor-store\.[^ /]+/root --runroot $t/rt/vaikor-store\.[^ /]+/run " "$t/calls" | grep -q .; then
     why="a podman call bypassed the throwaway store"
-  elif ls -d "$t/rt"/sidged-store.* >/dev/null 2>&1; then why="throwaway store left behind"
+  elif ls -d "$t/rt"/vaikor-store.* >/dev/null 2>&1; then why="throwaway store left behind"
   fi
   if [ -z "$why" ] && [ "$mode" != trusted ] && grep -Eq -- '--(root|runroot)' "$t/calls"; then
     why="shared mode used a throwaway store"

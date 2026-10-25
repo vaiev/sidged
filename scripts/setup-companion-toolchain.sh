@@ -4,7 +4,7 @@
 # setup-companion-toolchain.sh: user-local toolchain for companion/ (WP 7), no sudo.
 #
 #   bash scripts/setup-companion-toolchain.sh [--accept-android-licenses]
-#   . "${SIDGED_TOOLCHAIN:-$HOME/.local/share/sidged-toolchain}/env.sh"
+#   . "${VAIKOR_TOOLCHAIN:-$HOME/.local/share/vaikor-toolchain}/env.sh"
 #
 # Installs, each pinned and checksum-verified before it is unpacked:
 #   - Temurin JDK 17 (Android Gradle builds)
@@ -12,13 +12,13 @@
 #     and NDK r28c through sdkmanager (which verifies its own downloads)
 #   - Rust Android targets for the repository toolchain (rust-toolchain.toml)
 #   - tauri-cli 2.11.5 (the last release that builds with rustc 1.89)
-#   - with --with-llama: llama.cpp v0.6.0 (commit-pinned) built CPU-only for llama-server,
+#   - with --with-llama: llama.cpp v0.6.0 (commit-pinned) built CPU-only for llama-server and llama-quantize,
 #     the local model endpoint of the desktop node (scripts/serve-local-linguist.sh)
 # Nothing else is installed. The Linux desktop build also needs WebKitGTK headers from
 # the distribution; the script only checks for them and prints the apt command.
 set -euo pipefail
 
-TOOLCHAIN=${SIDGED_TOOLCHAIN:-$HOME/.local/share/sidged-toolchain}
+TOOLCHAIN=${VAIKOR_TOOLCHAIN:-$HOME/.local/share/vaikor-toolchain}
 ANDROID_SDK=${ANDROID_HOME:-$HOME/Android/Sdk}
 JDK_URL="https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.20.1%2B1/OpenJDK17U-jdk_x64_linux_hotspot_17.0.20.1_1.tar.gz"
 JDK_SHA256=3808d1d15e3ec6bd5b84057fb5d84c33d8a1536a258146bcea2e603fc726e08e
@@ -92,7 +92,8 @@ if (( llama )); then
   command -v cmake >/dev/null || { echo "cmake is required for --with-llama (e.g. pip install cmake==4.4.4)" >&2; exit 1; }
   cmake -S "$src" -B "$src/build" -DGGML_CUDA=OFF -DLLAMA_CURL=OFF -DGGML_NATIVE=ON \
     -DLLAMA_BUILD_TESTS=OFF -DLLAMA_BUILD_EXAMPLES=OFF -DCMAKE_BUILD_TYPE=Release >/dev/null
-  cmake --build "$src/build" --target llama-server -j "$(nproc)" >/dev/null
+  # llama-quantize: local-training/release_gate.sh exports the shipped quantisations with it.
+  cmake --build "$src/build" --target llama-server llama-quantize -j "$(nproc)" >/dev/null
 fi
 
 cat > "$TOOLCHAIN/env.sh" <<EOF

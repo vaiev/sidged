@@ -2,7 +2,7 @@
 # Copyright 2026 VAIEV
 # SPDX-License-Identifier: Apache-2.0
 # ui_shell_check.sh: static checks for the offline UI shell (turnkey WP d).
-# Run by `cargo test` (sidged-guard/tests/ui_shell.rs) and standalone:
+# Run by `cargo test` (vaikor-guard/tests/ui_shell.rs) and standalone:
 #   bash scripts/tests/ui_shell_check.sh [ui-dir]
 #
 # The shell must make zero network requests and show only real data or a
@@ -95,7 +95,7 @@ if grep -rnE -- '--vv-glass-bg|--vv-motion-(fast|base|slow)|--vv-target|Vv Sans|
   bad "invented token or font name"
 fi
 # The audit view never claims verification.
-grep -q 'sidged log verify' "$html" || bad "audit view must point to sidged log verify"
+grep -q 'vaikor log verify' "$html" || bad "audit view must point to vaikor log verify"
 
 if (( fail )); then exit 1; fi
 echo "ui_shell_check: OK"

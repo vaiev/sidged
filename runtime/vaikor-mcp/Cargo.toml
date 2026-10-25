@@ -1,0 +1,12 @@
+[package]
+name = "vaikor-mcp"
+version = "0.2.0"
+edition = "2021"
+license = "Apache-2.0"
+publish = false
+description = "Read Vaikor capability descriptors from an MCP tools/list document."
+
+[dependencies]
+vaikor-capability = { path = "../vaikor-capability" }
+# MCP tool lists are JSON. This crate parses that document and nothing else.
+serde_json = "1"

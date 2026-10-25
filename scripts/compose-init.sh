@@ -3,13 +3,13 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 # Operator init step: set the owner and mode of every named volume from
-# the `x-sidged-volume-init` table in docker-compose.yml, before `up`. This
+# the `x-vaikor-volume-init` table in docker-compose.yml, before `up`. This
 # runs on the host, not as a compose service, so no service needs uid 0 or
 # cap_add. Rootless podman applies it with `podman unshare`; rootful engines
 # need an operator with rights on the volume mountpoints.
 #
 # --secret <src> (cloud mode): place the provider key at
-# ${SIDGED_XAI_API_KEY_FILE:-./secrets/xai_api_key} with owner = control's uid
+# ${VAIKOR_XAI_API_KEY_FILE:-./secrets/xai_api_key} with owner = control's uid
 # (the process that reads it; 65532) and mode 0400. A non-swarm compose file
 # secret is a bind mount that keeps host owner and mode, so this is the one
 # layout control can read and nobody else can. Rootless podman: the owner is
@@ -38,7 +38,7 @@ PY="${PYTHON:-python3}"
 plan="$("$PY" - "$file" <<'PYEOF'
 import sys, yaml
 doc = yaml.safe_load(open(sys.argv[1])) or {}
-for vol, e in (doc.get("x-sidged-volume-init") or {}).items():
+for vol, e in (doc.get("x-vaikor-volume-init") or {}).items():
     mode = str(e["mode"])
     if mode not in ("0700", "0500"):
         sys.exit(f"volume {vol}: mode must be 0700 or 0500")
@@ -51,7 +51,7 @@ doc = yaml.safe_load(open(sys.argv[1])) or {}
 print(int(str(doc["services"]["control"]["user"]).split(":")[0]))
 PYEOF
 )"
-dest="${SIDGED_XAI_API_KEY_FILE:-./secrets/xai_api_key}"
+dest="${VAIKOR_XAI_API_KEY_FILE:-./secrets/xai_api_key}"
 if [ "$dry" = 1 ]; then
   echo "project ${project}"
   printf '%s\n' "$plan"

@@ -1,6 +1,6 @@
 {
   "category": "tokens",
-  "description": "Token lifetime rules (Sidged L2): exp at most 1 hour after iat, exp after iat, nbf before exp, a delegated token never outlives its parent. Static checks; no clock is involved.",
+  "description": "Token lifetime rules (Vaikor L2): exp at most 1 hour after iat, exp after iat, nbf before exp, a delegated token never outlives its parent. Static checks; no clock is involved.",
   "vectors": [
     {
       "id": "token.lifetime.001",

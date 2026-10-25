@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Copyright 2026 VAIEV
 # SPDX-License-Identifier: Apache-2.0
-# open_app_check.sh: checks for scripts/open-sidged-app.{sh,ps1} (turnkey WP e).
-# Run by `cargo test` (sidged-guard/tests/open_app.rs) and standalone.
+# open_app_check.sh: checks for scripts/open-vaikor-app.{sh,ps1} (turnkey WP e).
+# Run by `cargo test` (vaikor-guard/tests/open_app.rs) and standalone.
 #
 # The opener opens the local shell file by default. An optional URL must be
 # http:// + a loopback IP literal + an explicit port (no localhost, no other
@@ -12,8 +12,8 @@
 set -euo pipefail
 
 root=$(cd "$(dirname "$0")/../.." && pwd)
-sh_opener=$root/scripts/open-sidged-app.sh
-ps_opener=$root/scripts/open-sidged-app.ps1
+sh_opener=$root/scripts/open-vaikor-app.sh
+ps_opener=$root/scripts/open-vaikor-app.ps1
 fail=0
 bad() { echo "open_app_check: FAIL: $*" >&2; fail=1; }
 

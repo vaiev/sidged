@@ -1,11 +1,11 @@
 # Copyright 2026 VAIEV
 # SPDX-License-Identifier: Apache-2.0
-"""ABI test for the built verifier module (site/target/.../sidged_wasm.wasm).
+"""ABI test for the built verifier module (site/target/.../vaikor_wasm.wasm).
 
-Drives the exports exactly as site/playground/playground.js does (sdg_alloc, sdg_call
-with a packed ptr<<32|len result, sdg_free) and runs every published vector the
+Drives the exports exactly as site/playground/playground.js does (vkr_alloc, vkr_call
+with a packed ptr<<32|len result, vkr_free) and runs every published vector the
 playground offers. Needs the optional `wasmtime` package and a release wasm build;
-skips otherwise. Run after `bash scripts/build-sidged-site.sh`:
+skips otherwise. Run after `bash scripts/build-vaikor-site.sh`:
     python3 -m unittest discover -s site/tests
 """
 import json
@@ -13,7 +13,7 @@ import pathlib
 import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
-WASM = ROOT / "site/target/wasm32-unknown-unknown/release/sidged_wasm.wasm"
+WASM = ROOT / "site/target/wasm32-unknown-unknown/release/vaikor_wasm.wasm"
 VECTORS = ROOT / "spec/test-vectors"
 
 try:
@@ -49,15 +49,15 @@ class AbiTest(unittest.TestCase):
         store, ex, mem = self.store, self.ex, self.memory
         buffers = []
         for raw in (op.encode(), json.dumps(data).encode()):
-            ptr = ex["sdg_alloc"](store, len(raw))
+            ptr = ex["vkr_alloc"](store, len(raw))
             mem.write(store, raw, ptr)
             buffers.append((ptr, len(raw)))
-        packed = ex["sdg_call"](store, *buffers[0], *buffers[1]) & 0xFFFFFFFFFFFFFFFF
+        packed = ex["vkr_call"](store, *buffers[0], *buffers[1]) & 0xFFFFFFFFFFFFFFFF
         for ptr, size in buffers:
-            ex["sdg_free"](store, ptr, size)
+            ex["vkr_free"](store, ptr, size)
         ptr, size = packed >> 32, packed & 0xFFFFFFFF
         text = bytes(mem.read(store, ptr, ptr + size)).decode()
-        ex["sdg_free"](store, ptr, size)
+        ex["vkr_free"](store, ptr, size)
         return json.loads(text)
 
     def test_about_lists_the_operations(self):

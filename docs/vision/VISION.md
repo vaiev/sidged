@@ -1,4 +1,4 @@
-# Sidged – Vision (briefing from roenu, 2026-10-15, binding)
+# Vaikor – Vision (briefing from roenu, 2026-10-15, binding)
 
 > English translation of the binding briefing of 2026-10-15. This file is the north star. Accepted decisions stay in [0000-architektur.md](../specs/0000-architektur.md).
 
@@ -60,7 +60,7 @@ Two communication paths: local typed calls in the WASM Component Model, with no 
 
 ## 6. Addition from roenu (2026-10-15, 02:21)
 
-- Sidged is an OS for edge devices: it runs directly on the host (for example a VPS, or bare metal) in place of Android/iOS, and likewise in a VM and as an OCI container. Hence Linux kernel → AI runtime → interface.
+- Vaikor is an OS for edge devices: it runs directly on the host (for example a VPS, or bare metal) in place of Android/iOS, and likewise in a VM and as an OCI container. Hence Linux kernel → AI runtime → interface.
 - The goal is new, or optimal, interfaces for communication, data processing, hardware calls, and the like. All of it is security first.
 - Example: the user wants to send Ben a message and edit a photo first. The UI is generated directly for that task, and the communication follows. Incoming messages and tasks work the same way (a UI is generated per incoming item). This holds for many tasks.
 - On-device model ensemble (roles; the choice of models is still open):
@@ -72,8 +72,8 @@ Two communication paths: local typed calls in the WASM Component Model, with no 
 
 ## 7. Core thesis: the wrapper dissolves (roenu, 2026-10-15, binding)
 
-Today's agents are a text prompt, a harness, and guidelines. Sidged replaces that shape.
+Today's agents are a text prompt, a harness, and guidelines. Vaikor replaces that shape.
 
-- Each agent is a Sidged-native bundle: Identity, Grants, Plans, Modules, and Records. The Core verifies the bundle before it runs. A prompt, a harness, or a guideline is not the agent, and it is not authority.
-- Sidged is the user's personal AI. It learns them and understands them. That learning dissolves the wrapper bubble. The product is the runtime and the verified bundle, not a chat window wrapped around a model and held together by instructions.
+- Each agent is a Vaikor-native bundle: Identity, Grants, Plans, Modules, and Records. The Core verifies the bundle before it runs. A prompt, a harness, or a guideline is not the agent, and it is not authority.
+- Vaikor is the user's personal AI. It learns them and understands them. That learning dissolves the wrapper bubble. The product is the runtime and the verified bundle, not a chat window wrapped around a model and held together by instructions.
 - The aim is the whole of today's agent layer. The nine invariants in section 5 stay intact. The personal model proposes. The Core decides. Learning does not grant a right, skip an approval, or leave the device except through the Privacy Gateway.

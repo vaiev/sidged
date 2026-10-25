@@ -1,0 +1,241 @@
+{
+  "about": "Shared by local-training/tests/test_linguist.py and runtime/vaikor-cli/src/linguist.rs: the prompt bytes and the Core derivation of the linguist envelope must match exactly.",
+  "prompt": {
+    "utterance": "Erinner mi morn am achti a de Zahnarzttermin",
+    "intent_ids": [
+      "timer.set",
+      "task.summarize",
+      "scheduling.remind",
+      "messaging.send",
+      "task.note"
+    ],
+    "system": "You are Vaikor Model -1, the companion linguist. Read one utterance in English, German or Swiss German and reply with exactly one JSON object and nothing else, with the keys v, lang, intent, slots, missing_slots, clarification_needed, clarification_question_local, canonical_intent_en, suggested_route, required_data_classes. lang is en, de or gsw. intent is one catalog intent, or null when none fits. slots holds only the values the utterance gives, in canonical English; names, quoted text, file names and slots described as verbatim stay as written. missing_slots lists the required slots (marked *) the utterance does not give. When a slot is missing or intent is null, ask one short question in the utterance language and use route clarify. When the utterance asks for one thing and then another, put the first in intent and slots and each further one, in order, in then as objects with intent and slots; only pairs listed under Compositions may follow each other, and a slot the earlier result gives is not missing. Your reply is a proposal: the Vaikor Core re-checks it against the catalog. Never add residency, approval or grant fields.",
+    "user": "Catalog:\n- timer.set | Start a countdown timer | route edge-local | classes - | template Start a timer for {duration} | slots duration*: How long the timer runs.; label: What the timer is for, if named.\n- task.summarize | Summarize a document | route swarm-worker | classes documents.text | template Summarize {source} | slots source*: Document, file or text to summarize.\n- scheduling.remind | Set a reminder | route edge-local | classes calendar.events | template Remind me about {subject} {time} | slots subject*: What to be reminded of.; time*: When the reminder fires, as said (the Core resolves it).\n- messaging.send | Write and send a message | route edge-local | classes communications.content, contacts.name | template Send a message to {recipient} about {topic} | slots recipient*: Person, group or address that receives the message.; topic*: What the message is about, as said (without the preposition).\n- task.note | Write down a note | route edge-local | classes documents.text | template Save a note: {content} | slots content*: Text of the note, kept verbatim.\nCompositions:\n- task.summarize then messaging.send | the earlier result gives topic\nUtterance: Erinner mi morn am achti a de Zahnarzttermin"
+  },
+  "derive": [
+    {
+      "lang": "gsw",
+      "intent": "scheduling.remind",
+      "slots": {
+        "subject": "the dentist appointment"
+      },
+      "expected": {
+        "v": "0.1",
+        "lang": "gsw",
+        "intent": "scheduling.remind",
+        "slots": {
+          "subject": "the dentist appointment"
+        },
+        "missing_slots": [
+          "time"
+        ],
+        "clarification_needed": true,
+        "clarification_question_local": "Wänn söll ich di erinnere?",
+        "canonical_intent_en": "Remind me about the dentist appointment <time>",
+        "suggested_route": "clarify",
+        "required_data_classes": [
+          "calendar.events"
+        ]
+      }
+    },
+    {
+      "lang": "en",
+      "intent": "scheduling.remind",
+      "slots": {
+        "time": "tomorrow at 08:00",
+        "subject": "the dentist appointment"
+      },
+      "expected": {
+        "v": "0.1",
+        "lang": "en",
+        "intent": "scheduling.remind",
+        "slots": {
+          "subject": "the dentist appointment",
+          "time": "tomorrow at 08:00"
+        },
+        "missing_slots": [],
+        "clarification_needed": false,
+        "clarification_question_local": null,
+        "canonical_intent_en": "Remind me about the dentist appointment tomorrow at 08:00",
+        "suggested_route": "edge-local",
+        "required_data_classes": [
+          "calendar.events"
+        ]
+      }
+    },
+    {
+      "lang": "de",
+      "intent": null,
+      "slots": {},
+      "expected": {
+        "v": "0.1",
+        "lang": "de",
+        "intent": null,
+        "slots": {},
+        "missing_slots": [],
+        "clarification_needed": true,
+        "clarification_question_local": "Was genau soll ich tun?",
+        "canonical_intent_en": null,
+        "suggested_route": "clarify",
+        "required_data_classes": []
+      }
+    },
+    {
+      "lang": "gsw",
+      "intent": "task.code",
+      "slots": {
+        "description": "a CSV parser",
+        "language": "Rust"
+      },
+      "expected": {
+        "v": "0.1",
+        "lang": "gsw",
+        "intent": "task.code",
+        "slots": {
+          "description": "a CSV parser",
+          "language": "Rust"
+        },
+        "missing_slots": [],
+        "clarification_needed": false,
+        "clarification_question_local": null,
+        "canonical_intent_en": "Write code: a CSV parser (language: Rust)",
+        "suggested_route": "swarm-worker",
+        "required_data_classes": [
+          "documents.text"
+        ]
+      }
+    },
+    {
+      "lang": "en",
+      "intent": "timer.set",
+      "slots": {
+        "label": "the tea"
+      },
+      "expected": {
+        "v": "0.1",
+        "lang": "en",
+        "intent": "timer.set",
+        "slots": {
+          "label": "the tea"
+        },
+        "missing_slots": [
+          "duration"
+        ],
+        "clarification_needed": true,
+        "clarification_question_local": "How long should the timer run?",
+        "canonical_intent_en": "Start a timer for <duration> (label: the tea)",
+        "suggested_route": "clarify",
+        "required_data_classes": []
+      }
+    },
+    {
+      "lang": "de",
+      "intent": "messaging.send",
+      "slots": {},
+      "expected": {
+        "v": "0.1",
+        "lang": "de",
+        "intent": "messaging.send",
+        "slots": {},
+        "missing_slots": [
+          "recipient",
+          "topic"
+        ],
+        "clarification_needed": true,
+        "clarification_question_local": "An wen soll die Nachricht gehen?",
+        "canonical_intent_en": "Send a message to <recipient> about <topic>",
+        "suggested_route": "clarify",
+        "required_data_classes": [
+          "communications.content",
+          "contacts.name"
+        ]
+      }
+    }
+  ],
+  "derive_then": [
+    {
+      "lang": "gsw",
+      "intent": "task.summarize",
+      "slots": {
+        "source": "protokoll.docx"
+      },
+      "then": [
+        {
+          "intent": "messaging.send",
+          "slots": {
+            "recipient": "Marco"
+          }
+        }
+      ],
+      "expected": {
+        "v": "0.1",
+        "lang": "gsw",
+        "intent": "task.summarize",
+        "slots": {
+          "source": "protokoll.docx"
+        },
+        "missing_slots": [],
+        "clarification_needed": false,
+        "clarification_question_local": null,
+        "canonical_intent_en": "Summarize protokoll.docx",
+        "suggested_route": "swarm-worker",
+        "required_data_classes": [
+          "documents.text",
+          "communications.content",
+          "contacts.name"
+        ],
+        "then": [
+          {
+            "intent": "messaging.send",
+            "slots": {
+              "recipient": "Marco"
+            },
+            "missing_slots": [],
+            "canonical_intent_en": "Send a message to Marco about the previous result"
+          }
+        ]
+      }
+    },
+    {
+      "lang": "de",
+      "intent": "query.search",
+      "slots": {
+        "subject": "e-bikes"
+      },
+      "then": [
+        {
+          "intent": "messaging.send",
+          "slots": {}
+        }
+      ],
+      "expected": {
+        "v": "0.1",
+        "lang": "de",
+        "intent": "query.search",
+        "slots": {
+          "subject": "e-bikes"
+        },
+        "missing_slots": [],
+        "clarification_needed": true,
+        "clarification_question_local": "An wen soll die Nachricht gehen?",
+        "canonical_intent_en": "Find information about e-bikes",
+        "suggested_route": "clarify",
+        "required_data_classes": [
+          "query.general",
+          "communications.content",
+          "contacts.name"
+        ],
+        "then": [
+          {
+            "intent": "messaging.send",
+            "slots": {},
+            "missing_slots": [
+              "recipient"
+            ],
+            "canonical_intent_en": "Send a message to <recipient> about the previous result"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sidged.com/spec/schemas/module-manifest.schema.json",
-  "title": "Sidged Module Manifest (v0.1)",
-  "description": "Signed manifest that every module ships with (Sidged L0). It declares identity and publisher, version, compatibility range (runtime version and conformance profile), capabilities provided and required, permissions, data classes accessed, egress destinations and residency needs, resource and hardware needs, and an SBOM reference. Model modules identify their weights by hash (Sidged L0); hardware modules carry a capability descriptor (Sidged L8); actuator modules declare safe-stop behaviour (Sidged L8); legacy adapters carry the legacy and unattested labels (Sidged L0, Sidged L6). Installation requires owner consent to the permissions, and any later expansion needs consent again. Status: Draft, not for implementation.",
+  "$id": "https://vaikor.com/spec/schemas/module-manifest.schema.json",
+  "title": "Vaikor Module Manifest (v0.1)",
+  "description": "Signed manifest that every module ships with (Vaikor L0). It declares identity and publisher, version, compatibility range (runtime version and conformance profile), capabilities provided and required, permissions, data classes accessed, egress destinations and residency needs, resource and hardware needs, and an SBOM reference. Model modules identify their weights by hash (Vaikor L0); hardware modules carry a capability descriptor (Vaikor L8); actuator modules declare safe-stop behaviour (Vaikor L8); legacy adapters carry the legacy and unattested labels (Vaikor L0, Vaikor L6). Installation requires owner consent to the permissions, and any later expansion needs consent again. Status: Draft, not for implementation.",
   "type": "object",
   "required": [
     "v",
@@ -44,7 +44,7 @@
       "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$"
     },
     "kind": {
-      "description": "Module kind (Sidged L5, section 3, section 4). hardware: installed or attached hardware discovered by the runtime, described by a capability descriptor. device-adapter: software that connects to an external device or device API through its own protocol.",
+      "description": "Module kind (Vaikor L5, section 3, section 4). hardware: installed or attached hardware discovered by the runtime, described by a capability descriptor. device-adapter: software that connects to an external device or device API through its own protocol.",
       "enum": [
         "feature",
         "function",
@@ -86,7 +86,7 @@
       "additionalProperties": false,
       "properties": {
         "runtime": {
-          "description": "Supported Sidged L5 standard versions (Sidged L0).",
+          "description": "Supported Vaikor L5 standard versions (Vaikor L0).",
           "$ref": "common.schema.json#/$defs/runtimeRange"
         },
         "min_profile": {
@@ -120,7 +120,7 @@
       }
     },
     "permissions": {
-      "description": "Permissions the owner consents to at installation. Access beyond this list is denied and logged (Sidged L0).",
+      "description": "Permissions the owner consents to at installation. Access beyond this list is denied and logged (Vaikor L0).",
       "type": "array",
       "items": {
         "$ref": "#/$defs/permission"
@@ -184,7 +184,7 @@
       }
     },
     "model": {
-      "description": "Required for kind model: weights identified by cryptographic hash, verified by the Core before loading (Sidged L0).",
+      "description": "Required for kind model: weights identified by cryptographic hash, verified by the Core before loading (Vaikor L0).",
       "type": "object",
       "required": [
         "weights"
@@ -220,11 +220,11 @@
       }
     },
     "hardware": {
-      "description": "Required for kind hardware: capability descriptor (Sidged L8).",
+      "description": "Required for kind hardware: capability descriptor (Vaikor L8).",
       "$ref": "#/$defs/capabilityDescriptor"
     },
     "legacy": {
-      "description": "Required for kind legacy-adapter (Sidged L6).",
+      "description": "Required for kind legacy-adapter (Vaikor L6).",
       "type": "object",
       "required": [
         "method",
@@ -264,7 +264,7 @@
       }
     },
     "sbom": {
-      "description": "SBOM reference (SPDX or CycloneDX), REQUIRED at R1 (Sidged L0, section 17).",
+      "description": "SBOM reference (SPDX or CycloneDX), REQUIRED at R1 (Vaikor L0, section 17).",
       "type": "object",
       "required": [
         "format",
@@ -288,7 +288,7 @@
       }
     },
     "provenance": {
-      "description": "Build provenance (RECOMMENDED at R3, Sidged L0), for example a SLSA provenance attestation.",
+      "description": "Build provenance (RECOMMENDED at R3, Vaikor L0), for example a SLSA provenance attestation.",
       "type": "object",
       "required": [
         "uri",
@@ -315,7 +315,7 @@
       "$ref": "common.schema.json#/$defs/ext"
     },
     "sig": {
-      "description": "Manifest signature (Sidged L6). signer is required so the Core can show who signed (Sidged L0). Modules installed from outside the owner's chosen registries, including self-signed ones, are labelled sideloaded by the Core, not by the manifest.",
+      "description": "Manifest signature (Vaikor L6). signer is required so the Core can show who signed (Vaikor L0). Modules installed from outside the owner's chosen registries, including self-signed ones, are labelled sideloaded by the Core, not by the manifest.",
       "allOf": [
         {
           "$ref": "common.schema.json#/$defs/signature"
@@ -418,7 +418,7 @@
           "maxLength": 2048
         },
         "consequential": {
-          "description": "Whether using this permission is a consequential action (Sidged L5). Consequential actions still need approval (Sidged L5).",
+          "description": "Whether using this permission is a consequential action (Vaikor L5). Consequential actions still need approval (Vaikor L5).",
           "type": "boolean"
         },
         "reason": {
@@ -466,7 +466,7 @@
       }
     },
     "capabilityDescriptor": {
-      "description": "Hardware capability descriptor: type, functions, performance class, safety constraints, and whether it is attested (Sidged L8).",
+      "description": "Hardware capability descriptor: type, functions, performance class, safety constraints, and whether it is attested (Vaikor L8).",
       "type": "object",
       "required": [
         "type",
@@ -491,7 +491,7 @@
           "uniqueItems": true
         },
         "performance_class": {
-          "description": "Performance class (Sidged L8): constrained (microcontrollers, simple sensors), standard (typical consumer device), high (dedicated accelerators or industrial hardware).",
+          "description": "Performance class (Vaikor L8): constrained (microcontrollers, simple sensors), standard (typical consumer device), high (dedicated accelerators or industrial hardware).",
           "enum": [
             "constrained",
             "standard",
@@ -509,7 +509,7 @@
               "type": "boolean"
             },
             "safe_stop": {
-              "description": "Declared safe-stop behaviour. Required for actuators (Sidged L8).",
+              "description": "Declared safe-stop behaviour. Required for actuators (Vaikor L8).",
               "type": "string",
               "minLength": 1,
               "maxLength": 1000

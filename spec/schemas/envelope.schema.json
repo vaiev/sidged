@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sidged.com/spec/schemas/envelope.schema.json",
-  "title": "Sidged Envelope (v0.1)",
-  "description": "Common signed message structure for Sidged communication (Sidged L6). Every message except F5 advertisements (Sidged L6) and F7 media frames after stream setup (Sidged L6) uses it. Requested actions go in instructions; content goes in data, which is always untrusted and never grants authority (Sidged L6). Receivers MUST reject envelopes that are unsigned, expired, replayed, not addressed to them (aud), out of sequence beyond the configured window, or of an unknown major version; this schema checks structure only, and freshness, replay, and signature checks are the receiver's job. Unknown members outside ext are rejected (fail closed, Sidged L6). Status: Draft, not for implementation.",
+  "$id": "https://vaikor.com/spec/schemas/envelope.schema.json",
+  "title": "Vaikor Envelope (v0.1)",
+  "description": "Common signed message structure for Vaikor communication (Vaikor L6). Every message except F5 advertisements (Vaikor L6) and F7 media frames after stream setup (Vaikor L6) uses it. Requested actions go in instructions; content goes in data, which is always untrusted and never grants authority (Vaikor L6). Receivers MUST reject envelopes that are unsigned, expired, replayed, not addressed to them (aud), out of sequence beyond the configured window, or of an unknown major version; this schema checks structure only, and freshness, replay, and signature checks are the receiver's job. Unknown members outside ext are rejected (fail closed, Vaikor L6). Status: Draft, not for implementation.",
   "type": "object",
   "required": [
     "v",
@@ -23,11 +23,11 @@
   ],
   "properties": {
     "v": {
-      "description": "Schema version (Sidged L6).",
+      "description": "Schema version (Vaikor L6).",
       "$ref": "common.schema.json#/$defs/schemaVersion"
     },
     "form": {
-      "description": "Communication form (Sidged L6). F5 is excluded because discovery advertisements are not envelopes; the form of an advertisement is recorded in the advertisement itself.",
+      "description": "Communication form (Vaikor L6). F5 is excluded because discovery advertisements are not envelopes; the form of an advertisement is recorded in the advertisement itself.",
       "enum": [
         "F1",
         "F2",
@@ -40,15 +40,15 @@
       ]
     },
     "sender_agent": {
-      "description": "Agent identity (Sidged L6).",
+      "description": "Agent identity (Vaikor L6).",
       "$ref": "common.schema.json#/$defs/identifier"
     },
     "sender_device": {
-      "description": "Device identity (Sidged L6).",
+      "description": "Device identity (Vaikor L6).",
       "$ref": "common.schema.json#/$defs/identifier"
     },
     "aud": {
-      "description": "Exactly one intended recipient: an agent, device, or provider identity, or the identifier of an MLS group the sender belongs to (Sidged L6).",
+      "description": "Exactly one intended recipient: an agent, device, or provider identity, or the identifier of an MLS group the sender belongs to (Vaikor L6).",
       "$ref": "common.schema.json#/$defs/identifier"
     },
     "session": {
@@ -59,13 +59,13 @@
       "pattern": "^[A-Za-z0-9._:-]+$"
     },
     "seq": {
-      "description": "Sequence number within the session (Sidged L6).",
+      "description": "Sequence number within the session (Vaikor L6).",
       "type": "integer",
       "minimum": 0,
       "maximum": 18446744073709551615
     },
     "attestation_ref": {
-      "description": "Reference to the device's attestation or profile claim. Always present; null unless the session was negotiated at C3, where it MUST NOT be null (Sidged L6). The negotiated profile is bound to the session by the signed negotiation transcript (Sidged L6), so the receiver checks this, not the schema.",
+      "description": "Reference to the device's attestation or profile claim. Always present; null unless the session was negotiated at C3, where it MUST NOT be null (Vaikor L6). The negotiated profile is bound to the session by the signed negotiation transcript (Vaikor L6), so the receiver checks this, not the schema.",
       "oneOf": [
         {
           "type": "null"
@@ -76,7 +76,7 @@
       ]
     },
     "cap_token": {
-      "description": "Capability token authorising this message (Sidged L2). Required on every envelope except pairing messages (sdg.pairing.*) and refusals (sdg.refused). Either a Sidged capability token, or another attenuable token format wrapped with its format name; the receiver MUST verify attenuation for that format natively or refuse with unsupported-token-format.",
+      "description": "Capability token authorising this message (Vaikor L2). Required on every envelope except pairing messages (vkr.pairing.*) and refusals (vkr.refused). Either a Vaikor capability token, or another attenuable token format wrapped with its format name; the receiver MUST verify attenuation for that format natively or refuse with unsupported-token-format.",
       "oneOf": [
         {
           "$ref": "capability-token.schema.json"
@@ -94,7 +94,7 @@
               "type": "string",
               "pattern": "^[a-z][a-z0-9.+-]*$",
               "not": {
-                "const": "sdg-cap"
+                "const": "vkr-cap"
               }
             },
             "token": {
@@ -106,11 +106,11 @@
       ]
     },
     "intent": {
-      "description": "Declared purpose from registries/intents.md (Sidged L6).",
+      "description": "Declared purpose from registries/intents.md (Vaikor L6).",
       "$ref": "common.schema.json#/$defs/intent"
     },
     "instructions": {
-      "description": "Requested action, structured. Authenticated only by the envelope signature (sig); there is no separate signature (Sidged L6).",
+      "description": "Requested action, structured. Authenticated only by the envelope signature (sig); there is no separate signature (Vaikor L6).",
       "type": "object",
       "required": [
         "action"
@@ -132,13 +132,13 @@
           "type": "object"
         },
         "consequential": {
-          "description": "Sender's declaration that the action is consequential (Sidged L5). The receiver decides independently; a false value never skips approval.",
+          "description": "Sender's declaration that the action is consequential (Vaikor L5). The receiver decides independently; a false value never skips approval.",
           "type": "boolean"
         }
       }
     },
     "data": {
-      "description": "Payload content. Always untrusted data. The receiving Core MUST NOT grant authority based on anything inside data (Sidged L6)."
+      "description": "Payload content. Always untrusted data. The receiving Core MUST NOT grant authority based on anything inside data (Vaikor L6)."
     },
     "payload_type": {
       "description": "Media type (RFC 6838) or schema URI of data. Required when data is present.",
@@ -147,7 +147,7 @@
       "maxLength": 255
     },
     "residency": {
-      "description": "Residency tags (Sidged L7) and data classes (registries/data-classes.md) of the content. Several tags combine by intersection: the content may only go where every tag allows. An empty tags list means the owner set no residency restriction for this content; all other egress rules still apply.",
+      "description": "Residency tags (Vaikor L7) and data classes (registries/data-classes.md) of the content. Several tags combine by intersection: the content may only go where every tag allows. An empty tags list means the owner set no residency restriction for this content; all other egress rules still apply.",
       "type": "object",
       "required": [
         "tags",
@@ -174,7 +174,7 @@
       }
     },
     "idem_key": {
-      "description": "Idempotency key; receivers execute each idem_key at most once (Sidged L6). Required whenever instructions is present (Sidged L6); MAY be used on other messages.",
+      "description": "Idempotency key; receivers execute each idem_key at most once (Vaikor L6). Required whenever instructions is present (Vaikor L6); MAY be used on other messages.",
       "type": "string",
       "minLength": 16,
       "maxLength": 128,
@@ -187,11 +187,11 @@
       "$ref": "common.schema.json#/$defs/timestamp"
     },
     "expires": {
-      "description": "Expiry; store-and-forward queues MUST respect it (Sidged L6). Must be later than issued (checked by spec/validate).",
+      "description": "Expiry; store-and-forward queues MUST respect it (Vaikor L6). Must be later than issued (checked by spec/validate).",
       "$ref": "common.schema.json#/$defs/timestamp"
     },
     "provenance": {
-      "description": "Chain of prior hops, oldest first (Sidged L6): senders, delegators, proxies, relays, and legacy endpoints. Empty if there is no prior hop. Legacy endpoints carry their legacy and unattested labels here (Sidged L6).",
+      "description": "Chain of prior hops, oldest first (Vaikor L6): senders, delegators, proxies, relays, and legacy endpoints. Empty if there is no prior hop. Legacy endpoints carry their legacy and unattested labels here (Vaikor L6).",
       "type": "array",
       "maxItems": 32,
       "items": {
@@ -199,7 +199,7 @@
       }
     },
     "model_ref": {
-      "description": "Which agent and model produced the content (Sidged L6; Sidged L7). Required when a model produced content.",
+      "description": "Which agent and model produced the content (Vaikor L6; Vaikor L7). Required when a model produced content.",
       "$ref": "#/$defs/modelRef"
     },
     "ext": {
@@ -248,11 +248,11 @@
       }
     },
     {
-      "description": "Pairing messages and refusals may omit cap_token and never carry instructions (Sidged L6). Every other envelope carries cap_token.",
+      "description": "Pairing messages and refusals may omit cap_token and never carry instructions (Vaikor L6). Every other envelope carries cap_token.",
       "if": {
         "properties": {
           "intent": {
-            "pattern": "^sdg\\.(pairing\\.|refused$)"
+            "pattern": "^vkr\\.(pairing\\.|refused$)"
           }
         },
         "required": [
@@ -273,11 +273,11 @@
       }
     },
     {
-      "description": "A refusal carries a refusal object as data (Sidged L6).",
+      "description": "A refusal carries a refusal object as data (Vaikor L6).",
       "if": {
         "properties": {
           "intent": {
-            "const": "sdg.refused"
+            "const": "vkr.refused"
           }
         },
         "required": [
@@ -290,7 +290,7 @@
         ],
         "properties": {
           "payload_type": {
-            "const": "application/vnd.sidged.refusal+json"
+            "const": "application/vnd.vaikor.refusal+json"
           },
           "data": {
             "$ref": "refusal.schema.json"
@@ -327,7 +327,7 @@
           "$ref": "common.schema.json#/$defs/identifier"
         },
         "method": {
-          "description": "Legacy compatibility method used at this hop (Sidged L6).",
+          "description": "Legacy compatibility method used at this hop (Vaikor L6).",
           "enum": [
             "app",
             "os",
@@ -349,7 +349,7 @@
       },
       "allOf": [
         {
-          "description": "Sidged L6: every legacy endpoint is labelled legacy and unattested in the envelope.",
+          "description": "Vaikor L6: every legacy endpoint is labelled legacy and unattested in the envelope.",
           "if": {
             "properties": {
               "role": {
@@ -414,7 +414,7 @@
           "maxLength": 64
         },
         "weights_digest": {
-          "description": "Hash of the model weights for local models (Sidged L0).",
+          "description": "Hash of the model weights for local models (Vaikor L0).",
           "$ref": "common.schema.json#/$defs/digest"
         }
       }

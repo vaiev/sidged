@@ -1,4 +1,4 @@
-# Sidged Registries
+# Vaikor Registries
 
 > **Status: Draft, not for implementation. No certification program exists.**
 
@@ -6,11 +6,11 @@ Minimal shared vocabularies referenced by the drafts. Each registry lists codes 
 
 | Registry | Used by |
 |---|---|
-| [data-classes.md](data-classes.md) | `residency.data_classes` and egress policy (Sidged L7), module manifests (Sidged L0), privacy reports (Sidged L7), capability token constraints (Sidged L2) |
-| [effects.md](effects.md) | Capability descriptor `effects` (SDG-L1) |
-| [residency.md](residency.md) | Residency tags on content and egress (Sidged L7). Registered tags are `CH`, `EU`, and `CH-EU`; owner tags start with `x-`. |
-| [intents.md](intents.md) | Envelope `intent` (Sidged L6), pairing (Sidged L6), refusals (Sidged L6) |
-| [refusal-reasons.md](refusal-reasons.md) | Refusal object (Sidged L6, Sidged L7) |
+| [data-classes.md](data-classes.md) | `residency.data_classes` and egress policy (Vaikor L7), module manifests (Vaikor L0), privacy reports (Vaikor L7), capability token constraints (Vaikor L2) |
+| [effects.md](effects.md) | Capability descriptor `effects` (VKR-L1) |
+| [residency.md](residency.md) | Residency tags on content and egress (Vaikor L7). Registered tags are `CH`, `EU`, and `CH-EU`; owner tags start with `x-`. |
+| [intents.md](intents.md) | Envelope `intent` (Vaikor L6), pairing (Vaikor L6), refusals (Vaikor L6) |
+| [refusal-reasons.md](refusal-reasons.md) | Refusal object (Vaikor L6, Vaikor L7) |
 
 ## Rules
 

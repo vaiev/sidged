@@ -1,5 +1,5 @@
-Sidged
-Copyright 2026 Sidged Contributors
+Vaikor
+Copyright 2026 Vaikor Contributors
 
 This repository adapts draft specification text, JSON Schemas, registries,
 examples, conformance test vectors, and a validator from:
@@ -17,8 +17,8 @@ Version 2.0 (see LICENSE-CODE).
 
 Identifier and schema lineage:
 
-- The namespace is urn:sidged:, the prefix is sdg.*, the capability token
-  format is sdg-cap, and media types use application/vnd.sidged.*.
-- Layer specifications use identifiers SDG-L0 through SDG-L8.
-- Schema $id values are published under https://sidged.com/spec/schemas/.
+- The namespace is tag:vaikor.com,2026:, the prefix is vkr.*, the capability token
+  format is vkr-cap, and media types use application/vnd.vaikor.*.
+- Layer specifications use identifiers VKR-L0 through VKR-L8.
+- Schema $id values are published under https://vaikor.com/spec/schemas/.
 - The conformance test-vector suite version is 0.3.0.

@@ -1,6 +1,6 @@
 {
   "category": "envelope",
-  "description": "Structural envelope rules (Sidged L6) that a receiver checks before anything else. Static checks; no clock is involved.",
+  "description": "Structural envelope rules (Vaikor L6) that a receiver checks before anything else. Static checks; no clock is involved.",
   "vectors": [
     {
       "id": "envelope.structure.001",

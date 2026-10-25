@@ -1,8 +1,8 @@
-# 0007 – Egress and providers (SDG-L7)
+# 0007 – Egress and providers (VKR-L7)
 
 > **Status:** Draft for the hosted gateway path (R1–R5). OHTTP remains out of scope.
 > **Date:** 2026-10-15
-> **Spec:** SDG-L7 Egress and Provider
+> **Spec:** VKR-L7 Egress and Provider
 > **Basis:** [VISION.md](../vision/VISION.md) sections 1, 4, and 5 (invariants 5 and 7), and [0000-architektur.md](0000-architektur.md).
 
 The key words MUST, MUST NOT, SHOULD, and MAY are to be interpreted as in BCP 14 (RFC 2119 and RFC 8174) when they appear in capitals.
@@ -11,15 +11,15 @@ Egress is any byte that leaves the runtime toward a provider, a peer, or a netwo
 
 ## 1. Gateway
 
-**R1.** Every egress MUST pass through the Privacy Gateway. A model call or a planner call to a provider is egress. *Rationale: invariant 5. The hosted HTTP client lives in `sidged-gateway::send`. The planner calls that function.*
+**R1.** Every egress MUST pass through the Privacy Gateway. A model call or a planner call to a provider is egress. *Rationale: invariant 5. The hosted HTTP client lives in `vaikor-gateway::send`. The planner calls that function.*
 
-**R2.** The gateway MUST refuse egress while the runtime is in local mode. The gateway MUST own a process-wide, one-way local-mode latch. `--local`, boolean `config.local = true`, and `SIDGED_LOCAL=1` MUST enable it at startup, before planning; no caller or later setting may disable it. A present non-boolean `config.local` MUST be refused. `SIDGED_LOCAL` unset or exactly `0` means online unless already latched; exactly `1` means local; every other value (including empty or non-Unicode values) MUST be refused. `send()` and execution preflight MUST read the latch. *Rationale: invariant 7. `sidged run --local`, `config.local`, and `SIDGED_LOCAL=1` set it. A remote planner and an egress plan step are both refused before a socket opens.*
+**R2.** The gateway MUST refuse egress while the runtime is in local mode. The gateway MUST own a process-wide, one-way local-mode latch. `--local`, boolean `config.local = true`, and `VAIKOR_LOCAL=1` MUST enable it at startup, before planning; no caller or later setting may disable it. A present non-boolean `config.local` MUST be refused. `VAIKOR_LOCAL` unset or exactly `0` means online unless already latched; exactly `1` means local; every other value (including empty or non-Unicode values) MUST be refused. `send()` and execution preflight MUST read the latch. *Rationale: invariant 7. `vaikor run --local`, `config.local`, and `VAIKOR_LOCAL=1` set it. A remote planner and an egress plan step are both refused before a socket opens.*
 
 **R3.** The gateway MUST apply the provider profile (P0–P3) and the residency tags before the bytes leave. A profile or a residency the gateway cannot evaluate MUST be a refusal. Missing or empty data/capability residency declarations MUST deny egress, including loopback. `unrestricted` MUST be explicitly declared to permit GLOBAL processing; CH, EU, and CH-EU MUST deny GLOBAL, including when combined with `unrestricted`. Tags combine by intersection. *Rationale: residency is bound to the destination origin and provider id through a gateway registry (currently HTTPS api.infomaniak.com:443 → CH and HTTPS generativelanguage.googleapis.com:443 → GLOBAL (no residency guarantee), and HTTPS api.open-meteo.com:443 → GLOBAL (Open-Meteo public weather)). Unknown remote destinations refuse all data; the optional caller region must agree with the registry and cannot establish residency. The registry moves to provider manifests in L7; registry-derived report metadata is deferred until that schema is defined. Planner and execute use the same configured provider id. Redirects are refused, all non-loopback HTTP is refused (only loopback IP literals qualify; localhost is not trusted via DNS), and response bodies are limited to 1 MiB. Profile enforcement remains partial: P0–P3 names are accepted, and Gemini Developer API requires P0; `effective` stays null until profile verification and enforcement are implemented in the L7 provider-profile phase.*
 
 The Gemini Developer API registry entry uses origin `https://generativelanguage.googleapis.com`, OpenAI-compatible base path `/v1beta/openai`, and endpoint `/v1beta/openai/chat/completions`. GLOBAL is destination metadata, not a residency tag or a CH/EU guarantee. Public data explicitly tagged `unrestricted` MAY use this destination; CH, EU, and CH-EU restrictions MUST refuse it. Infomaniak remains the CH provider. Google describes a global model pool in its [location documentation](https://firebase.google.com/docs/ai-logic/locations), and its [API terms](https://ai.google.dev/gemini-api/terms) permit transient storage or caching in countries where Google or its agents maintain facilities.
 
-The xAI registry entry (amendment, v1 spec; implemented in `sidged-gateway`) uses provider id `xai`, origin `https://api.x.ai` (port 443), OpenAI-compatible base path `/v1`, and endpoint `/v1/chat/completions`. Its destination class is GLOBAL (no residency guarantee); GLOBAL is destination metadata, not a residency tag. Only explicitly `unrestricted` payloads may pass the residency check for this destination; CH, EU, and CH-EU restrictions MUST refuse it. Residency is separate from the P0–P3 provider profile. xAI uses profile **P0** (unverified). **Decision record:** Decided by WOUFbot under the standing autonomy Roni granted (2026-10-16 10:29 "du darfsch alles selber mache", 11:19 "selbständig"); delegated, not an explicit P0 decision by Roni. xAI publishes no Sidged provider manifest, so no P1–P3 claim is possible, matching Gemini Developer API. P0 changes no residency rule. `sidged-gateway` implements this entry: it requires profile P0, accepts only `/v1/chat/completions` with a JSON object body and no query, refuses before transport otherwise, and emits one privacy report per call. The API key comes from a file (`SIDGED_API_KEY_FILE`); `SIDGED_API_KEY` in the environment is refused for xAI, and the key never enters reports, errors or the audit log. §5.1 (R7–R9, including standing approval) and §5.3 anonymization apply unchanged. Redirects MUST remain refused. *Rationale: a delegated standing-autonomy decision registers a GLOBAL destination with the unverified profile P0 and does not relax the existing egress checks.*
+The xAI registry entry (amendment, v1 spec; implemented in `vaikor-gateway`) uses provider id `xai`, origin `https://api.x.ai` (port 443), OpenAI-compatible base path `/v1`, and endpoint `/v1/chat/completions`. Its destination class is GLOBAL (no residency guarantee); GLOBAL is destination metadata, not a residency tag. Only explicitly `unrestricted` payloads may pass the residency check for this destination; CH, EU, and CH-EU restrictions MUST refuse it. Residency is separate from the P0–P3 provider profile. xAI uses profile **P0** (unverified). **Decision record:** Decided by WOUFbot under the standing autonomy Roni granted (2026-10-16 10:29 "du darfsch alles selber mache", 11:19 "selbständig"); delegated, not an explicit P0 decision by Roni. xAI publishes no Vaikor provider manifest, so no P1–P3 claim is possible, matching Gemini Developer API. P0 changes no residency rule. `vaikor-gateway` implements this entry: it requires profile P0, accepts only `/v1/chat/completions` with a JSON object body and no query, refuses before transport otherwise, and emits one privacy report per call. The API key comes from a file (`VAIKOR_API_KEY_FILE`); `VAIKOR_API_KEY` in the environment is refused for xAI, and the key never enters reports, errors or the audit log. §5.1 (R7–R9, including standing approval) and §5.3 anonymization apply unchanged. Redirects MUST remain refused. *Rationale: a delegated standing-autonomy decision registers a GLOBAL destination with the unverified profile P0 and does not relax the existing egress checks.*
 
 Hosted guard planner requests MUST preserve all residency restrictions declared by the catalog included in their prompt. A missing or empty declaration on any included capability MUST deny the planner request and produce a deny audit entry before any network request. Literal loopback destinations MAY receive explicitly `unrestricted` data, but MUST refuse geographic restrictions because their residency is unknown. A scenario's optional `config.task` supplies its task text; it does not grant authority.
 
@@ -36,7 +36,7 @@ Hosted guard planner requests MUST preserve all residency restrictions declared 
 ## 4. Out of scope
 
 - The report schema already drafted for the hosted prototype. Phase 15 says which fields become normative.
-- Peer envelopes and the mesh (SDG-L6).
+- Peer envelopes and the mesh (VKR-L6).
 - A local router model. The vision requires the model that proposes plans to be local. Until that model exists, every remote planner call is egress under R1.
 - OHTTP relays, key configuration, and test vectors.
 
@@ -84,12 +84,12 @@ The local model is asked to anonymize outgoing payloads. The Core MUST NOT trust
   - any class is above the owner's export threshold for this destination; or
   - any input has no class.
 
-  The **export threshold** is an owner-policy set of classes allowed to leave per destination class (`CH`, `EU`, `GLOBAL`). Default: only `query` and `documents.text` for every destination class. A class matches by dot boundary (`health` covers `health.records`, as in `sidged-verify/src/plan.rs:237`).
+  The **export threshold** is an owner-policy set of classes allowed to leave per destination class (`CH`, `EU`, `GLOBAL`). Default: only `query` and `documents.text` for every destination class. A class matches by dot boundary (`health` covers `health.records`, as in `vaikor-verify/src/plan.rs:237`).
 - **B. Residency.** The derived residency tags (0012 R10, 0001 R8e) MUST pass 0001 R8 for the destination class: missing or empty tags fail closed, and only `unrestricted` reaches `GLOBAL`. Refuse with `residency-unsupported`.
 - **C. Size.** The payload body MUST NOT exceed the owner's `max_payload_bytes` (default 32 KiB) for the destination. Refuse with `policy-denied`.
 - **D. Deterministic detector.** The detector set (R12) MUST find no match in the UTF-8 payload after NFKC normalization. Refuse with `data-class-forbidden`, naming the detector id but never the matched text.
 
-**R12.** *Detector set.* The detector set is versioned. Version `sdg.pii/1` is exactly the set below, applied as case-insensitive regular expressions with no network or model access:
+**R12.** *Detector set.* The detector set is versioned. Version `vkr.pii/1` is exactly the set below, applied as case-insensitive regular expressions with no network or model access:
 
 | id | Matches |
 |---|---|
@@ -101,8 +101,8 @@ The local model is asked to anonymize outgoing payloads. The Core MUST NOT trust
 | `ipv4` | `\b(?:\d{1,3}\.){3}\d{1,3}\b` |
 | `secret` | `-----BEGIN [A-Z ]*PRIVATE KEY-----`, `\bsk-[A-Za-z0-9_-]{16,}`, `\bgh[pousr]_[A-Za-z0-9]{20,}`, `\bAKIA[0-9A-Z]{16}\b`, `\bxox[abpr]-[A-Za-z0-9-]{10,}` |
 
-- **R12a.** A change to the set or to a pattern MUST bump the version (`sdg.pii/2`, …). The gateway MUST refuse egress (`policy-denied`) if its configured detector version is unknown to it.
-- **R12b.** Owner policy MAY add detectors (ids starting with `x-`), which become part of the reported version (`sdg.pii/1+x-…`). It MUST NOT remove the base set.
+- **R12a.** A change to the set or to a pattern MUST bump the version (`vkr.pii/2`, …). The gateway MUST refuse egress (`policy-denied`) if its configured detector version is unknown to it.
+- **R12b.** Owner policy MAY add detectors (ids starting with `x-`), which become part of the reported version (`vkr.pii/1+x-…`). It MUST NOT remove the base set.
 - **R12c.** *Residual risk.* The detectors are deterministic and incomplete. Names, free-text health facts, and re-identifiable combinations are not detected. A false negative is a known residual risk. Check A, not the detector, is the primary control for sensitive classes. The detector is a backstop for leaks into a payload that check A allowed.
 
 **R13.** *Audit.* Every outcome of §5.3, permit or refuse, MUST append an audit entry before `send()` (or before returning the refusal). The entry MUST hold:
@@ -126,6 +126,6 @@ It MUST NOT contain the payload or the matched text. If the append fails, the ca
 
 Plan-step reports are persisted in the corresponding signed audit event. The hosted executor binds these reports to serialized proposed arguments and marks `payload_binding` as `proposed-arguments`; it does not claim to have sent a provider request. Reports contain metadata and digests, never argument values.
 
-Gemini Developer API uses profile **P0** and **GLOBAL** residency; only explicitly `unrestricted` payloads are permitted. Configure the billing project with `SIDGED_GEMINI_PROJECT` (or `provider_project` in `config.json`); missing or blank values refuse before any request. This is a required configuration declaration, not verification that billing is enabled. Grounding (`google_search`, `googleSearchRetrieval`, `grounding`), explicit caching (`cachedContent`, `cached_content`), File API inputs/uploads, and Live API/session resumption are unsupported and refused before transport. The reviewed endpoint is `/v1beta/openai/chat/completions`.
+Gemini Developer API uses profile **P0** and **GLOBAL** residency; only explicitly `unrestricted` payloads are permitted. Configure the billing project with `VAIKOR_GEMINI_PROJECT` (or `provider_project` in `config.json`); missing or blank values refuse before any request. This is a required configuration declaration, not verification that billing is enabled. Grounding (`google_search`, `googleSearchRetrieval`, `grounding`), explicit caching (`cachedContent`, `cached_content`), File API inputs/uploads, and Live API/session resumption are unsupported and refused before transport. The reviewed endpoint is `/v1beta/openai/chat/completions`.
 
 CH/EU support is deferred to Vertex AI regional endpoints with its own provider, residency and retention review. The Developer API does not provide that guarantee.

@@ -1,8 +1,8 @@
-# 0002 – Grant (SDG-L2)
+# 0002 – Grant (VKR-L2)
 
-> **Status:** Draft v0.1. The structural rules below are implemented in `spec/validate` and in `runtime/sidged-grant`.
+> **Status:** Draft v0.1. The structural rules below are implemented in `spec/validate` and in `runtime/vaikor-grant`.
 > **Date:** 2026-10-14
-> **Spec:** SDG-L2 Grant
+> **Spec:** VKR-L2 Grant
 > **Basis:** [0000-architektur.md](0000-architektur.md) (Grant row, E6, E7) and [0001-capability.md](0001-capability.md). A capability describes an action. A grant is what allows one holder to perform it.
 
 The key words MUST, MUST NOT, SHOULD, and MAY are to be interpreted as in BCP 14 (RFC 2119 and RFC 8174) when they appear in capitals.
@@ -34,7 +34,7 @@ The JSON shape is [capability-token.schema.json](../../spec/schemas/capability-t
 
 **R4.** When `nbf` is present it MUST be earlier than `exp`. *Rationale: a token that is never valid is not a grant.*
 
-**R5.** A receiver that has a clock MUST refuse a link whose `exp` is not after that clock, whose `nbf` is after that clock, or whose `iat` is more than 30 seconds after that clock. *Rationale: a future `iat` would stretch the one-hour bound. The shared test vectors do not carry a clock, so `capability-check` in the suite does not apply R5. `sidged-grant` applies R5 when the caller passes `now`.*
+**R5.** A receiver that has a clock MUST refuse a link whose `exp` is not after that clock, whose `nbf` is after that clock, or whose `iat` is more than 30 seconds after that clock. *Rationale: a future `iat` would stretch the one-hour bound. The shared test vectors do not carry a clock, so `capability-check` in the suite does not apply R5. `vaikor-grant` applies R5 when the caller passes `now`.*
 
 ## 3. Holder binding
 
@@ -87,11 +87,11 @@ Let the sequence be the `chain` links followed by the token. For each link after
 
 **R20.** When the leaf token sets `budget.messages` or `budget.compute_units`, each step that is about to run MUST decrement that field by one before the effect. When it sets `budget.money`, a metered step MUST decrement that amount by the capability cost times the step's `bound` (1 for a call). A step that does not fit MUST be refused, and the remaining budget MUST stay unchanged. A budget field the token omitted is not a cap. *Rationale: attenuation only compares parent and child. Without a decrement the leaf budget is a label, and a one-message grant can still send twice.*
 
-**R21.** A leaf right's `constraints.max_uses` caps uses across executions, not just within one run. Before each effect and before requesting human approval, the Core MUST check that a covering leaf right has at least the step's `bound` uses remaining (1 for a call, 0 for a map with bound 0). If several rights cover the action and resource, the Core MUST select the first covering right in leaf order that fits; a right without `max_uses` is uncapped. If none fits, the step MUST be refused with a logged `grant denied` decision, without spending any uses. The Core MUST derive prior spends from the verified, signed hash-chained audit log keyed by issuer and token id plus leaf right index, and durably append a spend reservation before the effect. A reservation remains spent if execution crashes after it is written; refusing approval MUST NOT spend uses. Concurrent writers MUST be serialized or refused. An effectful execution without a writable log target and signing key MUST fail closed; only verification and explicit dry runs may omit the log. The default chain is `$XDG_STATE_HOME/sidged/audit.log`, falling back to `~/.local/state/sidged/audit.log`, independent of the working directory, and the Core reports the resolved path on stderr. Operators MUST retain the same chain across runs; choosing a new log, deleting it, or restoring an older valid prefix is outside the protection of a local hash chain without an external checkpoint. *Rationale: a use cap checked only at delegation or reset per run still allows unlimited calls. Durable reservations conservatively preserve the cap across crashes.*
+**R21.** A leaf right's `constraints.max_uses` caps uses across executions, not just within one run. Before each effect and before requesting human approval, the Core MUST check that a covering leaf right has at least the step's `bound` uses remaining (1 for a call, 0 for a map with bound 0). If several rights cover the action and resource, the Core MUST select the first covering right in leaf order that fits; a right without `max_uses` is uncapped. If none fits, the step MUST be refused with a logged `grant denied` decision, without spending any uses. The Core MUST derive prior spends from the verified, signed hash-chained audit log keyed by issuer and token id plus leaf right index, and durably append a spend reservation before the effect. A reservation remains spent if execution crashes after it is written; refusing approval MUST NOT spend uses. Concurrent writers MUST be serialized or refused. An effectful execution without a writable log target and signing key MUST fail closed; only verification and explicit dry runs may omit the log. The default chain is `$XDG_STATE_HOME/vaikor/audit.log`, falling back to `~/.local/state/vaikor/audit.log`, independent of the working directory, and the Core reports the resolved path on stderr. Operators MUST retain the same chain across runs; choosing a new log, deleting it, or restoring an older valid prefix is outside the protection of a local hash chain without an external checkpoint. *Rationale: a use cap checked only at delegation or reset per run still allows unlimited calls. Durable reservations conservatively preserve the cap across crashes.*
 
 A zero bound costs zero uses in the grant accounting API; the current plan verifier separately requires map bounds from 1 to 32. Per-step uses and R20 budget fit checks precede approval. This hosted runtime retains sequential execution: a later refusal can follow earlier effects; whole-plan preflight is not a guarantee of this rule.
 
-`sidged-grant` exposes this as a `PolicyHook`. `PermitAll` is the test double. `CedarEvaluator` parses Cedar with `cedar-policy` and implements `PolicyHook`. The request context is `audience` (the token `aud`), `data_classes`, and `residency`. A parse or evaluation error is a denial.
+`vaikor-grant` exposes this as a `PolicyHook`. `PermitAll` is the test double. `CedarEvaluator` parses Cedar with `cedar-policy` and implements `PolicyHook`. The request context is `audience` (the token `aud`), `data_classes`, and `residency`. A parse or evaluation error is a denial.
 
 Non-normative sketch, not a grammar:
 
@@ -104,26 +104,26 @@ when { context.audience == "did:example:calendar" };
 
 **R22.** *Caveats are enforced at use.* A right covers a step only when, besides R17, every constraint it carries holds for that step: the step's capability data classes are a subset of `constraints.data_classes` when set, the step's cost times its `bound` is at most `constraints.max_amount` when set (same currency, else refused), and R21 uses remain. The right that covers the step is the one whose uses and budget are reserved. *Rationale: a constraint that only narrows delegation is a label; the leaf holder could still use the right for any data class or amount.*
 
-**R23.** *Owner mandate.* At node initialisation the owner key signs a **mandate** (`sdg.mandate/v0`): the owner `did:key`, the node's executor `did:key`, the node audience, the rights the owner allows (action, resource, constraints as in §1), a budget per period, and `exp` at most 30 days after `iat`. A mandate is not a token and confers nothing by itself; it bounds what the executor may issue. Renewing or widening a mandate is an owner action through Trusted UI with user verification; a model, a bundle or a generated view MUST NOT issue, renew or widen one. *Rationale: R3 keeps every token at one hour, and from v0.4 the owner key sits in hardware behind a user-presence prompt (WP 15); signing a mandate once per period keeps that prompt rare without stretching any token's lifetime.*
+**R23.** *Owner mandate.* At node initialisation the owner key signs a **mandate** (`vkr.mandate/v0`): the owner `did:key`, the node's executor `did:key`, the node audience, the rights the owner allows (action, resource, constraints as in §1), a budget per period, and `exp` at most 30 days after `iat`. A mandate is not a token and confers nothing by itself; it bounds what the executor may issue. Renewing or widening a mandate is an owner action through Trusted UI with user verification; a model, a bundle or a generated view MUST NOT issue, renew or widen one. *Rationale: R3 keeps every token at one hour, and from v0.4 the owner key sits in hardware behind a user-presence prompt (WP 15); signing a mandate once per period keeps that prompt rare without stretching any token's lifetime.*
 
 **R24.** *Per-task token under the mandate.* For each verified plan the executor key issues a root token (R3: at most one hour, `sub` and `cnf` naming the executor key) whose rights are narrowed to the plan's capabilities. On a node, the executor `did:key` is a trusted root issuer (R19) only for tokens that a valid, unexpired owner mandate covers: every right is covered by a mandate right under R9 with constraints at least as narrow (§5), and the token's budget fits what the mandate's period has left, counted by the Core's ledger. A token outside its mandate MUST be refused. *Rationale: a compromised task holds at most its own plan's rights for one hour, and a compromised executor key is still capped by what the owner signed.*
 
 **R25.** *Authenticated presenter.* The engine accepts a token only from a presenter that proves possession of the holder key: a signature by the key `cnf` names over the plan digest and a fresh nonce from the Core. On the node the executor key signs; a CLI caller supplies the holder key. A token presented without proof MUST be refused. *Rationale: R8 binds a token to a key, but only proof of possession binds it to the presenter; without it a token file is a bearer token.*
 
-**R26.** *One engine.* Every entry point that can cause an effect (`sidged run`, `sidged task`, the companion, swarm workers) MUST execute through the same engine, which runs the verifier on the representation it executes and applies R17-R25, 0004 R9 and 0005 R5a (audit before effect) to every step. *Rationale: a rule enforced on one entry point and skipped on another is not enforced.*
+**R26.** *One engine.* Every entry point that can cause an effect (`vaikor run`, `vaikor task`, the companion, swarm workers) MUST execute through the same engine, which runs the verifier on the representation it executes and applies R17-R25, 0004 R9 and 0005 R5a (audit before effect) to every step. *Rationale: a rule enforced on one entry point and skipped on another is not enforced.*
 
 ## 7. Conformance
 
 - Resource and envelope vectors in `spec/test-vectors` are normative for R9 and R17, including the nine that were provisional.
-- `runtime/sidged-grant` implements R3, R4, R6, R7, R9, R10 through R20, with R5 when `now` is supplied. Ed25519 and JCS cover the signature vectors. `cedar-policy` evaluates R18. R19 applies when the caller passes the trusted root set. An empty set refuses every token. R20 is `spend_step`.
+- `runtime/vaikor-grant` implements R3, R4, R6, R7, R9, R10 through R20, with R5 when `now` is supplied. Ed25519 and JCS cover the signature vectors. `cedar-policy` evaluates R18. R19 applies when the caller passes the trusted root set. An empty set refuses every token. R20 is `spend_step`.
 - R8 holder binding (`did:key` and `cnf.jkt`) and capability-token chain signatures are implemented for Ed25519 `did:key` issuers. Envelope JCS signatures are what the `sign` and `verify` vectors check.
 
 ## 8. Out of scope
 
-- The capability descriptor (SDG-L1) and the MCP binding.
-- The plan verifier and data-flow labels (SDG-L3).
-- Trusted UI copy and the VAIEV design tokens (SDG-L4).
-- Envelope transport, replay, and bindings (SDG-L6), except the instruction check in R17. `dcbor` is an L0 canonical encoding. This layer does not define it, and L6 does not define it either. Token signatures in this layer are JCS and Ed25519.
+- The capability descriptor (VKR-L1) and the MCP binding.
+- The plan verifier and data-flow labels (VKR-L3).
+- Trusted UI copy and the VAIEV design tokens (VKR-L4).
+- Envelope transport, replay, and bindings (VKR-L6), except the instruction check in R17. `dcbor` is an L0 canonical encoding. This layer does not define it, and L6 does not define it either. Token signatures in this layer are JCS and Ed25519.
 - Issuer keys that are not Ed25519 `did:key` values. `did:example` placeholders in the examples are not resolvable.
 
 

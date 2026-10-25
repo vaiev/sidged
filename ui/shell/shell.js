@@ -1,10 +1,10 @@
 // Copyright 2026 VAIEV
 // SPDX-License-Identifier: Apache-2.0
 //
-// Sidged offline shell. No network access of any kind (CSP connect-src
+// Vaikor offline shell. No network access of any kind (CSP connect-src
 // 'none'), no storage, no generated identities. The only data binding is a
 // local audit log file the user picks; its lines are listed as text and are
-// NOT verified here (that is `sidged log verify`).
+// NOT verified here (that is `vaikor log verify`).
 "use strict";
 
 (function () {
@@ -39,7 +39,7 @@
     body.dataset.theme = body.dataset.theme === "dark" ? "light" : "dark";
   });
 
-  // Audit log file: "<prev> <signature> <json>" per line (sidged-log).
+  // Audit log file: "<prev> <signature> <json>" per line (vaikor-log).
   const input = document.getElementById("log-file");
   const status = document.getElementById("log-status");
   const list = document.getElementById("log-entries");

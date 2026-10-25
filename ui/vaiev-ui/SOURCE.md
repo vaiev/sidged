@@ -1,18 +1,18 @@
 # @vaiev/ui v4 (vendored)
 
 `tokens/tokens.css`, `tokens/components.css` and `tokens/fonts.css` are the @vaiev/ui design system v4 of
-2026-10-13, byte-identical to the files sidged.com serves under `/assets/tokens/`. The comments inside them are
+2026-10-13, byte-identical to the files vaikor.com serves under `/assets/tokens/`. The comments inside them are
 upstream text and stay as published. `fonts/` holds the IBM Plex Sans and Mono subsets those stylesheets reference,
 under the SIL Open Font License (`fonts/OFL-LICENSE.txt`).
 
-`sidged-theme.css` is the Sidged sub-brand: the same roles filled with the accent "Sodium", dark only, as on
-sidged.com. Principle of the system: content is flat and tonal; navigation and floating controls form exactly one
+`vaikor-theme.css` is the Vaikor sub-brand: the same roles filled with the accent "Sodium", dark only, as on
+vaikor.com. Principle of the system: content is flat and tonal; navigation and floating controls form exactly one
 glass layer; anything pressed or floating is a pill; touch targets are 48 px.
 
 Consumers copy these files; nothing loads them from another origin:
 
-- `companion/sidged-companion-app/ui/vendor/` (checked to be identical by `scripts/tests/companion_ui_check.sh`)
-- the sidged.com build (`scripts/build-sidged-site.sh` writes them to `/assets/`)
+- `companion/vaikor-companion-app/ui/vendor/` (checked to be identical by `scripts/tests/companion_ui_check.sh`)
+- the vaikor.com build (`scripts/build-vaikor-site.sh` writes them to `/assets/`)
 
 `ui/shell/` keeps its own token copy (vaiev/ui commit 0bb03ba) and its own checks.
 

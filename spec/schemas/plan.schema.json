@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sidged.com/spec/schemas/plan.schema.json",
-  "title": "Sidged plan (v0.1)",
-  "description": "A verifiable plan of capability calls, CEL expressions, and bounded maps (SDG-L3). Status: Draft v0.1. Normative rules are in docs/specs/0003-plan.md.",
+  "$id": "https://vaikor.com/spec/schemas/plan.schema.json",
+  "title": "Vaikor plan (v0.1)",
+  "description": "A verifiable plan of capability calls, CEL expressions, and bounded maps (VKR-L3). Status: Draft v0.1. Normative rules are in docs/specs/0003-plan.md.",
   "type": "object",
   "additionalProperties": false,
   "required": ["v", "steps"],
@@ -30,13 +30,13 @@
       "pattern": "^[a-z][a-z0-9_]{0,31}$"
     },
     "outputMember": {
-      "description": "A property the referenced capability's output_schema declares (SDG-L3 R4a).",
+      "description": "A property the referenced capability's output_schema declares (VKR-L3 R4a).",
       "type": "string",
       "pattern": "^[A-Za-z_][A-Za-z0-9_]{0,63}$"
     },
     "capabilityId": {
       "type": "string",
-      "pattern": "^urn:sidged:capability:[A-Za-z0-9._-]{1,128}$"
+      "pattern": "^tag:vaikor\\.com,2026:capability:[A-Za-z0-9._-]{1,128}$"
     },
     "arg": {
       "oneOf": [
@@ -68,7 +68,7 @@
       ]
     },
     "over": {
-      "description": "A map's source: an earlier step's whole output (SDG-L3 R6); field is only for arguments (R4a).",
+      "description": "A map's source: an earlier step's whole output (VKR-L3 R6); field is only for arguments (R4a).",
       "type": "object",
       "additionalProperties": false,
       "required": ["ref"],

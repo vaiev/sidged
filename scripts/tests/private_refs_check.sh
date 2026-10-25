@@ -52,7 +52,7 @@ failing=$tmp/fail
 mkrepo "$failing"
 printf '// zeroized on drop (%s93 N2)\nfn f() {}\n' "$h" > "$failing/lib.rs"
 printf '# follow-up %s93c\n' "$h" > "$failing/run.sh"
-printf 'merged via vaiev/sidged%s36.\n' "$h" > "$failing/spec.md"
+printf 'merged via vaiev/vaikor%s36.\n' "$h" > "$failing/spec.md"
 printf '.tag { border: 1px solid %s333; } <!-- See %s75 -->\n' "$h" "$h" > "$failing/style.css"
 printf 'style.css:%s333  -- CSS colour, not an issue\n' "$h" >> "$failing/scripts/private-refs-allow.txt"
 track "$failing"

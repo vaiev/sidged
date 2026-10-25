@@ -9,7 +9,7 @@ TRAIN. It never runs in CI. Heavy imports (torch, unsloth, trl, datasets)
 happen only after consent, so this file can be syntax-checked and unit-tested
 without them.
 
-The trained model only proposes JSON tool calls; the Sidged Core verifies
+The trained model only proposes JSON tool calls; the Vaikor Core verifies
 every proposal (0009 R1/R2). No timing figures are claimed: measure your own.
 
 Usage:
@@ -189,7 +189,7 @@ def main(argv):
     merged, seeds = train(args)
     gguf = None
     if args.gguf_converter:
-        gguf = args.out / f"sidged-edge-{HYPERPARAMETERS['gguf_outtype']}.gguf"
+        gguf = args.out / f"vaikor-edge-{HYPERPARAMETERS['gguf_outtype']}.gguf"
         subprocess.run(
             [sys.executable, str(args.gguf_converter), str(merged),
              "--outtype", HYPERPARAMETERS["gguf_outtype"], "--outfile", str(gguf)],

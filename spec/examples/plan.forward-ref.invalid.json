@@ -4,7 +4,7 @@
     {
       "id": "send",
       "kind": "call",
-      "capability": "urn:sidged:capability:message.send",
+      "capability": "tag:vaikor.com,2026:capability:message.send",
       "approval": true,
       "args": { "body": { "ref": "later" } }
     },

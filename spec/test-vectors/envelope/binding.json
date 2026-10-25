@@ -1,6 +1,6 @@
 {
   "category": "envelope",
-  "description": "Token to envelope binding (Sidged L2): token sub equals sender_agent, token aud equals envelope aud, rights cover the instruction. Pairing and refusal envelopes carry no token.",
+  "description": "Token to envelope binding (Vaikor L2): token sub equals sender_agent, token aud equals envelope aud, rights cover the instruction. Pairing and refusal envelopes carry no token.",
   "vectors": [
     {
       "id": "envelope.binding.001",
@@ -642,7 +642,7 @@
           "session": "pair-91c2d7aa10",
           "seq": 0,
           "attestation_ref": null,
-          "intent": "sdg.pairing.request",
+          "intent": "vkr.pairing.request",
           "residency": {
             "tags": [],
             "data_classes": []
@@ -657,7 +657,7 @@
             ],
             "sas_commitment": "b3Jhbmdlcy1hbmQtbGVtb25z"
           },
-          "payload_type": "application/vnd.sidged.pairing+json",
+          "payload_type": "application/vnd.vaikor.pairing+json",
           "provenance": [],
           "sig": {
             "alg": "EdDSA",
@@ -694,7 +694,7 @@
           "session": "sess-4b1d0e9a77",
           "seq": 4,
           "attestation_ref": null,
-          "intent": "sdg.refused",
+          "intent": "vkr.refused",
           "data": {
             "v": "0.1",
             "reason": "rate-limited",
@@ -705,7 +705,7 @@
             },
             "retry_after": "PT10M"
           },
-          "payload_type": "application/vnd.sidged.refusal+json",
+          "payload_type": "application/vnd.vaikor.refusal+json",
           "residency": {
             "tags": [],
             "data_classes": []
@@ -826,7 +826,7 @@
           "session": "sess-4b1d0e9a77",
           "seq": 4,
           "attestation_ref": null,
-          "intent": "sdg.refused",
+          "intent": "vkr.refused",
           "data": {
             "v": "0.1",
             "reason": "rate-limited",
@@ -837,7 +837,7 @@
             },
             "retry_after": "PT10M"
           },
-          "payload_type": "application/vnd.sidged.refusal+json",
+          "payload_type": "application/vnd.vaikor.refusal+json",
           "residency": {
             "tags": [],
             "data_classes": []

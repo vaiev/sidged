@@ -1,0 +1,37 @@
+/* Copyright 2026 VAIEV
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Vaikor sub-brand theme: fills the @vaiev/ui v4 roles with the Vaikor accent "Sodium",
+ * dark only, exactly as vaikor.com does (assets/css/vaikor.css). Load after
+ * tokens/tokens.css and tokens/components.css. Shared by the companion canvas and the
+ * vaikor.com playground so both look like the site. */
+
+:root {
+  color-scheme: dark;
+  --vkr-sodium-100: #FFF1DB;
+  --vkr-sodium-300: #FFC870;
+  --vkr-sodium-400: #FFA733;
+  --vkr-sodium-500: #F28A0F;
+  --vkr-sodium-700: #A35800;
+  --vkr-sodium-900: #3D2000;
+
+  --vv-color-primary: var(--vkr-sodium-400);
+  --vv-color-on-primary: var(--vkr-sodium-900);
+  --vv-color-primary-container: var(--vkr-sodium-700);
+  --vv-color-on-primary-container: var(--vkr-sodium-100);
+  --vv-color-focus: var(--vkr-sodium-400);
+}
+
+body { background: var(--vv-color-surface); color: var(--vv-color-on-surface); font-family: var(--vv-font-sans); }
+code { font-family: var(--vv-font-mono); font-size: 0.92em; }
+
+/* The typeset name with the sodium dot (no drawn mark yet), as on vaikor.com. */
+.vkr-brand {
+  display: inline-flex; align-items: center; gap: var(--vv-space-2);
+  font: 600 1.25rem/1 var(--vv-font-sans); letter-spacing: -0.02em;
+  color: var(--vv-color-on-surface); text-decoration: none;
+}
+.vkr-brand__dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--vkr-sodium-400); box-shadow: 0 0 12px var(--vkr-sodium-500);
+}

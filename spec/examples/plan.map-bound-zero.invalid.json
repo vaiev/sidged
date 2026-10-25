@@ -11,7 +11,7 @@
       "kind": "map",
       "over": { "ref": "slots" },
       "bound": 0,
-      "capability": "urn:sidged:capability:message.send",
+      "capability": "tag:vaikor.com,2026:capability:message.send",
       "approval": true,
       "args": { "body": { "item": true } }
     }

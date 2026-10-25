@@ -1,13 +1,13 @@
-The Rust runner is `stored_plan_runner.rs`, included by `sidged-verify` so its
+The Rust runner is `stored_plan_runner.rs`, included by `vaikor-verify` so its
 injected vector clock stays private. Run from the repository root:
 
 ```sh
-cd runtime && cargo test -p sidged-verify stored::vectors
+cd runtime && cargo test -p vaikor-verify stored::vectors
 ```
 
 It executes all 13 vectors for `plan-digest`, `stored-plan-signing-input`, and
 `stored-plan-check` in `dcbor-signed.json`, comparing exact bytes, digests,
-decisions, and refusal codes. The dCBOR implementation is `sidged-record`'s
+decisions, and refusal codes. The dCBOR implementation is `vaikor-record`'s
 codec. Unknown operations or changes to the executed/skipped counts fail.
 
 Exactly these vectors are skipped by this runner:
@@ -45,7 +45,7 @@ policy drift, static-verifier refusal, malformed input, and sink failure on both
 acceptance and refusal paths. The executor must still enforce grants and
 Trusted UI per instance. `CheckedPlan` conveys neither permission.
 
-There is no stored-plan execution path added to `sidged run`: 0003 §7 leaves
+There is no stored-plan execution path added to `vaikor run`: 0003 §7 leaves
 stored-plan signature verification outside the v0.1 CLI contract. Consumers of
 the new library must use `check_for_run` before each stored-plan execution;
 `check` is authentication/verification only and does not execute anything.

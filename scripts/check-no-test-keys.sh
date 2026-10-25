@@ -19,7 +19,7 @@ context() {
   # Scratch under $RUNNER_TEMP, where rootless podman can see it; an EXIT
   # trap, as a failing build ends the script before a RETURN trap would run.
   . scripts/podman-store.sh
-  out="$(sidged_scratch_dir context)"
+  out="$(vaikor_scratch_dir context)"
   trap 'rm -rf "$out"' EXIT
   printf 'FROM scratch\nCOPY . /ctx\n' > "$out/Context.Containerfile"
   # Rootless podman only (no docker).
@@ -36,7 +36,7 @@ case "${1:-}" in
   --paths-only) shift; scan "$@" ;;
   --context) context ;;
   "")
-    cargo build --manifest-path runtime/Cargo.toml --locked --release -p sidged-guard -q
-    scan runtime/target/release/sidged && context ;;
+    cargo build --manifest-path runtime/Cargo.toml --locked --release -p vaikor-guard -q
+    scan runtime/target/release/vaikor && context ;;
   *) scan "$@" ;;
 esac

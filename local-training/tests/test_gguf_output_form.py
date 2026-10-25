@@ -20,7 +20,7 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
 import gguf_output_form  # noqa: E402
 
 SCRIPT = pathlib.Path(gguf_output_form.__file__)
-KEY = "sidged.linguist.output"
+KEY = "vaikor.linguist.output"
 
 
 def gstr(text):
@@ -206,13 +206,13 @@ class GateTest(unittest.TestCase):
         self.blind.write_text(json.dumps({"messages": [{}, {}, {"content": content}]}) + "\n")
         if target_format is not None:
             (self.run_dir / "manifest.json").write_text(json.dumps({"target_format": target_format}))
-        env = dict(os.environ, SIDGED_LLAMA=str(self.llama), PYTHON=sys.executable,
+        env = dict(os.environ, VAIKOR_LLAMA=str(self.llama), PYTHON=sys.executable,
                    PATH=f"{self.bin}:{os.environ['PATH']}")
         return subprocess.run(["bash", str(SCRIPT.parent / "release_gate.sh"), str(self.run_dir), str(self.blind)],
                               capture_output=True, text=True, env=env, timeout=120, check=False)
 
     def forms(self):
-        return [gguf_output_form.read_output(self.run_dir / f"sidged-linguist-{q}.gguf")
+        return [gguf_output_form.read_output(self.run_dir / f"vaikor-linguist-{q}.gguf")
                 for q in ("f16", "q8_0", "q4_k_m")]
 
     def test_a_compact_run_served_full_is_refused(self):
@@ -252,7 +252,7 @@ class ServeTest(unittest.TestCase):
 
     def serve(self, value):
         self.model.write_bytes(typical(value)[0])
-        env = dict(os.environ, SIDGED_TOOLCHAIN=str(self.toolchain), XDG_RUNTIME_DIR=str(self.runtime))
+        env = dict(os.environ, VAIKOR_TOOLCHAIN=str(self.toolchain), XDG_RUNTIME_DIR=str(self.runtime))
         script = SCRIPT.parent.parent / "scripts" / "serve-local-linguist.sh"
         return subprocess.run(["bash", str(script), str(self.model), "--workspace", str(self.workspace)],
                               capture_output=True, text=True, env=env, timeout=60, check=False)
@@ -262,7 +262,7 @@ class ServeTest(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         config = json.loads(self.config.read_text())
         self.assertEqual(config["model"]["output"], "compact")
-        self.assertTrue(config["model"]["endpoint"].endswith("/sidged/linguist.sock"))
+        self.assertTrue(config["model"]["endpoint"].endswith("/vaikor/linguist.sock"))
         self.assertEqual(config["timezone"], "Europe/Zurich")
         self.assertTrue(self.started.exists())
 

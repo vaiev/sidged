@@ -1,22 +1,22 @@
 #!/usr/bin/env bash
 # Copyright 2026 VAIEV
 # SPDX-License-Identifier: Apache-2.0
-# build-android-linguist.sh: the on-device model server for sidged-android (WP 9b).
+# build-android-linguist.sh: the on-device model server for vaikor-android (WP 9b).
 #
 #   bash scripts/build-android-linguist.sh            # after setup-companion-toolchain.sh --with-llama
 #
 # Cross-builds llama-server from the pinned llama.cpp checkout for arm64-v8a (CPU only, no
 # OpenMP, no curl), strips it and places it in the APK's jniLibs as libllama_server.so. The
 # app runs it from its native library directory on a Unix socket in its private data
-# directory (companion/sidged-companion-app/src/local_model.rs); the weights are not
+# directory (companion/vaikor-companion-app/src/local_model.rs); the weights are not
 # bundled: put a GGUF at <app data>/models/linguist.gguf (see companion/README.md).
 set -euo pipefail
 
-TOOLCHAIN=${SIDGED_TOOLCHAIN:-$HOME/.local/share/sidged-toolchain}
+TOOLCHAIN=${VAIKOR_TOOLCHAIN:-$HOME/.local/share/vaikor-toolchain}
 LLAMA_COMMIT=d81235049384534c167caea52b85a694f6103d14
 here=$(cd "$(dirname "$0")/.." && pwd)
 src=$TOOLCHAIN/llama.cpp
-out=$here/companion/sidged-companion-app/gen/android/app/src/main/jniLibs/arm64-v8a
+out=$here/companion/vaikor-companion-app/gen/android/app/src/main/jniLibs/arm64-v8a
 
 # shellcheck source=/dev/null
 . "$TOOLCHAIN/env.sh"

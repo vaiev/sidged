@@ -1,0 +1,16 @@
+[package]
+name = "vaikor-companion-core"
+version = "0.2.0"
+edition = "2021"
+rust-version = "1.89"
+license = "Apache-2.0"
+publish = false
+description = "Morphing intent canvas core: builds @vaiev/ui v4 surfaces from capability schemas, intent slots and artifact records, and serves the companion IPC command allowlist."
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+vaikor-capability = { path = "../../runtime/vaikor-capability" }
+vaikor-cli = { path = "../../runtime/vaikor-cli" }
+vaikor-gateway = { path = "../../runtime/vaikor-gateway" }
+vaikor-verify = { path = "../../runtime/vaikor-verify" }

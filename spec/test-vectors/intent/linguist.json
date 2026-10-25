@@ -1,6 +1,6 @@
 {
   "category": "intent",
-  "description": "Intent linguist boundary (0017): reply verification and derivation (L1-L7), intent plans (PL1-PL5), spoken times and durations (X6). Catalog: runtime/sidged-cli/assets/intent-catalog.json; capabilities: the default capability catalog; flow policy: default-flow.",
+  "description": "Intent linguist boundary (0017): reply verification and derivation (L1-L7), intent plans (PL1-PL5), spoken times and durations (X6). Catalog: runtime/vaikor-cli/assets/intent-catalog.json; capabilities: the default capability catalog; flow policy: default-flow.",
   "vectors": [
     {
       "id": "intent.linguist.001",
@@ -1456,7 +1456,7 @@
             {
               "id": "send",
               "kind": "call",
-              "capability": "urn:sidged:capability:message.send",
+              "capability": "tag:vaikor.com,2026:capability:message.send",
               "approval": true,
               "args": {
                 "to": {
@@ -1516,7 +1516,7 @@
             {
               "id": "send",
               "kind": "call",
-              "capability": "urn:sidged:capability:message.send",
+              "capability": "tag:vaikor.com,2026:capability:message.send",
               "approval": true,
               "args": {
                 "to": {
@@ -1533,7 +1533,7 @@
       "expected": {
         "value": {
           "verdict": "accept",
-          "plan_digest": "18-dm0LgOEpIQfQHj20saQiMI5cHWsXtLVGzYzdWayM"
+          "plan_digest": "NUXO_iWEQdCS46k8Lwzb1abPiU3DYaiJhdsb-RG9GFo"
         }
       },
       "status": "normative",
@@ -1575,7 +1575,7 @@
             {
               "id": "q",
               "kind": "call",
-              "capability": "urn:sidged:capability:web.search",
+              "capability": "tag:vaikor.com,2026:capability:web.search",
               "approval": true,
               "args": {
                 "query": {
@@ -1631,7 +1631,7 @@
             {
               "id": "send",
               "kind": "call",
-              "capability": "urn:sidged:capability:message.send",
+              "capability": "tag:vaikor.com,2026:capability:message.send",
               "approval": true,
               "args": {
                 "to": {
@@ -1693,7 +1693,7 @@
             {
               "id": "send",
               "kind": "call",
-              "capability": "urn:sidged:capability:message.send",
+              "capability": "tag:vaikor.com,2026:capability:message.send",
               "approval": true,
               "args": {
                 "to": {
@@ -1749,7 +1749,7 @@
             {
               "id": "send",
               "kind": "call",
-              "capability": "urn:sidged:capability:message.send",
+              "capability": "tag:vaikor.com,2026:capability:message.send",
               "args": {
                 "to": {
                   "lit": "Lea"
@@ -1814,7 +1814,7 @@
             {
               "id": "read",
               "kind": "call",
-              "capability": "urn:sidged:capability:workspace.read",
+              "capability": "tag:vaikor.com,2026:capability:workspace.read",
               "args": {
                 "path": {
                   "lit": "protokoll.docx"
@@ -1824,7 +1824,7 @@
             {
               "id": "send",
               "kind": "call",
-              "capability": "urn:sidged:capability:message.send",
+              "capability": "tag:vaikor.com,2026:capability:message.send",
               "approval": true,
               "args": {
                 "to": {
@@ -1841,7 +1841,7 @@
       "expected": {
         "value": {
           "verdict": "accept",
-          "plan_digest": "Z_DIxVrV_TbeiR_Kv4pW9krDKa-F7mX9W-DZ4nDJ6_4"
+          "plan_digest": "5CpDJjDdR3znnZHDB7gzZSdzSr7Bu8VI6Zxt7t-UCM8"
         }
       },
       "status": "normative",
@@ -1890,7 +1890,7 @@
             {
               "id": "q",
               "kind": "call",
-              "capability": "urn:sidged:capability:web.search",
+              "capability": "tag:vaikor.com,2026:capability:web.search",
               "approval": true,
               "args": {
                 "query": {
@@ -1956,7 +1956,7 @@
       "expected": {
         "value": {
           "verdict": "accept",
-          "plan_digest": "v_WqKDEU-yp5iPgip_I7nF3EhU-cCPf40kgFZXkvYiw"
+          "plan_digest": "ddoIJTG01Lm19pc57u70tLPbGZ6ukzI2ssM0LlXOhTU"
         }
       },
       "status": "normative",
@@ -2007,7 +2007,7 @@
       "expected": {
         "value": {
           "verdict": "accept",
-          "plan_digest": "8dNebz3hfqntW5dpDvNeuShRlqOVNi--4Ic1cI3D-J8"
+          "plan_digest": "xi64elE_jZoyJ1uQ7dDYbz6xd-yxzvEc4ZaifS9tZH4"
         }
       },
       "status": "normative",

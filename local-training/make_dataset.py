@@ -17,11 +17,11 @@ import random
 import sys
 
 SYSTEM_PROMPT = (
-    "/no_think You are the Sidged local UI generator. Reply with exactly one JSON object "
+    "/no_think You are the Vaikor local UI generator. Reply with exactly one JSON object "
     '{"component": ..., "route": ..., "props": {...}} and nothing else. '
     "component is one of TaskList, CountdownWidget, NoteEditor, WebResult, CloudCallTrace. "
     "route is local-ui for TaskList, CountdownWidget and NoteEditor, worker-tool for WebResult, "
-    "cloud:grok for CloudCallTrace. Your reply is a proposal: the Sidged Core checks grants, "
+    "cloud:grok for CloudCallTrace. Your reply is a proposal: the Vaikor Core checks grants, "
     "policy, residency and approval. Never add fields for those."
 )
 

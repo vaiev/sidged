@@ -6,13 +6,13 @@
 Every seed from spec/test-vectors/keys/*.json is searched as raw 32 bytes and
 as hex (case-insensitive) in each given file, directory tree (recursively) or
 tar archive (each member). A missing or unreadable path is a FAIL. The seed
-list must match the public keys the runtime refuses (sidged-guard lib.rs).
+list must match the public keys the runtime refuses (vaikor-guard lib.rs).
 """
 import json, pathlib, re, sys, tarfile
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 KEYS = ROOT / "spec/test-vectors/keys"
-RUNTIME = ROOT / "runtime/sidged-guard/src/lib.rs"
+RUNTIME = ROOT / "runtime/vaikor-guard/src/lib.rs"
 
 
 def load_seeds():

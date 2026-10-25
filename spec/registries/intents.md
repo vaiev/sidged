@@ -2,29 +2,29 @@
 
 > **Status: Draft, not for implementation.** See [README.md](README.md) for registry rules.
 
-The envelope `intent` declares the purpose of a message (Sidged L6). It is a dot-separated lowercase name with at least two labels. The first label is either `sk` (reserved control intents, fully listed below), a registered **application domain**, or an `x-` private prefix. The rest of the name is free, for example `scheduling.propose` or `telemetry.report.hourly`. An intent never grants authority; the capability token and local policy do (Sidged L2).
+The envelope `intent` declares the purpose of a message (Vaikor L6). It is a dot-separated lowercase name with at least two labels. The first label is either `sk` (reserved control intents, fully listed below), a registered **application domain**, or an `x-` private prefix. The rest of the name is free, for example `scheduling.propose` or `telemetry.report.hourly`. An intent never grants authority; the capability token and local policy do (Vaikor L2).
 
-## Reserved Control Intents (`sdg.*`)
+## Reserved Control Intents (`vkr.*`)
 
-Only these `sdg.*` intents exist. Any other `sdg.*` intent is invalid.
+Only these `vkr.*` intents exist. Any other `vkr.*` intent is invalid.
 
 | Intent | Purpose | Section |
 |---|---|---|
-| `sdg.pairing.request` | Start pairing | Sidged L6 |
-| `sdg.pairing.response` | Answer a pairing request (out-of-band verification data) | Sidged L6 |
-| `sdg.pairing.confirm` | Confirm pairing after owner consent | Sidged L6 |
-| `sdg.pairing.reject` | Decline pairing | Sidged L6 |
-| `sdg.negotiate` | Version, suite, form, and profile negotiation | Sidged L6 |
-| `sdg.refused` | Refusal; `data` is a refusal object | Sidged L6 |
-| `sdg.ack` | Receipt acknowledgement | Sidged L6 |
-| `sdg.revocation` | Key or device revocation notice | Sidged L6 |
-| `sdg.statement` | Owner-signed identity statements, for example after owner-key rotation | Sidged L6 |
-| `sdg.stream.setup` | Stream setup with per-session keys (F7) | Sidged L6 |
-| `sdg.stream.rekey` | Stream rekeying (F7) | Sidged L6 |
-| `sdg.summary` | Signed summary of a negotiation that commits the owner | Sidged L6 |
-| `sdg.sync` | Mesh synchronisation (F1) | Sidged L6 |
+| `vkr.pairing.request` | Start pairing | Vaikor L6 |
+| `vkr.pairing.response` | Answer a pairing request (out-of-band verification data) | Vaikor L6 |
+| `vkr.pairing.confirm` | Confirm pairing after owner consent | Vaikor L6 |
+| `vkr.pairing.reject` | Decline pairing | Vaikor L6 |
+| `vkr.negotiate` | Version, suite, form, and profile negotiation | Vaikor L6 |
+| `vkr.refused` | Refusal; `data` is a refusal object | Vaikor L6 |
+| `vkr.ack` | Receipt acknowledgement | Vaikor L6 |
+| `vkr.revocation` | Key or device revocation notice | Vaikor L6 |
+| `vkr.statement` | Owner-signed identity statements, for example after owner-key rotation | Vaikor L6 |
+| `vkr.stream.setup` | Stream setup with per-session keys (F7) | Vaikor L6 |
+| `vkr.stream.rekey` | Stream rekeying (F7) | Vaikor L6 |
+| `vkr.summary` | Signed summary of a negotiation that commits the owner | Vaikor L6 |
+| `vkr.sync` | Mesh synchronisation (F1) | Vaikor L6 |
 
-Pairing messages (`sdg.pairing.*`) and refusals (`sdg.refused`) are the only envelopes that may omit `cap_token`, and they never carry `instructions` (Sidged L6).
+Pairing messages (`vkr.pairing.*`) and refusals (`vkr.refused`) are the only envelopes that may omit `cap_token`, and they never carry `instructions` (Vaikor L6).
 
 ## Application Domains
 

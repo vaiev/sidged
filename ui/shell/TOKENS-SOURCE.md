@@ -12,7 +12,7 @@ only when installed locally, otherwise the system fallback applies.
 
 The two icons remain simple placeholder SVG paths drawn for this shell.
 
-WCAG 2.2 AA text contrast of the main token pairs is checked in `runtime/sidged-guard/tests/ui_shell.rs`.
+WCAG 2.2 AA text contrast of the main token pairs is checked in `runtime/vaikor-guard/tests/ui_shell.rs`.
 
 Finding to raise with `vaiev/ui`: in the dark theme, `error` #F2716C on `error-container` #6B1B1E is 4.08:1,
 below the 4.5:1 AA minimum for normal text. The values are kept as given; the shell renders status notes with

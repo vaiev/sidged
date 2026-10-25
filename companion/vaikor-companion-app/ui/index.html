@@ -1,0 +1,42 @@
+<!doctype html>
+<!-- Copyright 2026 VAIEV. SPDX-License-Identifier: Apache-2.0 -->
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src ipc: http://ipc.localhost; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Vaikor</title>
+  <link rel="stylesheet" href="vendor/tokens/tokens.css">
+  <link rel="stylesheet" href="vendor/tokens/fonts.css">
+  <link rel="stylesheet" href="vendor/tokens/components.css">
+  <link rel="stylesheet" href="vendor/vaikor-theme.css">
+  <link rel="stylesheet" href="canvas.css">
+</head>
+<body>
+  <section id="onboarding" class="onboarding" aria-labelledby="onboarding-title" hidden>
+    <div class="onboarding__glow" aria-hidden="true"></div>
+    <div class="onboarding__card vv-glass vv-glass--on-stage">
+      <div class="onboarding__steps" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div id="onboarding-body" class="onboarding__body"></div>
+    </div>
+  </section>
+
+  <header class="vv-nav">
+    <div class="vv-nav__bar vv-glass">
+      <span class="vkr-brand"><span class="vkr-brand__dot" aria-hidden="true"></span>vaikor</span>
+      <span class="vv-chip vv-chip--outlined node-chip" id="node">this node</span>
+    </div>
+  </header>
+  <main id="canvas" class="vv-container canvas" aria-live="polite"></main>
+  <p class="vv-container vv-small vv-muted canvas__trust">Consequential steps are confirmed only in the Vaikor Trusted UI, never on this canvas.</p>
+  <nav class="dock" aria-label="Canvas">
+    <div class="dock__bar vv-glass">
+      <button id="home" class="vv-btn vv-btn--text" type="button">Home</button>
+      <label class="vv-sr-only" for="capability">Capability</label>
+      <select id="capability" class="dock__select"></select>
+      <button id="open" class="vv-btn vv-btn--tonal" type="button">Open</button>
+    </div>
+  </nav>
+  <script src="canvas.js"></script>
+</body>
+</html>

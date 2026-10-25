@@ -43,12 +43,12 @@
         ]
       },
       "capabilities": [
-        "urn:sidged:capability:reminder.create"
+        "tag:vaikor.com,2026:capability:reminder.create"
       ],
       "data_classes": [
         "calendar.events"
       ],
-      "artifact_mime": "application/vnd.sidged.artifact.solution+json",
+      "artifact_mime": "application/vnd.vaikor.artifact.solution+json",
       "route": "edge-local"
     }
   ]

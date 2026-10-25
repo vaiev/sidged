@@ -5,19 +5,19 @@
   "rights": [
     {
       "action": "weather.lookup",
-      "resource": "urn:sidged:capability:weather.lookup"
+      "resource": "tag:vaikor.com,2026:capability:weather.lookup"
     },
     {
       "action": "model.complete",
-      "resource": "urn:sidged:capability:model.complete"
+      "resource": "tag:vaikor.com,2026:capability:model.complete"
     },
     {
       "action": "write",
-      "resource": "urn:sidged:record:x-public/weather"
+      "resource": "tag:vaikor.com,2026:record:x-public/weather"
     },
     {
       "action": "read",
-      "resource": "urn:sidged:record:x-public/weather"
+      "resource": "tag:vaikor.com,2026:record:x-public/weather"
     }
   ]
 }

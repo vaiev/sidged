@@ -1,6 +1,6 @@
 {
   "category": "slice",
-  "description": "Vertical slice (Sidged L4/L7/L5): a session record carried in a Sidged Envelope signed by the Core key, with one Privacy Gateway report per egress and an effective tier display rendered and signed by the Core. Signatures are real Ed25519 over jcs with the RFC 8032 test keys: rfc8032-test-1 is the Core key, rfc8032-test-2 a module key, rfc8032-test-3 the owner key.",
+  "description": "Vertical slice (Vaikor L4/L7/L5): a session record carried in a Vaikor Envelope signed by the Core key, with one Privacy Gateway report per egress and an effective tier display rendered and signed by the Core. Signatures are real Ed25519 over jcs with the RFC 8032 test keys: rfc8032-test-1 is the Core key, rfc8032-test-2 a module key, rfc8032-test-3 the owner key.",
   "vectors": [
     {
       "id": "slice.accept.001",
@@ -106,7 +106,7 @@
               }
             }
           },
-          "payload_type": "application/vnd.sidged.session-record+json",
+          "payload_type": "application/vnd.vaikor.session-record+json",
           "residency": {
             "tags": [],
             "data_classes": []
@@ -231,7 +231,7 @@
               }
             }
           },
-          "payload_type": "application/vnd.sidged.session-record+json",
+          "payload_type": "application/vnd.vaikor.session-record+json",
           "residency": {
             "tags": [],
             "data_classes": []
@@ -362,7 +362,7 @@
               }
             }
           },
-          "payload_type": "application/vnd.sidged.session-record+json",
+          "payload_type": "application/vnd.vaikor.session-record+json",
           "residency": {
             "tags": [],
             "data_classes": []
@@ -461,7 +461,7 @@
               }
             }
           },
-          "payload_type": "application/vnd.sidged.session-record+json",
+          "payload_type": "application/vnd.vaikor.session-record+json",
           "residency": {
             "tags": [],
             "data_classes": []
@@ -607,7 +607,7 @@
               }
             }
           },
-          "payload_type": "application/vnd.sidged.session-record+json",
+          "payload_type": "application/vnd.vaikor.session-record+json",
           "residency": {
             "tags": [],
             "data_classes": []
@@ -717,7 +717,7 @@
               }
             }
           },
-          "payload_type": "application/vnd.sidged.session-record+json",
+          "payload_type": "application/vnd.vaikor.session-record+json",
           "residency": {
             "tags": [],
             "data_classes": []
@@ -835,7 +835,7 @@
               }
             }
           },
-          "payload_type": "application/vnd.sidged.session-record+json",
+          "payload_type": "application/vnd.vaikor.session-record+json",
           "residency": {
             "tags": [],
             "data_classes": []
@@ -962,7 +962,7 @@
               }
             }
           },
-          "payload_type": "application/vnd.sidged.session-record+json",
+          "payload_type": "application/vnd.vaikor.session-record+json",
           "residency": {
             "tags": [],
             "data_classes": []
@@ -1063,7 +1063,7 @@
               }
             ]
           },
-          "payload_type": "application/vnd.sidged.session-record+json",
+          "payload_type": "application/vnd.vaikor.session-record+json",
           "residency": {
             "tags": [],
             "data_classes": []
@@ -1181,7 +1181,7 @@
               }
             }
           },
-          "payload_type": "application/vnd.sidged.session-record+json",
+          "payload_type": "application/vnd.vaikor.session-record+json",
           "residency": {
             "tags": [],
             "data_classes": []
@@ -1303,7 +1303,7 @@
               }
             }
           },
-          "payload_type": "application/vnd.sidged.session-record+json",
+          "payload_type": "application/vnd.vaikor.session-record+json",
           "residency": {
             "tags": [],
             "data_classes": []
@@ -1432,7 +1432,7 @@
               }
             }
           },
-          "payload_type": "application/vnd.sidged.session-record+json",
+          "payload_type": "application/vnd.vaikor.session-record+json",
           "residency": {
             "tags": [],
             "data_classes": []
@@ -1560,7 +1560,7 @@
               }
             }
           },
-          "payload_type": "application/vnd.sidged.session-record+json",
+          "payload_type": "application/vnd.vaikor.session-record+json",
           "residency": {
             "tags": [],
             "data_classes": []
@@ -1691,7 +1691,7 @@
               }
             }
           },
-          "payload_type": "application/vnd.sidged.session-record+json",
+          "payload_type": "application/vnd.vaikor.session-record+json",
           "residency": {
             "tags": [],
             "data_classes": []
@@ -1809,7 +1809,7 @@
               }
             }
           },
-          "payload_type": "application/vnd.sidged.session-record+json",
+          "payload_type": "application/vnd.vaikor.session-record+json",
           "residency": {
             "tags": [],
             "data_classes": []
@@ -1931,7 +1931,7 @@
               }
             }
           },
-          "payload_type": "application/vnd.sidged.session-record+json",
+          "payload_type": "application/vnd.vaikor.session-record+json",
           "residency": {
             "tags": [],
             "data_classes": []
@@ -2049,7 +2049,7 @@
               }
             }
           },
-          "payload_type": "application/vnd.sidged.session-record+json",
+          "payload_type": "application/vnd.vaikor.session-record+json",
           "residency": {
             "tags": [],
             "data_classes": []
@@ -2173,7 +2173,7 @@
               }
             }
           },
-          "payload_type": "application/vnd.sidged.session-record+json",
+          "payload_type": "application/vnd.vaikor.session-record+json",
           "residency": {
             "tags": [],
             "data_classes": []
@@ -2301,7 +2301,7 @@
               }
             }
           },
-          "payload_type": "application/vnd.sidged.session-record+json",
+          "payload_type": "application/vnd.vaikor.session-record+json",
           "residency": {
             "tags": [],
             "data_classes": []

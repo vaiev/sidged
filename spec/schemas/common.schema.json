@@ -1,15 +1,15 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sidged.com/spec/schemas/common.schema.json",
-  "title": "Sidged common definitions (v0.1)",
-  "description": "Shared definitions used by the other Sidged v0.1 schemas: identifiers, timestamps, durations, digests, signatures, residency tags (Sidged L7, TERMINOLOGY.md), and conformance profile tags (Sidged L5, Sidged L6, Sidged L7). Status: Draft, not for implementation.",
+  "$id": "https://vaikor.com/spec/schemas/common.schema.json",
+  "title": "Vaikor common definitions (v0.1)",
+  "description": "Shared definitions used by the other Vaikor v0.1 schemas: identifiers, timestamps, durations, digests, signatures, residency tags (Vaikor L7, TERMINOLOGY.md), and conformance profile tags (Vaikor L5, Vaikor L6, Vaikor L7). Status: Draft, not for implementation.",
   "$defs": {
     "schemaVersion": {
-      "description": "Schema version of this document as MAJOR.MINOR. These schemas describe version 0.1. Members defined in a higher minor version are rejected unless that version was negotiated (Sidged L6).",
+      "description": "Schema version of this document as MAJOR.MINOR. These schemas describe version 0.1. Members defined in a higher minor version are rejected unless that version was negotiated (Vaikor L6).",
       "const": "0.1"
     },
     "identifier": {
-      "description": "Identity of an owner, device, agent, provider, module, or registry, expressed as a URI (for example a DID, Sidged L6).",
+      "description": "Identity of an owner, device, agent, provider, module, or registry, expressed as a URI (for example a DID, Vaikor L6).",
       "type": "string",
       "minLength": 3,
       "maxLength": 2048,
@@ -44,7 +44,7 @@
       "pattern": "^[A-Za-z0-9_-]+$"
     },
     "nonce": {
-      "description": "Random nonce with at least 128 bits of randomness, unpadded base64url (at least 22 characters) (Sidged L6).",
+      "description": "Random nonce with at least 128 bits of randomness, unpadded base64url (at least 22 characters) (Vaikor L6).",
       "type": "string",
       "minLength": 22,
       "maxLength": 128,
@@ -74,7 +74,7 @@
       }
     },
     "signature": {
-      "description": "Signature block (Sidged L6). The signature is computed over the canonical encoding named in canon (dcbor: deterministic CBOR, RFC 8949 section 4.2; jcs: JSON Canonicalization Scheme, RFC 8785) of the enclosing object with the sig member removed. dcbor is mandatory to implement. The signature only proves who signed; trust in the key comes from identity statements (Sidged L6).",
+      "description": "Signature block (Vaikor L6). The signature is computed over the canonical encoding named in canon (dcbor: deterministic CBOR, RFC 8949 section 4.2; jcs: JSON Canonicalization Scheme, RFC 8785) of the enclosing object with the sig member removed. dcbor is mandatory to implement. The signature only proves who signed; trust in the key comes from identity statements (Vaikor L6).",
       "type": "object",
       "required": [
         "alg",
@@ -95,7 +95,7 @@
           "$ref": "#/$defs/identifier"
         },
         "signer": {
-          "description": "Identity of the signer (agent, publisher, provider). REQUIRED for module and provider manifests so that the Core can show who signed (Sidged L0).",
+          "description": "Identity of the signer (agent, publisher, provider). REQUIRED for module and provider manifests so that the Core can show who signed (Vaikor L0).",
           "$ref": "#/$defs/identifier"
         },
         "canon": {
@@ -111,7 +111,7 @@
       }
     },
     "residencyTag": {
-      "description": "Residency tag (Sidged L7). CH: Switzerland only. EU: EU and EEA member states only. CH-EU: Switzerland, or EU and EEA member states. unrestricted: explicit declaration that the publisher sets no limit; it MUST be the only tag (Sidged L1 0001 R8 v0.2). Missing or empty tags fail closed at egress. Owner-defined tags MUST start with x- and have at most 64 characters in total, using lowercase letters, digits, and hyphens (Sidged L7). Several tags on one item combine by intersection. Any tag a runtime or provider does not recognise MUST be treated as not allowed (fail closed); this schema only checks syntax.",
+      "description": "Residency tag (Vaikor L7). CH: Switzerland only. EU: EU and EEA member states only. CH-EU: Switzerland, or EU and EEA member states. unrestricted: explicit declaration that the publisher sets no limit; it MUST be the only tag (Vaikor L1 0001 R8 v0.2). Missing or empty tags fail closed at egress. Owner-defined tags MUST start with x- and have at most 64 characters in total, using lowercase letters, digits, and hyphens (Vaikor L7). Several tags on one item combine by intersection. Any tag a runtime or provider does not recognise MUST be treated as not allowed (fail closed); this schema only checks syntax.",
       "type": "string",
       "anyOf": [
         {
@@ -128,7 +128,7 @@
       ]
     },
     "dataClass": {
-      "description": "Data class from registries/data-classes.md: a registered top-level class, optionally followed by dot-separated subclasses, or a private class starting with x- (Sidged L7).",
+      "description": "Data class from registries/data-classes.md: a registered top-level class, optionally followed by dot-separated subclasses, or a private class starting with x- (Vaikor L7).",
       "type": "string",
       "maxLength": 128,
       "pattern": "^((identity|contacts|communications|calendar|location|health|biometric|finance|documents|media|home|device|query|usage|adaptation|memory|secrets)(\\.[a-z0-9_-]+)*|x-[a-z0-9][a-z0-9-]*(\\.[a-z0-9_-]+)*)$"
@@ -141,7 +141,7 @@
       ]
     },
     "communicationProfile": {
-      "description": "C0 is a legacy hop, not a conformance profile (Sidged L6).",
+      "description": "C0 is a legacy hop, not a conformance profile (Vaikor L6).",
       "enum": [
         "C0",
         "C1",
@@ -191,25 +191,25 @@
       "pattern": "^[0-9]+\\.[0-9]+$"
     },
     "intent": {
-      "description": "Intent from registries/intents.md (Sidged L6): one of the reserved sdg.* control intents, a registered application domain followed by at least one label, or a private x- intent.",
+      "description": "Intent from registries/intents.md (Vaikor L6): one of the reserved vkr.* control intents, a registered application domain followed by at least one label, or a private x- intent.",
       "type": "string",
       "maxLength": 128,
       "anyOf": [
         {
           "enum": [
-            "sdg.pairing.request",
-            "sdg.pairing.response",
-            "sdg.pairing.confirm",
-            "sdg.pairing.reject",
-            "sdg.negotiate",
-            "sdg.refused",
-            "sdg.ack",
-            "sdg.revocation",
-            "sdg.statement",
-            "sdg.stream.setup",
-            "sdg.stream.rekey",
-            "sdg.summary",
-            "sdg.sync"
+            "vkr.pairing.request",
+            "vkr.pairing.response",
+            "vkr.pairing.confirm",
+            "vkr.pairing.reject",
+            "vkr.negotiate",
+            "vkr.refused",
+            "vkr.ack",
+            "vkr.revocation",
+            "vkr.statement",
+            "vkr.stream.setup",
+            "vkr.stream.rekey",
+            "vkr.summary",
+            "vkr.sync"
           ]
         },
         {
@@ -221,7 +221,7 @@
       ]
     },
     "refusalReason": {
-      "description": "Refusal reason code from registries/refusal-reasons.md, or a private x- code (Sidged L6).",
+      "description": "Refusal reason code from registries/refusal-reasons.md, or a private x- code (Vaikor L6).",
       "type": "string",
       "anyOf": [
         {
@@ -260,7 +260,7 @@
       ]
     },
     "ext": {
-      "description": "Extensions (Sidged L6). Member names start with x-. Receivers ignore members they do not understand. Extensions never grant authority, relax policy, or change the meaning of standard members, and are covered by the signature like every other member.",
+      "description": "Extensions (Vaikor L6). Member names start with x-. Receivers ignore members they do not understand. Extensions never grant authority, relax policy, or change the meaning of standard members, and are covered by the signature like every other member.",
       "type": "object",
       "maxProperties": 64,
       "propertyNames": {
@@ -268,7 +268,7 @@
       }
     },
     "runtimeRange": {
-      "description": "Range of Sidged L5 versions as space-separated comparators, for example >=0.3 <0.4 (Sidged L0).",
+      "description": "Range of Vaikor L5 versions as space-separated comparators, for example >=0.3 <0.4 (Vaikor L0).",
       "type": "string",
       "maxLength": 64,
       "pattern": "^(>=|<=|>|<|=)?[0-9]+\\.[0-9]+( (>=|<=|>|<|=)[0-9]+\\.[0-9]+)*$"

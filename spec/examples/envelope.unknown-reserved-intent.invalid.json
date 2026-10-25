@@ -88,7 +88,7 @@
       "value": "EXAMPLE-NOT-A-REAL-SIGNATURE-c2lnbmF0dXJlLXBsYWNlaG9sZGVy"
     }
   },
-  "intent": "sdg.admin",
+  "intent": "vkr.admin",
   "instructions": {
     "action": "calendar.propose_meeting",
     "resource": "urn:example:calendar:bob/work",

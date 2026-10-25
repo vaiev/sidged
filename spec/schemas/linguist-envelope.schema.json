@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sidged.com/spec/schemas/linguist-envelope.schema.json",
-  "title": "Sidged linguist envelope (v0.1)",
+  "$id": "https://vaikor.com/spec/schemas/linguist-envelope.schema.json",
+  "title": "Vaikor linguist envelope (v0.1)",
   "description": "Output of the companion linguist (Model -1): one utterance in English, German, or Swiss German normalised to a catalog intent, canonical English slot values, and a local clarification question when a required slot is missing. The envelope is a proposal. The Core trusts only lang, intent, and slots, and re-derives every other member from the intent catalog (intent-catalog.schema.json). Residency, approval, and grant members do not exist here; the Core supplies them. Status: Draft v0.1.",
   "type": "object",
   "additionalProperties": false,

@@ -14,13 +14,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Validate Sidged JSON documents against the v0.1 JSON Schemas.
+"""Validate Vaikor JSON documents against the v0.1 JSON Schemas.
 
 Two layers of checks:
 
 1. Structural checks with JSON Schema 2020-12 (schemas/*.schema.json).
 2. Semantic checks that JSON Schema cannot express, for example that a
-   delegated capability token only narrows its parent (Sidged L2).
+   delegated capability token only narrows its parent (Vaikor L2).
 
 The validator does not check signatures, clocks, revocation, or replay.
 Those depend on keys and receiver state and belong to a runtime.
@@ -48,7 +48,7 @@ REPO = Path(__file__).resolve().parents[2]
 SPEC = REPO / "spec"
 SCHEMA_DIR = SPEC / "schemas"
 EXAMPLE_DIR = SPEC / "examples"
-ID_PREFIX = "https://sidged.com/spec/schemas/"
+ID_PREFIX = "https://vaikor.com/spec/schemas/"
 SCHEMA_NAMES = (
     "envelope",
     "capability-descriptor",
@@ -63,8 +63,8 @@ SCHEMA_NAMES = (
     "linguist-envelope",
     "linguist-proposal",
 )
-SESSION_RECORD_TYPE = "application/vnd.sidged.session-record+json"  # Sidged L7
-MAX_TOKEN_LIFETIME = timedelta(hours=1)  # Sidged L2
+SESSION_RECORD_TYPE = "application/vnd.vaikor.session-record+json"  # Vaikor L7
+MAX_TOKEN_LIFETIME = timedelta(hours=1)  # Vaikor L2
 
 
 # ---------------------------------------------------------------- loading
@@ -147,7 +147,7 @@ def decimal(value: str) -> Decimal:
 
 
 def resource_covers(parent: str, child: str) -> bool:
-    """True if the parent resource covers the child resource (SDG-L2 R9).
+    """True if the parent resource covers the child resource (VKR-L2 R9).
 
     A trailing ``/*`` is one prefix wildcard. The remainder must be non-empty
     and must not contain ``%`` or an empty, ``.``, or ``..`` segment.
@@ -205,16 +205,16 @@ CONSEQUENTIAL_EFFECTS = frozenset({"delete", "execute", "egress"})
 
 
 def check_capability_descriptor(descriptor: dict) -> list[str]:
-    """Effect and cost rules for a capability descriptor (SDG-L1 R9, R10)."""
+    """Effect and cost rules for a capability descriptor (VKR-L1 R9, R10)."""
     problems = []
     effects = descriptor.get("effects", [])
     if "egress" in effects and not descriptor.get("data_classes"):
         problems.append("egress requires at least one data class")
     if "egress" in effects and not descriptor.get("residency", {}).get("tags"):
-        problems.append("egress requires residency with at least one tag; missing or empty tags fail closed (SDG-L1 R8a)")
+        problems.append("egress requires residency with at least one tag; missing or empty tags fail closed (VKR-L1 R8a)")
     tags = descriptor.get("residency", {}).get("tags", [])
     if "unrestricted" in tags and len(tags) > 1:
-        problems.append("unrestricted must be the only residency tag (SDG-L1 R8b)")
+        problems.append("unrestricted must be the only residency tag (VKR-L1 R8b)")
     if CONSEQUENTIAL_EFFECTS.intersection(effects) and descriptor.get("consequential") is not True:
         problems.append("consequential must be true when effects include delete, execute, or egress")
     for key in ("input_schema", "output_schema"):
@@ -312,7 +312,7 @@ DESTINATION_CLASSES = {"CH", "EU", "GLOBAL"}
 
 
 def residency_destination(tags, destination: str) -> list[str]:
-    """Egress residency gate (SDG-L1 R8 v0.2). Returns problems; empty means allowed."""
+    """Egress residency gate (VKR-L1 R8 v0.2). Returns problems; empty means allowed."""
     if destination not in DESTINATION_CLASSES:
         return ["unregistered destination"]
     if not tags:
@@ -326,7 +326,7 @@ def residency_destination(tags, destination: str) -> list[str]:
     return [] if destination in allowed else [f"residency {sorted(tags)} does not allow {destination} (R8c)"]
 
 
-# Spec 0007 §5.1-5.3 (SDG-L7): Core-checked egress for model calls.
+# Spec 0007 §5.1-5.3 (VKR-L7): Core-checked egress for model calls.
 PII_V1 = {
     "email": r"[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}",
     "iban": r"\b[A-Z]{2}\d{2}(?: ?[A-Z0-9]){11,30}\b",
@@ -353,7 +353,7 @@ def _luhn(digits: str) -> bool:
 
 
 def pii_detect(payload: str) -> list[str]:
-    """Detector set sdg.pii/1 (0007 R12). Returns matched detector ids, never the text."""
+    """Detector set vkr.pii/1 (0007 R12). Returns matched detector ids, never the text."""
     import re as _re, unicodedata
     text = unicodedata.normalize("NFKC", payload)
     hits = [i for i, pat in PII_V1.items() if _re.search(pat, text, _re.IGNORECASE)]
@@ -372,7 +372,7 @@ def egress_check(data: dict) -> tuple[str, str | None]:
     """0007 R7-R13 decision for one model call. Returns (result, reason)."""
     if data.get("route") == "local":
         return ("accept", None)  # R7: grant and audit still apply, no approval
-    if data.get("detector_version", "sdg.pii/1") != "sdg.pii/1":
+    if data.get("detector_version", "vkr.pii/1") != "vkr.pii/1":
         return ("refuse", "policy-denied")  # R12a
     approval = data.get("approval")  # Core's approval Record state for (provider, task_type)
     if not approval or not approval.get("valid") or approval.get("revoked"):
@@ -421,7 +421,7 @@ def approval_binding(request: dict, line: str) -> dict:
 
 
 def check_token(token: dict, where: str = "token") -> list[str]:
-    """Attenuation and lifetime checks for a Sidged capability token (Sidged L2)."""
+    """Attenuation and lifetime checks for a Vaikor capability token (Vaikor L2)."""
     problems = []
     links = list(token.get("chain", [])) + [token]
     for index, link in enumerate(links):
@@ -429,7 +429,7 @@ def check_token(token: dict, where: str = "token") -> list[str]:
         if parse_time(link["exp"]) <= parse_time(link["iat"]):
             problems.append(f"{label}: exp must be later than iat")
         elif parse_time(link["exp"]) - parse_time(link["iat"]) > MAX_TOKEN_LIFETIME:
-            problems.append(f"{label}: lifetime exceeds the 1 hour maximum (Sidged L2)")
+            problems.append(f"{label}: lifetime exceeds the 1 hour maximum (Vaikor L2)")
         if "nbf" in link and parse_time(link["nbf"]) >= parse_time(link["exp"]):
             problems.append(f"{label}: nbf must be earlier than exp")
     for index in range(1, len(links)):
@@ -492,7 +492,7 @@ def check_provider_manifest(manifest: dict) -> list[str]:
         if until <= issued:
             problems.append("audit.valid_until must be later than audit.issued")
         if until > issued + timedelta(days=731):
-            problems.append("audit must be renewed at least every two years (Sidged L7)")
+            problems.append("audit must be renewed at least every two years (Vaikor L7)")
     return problems
 
 
@@ -517,7 +517,7 @@ def session_profiles(record: dict) -> set[str]:
 
 
 def check_session_record(record: dict) -> list[str]:
-    """Report links and the effective tier display (Sidged L4, section 13, section 21)."""
+    """Report links and the effective tier display (Vaikor L4, section 13, section 21)."""
     problems = []
     for index, egress in enumerate(record["egress"]):
         if egress["report"]["payload_digest"] != egress["payload_digest"]:
@@ -617,7 +617,7 @@ def _arg_labels(arg: dict, labels: dict[str, set[str]], *, item: set[str] | None
         if ref not in labels:
             problems.append(f"ref {ref} is not an earlier step")
             return set(), problems
-        # SDG-L3 R4a: a member keeps the producer's labels and must be declared by its output_schema.
+        # VKR-L3 R4a: a member keeps the producer's labels and must be declared by its output_schema.
         if "field" in arg and members is not None and arg["field"] not in members.get(ref, set()):
             problems.append(f"ref {ref} has no declared output member {arg['field']}")
         return set(labels[ref]), problems
@@ -642,7 +642,7 @@ def _args_labels(args: dict, labels: dict[str, set[str]], *, item: set[str] | No
 
 
 def check_plan(plan: dict) -> list[str]:
-    """Graph rules that do not need a capability catalog (SDG-L3 R2, R4, R5, R9)."""
+    """Graph rules that do not need a capability catalog (VKR-L3 R2, R4, R5, R9)."""
     problems = []
     steps = plan.get("steps")
     if not isinstance(steps, list):

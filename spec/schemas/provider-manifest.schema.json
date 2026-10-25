@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sidged.com/spec/schemas/provider-manifest.schema.json",
-  "title": "Sidged Provider Manifest (v0.1)",
-  "description": "Signed, versioned, machine-readable description of a provider (Sidged L7), published at a well-known location that can be fetched without authentication. It covers capabilities (models, modalities, context limits, tools), pricing, accepted credentials, retention (Sidged L7), no-training commitment (Sidged L7), regions and residency support (Sidged L7), Oblivious HTTP support (Sidged L7), attestation endpoints (Sidged L7), identified-mode linking (Sidged L7, section 4), model identity (Sidged L7), and the claimed profile as a self-assessment (Sidged L7). Before v1.0 any claim is a self-assessment only and is not a certification. Runtimes treat the provider as P0 unless they verify the claim (Sidged L7); this schema only checks that a claim is internally complete. Status: Draft, not for implementation.",
+  "$id": "https://vaikor.com/spec/schemas/provider-manifest.schema.json",
+  "title": "Vaikor Provider Manifest (v0.1)",
+  "description": "Signed, versioned, machine-readable description of a provider (Vaikor L7), published at a well-known location that can be fetched without authentication. It covers capabilities (models, modalities, context limits, tools), pricing, accepted credentials, retention (Vaikor L7), no-training commitment (Vaikor L7), regions and residency support (Vaikor L7), Oblivious HTTP support (Vaikor L7), attestation endpoints (Vaikor L7), identified-mode linking (Vaikor L7, section 4), model identity (Vaikor L7), and the claimed profile as a self-assessment (Vaikor L7). Before v1.0 any claim is a self-assessment only and is not a certification. Runtimes treat the provider as P0 unless they verify the claim (Vaikor L7); this schema only checks that a claim is internally complete. Status: Draft, not for implementation.",
   "type": "object",
   "required": [
     "v",
@@ -55,7 +55,7 @@
       }
     },
     "manifest_version": {
-      "description": "Manifest version; increases with every change (Sidged L7).",
+      "description": "Manifest version; increases with every change (Vaikor L7).",
       "type": "integer",
       "minimum": 1
     },
@@ -63,7 +63,7 @@
       "$ref": "common.schema.json#/$defs/timestamp"
     },
     "profile_claim": {
-      "description": "Claimed provider profile (Sidged L7). basis is fixed to self-assessment before v1.0. A manifest MAY claim P0.",
+      "description": "Claimed provider profile (Vaikor L7). basis is fixed to self-assessment before v1.0. A manifest MAY claim P0.",
       "type": "object",
       "required": [
         "profile",
@@ -80,7 +80,7 @@
         },
         "against": {
           "description": "Draft the self-assessment refers to.",
-          "const": "Sidged L7 draft v0.1"
+          "const": "Vaikor L7 draft v0.1"
         },
         "self_assessment": {
           "description": "Link to the published self-assessment with evidence per rule.",
@@ -105,7 +105,7 @@
       }
     },
     "runtime_request_header": {
-      "description": "Request header that marks a request as a runtime request (Sidged L7), if the provider uses one.",
+      "description": "Request header that marks a request as a runtime request (Vaikor L7), if the provider uses one.",
       "type": "string",
       "pattern": "^[A-Za-z0-9-]+$",
       "maxLength": 64
@@ -154,7 +154,7 @@
       }
     },
     "accepted_credentials": {
-      "description": "Credentials accepted for authorisation and quota (Sidged L7).",
+      "description": "Credentials accepted for authorisation and quota (Vaikor L7).",
       "type": "array",
       "items": {
         "enum": [
@@ -170,15 +170,15 @@
       "minItems": 1
     },
     "anonymous_mode": {
-      "description": "Anonymous mode without an account tied to a real-world identity (Sidged L7).",
+      "description": "Anonymous mode without an account tied to a real-world identity (Vaikor L7).",
       "type": "boolean"
     },
     "unlinkable_billing": {
-      "description": "Billing is unlinkable from usage (Sidged L7, [P2]).",
+      "description": "Billing is unlinkable from usage (Vaikor L7, [P2]).",
       "type": "boolean"
     },
     "identified_mode": {
-      "description": "Identified mode and the linking it implies (Sidged L7, section 4).",
+      "description": "Identified mode and the linking it implies (Vaikor L7, section 4).",
       "type": "object",
       "required": [
         "offered"
@@ -209,7 +209,7 @@
       }
     },
     "training": {
-      "description": "Commitment not to train on, fine-tune on, or build profiles from runtime requests or responses (Sidged L7).",
+      "description": "Commitment not to train on, fine-tune on, or build profiles from runtime requests or responses (Vaikor L7).",
       "type": "object",
       "required": [
         "no_training",
@@ -226,7 +226,7 @@
       }
     },
     "retention": {
-      "description": "Retention of runtime request and response content after delivery (Sidged L7), as an ISO 8601 duration. PT0S means none. A non-zero window must state its purpose: abuse handling or legal duty.",
+      "description": "Retention of runtime request and response content after delivery (Vaikor L7), as an ISO 8601 duration. PT0S means none. A non-zero window must state its purpose: abuse handling or legal duty.",
       "type": "object",
       "required": [
         "content_window",
@@ -280,7 +280,7 @@
       }
     },
     "tracking": {
-      "description": "No tracking or fingerprinting for runtime requests, relay acceptance, and clean responses (Sidged L7).",
+      "description": "No tracking or fingerprinting for runtime requests, relay acceptance, and clean responses (Vaikor L7).",
       "type": "object",
       "required": [
         "no_tracking",
@@ -311,7 +311,7 @@
       "minItems": 1
     },
     "residency_support": {
-      "description": "Residency tags the provider honours (Sidged L7). Requests with any other tag are refused.",
+      "description": "Residency tags the provider honours (Vaikor L7). Requests with any other tag are refused.",
       "type": "array",
       "items": {
         "$ref": "common.schema.json#/$defs/residencyTag"
@@ -319,7 +319,7 @@
       "uniqueItems": true
     },
     "envelope": {
-      "description": "Sidged Envelope support (Sidged L7). P2 and above require the Sidged Envelope itself; equivalent mappings are not accepted.",
+      "description": "Vaikor Envelope support (Vaikor L7). P2 and above require the Vaikor Envelope itself; equivalent mappings are not accepted.",
       "type": "object",
       "required": [
         "accepted"
@@ -355,7 +355,7 @@
       }
     },
     "ohttp": {
-      "description": "Oblivious HTTP gateway (RFC 9458) for non-streaming requests (Sidged L7, [P2]).",
+      "description": "Oblivious HTTP gateway (RFC 9458) for non-streaming requests (Vaikor L7, [P2]).",
       "type": "object",
       "required": [
         "supported"
@@ -388,7 +388,7 @@
       }
     },
     "attestation": {
-      "description": "Confidential and attested inference (Sidged L7).",
+      "description": "Confidential and attested inference (Vaikor L7).",
       "type": "object",
       "required": [
         "confidential_computing",
@@ -417,15 +417,15 @@
       "additionalProperties": false,
       "properties": {
         "log_entry": {
-          "description": "Entry of this manifest in a public transparency log (Sidged L7, [P2]).",
+          "description": "Entry of this manifest in a public transparency log (Vaikor L7, [P2]).",
           "$ref": "common.schema.json#/$defs/uri"
         },
         "reports": {
-          "description": "Periodic transparency reports (Sidged L7, [P2]).",
+          "description": "Periodic transparency reports (Vaikor L7, [P2]).",
           "$ref": "common.schema.json#/$defs/httpsUrl"
         },
         "audit": {
-          "description": "Independent third-party audit (Sidged L7, [P2]).",
+          "description": "Independent third-party audit (Vaikor L7, [P2]).",
           "type": "object",
           "required": [
             "auditor",
@@ -444,14 +444,14 @@
               "$ref": "common.schema.json#/$defs/httpsUrl"
             },
             "credential": {
-              "description": "Audit statement as a Verifiable Credential (SHOULD, Sidged L7).",
+              "description": "Audit statement as a Verifiable Credential (SHOULD, Vaikor L7).",
               "$ref": "common.schema.json#/$defs/uri"
             },
             "issued": {
               "$ref": "common.schema.json#/$defs/timestamp"
             },
             "valid_until": {
-              "description": "At most two years after issued (Sidged L7; checked by spec/validate).",
+              "description": "At most two years after issued (Vaikor L7; checked by spec/validate).",
               "$ref": "common.schema.json#/$defs/timestamp"
             }
           }
@@ -459,7 +459,7 @@
       }
     },
     "planned_changes": {
-      "description": "Material changes to model or policy, announced before they take effect (Sidged L7), including planned profile drops (Sidged L7).",
+      "description": "Material changes to model or policy, announced before they take effect (Vaikor L7), including planned profile drops (Vaikor L7).",
       "type": "array",
       "items": {
         "type": "object",
@@ -484,7 +484,7 @@
       }
     },
     "model_identity": {
-      "description": "How every response carries the model identity (name, version, region) and the currently claimed profile (Sidged L7): in the response envelope (model_ref) or, without envelope support, in the named response header.",
+      "description": "How every response carries the model identity (name, version, region) and the currently claimed profile (Vaikor L7): in the response envelope (model_ref) or, without envelope support, in the named response header.",
       "type": "object",
       "required": [
         "carrier"
@@ -535,7 +535,7 @@
   },
   "allOf": [
     {
-      "description": "P1 and above: every [P1] rule that a manifest can state (Sidged L7).",
+      "description": "P1 and above: every [P1] rule that a manifest can state (Vaikor L7).",
       "if": {
         "properties": {
           "profile_claim": {
@@ -593,7 +593,7 @@
       }
     },
     {
-      "description": "P2 and above: anonymous credentials, unlinkable billing, OHTTP, envelope and residency, transparency log and reports, independent audit (Sidged L7).",
+      "description": "P2 and above: anonymous credentials, unlinkable billing, OHTTP, envelope and residency, transparency log and reports, independent audit (Vaikor L7).",
       "if": {
         "properties": {
           "profile_claim": {
@@ -658,7 +658,7 @@
       }
     },
     {
-      "description": "P3: attested retention and attested confidential inference (Sidged L7, section 5).",
+      "description": "P3: attested retention and attested confidential inference (Vaikor L7, section 5).",
       "if": {
         "properties": {
           "profile_claim": {
@@ -694,7 +694,7 @@
       }
     },
     {
-      "description": "Model identity travels in the envelope only if the provider accepts envelopes (Sidged L7).",
+      "description": "Model identity travels in the envelope only if the provider accepts envelopes (Vaikor L7).",
       "if": {
         "properties": {
           "envelope": {
@@ -721,7 +721,7 @@
   ],
   "$defs": {
     "model": {
-      "description": "Model identity and capabilities (Sidged L7, section 8).",
+      "description": "Model identity and capabilities (Vaikor L7, section 8).",
       "type": "object",
       "required": [
         "id",

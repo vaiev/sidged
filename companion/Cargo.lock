@@ -3937,143 +3937,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f8fadd59c855ef2080decdef8ff161eb6661b86933c9d82e5ba29dc602a55aba"
 
 [[package]]
-name = "sidged-capability"
-version = "0.2.0"
-dependencies = [
- "regex",
- "serde_json",
- "sidged-core",
-]
-
-[[package]]
-name = "sidged-cli"
-version = "0.2.0"
-dependencies = [
- "base64 0.22.1",
- "chrono",
- "chrono-tz",
- "ed25519-dalek",
- "getrandom 0.2.17",
- "libc",
- "p256",
- "serde",
- "serde_json",
- "sha2",
- "sidged-capability",
- "sidged-core",
- "sidged-gateway",
- "sidged-grant",
- "sidged-log",
- "sidged-mcp",
- "sidged-record",
- "sidged-verify",
- "zeroize",
-]
-
-[[package]]
-name = "sidged-companion-app"
-version = "0.2.0"
-dependencies = [
- "libc",
- "serde_json",
- "sha2",
- "sidged-cli",
- "sidged-companion-core",
- "tauri",
- "tauri-build",
- "tauri-plugin-notification",
- "time",
-]
-
-[[package]]
-name = "sidged-companion-core"
-version = "0.2.0"
-dependencies = [
- "serde",
- "serde_json",
- "sidged-capability",
- "sidged-cli",
- "sidged-gateway",
- "sidged-verify",
-]
-
-[[package]]
-name = "sidged-core"
-version = "0.2.0"
-
-[[package]]
-name = "sidged-gateway"
-version = "0.2.0"
-dependencies = [
- "libc",
- "regex",
- "serde_json",
- "sha2",
- "unicode-normalization",
- "ureq",
- "url",
- "zeroize",
-]
-
-[[package]]
-name = "sidged-grant"
-version = "0.2.0"
-dependencies = [
- "cedar-policy",
- "ed25519-dalek",
- "serde_json",
- "sha2",
-]
-
-[[package]]
-name = "sidged-log"
-version = "0.2.0"
-dependencies = [
- "ed25519-dalek",
- "libc",
- "serde_json",
- "sha2",
- "sidged-core",
-]
-
-[[package]]
-name = "sidged-mcp"
-version = "0.2.0"
-dependencies = [
- "serde_json",
- "sidged-capability",
-]
-
-[[package]]
-name = "sidged-record"
-version = "0.2.0"
-dependencies = [
- "base64 0.22.1",
- "ed25519-dalek",
- "serde",
- "serde_json",
- "sha2",
- "sidged-core",
- "sidged-grant",
- "sidged-log",
- "unicode-normalization",
-]
-
-[[package]]
-name = "sidged-verify"
-version = "0.2.0"
-dependencies = [
- "base64 0.22.1",
- "cedar-policy",
- "cel",
- "chrono",
- "serde_json",
- "sha2",
- "sidged-grant",
- "sidged-record",
-]
-
-[[package]]
 name = "signal-hook-registry"
 version = "1.4.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5211,6 +5074,143 @@ dependencies = [
  "js-sys",
  "serde_core",
  "wasm-bindgen",
+]
+
+[[package]]
+name = "vaikor-capability"
+version = "0.2.0"
+dependencies = [
+ "regex",
+ "serde_json",
+ "vaikor-core",
+]
+
+[[package]]
+name = "vaikor-cli"
+version = "0.2.0"
+dependencies = [
+ "base64 0.22.1",
+ "chrono",
+ "chrono-tz",
+ "ed25519-dalek",
+ "getrandom 0.2.17",
+ "libc",
+ "p256",
+ "serde",
+ "serde_json",
+ "sha2",
+ "vaikor-capability",
+ "vaikor-core",
+ "vaikor-gateway",
+ "vaikor-grant",
+ "vaikor-log",
+ "vaikor-mcp",
+ "vaikor-record",
+ "vaikor-verify",
+ "zeroize",
+]
+
+[[package]]
+name = "vaikor-companion-app"
+version = "0.2.0"
+dependencies = [
+ "libc",
+ "serde_json",
+ "sha2",
+ "tauri",
+ "tauri-build",
+ "tauri-plugin-notification",
+ "time",
+ "vaikor-cli",
+ "vaikor-companion-core",
+]
+
+[[package]]
+name = "vaikor-companion-core"
+version = "0.2.0"
+dependencies = [
+ "serde",
+ "serde_json",
+ "vaikor-capability",
+ "vaikor-cli",
+ "vaikor-gateway",
+ "vaikor-verify",
+]
+
+[[package]]
+name = "vaikor-core"
+version = "0.2.0"
+
+[[package]]
+name = "vaikor-gateway"
+version = "0.2.0"
+dependencies = [
+ "libc",
+ "regex",
+ "serde_json",
+ "sha2",
+ "unicode-normalization",
+ "ureq",
+ "url",
+ "zeroize",
+]
+
+[[package]]
+name = "vaikor-grant"
+version = "0.2.0"
+dependencies = [
+ "cedar-policy",
+ "ed25519-dalek",
+ "serde_json",
+ "sha2",
+]
+
+[[package]]
+name = "vaikor-log"
+version = "0.2.0"
+dependencies = [
+ "ed25519-dalek",
+ "libc",
+ "serde_json",
+ "sha2",
+ "vaikor-core",
+]
+
+[[package]]
+name = "vaikor-mcp"
+version = "0.2.0"
+dependencies = [
+ "serde_json",
+ "vaikor-capability",
+]
+
+[[package]]
+name = "vaikor-record"
+version = "0.2.0"
+dependencies = [
+ "base64 0.22.1",
+ "ed25519-dalek",
+ "serde",
+ "serde_json",
+ "sha2",
+ "unicode-normalization",
+ "vaikor-core",
+ "vaikor-grant",
+ "vaikor-log",
+]
+
+[[package]]
+name = "vaikor-verify"
+version = "0.2.0"
+dependencies = [
+ "base64 0.22.1",
+ "cedar-policy",
+ "cel",
+ "chrono",
+ "serde_json",
+ "sha2",
+ "vaikor-grant",
+ "vaikor-record",
 ]
 
 [[package]]

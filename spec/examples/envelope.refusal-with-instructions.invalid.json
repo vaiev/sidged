@@ -7,7 +7,7 @@
   "session": "sess-4b1d0e9a77",
   "seq": 4,
   "attestation_ref": null,
-  "intent": "sdg.refused",
+  "intent": "vkr.refused",
   "data": {
     "v": "0.1",
     "reason": "rate-limited",
@@ -18,7 +18,7 @@
     },
     "retry_after": "PT10M"
   },
-  "payload_type": "application/vnd.sidged.refusal+json",
+  "payload_type": "application/vnd.vaikor.refusal+json",
   "residency": {
     "tags": [],
     "data_classes": []

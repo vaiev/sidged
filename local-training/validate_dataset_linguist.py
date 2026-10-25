@@ -1,6 +1,6 @@
 # Copyright 2026 VAIEV
 # SPDX-License-Identifier: Apache-2.0
-"""Validate a companion linguist (Model -1) dataset. Stdlib only (plus the sidged binary).
+"""Validate a companion linguist (Model -1) dataset. Stdlib only (plus the vaikor binary).
 
 Each JSONL record is {"messages": [system, user, assistant]}. The system and user prompts
 are exactly what the Rust Core renders for the record's utterance and catalog subset
@@ -8,7 +8,7 @@ are exactly what the Rust Core renders for the record's utterance and catalog su
 linguist envelope (v0.1) or compact proposal (v "0.2", 0017 L3a) that the Core accepts
 unchanged (linguist.check_envelope, linguist.check_proposal) and whose intents are in the
 shown subset. The system prompt must be the runtime instruction for that form. Residency, approval and grant keys are refused anywhere, as are IP
-literals and every sdg.pii/1 detector (validate_dataset.detect).
+literals and every vkr.pii/1 detector (validate_dataset.detect).
 
 Usage: python3 -I validate_dataset_linguist.py <data.jsonl>   (exit 1 on any error)
 """

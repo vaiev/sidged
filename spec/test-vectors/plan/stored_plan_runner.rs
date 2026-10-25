@@ -1,4 +1,4 @@
-// Included as a sidged-verify unit test so the vector clock is not a production API.
+// Included as a vaikor-verify unit test so the vector clock is not a production API.
 use super::*;
 use serde_json::json;
 
@@ -18,7 +18,7 @@ fn owner(name: &str) -> String {
         .step_by(2)
         .map(|i| u8::from_str_radix(&s[i..i + 2], 16).unwrap())
         .collect();
-    sidged_grant::did_key(&bytes.try_into().unwrap())
+    vaikor_grant::did_key(&bytes.try_into().unwrap())
 }
 fn hex(bytes: &[u8]) -> String {
     bytes.iter().map(|b| format!("{b:02x}")).collect()
@@ -30,7 +30,7 @@ fn stored_plan_vectors() {
     for v in vectors()["vectors"].as_array().unwrap() {
         let i = &v["input"];
         let result = match v["operation"].as_str().unwrap() {
-            "plan-digest" => plan_digest(&i["plan"]).map(|digest| json!({"value": {"digest":digest,"dcbor_hex":hex(&sidged_record::encode(&i["plan"]).unwrap())}})),
+            "plan-digest" => plan_digest(&i["plan"]).map(|digest| json!({"value": {"digest":digest,"dcbor_hex":hex(&vaikor_record::encode(&i["plan"]).unwrap())}})),
             "stored-plan-signing-input" => signing_input(&i["stored"]).map(|bytes| json!({"value":hex(&bytes)})),
             "stored-plan-check" => check_at(&i["stored"], &i["catalog"], &owner(i["owner_key"].as_str().unwrap()), "default", &crate::DenySensitive, instant(i["now"].as_str().unwrap()).unwrap()).map(|_| json!({"result":"accept"})),
             "flow-check" => { skipped.push(v["id"].as_str().unwrap().to_owned()); continue; },
@@ -77,7 +77,7 @@ fn resign(s: &mut Value) {
         .map(|i| u8::from_str_radix(&seed[i..i + 2], 16).unwrap())
         .collect();
     s["plan_digest"] = json!(plan_digest(&s["plan"]).unwrap());
-    s["sig"]["value"] = json!(URL_SAFE_NO_PAD.encode(sidged_grant::sign(
+    s["sig"]["value"] = json!(URL_SAFE_NO_PAD.encode(vaikor_grant::sign(
         &seed.try_into().unwrap(),
         &signing_input(s).unwrap()
     )));
@@ -219,7 +219,7 @@ fn policy_digest_preserves_exact_sources_and_sorts_ids() {
 #[test]
 fn stored_signature_is_not_a_grant() {
     let (s, _, o) = fixture();
-    assert!(sidged_grant::accept_presented(&s, "2026-11-01T00:00:00Z", &[o.as_str()]).is_err());
+    assert!(vaikor_grant::accept_presented(&s, "2026-11-01T00:00:00Z", &[o.as_str()]).is_err());
 }
 #[test]
 fn malformed_arguments_do_not_gain_a_signature_exemption() {

@@ -7,7 +7,7 @@
 # Containerfile and asserts:
 #   1. the image runs as a non-root user,
 #   2. no secret-like files or environment variables are baked in,
-#   3. `sidged --version` works and embeds the SIDGED_GIT_SHA build arg.
+#   3. `vaikor --version` works and embeds the VAIKOR_GIT_SHA build arg.
 #
 # Usage: scripts/container-test.sh [platform ...]
 #   default platforms: linux/amd64 linux/arm64
@@ -22,15 +22,15 @@ cd "$(dirname "$0")/.."
 command -v podman >/dev/null || { echo "FAIL: podman is required" >&2; exit 1; }
 # Storage trust split: trusted runs use a throwaway store ($PODMAN), removed on exit.
 . scripts/podman-store.sh
-# Scoped Containerfiles go to a scratch dir podman can see (sidged_scratch_dir).
+# Scoped Containerfiles go to a scratch dir podman can see (vaikor_scratch_dir).
 work=""
-trap '[ -z "$work" ] || rm -rf "$work"; sidged_store_close' EXIT
-sidged_store_open
-work="$(sidged_scratch_dir build)"
+trap '[ -z "$work" ] || rm -rf "$work"; vaikor_store_close' EXIT
+vaikor_store_open
+work="$(vaikor_scratch_dir build)"
 PLATFORMS=("$@")
 [ ${#PLATFORMS[@]} -gt 0 ] || PLATFORMS=(linux/amd64 linux/arm64)
 # CI passes the PR head SHA (not the merge commit); locally fall back to HEAD.
-SHA="${SIDGED_GIT_SHA:-$(git rev-parse HEAD 2>/dev/null || echo unknown)}"
+SHA="${VAIKOR_GIT_SHA:-$(git rev-parse HEAD 2>/dev/null || echo unknown)}"
 fail=0
 err() { echo "FAIL: $*" >&2; fail=1; }
 
@@ -41,7 +41,7 @@ SECRET_ENV='(KEY|SECRET|TOKEN|PASSWORD|PASSWD|CREDENTIAL|SEED)'
 # shellcheck disable=SC2043 # one target today; the body is the per-target build
 for target in core; do
   # CI passes a per-run name so parallel/ephemeral runs never share one.
-  manifest="${SIDGED_MANIFEST:-localhost/sidged-${target}:test}"
+  manifest="${VAIKOR_MANIFEST:-localhost/vaikor-${target}:test}"
   "$PODMAN" manifest rm "$manifest" >/dev/null 2>&1 || true
   platforms="$(IFS=,; echo "${PLATFORMS[*]}")"
   echo "== ${target} ${platforms} -> manifest ${manifest}"
@@ -51,20 +51,20 @@ for target in core; do
   # cache mounts) and, in CI, without the layer cache either; pr<N> = cache
   # mounts scoped to that pull request (scripts/containerfile-scope.sh).
   scoped="$work/Containerfile.${target}"
-  scripts/containerfile-scope.sh "${SIDGED_CACHE_SCOPE:-}" Containerfile "$scoped" \
+  scripts/containerfile-scope.sh "${VAIKOR_CACHE_SCOPE:-}" Containerfile "$scoped" \
     || { err "cache scope"; continue; }
   extra=()
-  if [ -n "${SIDGED_CI_RUN:-}" ]; then
+  if [ -n "${VAIKOR_CI_RUN:-}" ]; then
     # Label everything this run builds and keep no intermediate layer
     # images, so cleanup removes exactly this run's images.
-    extra+=(--layers=false --label "sidged.ci.run=${SIDGED_CI_RUN}")
-    [ -n "${SIDGED_CACHE_SCOPE:-}" ] || extra+=(--no-cache)
+    extra+=(--layers=false --label "vaikor.ci.run=${VAIKOR_CI_RUN}")
+    [ -n "${VAIKOR_CACHE_SCOPE:-}" ] || extra+=(--no-cache)
   fi
   built=1
   for platform in "${PLATFORMS[@]}"; do
-    sidged_store_pull_bases "$platform" "$scoped" || { err "pull pinned bases ${platform}"; built=0; break; }
+    vaikor_store_pull_bases "$platform" "$scoped" || { err "pull pinned bases ${platform}"; built=0; break; }
     "$PODMAN" build --platform "$platform" --manifest "$manifest" --target "$target" \
-      --build-arg SIDGED_GIT_SHA="$SHA" "${extra[@]}" -f "$scoped" . \
+      --build-arg VAIKOR_GIT_SHA="$SHA" "${extra[@]}" -f "$scoped" . \
       || { err "build ${target} ${platform}"; built=0; break; }
   done
   rm -f "$scoped"
@@ -106,7 +106,7 @@ for m in json.load(sys.stdin)["manifests"]:
 
     cid="$("$PODMAN" create --platform "$platform" "$tag")"
     # Scans the final flattened filesystem only. Sufficient because the runtime
-    # stage copies nothing but the sidged binary; build-stage layers are not shipped.
+    # stage copies nothing but the vaikor binary; build-stage layers are not shipped.
     # Exported to a file, not piped: tar may stop reading at the end-of-archive
     # marker, and a SIGPIPE on podman would fail the step (exit 141).
     "$PODMAN" export -o "$work/rootfs.tar" "$cid"
@@ -118,9 +118,9 @@ for m in json.load(sys.stdin)["manifests"]:
     fi
 
     out="$("$PODMAN" run --rm --platform "$platform" --network none "$tag" --version)" \
-      || err "${tag}: sidged --version failed"
+      || err "${tag}: vaikor --version failed"
     echo "   ${out}"
-    [[ "$out" =~ ^sidged\ [0-9]+\.[0-9]+\.[0-9]+\ \(([0-9a-f]{40}|unknown)\)$ ]] \
+    [[ "$out" =~ ^vaikor\ [0-9]+\.[0-9]+\.[0-9]+\ \(([0-9a-f]{40}|unknown)\)$ ]] \
       || err "${tag}: unexpected --version output"
     [ "$SHA" = unknown ] || [[ "$out" == *"($SHA)" ]] \
       || err "${tag}: --version does not embed build-arg SHA ${SHA}"

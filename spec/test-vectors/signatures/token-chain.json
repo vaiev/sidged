@@ -1,6 +1,6 @@
 {
   "category": "signatures",
-  "description": "Capability-token chain signatures (SDG-L2 R8). Each link is Ed25519 over JCS, sig.kid is the issuer did:key, and cnf binds the holder. TEST ONLY keys from RFC 8032.",
+  "description": "Capability-token chain signatures (VKR-L2 R8). Each link is Ed25519 over JCS, sig.kid is the issuer did:key, and cnf binds the holder. TEST ONLY keys from RFC 8032.",
   "vectors": [
     {
       "id": "signature.token-chain.001",
@@ -32,7 +32,7 @@
           "rights": [
             {
               "action": "app.comment.read",
-              "resource": "urn:sidged:app:comments/public"
+              "resource": "tag:vaikor.com,2026:app:comments/public"
             }
           ],
           "chain": [
@@ -51,14 +51,14 @@
               "rights": [
                 {
                   "action": "app.comment.read",
-                  "resource": "urn:sidged:app:comments/*"
+                  "resource": "tag:vaikor.com,2026:app:comments/*"
                 }
               ],
               "sig": {
                 "alg": "EdDSA",
                 "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
                 "canon": "jcs",
-                "value": "r_m7K0oymMeAySJ0anNR3Pz9GqFYENJgTwSi6Jt-S54CUmh-B87OoEhNJSu-M6exx-2BgsTds_aIbw9qGgIJDA"
+                "value": "atOAOLm4accIH8qWK6OU2apSbrx5vu0pHF7OxZ-by29ubX3OWPGPh2G4FEoqmWoe1P11O_LdIg0rHpLx4omRCg"
               }
             }
           ],
@@ -66,7 +66,7 @@
             "alg": "EdDSA",
             "kid": "did:key:z6MkiaMbhXHNA4eJVCCj8dbzKzTgYDKf6crKgHVHid1F1WCT",
             "canon": "jcs",
-            "value": "IwlHTw73ABVEMHmO7SmIunxdJb9RZJkvX1inN7JZDs5Tv4GdyJVS3-Ary7w_n5MNjL9DPxVA2AHJQ_LZ9Ue-Dg"
+            "value": "VKIMQwvxHVlsA0jAgYTmJjuBTcahItOvPFAohlYXUIjqolmZbrz38AX-_r0jNOnNxDQTmfTMP9Vt-C811MTTBA"
           }
         }
       },
@@ -106,7 +106,7 @@
           "rights": [
             {
               "action": "app.comment.read",
-              "resource": "urn:sidged:app:comments/*"
+              "resource": "tag:vaikor.com,2026:app:comments/*"
             }
           ],
           "chain": [
@@ -125,14 +125,14 @@
               "rights": [
                 {
                   "action": "app.comment.read",
-                  "resource": "urn:sidged:app:comments/*"
+                  "resource": "tag:vaikor.com,2026:app:comments/*"
                 }
               ],
               "sig": {
                 "alg": "EdDSA",
                 "kid": "did:key:z6MktwupdmLXVVqTzCw4i46r4uGyosGXRnR3XjN4Zq7oMMsw",
                 "canon": "jcs",
-                "value": "r_m7K0oymMeAySJ0anNR3Pz9GqFYENJgTwSi6Jt-S54CUmh-B87OoEhNJSu-M6exx-2BgsTds_aIbw9qGgIJDA"
+                "value": "atOAOLm4accIH8qWK6OU2apSbrx5vu0pHF7OxZ-by29ubX3OWPGPh2G4FEoqmWoe1P11O_LdIg0rHpLx4omRCg"
               }
             }
           ],
@@ -140,7 +140,7 @@
             "alg": "EdDSA",
             "kid": "did:key:z6MkiaMbhXHNA4eJVCCj8dbzKzTgYDKf6crKgHVHid1F1WCT",
             "canon": "jcs",
-            "value": "IwlHTw73ABVEMHmO7SmIunxdJb9RZJkvX1inN7JZDs5Tv4GdyJVS3-Ary7w_n5MNjL9DPxVA2AHJQ_LZ9Ue-Dg"
+            "value": "VKIMQwvxHVlsA0jAgYTmJjuBTcahItOvPFAohlYXUIjqolmZbrz38AX-_r0jNOnNxDQTmfTMP9Vt-C811MTTBA"
           }
         }
       },

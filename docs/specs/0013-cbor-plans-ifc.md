@@ -1,9 +1,9 @@
-# 0013 – Stored plans in dcbor, owner signatures, and the Cedar flow policy (SDG-L3)
+# 0013 – Stored plans in dcbor, owner signatures, and the Cedar flow policy (VKR-L3)
 
-> **Status:** Draft v0.1. Implemented in `runtime/sidged-verify` (`dcbor.rs`, `stored.rs`, `flow.rs`). Vectors in `spec/test-vectors/plan/dcbor-signed.json` and `spec/test-vectors/plan-check/plan.flow.json`.
+> **Status:** Draft v0.1. Implemented in `runtime/vaikor-verify` (`dcbor.rs`, `stored.rs`, `flow.rs`). Vectors in `spec/test-vectors/plan/dcbor-signed.json` and `spec/test-vectors/plan-check/plan.flow.json`.
 > **Date:** 2026-10-15
-> **Spec:** SDG-L3 Plan (extension of [0003-plan.md](0003-plan.md))
-> **Basis:** [VISION.md](../vision/VISION.md) section 5 (invariants 1–5, 9), [0000-architektur.md](0000-architektur.md) plan language and SDG-L0, [0003-plan.md](0003-plan.md) R10–R11 and §7, [0002-grant.md](0002-grant.md), [0007-egress.md](0007-egress.md), [0011-agent-bundle.md](0011-agent-bundle.md), [0012-records.md](0012-records.md).
+> **Spec:** VKR-L3 Plan (extension of [0003-plan.md](0003-plan.md))
+> **Basis:** [VISION.md](../vision/VISION.md) section 5 (invariants 1–5, 9), [0000-architektur.md](0000-architektur.md) plan language and VKR-L0, [0003-plan.md](0003-plan.md) R10–R11 and §7, [0002-grant.md](0002-grant.md), [0007-egress.md](0007-egress.md), [0011-agent-bundle.md](0011-agent-bundle.md), [0012-records.md](0012-records.md).
 
 The key words MUST, MUST NOT, SHOULD, and MAY are to be interpreted as in BCP 14 (RFC 2119 and RFC 8174) when they appear in capitals.
 
@@ -24,7 +24,7 @@ A stored plan is a verified plan that the owner signed so it can run again later
 | Member | Required | Meaning |
 |---|---|---|
 | `v` | yes | `"0.1"`. |
-| `kind` | yes | `"sdg.plan.stored"`. |
+| `kind` | yes | `"vkr.plan.stored"`. |
 | `plan` | yes | The plan tree (0003 §1). |
 | `plan_digest` | yes | R2 digest of `plan`. |
 | `catalog_digest` | yes | SHA-256, unpadded base64url, over the `dcbor` bytes of the array of catalog descriptors the plan references, sorted by `id`. Unrelated catalog entries and catalog order do not change it. |
@@ -45,22 +45,22 @@ A stored plan is a verified plan that the owner signed so it can run again later
 
 ## 4. Flow policy in Cedar (replaces `DenySensitive`)
 
-The 0003 hook `FlowPolicy::allow_egress(class, capability)` becomes a Cedar authorization request evaluated by the same Cedar engine `sidged-grant` uses.
+The 0003 hook `FlowPolicy::allow_egress(class, capability)` becomes a Cedar authorization request evaluated by the same Cedar engine `vaikor-grant` uses.
 
 | Request part | Value |
 |---|---|
-| principal | `Sidged::Owner::"<owner did>"` |
-| action | `Sidged::Action::"flow"` |
-| resource | `Sidged::Capability::"<egress capability id>"` |
+| principal | `Vaikor::Owner::"<owner did>"` |
+| action | `Vaikor::Action::"flow"` |
+| resource | `Vaikor::Capability::"<egress capability id>"` |
 | context | `class` (string, the label), `sensitive` (bool), `destination` (string), `step` (step id), `plan` (plan digest) |
 
-**R8.** For every egress step and every label that reaches it (0003 R10–R11), the verifier MUST evaluate one request with that step's destination. Two `message.send` steps are two requests (vector `plan.flow.009`). The Core MUST derive every context value itself, never take it from a caller, a model, or the plan's prose: `class` from the 0003 label computation; `sensitive` as `true` exactly when the class equals `health.records` or `secrets` or starts with one of them followed by `.` (the rule in `sidged-verify`, so `health.recordsx` is not sensitive, vector `plan.flow.010`); `destination` from the step's literal `to` argument, or `""` when `to` is not a literal. The flow is allowed only when Cedar returns Allow for every request. *Rationale: Cedar is default-deny and forbid-overrides-permit. Both are the properties `DenySensitive` had.*
+**R8.** For every egress step and every label that reaches it (0003 R10–R11), the verifier MUST evaluate one request with that step's destination. Two `message.send` steps are two requests (vector `plan.flow.009`). The Core MUST derive every context value itself, never take it from a caller, a model, or the plan's prose: `class` from the 0003 label computation; `sensitive` as `true` exactly when the class equals `health.records` or `secrets` or starts with one of them followed by `.` (the rule in `vaikor-verify`, so `health.recordsx` is not sensitive, vector `plan.flow.010`); `destination` from the step's literal `to` argument, or `""` when `to` is not a literal. The flow is allowed only when Cedar returns Allow for every request. *Rationale: Cedar is default-deny and forbid-overrides-permit. Both are the properties `DenySensitive` had.*
 
 **R9.** The built-in default policy set MUST be exactly:
 
 ```cedar
 @id("default-flow")
-permit (principal, action == Sidged::Action::"flow", resource)
+permit (principal, action == Vaikor::Action::"flow", resource)
 unless { context.sensitive };
 ```
 
@@ -77,6 +77,6 @@ With the default set, the verifier's decisions MUST equal those of `DenySensitiv
 ## 6. Out of scope
 
 - Declassifying capabilities and multi-class labels.
-- Delegating stored plans to peers (SDG-L6) and plan revocation lists.
+- Delegating stored plans to peers (VKR-L6) and plan revocation lists.
 - The Trusted UI format for signing owner policies (v0.1 says only that it goes through Trusted UI).
-- A Cedar schema file for `Sidged::*` entities (phase 18 implementation ships it next to the grant schema).
+- A Cedar schema file for `Vaikor::*` entities (phase 18 implementation ships it next to the grant schema).

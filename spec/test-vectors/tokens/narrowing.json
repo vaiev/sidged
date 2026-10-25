@@ -1,6 +1,6 @@
 {
   "category": "tokens",
-  "description": "Attenuation rules (a) to (f) of Sidged L2 for delegated capability tokens. Static checks; signatures are placeholders.",
+  "description": "Attenuation rules (a) to (f) of Vaikor L2 for delegated capability tokens. Static checks; signatures are placeholders.",
   "vectors": [
     {
       "id": "token.narrowing.001",

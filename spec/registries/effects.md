@@ -1,6 +1,6 @@
 # Registry: Effects
 
-> **Status: Draft v0.1.** See [README.md](README.md) for registry rules. Normative use is SDG-L1 ([docs/specs/0001-capability.md](../../docs/specs/0001-capability.md)).
+> **Status: Draft v0.1.** See [README.md](README.md) for registry rules. Normative use is VKR-L1 ([docs/specs/0001-capability.md](../../docs/specs/0001-capability.md)).
 
 An effect is what a capability does to the world. A descriptor lists every effect it can have. `delete`, `execute`, and `egress` are consequential.
 

@@ -1,6 +1,6 @@
 {
   "category": "signatures",
-  "description": "Ed25519 did:key resolution and RFC 7638 cnf.jkt binding for SDG-L2 R8, using the RFC 8032 section 7.1 test public keys. TEST ONLY.",
+  "description": "Ed25519 did:key resolution and RFC 7638 cnf.jkt binding for VKR-L2 R8, using the RFC 8032 section 7.1 test public keys. TEST ONLY.",
   "vectors": [
     {
       "id": "signature.did-key.001",

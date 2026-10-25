@@ -1,0 +1,775 @@
+{
+  "v": "0.1",
+  "locales": [
+    "en",
+    "de",
+    "gsw"
+  ],
+  "unknown_intent_ask": {
+    "en": "What exactly should I do?",
+    "de": "Was genau soll ich tun?",
+    "gsw": "Was genau söll ich mache?"
+  },
+  "intents": [
+    {
+      "intent": "messaging.send",
+      "title": "Write and send a message",
+      "canonical_en": "Send a message to {recipient} about {topic}",
+      "slots_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "recipient": {
+            "type": "string",
+            "description": "Person, group or address that receives the message.",
+            "x-ask": {
+              "en": "Who should receive the message?",
+              "de": "An wen soll die Nachricht gehen?",
+              "gsw": "Wem söll ich d Nachricht schicke?"
+            },
+            "x-verbatim": true
+          },
+          "topic": {
+            "type": "string",
+            "description": "What the message is about, as said (without the preposition).",
+            "x-ask": {
+              "en": "What should the message be about?",
+              "de": "Worum soll es in der Nachricht gehen?",
+              "gsw": "Um was söll's i de Nachricht gah?"
+            },
+            "x-verbatim": true
+          }
+        },
+        "required": [
+          "recipient",
+          "topic"
+        ]
+      },
+      "capabilities": [
+        "tag:vaikor.com,2026:capability:text.generate_local",
+        "tag:vaikor.com,2026:capability:message.send"
+      ],
+      "data_classes": [
+        "communications.content",
+        "contacts.name"
+      ],
+      "artifact_mime": "application/vnd.vaikor.artifact.mail+json",
+      "route": "edge-local",
+      "plan": {
+        "steps": [
+          {
+            "id": "draft",
+            "capability": "tag:vaikor.com,2026:capability:text.generate_local",
+            "args": {
+              "instruction": {
+                "intent": "canonical"
+              }
+            }
+          },
+          {
+            "id": "send",
+            "capability": "tag:vaikor.com,2026:capability:message.send",
+            "args": {
+              "to": {
+                "slot": "recipient"
+              },
+              "body": {
+                "ref": "draft",
+                "field": "text"
+              }
+            },
+            "approval": true
+          }
+        ]
+      }
+    },
+    {
+      "intent": "task.code",
+      "title": "Create or change source code",
+      "canonical_en": "Write code: {description}",
+      "slots_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "What the code should do.",
+            "x-ask": {
+              "en": "What should the code do?",
+              "de": "Was soll der Code machen?",
+              "gsw": "Was söll de Code mache?"
+            }
+          },
+          "language": {
+            "type": "string",
+            "description": "Programming language, if named.",
+            "x-ask": {
+              "en": "Which programming language should I use?",
+              "de": "Welche Programmiersprache soll ich verwenden?",
+              "gsw": "Weli Programmiersprach söll ich näh?"
+            },
+            "x-verbatim": true
+          }
+        },
+        "required": [
+          "description"
+        ]
+      },
+      "capabilities": [
+        "tag:vaikor.com,2026:capability:text.generate_local",
+        "tag:vaikor.com,2026:capability:workspace.read",
+        "tag:vaikor.com,2026:capability:workspace.write"
+      ],
+      "data_classes": [
+        "documents.text"
+      ],
+      "artifact_mime": "application/vnd.vaikor.artifact.code+json",
+      "route": "swarm-worker",
+      "plan": {
+        "steps": [
+          {
+            "id": "draft",
+            "capability": "tag:vaikor.com,2026:capability:text.generate_local",
+            "args": {
+              "instruction": {
+                "intent": "canonical"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "intent": "query.search",
+      "title": "Look something up",
+      "canonical_en": "Find information about {subject}",
+      "slots_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "subject": {
+            "type": "string",
+            "description": "What to look up.",
+            "x-ask": {
+              "en": "What should I look up?",
+              "de": "Wonach soll ich suchen?",
+              "gsw": "Was söll ich sueche?"
+            }
+          }
+        },
+        "required": [
+          "subject"
+        ]
+      },
+      "capabilities": [
+        "tag:vaikor.com,2026:capability:web.search"
+      ],
+      "data_classes": [
+        "query.general"
+      ],
+      "artifact_mime": "application/vnd.vaikor.artifact.solution+json",
+      "route": "swarm-worker",
+      "plan": {
+        "steps": [
+          {
+            "id": "search",
+            "capability": "tag:vaikor.com,2026:capability:web.search",
+            "args": {
+              "query": {
+                "slot": "subject"
+              }
+            },
+            "approval": true
+          }
+        ]
+      }
+    },
+    {
+      "intent": "scheduling.propose",
+      "title": "Propose a meeting",
+      "canonical_en": "Propose a meeting with {participant} {timeframe}",
+      "slots_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "participant": {
+            "type": "string",
+            "description": "Who should attend the meeting.",
+            "x-ask": {
+              "en": "Who should I meet with?",
+              "de": "Mit wem soll der Termin sein?",
+              "gsw": "Mit wem söll de Termin si?"
+            },
+            "x-verbatim": true
+          },
+          "timeframe": {
+            "type": "string",
+            "description": "When the meeting should take place, as said.",
+            "x-ask": {
+              "en": "When should the meeting take place?",
+              "de": "Wann soll der Termin stattfinden?",
+              "gsw": "Wänn söll de Termin si?"
+            },
+            "x-verbatim": true
+          }
+        },
+        "required": [
+          "participant",
+          "timeframe"
+        ]
+      },
+      "capabilities": [
+        "tag:vaikor.com,2026:capability:calendar.free_slots",
+        "tag:vaikor.com,2026:capability:text.generate_local",
+        "tag:vaikor.com,2026:capability:message.send"
+      ],
+      "data_classes": [
+        "calendar.availability",
+        "contacts.name"
+      ],
+      "artifact_mime": "application/vnd.vaikor.artifact.solution+json",
+      "route": "edge-local",
+      "plan": {
+        "steps": [
+          {
+            "id": "free",
+            "capability": "tag:vaikor.com,2026:capability:calendar.free_slots",
+            "args": {
+              "range": {
+                "slot": "timeframe"
+              }
+            }
+          },
+          {
+            "id": "draft",
+            "capability": "tag:vaikor.com,2026:capability:text.generate_local",
+            "args": {
+              "instruction": {
+                "intent": "canonical"
+              },
+              "text": {
+                "ref": "free",
+                "field": "text"
+              }
+            }
+          },
+          {
+            "id": "send",
+            "capability": "tag:vaikor.com,2026:capability:message.send",
+            "args": {
+              "to": {
+                "slot": "participant"
+              },
+              "body": {
+                "ref": "draft",
+                "field": "text"
+              }
+            },
+            "approval": true
+          }
+        ]
+      }
+    },
+    {
+      "intent": "scheduling.remind",
+      "title": "Set a reminder",
+      "canonical_en": "Remind me about {subject} {time}",
+      "slots_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "subject": {
+            "type": "string",
+            "description": "What to be reminded of.",
+            "x-ask": {
+              "en": "What should I remind you of?",
+              "de": "Woran soll ich dich erinnern?",
+              "gsw": "Wora söll ich di erinnere?"
+            }
+          },
+          "time": {
+            "type": "string",
+            "description": "When the reminder fires, as said (the Core resolves it).",
+            "x-verbatim": true,
+            "x-ask": {
+              "en": "When should I remind you?",
+              "de": "Wann soll ich dich erinnern?",
+              "gsw": "Wänn söll ich di erinnere?"
+            }
+          }
+        },
+        "required": [
+          "subject",
+          "time"
+        ]
+      },
+      "capabilities": [
+        "tag:vaikor.com,2026:capability:reminder.create"
+      ],
+      "data_classes": [
+        "calendar.events"
+      ],
+      "artifact_mime": "application/vnd.vaikor.artifact.solution+json",
+      "route": "edge-local",
+      "plan": {
+        "steps": [
+          {
+            "id": "remind",
+            "capability": "tag:vaikor.com,2026:capability:reminder.create",
+            "args": {
+              "subject": {
+                "slot": "subject"
+              },
+              "time": {
+                "slot": "time"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "intent": "task.summarize",
+      "title": "Summarize a document",
+      "canonical_en": "Summarize {source}",
+      "slots_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "source": {
+            "type": "string",
+            "description": "Document, file or text to summarize.",
+            "x-ask": {
+              "en": "Which document should I summarize?",
+              "de": "Welches Dokument soll ich zusammenfassen?",
+              "gsw": "Weles Dokument söll ich zämefasse?"
+            }
+          }
+        },
+        "required": [
+          "source"
+        ]
+      },
+      "capabilities": [
+        "tag:vaikor.com,2026:capability:workspace.read",
+        "tag:vaikor.com,2026:capability:text.generate_local"
+      ],
+      "data_classes": [
+        "documents.text"
+      ],
+      "artifact_mime": "application/vnd.vaikor.artifact.solution+json",
+      "route": "swarm-worker",
+      "plan": {
+        "steps": [
+          {
+            "id": "read",
+            "capability": "tag:vaikor.com,2026:capability:workspace.read",
+            "args": {
+              "path": {
+                "slot": "source"
+              }
+            }
+          },
+          {
+            "id": "summary",
+            "capability": "tag:vaikor.com,2026:capability:text.generate_local",
+            "args": {
+              "instruction": {
+                "intent": "canonical"
+              },
+              "text": {
+                "ref": "read",
+                "field": "text"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "intent": "task.translate",
+      "title": "Translate a text",
+      "canonical_en": "Translate {source} into {target_language}",
+      "slots_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "source": {
+            "type": "string",
+            "description": "Text or document to translate.",
+            "x-ask": {
+              "en": "Which text should I translate?",
+              "de": "Welchen Text soll ich übersetzen?",
+              "gsw": "Weli Text söll ich übersetze?"
+            }
+          },
+          "target_language": {
+            "type": "string",
+            "description": "Language to translate into.",
+            "x-ask": {
+              "en": "Into which language should I translate?",
+              "de": "In welche Sprache soll ich übersetzen?",
+              "gsw": "I weli Sprach söll ich übersetze?"
+            }
+          }
+        },
+        "required": [
+          "source",
+          "target_language"
+        ]
+      },
+      "capabilities": [
+        "tag:vaikor.com,2026:capability:workspace.read",
+        "tag:vaikor.com,2026:capability:text.generate_local"
+      ],
+      "data_classes": [
+        "documents.text"
+      ],
+      "artifact_mime": "application/vnd.vaikor.artifact.solution+json",
+      "route": "edge-local",
+      "plan": {
+        "steps": [
+          {
+            "id": "read",
+            "capability": "tag:vaikor.com,2026:capability:workspace.read",
+            "args": {
+              "path": {
+                "slot": "source"
+              }
+            }
+          },
+          {
+            "id": "translation",
+            "capability": "tag:vaikor.com,2026:capability:text.generate_local",
+            "args": {
+              "instruction": {
+                "intent": "canonical"
+              },
+              "text": {
+                "ref": "read",
+                "field": "text"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "intent": "share.offer",
+      "title": "Share a file or item",
+      "canonical_en": "Share {item} with {recipient}",
+      "slots_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "item": {
+            "type": "string",
+            "description": "File, document or item to share.",
+            "x-ask": {
+              "en": "What should I share?",
+              "de": "Was soll ich teilen?",
+              "gsw": "Was söll ich teile?"
+            }
+          },
+          "recipient": {
+            "type": "string",
+            "description": "Who receives the shared item.",
+            "x-ask": {
+              "en": "Who should I share it with?",
+              "de": "Mit wem soll ich es teilen?",
+              "gsw": "Mit wem söll ich's teile?"
+            },
+            "x-verbatim": true
+          }
+        },
+        "required": [
+          "item",
+          "recipient"
+        ]
+      },
+      "capabilities": [
+        "tag:vaikor.com,2026:capability:workspace.read",
+        "tag:vaikor.com,2026:capability:message.send"
+      ],
+      "data_classes": [
+        "documents.text",
+        "contacts.name"
+      ],
+      "artifact_mime": "application/vnd.vaikor.artifact.solution+json",
+      "route": "edge-local",
+      "plan": {
+        "steps": [
+          {
+            "id": "read",
+            "capability": "tag:vaikor.com,2026:capability:workspace.read",
+            "args": {
+              "path": {
+                "slot": "item"
+              }
+            }
+          },
+          {
+            "id": "send",
+            "capability": "tag:vaikor.com,2026:capability:message.send",
+            "args": {
+              "to": {
+                "slot": "recipient"
+              },
+              "body": {
+                "ref": "read",
+                "field": "text"
+              }
+            },
+            "approval": true
+          }
+        ]
+      }
+    },
+    {
+      "intent": "control.set",
+      "title": "Change a device setting",
+      "canonical_en": "Set {device} to {setting}",
+      "slots_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "device": {
+            "type": "string",
+            "description": "Device or appliance to control.",
+            "x-ask": {
+              "en": "Which device do you mean?",
+              "de": "Welches Gerät meinst du?",
+              "gsw": "Weles Gerät meinsch?"
+            }
+          },
+          "setting": {
+            "type": "string",
+            "description": "Target state or value.",
+            "x-ask": {
+              "en": "What should I set it to?",
+              "de": "Worauf soll ich es einstellen?",
+              "gsw": "Uf was söll ich's istelle?"
+            }
+          }
+        },
+        "required": [
+          "device",
+          "setting"
+        ]
+      },
+      "capabilities": [
+        "tag:vaikor.com,2026:capability:device.control"
+      ],
+      "data_classes": [
+        "device.config"
+      ],
+      "artifact_mime": "application/vnd.vaikor.artifact.solution+json",
+      "route": "edge-local",
+      "plan": {
+        "steps": [
+          {
+            "id": "set",
+            "capability": "tag:vaikor.com,2026:capability:device.control",
+            "args": {
+              "device": {
+                "slot": "device"
+              },
+              "setting": {
+                "slot": "setting"
+              }
+            },
+            "approval": true
+          }
+        ]
+      }
+    },
+    {
+      "intent": "task.note",
+      "title": "Write down a note",
+      "canonical_en": "Save a note: {content}",
+      "slots_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "content": {
+            "type": "string",
+            "description": "Text of the note, kept verbatim.",
+            "x-ask": {
+              "en": "What should the note say?",
+              "de": "Was soll in der Notiz stehen?",
+              "gsw": "Was söll i de Notiz stah?"
+            },
+            "x-verbatim": true
+          }
+        },
+        "required": [
+          "content"
+        ]
+      },
+      "capabilities": [
+        "tag:vaikor.com,2026:capability:notes.append"
+      ],
+      "data_classes": [
+        "documents.text"
+      ],
+      "artifact_mime": "application/vnd.vaikor.artifact.solution+json",
+      "route": "edge-local",
+      "plan": {
+        "steps": [
+          {
+            "id": "note",
+            "capability": "tag:vaikor.com,2026:capability:notes.append",
+            "args": {
+              "text": {
+                "slot": "content"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "intent": "timer.set",
+      "title": "Start a countdown timer",
+      "canonical_en": "Start a timer for {duration}",
+      "slots_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "duration": {
+            "type": "string",
+            "description": "How long the timer runs.",
+            "x-ask": {
+              "en": "How long should the timer run?",
+              "de": "Wie lange soll der Timer laufen?",
+              "gsw": "Wie lang söll de Timer laufe?"
+            }
+          },
+          "label": {
+            "type": "string",
+            "description": "What the timer is for, if named.",
+            "x-ask": {
+              "en": "What is the timer for?",
+              "de": "Wofür ist der Timer?",
+              "gsw": "För was isch de Timer?"
+            }
+          }
+        },
+        "required": [
+          "duration"
+        ]
+      },
+      "capabilities": [
+        "tag:vaikor.com,2026:capability:timer.start"
+      ],
+      "data_classes": [],
+      "artifact_mime": "application/vnd.vaikor.artifact.solution+json",
+      "route": "edge-local",
+      "plan": {
+        "steps": [
+          {
+            "id": "timer",
+            "capability": "tag:vaikor.com,2026:capability:timer.start",
+            "args": {
+              "duration": {
+                "slot": "duration"
+              },
+              "label": {
+                "slot": "label"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "intent": "files.find",
+      "title": "Find a file in the workspace",
+      "canonical_en": "Find files matching {query}",
+      "slots_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Name, topic or content of the file to find.",
+            "x-ask": {
+              "en": "Which file are you looking for?",
+              "de": "Welche Datei suchst du?",
+              "gsw": "Weli Datei suechsch?"
+            }
+          },
+          "folder": {
+            "type": "string",
+            "description": "Folder to search in, if named.",
+            "x-ask": {
+              "en": "In which folder should I search?",
+              "de": "In welchem Ordner soll ich suchen?",
+              "gsw": "I welem Ordner söll ich sueche?"
+            },
+            "x-verbatim": true
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "capabilities": [
+        "tag:vaikor.com,2026:capability:workspace.find"
+      ],
+      "data_classes": [
+        "documents.metadata"
+      ],
+      "artifact_mime": "application/vnd.vaikor.artifact.solution+json",
+      "route": "edge-local",
+      "plan": {
+        "steps": [
+          {
+            "id": "find",
+            "capability": "tag:vaikor.com,2026:capability:workspace.find",
+            "args": {
+              "query": {
+                "slot": "query"
+              },
+              "folder": {
+                "slot": "folder"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "compositions": [
+    {
+      "first": "task.summarize",
+      "then": "messaging.send",
+      "satisfies": [
+        "topic"
+      ],
+      "replaces": {
+        "draft": "summary"
+      }
+    },
+    {
+      "first": "task.translate",
+      "then": "messaging.send",
+      "satisfies": [
+        "topic"
+      ],
+      "replaces": {
+        "draft": "translation"
+      }
+    },
+    {
+      "first": "query.search",
+      "then": "messaging.send",
+      "satisfies": [
+        "topic"
+      ],
+      "replaces": {
+        "draft": "search"
+      }
+    }
+  ]
+}

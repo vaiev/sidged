@@ -3,13 +3,13 @@
 """Run the hand-written probes against a served linguist GGUF through the Rust Core. Stdlib only.
 
 Sends each probe of linguist_probes.json to the llama-server endpoint with the runtime's
-request (`sidged linguist-eval serve`: full-catalog prompt, chat_request, reply
+request (`vaikor linguist-eval serve`: full-catalog prompt, chat_request, reply
 post-processing, verify_proposal_for), so this measures the model as deployed. A probe
 passes when the Core accepts the reply and what it keeps has the probe's intent, exactly
 the probe's slots (values compared case-insensitively) and exactly its follow-ups: an
 unnamed slot or an extra follow-up fails the probe.
 
-Usage: python3 -I probe_linguist.py --socket $XDG_RUNTIME_DIR/sidged/linguist.sock [--out report.json]
+Usage: python3 -I probe_linguist.py --socket $XDG_RUNTIME_DIR/vaikor/linguist.sock [--out report.json]
 """
 import argparse
 import json

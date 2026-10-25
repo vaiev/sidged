@@ -20,7 +20,7 @@ import linguist  # noqa: E402
 import make_dataset_linguist  # noqa: E402
 import validate_dataset_linguist  # noqa: E402
 
-FIXTURE = linguist.HERE.parent / "runtime" / "sidged-cli" / "tests" / "fixtures" / "linguist-prompt.json"
+FIXTURE = linguist.HERE.parent / "runtime" / "vaikor-cli" / "tests" / "fixtures" / "linguist-prompt.json"
 
 
 def frame_slots(frame):

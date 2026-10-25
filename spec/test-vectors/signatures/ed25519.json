@@ -1,6 +1,6 @@
 {
   "category": "signatures",
-  "description": "Ed25519 known-answer tests copied from RFC 8032 section 7.1, so an implementation can check its primitive and key handling before the Sidged vectors below.",
+  "description": "Ed25519 known-answer tests copied from RFC 8032 section 7.1, so an implementation can check its primitive and key handling before the Vaikor vectors below.",
   "vectors": [
     {
       "id": "signature.ed25519.001",

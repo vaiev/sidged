@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sidged.com/spec/test-vectors/vector.schema.json",
-  "title": "Sidged Test Vector File",
+  "$id": "https://vaikor.com/spec/test-vectors/vector.schema.json",
+  "title": "Vaikor Test Vector File",
   "description": "A group of conformance test vectors: fixed inputs with expected results for one operation area. See test-vectors/README.md for the operation contracts. The suite version is recorded only in test-vectors/VERSION, not in vector files. Status: Draft, not for implementation.",
   "type": "object",
   "required": [

@@ -1,6 +1,6 @@
 {
   "category": "tokens",
-  "description": "Rule (e) of Sidged L2: every constraint and budget limit the parent sets is present and not higher; data classes are a subset. Money amounts are exact decimals.",
+  "description": "Rule (e) of Vaikor L2: every constraint and budget limit the parent sets is present and not higher; data classes are a subset. Money amounts are exact decimals.",
   "vectors": [
     {
       "id": "token.budget.001",

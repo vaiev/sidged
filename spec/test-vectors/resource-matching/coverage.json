@@ -1,6 +1,6 @@
 {
   "category": "resource-matching",
-  "description": "Whether a right resource covers a requested resource (SDG-L2 R9). Normative as of docs/specs/0002-grant.md.",
+  "description": "Whether a right resource covers a requested resource (VKR-L2 R9). Normative as of docs/specs/0002-grant.md.",
   "vectors": [
     {
       "id": "resource.coverage.001",

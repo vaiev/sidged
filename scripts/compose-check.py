@@ -8,7 +8,7 @@ Role rules: control and worker (the Edges) each mount one read-only key
 volume at /keys; llama mounts none.
 
 - services: `control` (Edge 1), `worker` (Edges 2..n), optional `llama`;
-  control and worker use the same sidged-core image;
+  control and worker use the same vaikor-core image;
 - one same-host network, marked internal; worker and llama only on internal
   networks, so egress can only go through the control node's gateway;
 - no published ports except one UI port on `control`, bound to 127.0.0.1;
@@ -17,13 +17,13 @@ volume at /keys; llama mounts none.
   compared numerically), its own uid, read-only rootfs, cap_drop [ALL], no
   cap_add, no-new-privileges, not privileged, no host networking;
 - no secret-like environment variables, no env_file, no inline key material;
-- key/state volume owner and mode come from `x-sidged-volume-init`
+- key/state volume owner and mode come from `x-vaikor-volume-init`
   (applied by scripts/compose-init.sh): every named volume has an entry whose
   uid:gid is the uid:gid of the service that mounts it, mode 0700 or 0500;
-- local mode (SIDGED_LOCAL=1) is the default and the base file declares no
+- local mode (VAIKOR_LOCAL=1) is the default and the base file declares no
   secrets at all; the cloud override (--override) is the opt-in: it sets
-  SIDGED_LOCAL 0 on control and adds only file-based secrets to control;
-- approval (0004 R9/R9c): `x-sidged-approval` names a separate, non-zero
+  VAIKOR_LOCAL 0 on control and adds only file-based secrets to control;
+- approval (0004 R9/R9c): `x-vaikor-approval` names a separate, non-zero
   approver uid that no service uses, and the operator-provisioned approval
   dir, which no service may mount (the Core binds its socket in it);
 - networks: `edges` and `model` are internal; llama joins only `model`,
@@ -145,14 +145,14 @@ def check_override(path, base):
     if extra:
         err(f"override: control may only change environment, networks and secrets, got {sorted(extra)}")
     env = dict(env_items(control))
-    if str(env.get("SIDGED_LOCAL", "")) != "0":
-        err("override: cloud override must set SIDGED_LOCAL 0 on control")
+    if str(env.get("VAIKOR_LOCAL", "")) != "0":
+        err("override: cloud override must set VAIKOR_LOCAL 0 on control")
     declared = doc.get("secrets") or {}
     for k, v in env.items():
-        if k == "SIDGED_API_KEY_FILE":
+        if k == "VAIKOR_API_KEY_FILE":
             m = re.fullmatch(r"/run/secrets/([A-Za-z0-9_.-]+)", str(v))
             if not m or m.group(1) not in declared:
-                err("override: SIDGED_API_KEY_FILE must name a declared secret under /run/secrets/")
+                err("override: VAIKOR_API_KEY_FILE must name a declared secret under /run/secrets/")
         elif SECRET.search(str(k)):
             err(f"override: secret-like environment variable {k}")
     base_nets = set((base.get("services") or {}).get("control", {}).get("networks") or [])
@@ -228,11 +228,11 @@ def main(argv):
     if not set(EDGES) <= set(services) or not set(services) <= {"control", "worker", "llama"}:
         err(f"services must be control, worker (and optional llama), got {sorted(services)}")
     images = {services[n].get("image") for n in EDGES if n in services}
-    if len(images) != 1 or not all(i and "sidged-core" in i for i in images):
-        err(f"control and worker must use the same sidged-core image, got {images}")
+    if len(images) != 1 or not all(i and "vaikor-core" in i for i in images):
+        err(f"control and worker must use the same vaikor-core image, got {images}")
     for name, svc in services.items():
         image = str(svc.get("image", ""))
-        built = image.startswith("localhost/sidged-core") and "build" in services.get("control", {})
+        built = image.startswith("localhost/vaikor-core") and "build" in services.get("control", {})
         if "@sha256:" not in image and not built:
             err(f"{name}: image must be digest-pinned (@sha256:) or built locally: {image}")
 
@@ -258,11 +258,11 @@ def main(argv):
 
     for name in EDGES:
         env = dict(env_items(services.get(name, {})))
-        if str(env.get("SIDGED_LOCAL", "")) not in ("1", "${SIDGED_LOCAL:-1}"):
-            err(f"{name}: SIDGED_LOCAL must default to 1 (local mode is the demo default)")
+        if str(env.get("VAIKOR_LOCAL", "")) not in ("1", "${VAIKOR_LOCAL:-1}"):
+            err(f"{name}: VAIKOR_LOCAL must default to 1 (local mode is the demo default)")
 
     # Key volumes (role rule) and volume owner/mode from the init table.
-    init = doc.get("x-sidged-volume-init") or {}
+    init = doc.get("x-vaikor-volume-init") or {}
     vols = doc.get("volumes") or {}
     key_volumes = {}
     for name, svc in services.items():
@@ -280,7 +280,7 @@ def main(argv):
                 continue
             entry = init.get(src)
             if not isinstance(entry, dict):
-                err(f"volume {src}: no x-sidged-volume-init entry (owner and mode for {name})")
+                err(f"volume {src}: no x-vaikor-volume-init entry (owner and mode for {name})")
                 continue
             pair = ids.get(name)
             if pair and entry.get("uid") != pair[0]:
@@ -302,9 +302,9 @@ def main(argv):
         err("key volumes must be declared as named volumes")
 
     # Approver model (0004 R9/R9c).
-    approval = doc.get("x-sidged-approval")
+    approval = doc.get("x-vaikor-approval")
     if not isinstance(approval, dict):
-        err("x-sidged-approval is required (separate approver uid, operator-provisioned approval dir)")
+        err("x-vaikor-approval is required (separate approver uid, operator-provisioned approval dir)")
     else:
         approver = approval.get("approver_uid")
         if not isinstance(approver, int) or isinstance(approver, bool) or approver <= 0:
@@ -313,7 +313,7 @@ def main(argv):
             err(f"approver uid must differ from every service uid ({approver} is {by_uid[approver]})")
         adir = str(approval.get("dir", ""))
         if not adir.startswith("/"):
-            err("x-sidged-approval dir must be an absolute path")
+            err("x-vaikor-approval dir must be an absolute path")
         for name, svc in services.items():
             for _kind, _src, tgt, _ro in mounts(svc):
                 t = str(tgt or "").rstrip("/")

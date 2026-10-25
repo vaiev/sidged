@@ -1,6 +1,6 @@
 {
   "category": "residency",
-  "description": "Where tagged data may go (Sidged L7): tags combine by intersection, an empty list sets no restriction, unknown tags fail closed. Regions: CH (Switzerland) and EU (EU and EEA member states); value \"any\" means unrestricted.",
+  "description": "Where tagged data may go (Vaikor L7): tags combine by intersection, an empty list sets no restriction, unknown tags fail closed. Regions: CH (Switzerland) and EU (EU and EEA member states); value \"any\" means unrestricted.",
   "vectors": [
     {
       "id": "residency.regions.001",

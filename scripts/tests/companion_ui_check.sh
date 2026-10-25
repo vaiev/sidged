@@ -10,7 +10,7 @@
 set -euo pipefail
 
 root=$(cd "$(dirname "$0")/../.." && pwd)
-app=${1:-$root/companion/sidged-companion-app}
+app=${1:-$root/companion/vaikor-companion-app}
 ui=$app/ui
 fail=0
 bad() { echo "companion_ui_check: FAIL: $*" >&2; fail=1; }
@@ -22,7 +22,7 @@ done
 if (( fail )); then exit 1; fi
 
 # The vendored design system must be byte-identical to ui/vaiev-ui (one source of truth).
-for f in tokens/tokens.css tokens/components.css tokens/fonts.css sidged-theme.css fonts/OFL-LICENSE.txt \
+for f in tokens/tokens.css tokens/components.css tokens/fonts.css vaikor-theme.css fonts/OFL-LICENSE.txt \
          fonts/ibm-plex-mono-latin-400-normal.woff2 fonts/ibm-plex-mono-latin-500-normal.woff2 \
          fonts/ibm-plex-sans-latin-400-normal.woff2 fonts/ibm-plex-sans-latin-500-normal.woff2 \
          fonts/ibm-plex-sans-latin-600-normal.woff2; do

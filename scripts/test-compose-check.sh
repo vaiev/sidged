@@ -16,35 +16,35 @@ fail=0
 # A minimal valid base file; each case patches one thing.
 base() {
 cat <<'YAML'
-x-sidged-volume-init:
+x-vaikor-volume-init:
   k1: {uid: 65532, gid: 65532, mode: "0700"}
   s1: {uid: 65532, gid: 65532, mode: "0700"}
   k2: {uid: 65533, gid: 65533, mode: "0700"}
-x-sidged-approval:
+x-vaikor-approval:
   approver_uid: 65540
-  dir: /run/sidged/approval
+  dir: /run/vaikor/approval
 services:
   control:
     build: {context: .}
-    image: localhost/sidged-core:dev
+    image: localhost/vaikor-core:dev
     user: "65532:65532"
     read_only: true
     cap_drop: [ALL]
     security_opt: ["no-new-privileges:true"]
     networks: [edges, model]
-    environment: {SIDGED_LOCAL: "${SIDGED_LOCAL:-1}"}
+    environment: {VAIKOR_LOCAL: "${VAIKOR_LOCAL:-1}"}
     ports: [{target: 8443, published: 8443, host_ip: 127.0.0.1}]
     volumes:
       - {type: volume, source: k1, target: /keys, read_only: true}
       - {type: volume, source: s1, target: /home/nonroot/state}
   worker:
-    image: localhost/sidged-core:dev
+    image: localhost/vaikor-core:dev
     user: "65533:65533"
     read_only: true
     cap_drop: [ALL]
     security_opt: ["no-new-privileges:true"]
     networks: [edges]
-    environment: {SIDGED_LOCAL: "${SIDGED_LOCAL:-1}"}
+    environment: {VAIKOR_LOCAL: "${VAIKOR_LOCAL:-1}"}
     volumes: [{type: volume, source: k2, target: /keys, read_only: true}]
   llama:
     image: ghcr.io/ggml-org/llama.cpp:server@sha256:e83cbdc66e692129e17aad70293366cb00e3acca94b9f197c91a8a56e92201c3
@@ -92,7 +92,7 @@ done
 expect fail "share uid 65532" "$(case_file uid-dup 's|^    user: "65533:65533"|    user: "065532:65533"|')"
 
 # Key/state volume owner and mode come from the init table.
-expect fail "volume k2: no x-sidged-volume-init entry" "$(case_file init-miss '/^  k2: {uid/d')"
+expect fail "volume k2: no x-vaikor-volume-init entry" "$(case_file init-miss '/^  k2: {uid/d')"
 expect fail "volume k2: init uid 65532 is not the uid of worker (65533)" "$(case_file init-uid 's|^  k2: {uid: 65533|  k2: {uid: 65532|')"
 expect fail "volume k1: init mode must be 0700 or 0500" "$(case_file init-mode 's|^  k1: {uid: 65532, gid: 65532, mode: "0700"}|  k1: {uid: 65532, gid: 65532, mode: "0755"}|')"
 
@@ -102,16 +102,16 @@ expect fail "control: no secrets in the base file" "$(case_file sec-svc 's|^    
 cat > "$tmp/cloud.yml" <<'YAML'
 services:
   control:
-    environment: {SIDGED_LOCAL: "0", SIDGED_API_KEY_FILE: /run/secrets/xai_api_key}
+    environment: {VAIKOR_LOCAL: "0", VAIKOR_API_KEY_FILE: /run/secrets/xai_api_key}
     networks: [edges, model, egress]
     secrets: [{source: xai_api_key, target: xai_api_key}]
 networks: {egress: {}}
 secrets:
-  xai_api_key: {file: "${SIDGED_XAI_API_KEY_FILE:-./secrets/xai_api_key}"}
+  xai_api_key: {file: "${VAIKOR_XAI_API_KEY_FILE:-./secrets/xai_api_key}"}
 YAML
 expect pass "cloud override" "$tmp/ok.yml" --override "$tmp/cloud.yml"
-sed 's|SIDGED_LOCAL: "0"|SIDGED_LOCAL: "1"|' "$tmp/cloud.yml" > "$tmp/cloud-local.yml"
-expect fail "override: cloud override must set SIDGED_LOCAL 0" "$tmp/ok.yml" --override "$tmp/cloud-local.yml"
+sed 's|VAIKOR_LOCAL: "0"|VAIKOR_LOCAL: "1"|' "$tmp/cloud.yml" > "$tmp/cloud-local.yml"
+expect fail "override: cloud override must set VAIKOR_LOCAL 0" "$tmp/ok.yml" --override "$tmp/cloud-local.yml"
 sed 's|{file: .*}|{environment: XAI_KEY}|' "$tmp/cloud.yml" > "$tmp/cloud-env.yml"
 expect fail "secret xai_api_key: must be file-based only" "$tmp/ok.yml" --override "$tmp/cloud-env.yml"
 printf 'services:\n  worker:\n    secrets: [xai_api_key]\n' > "$tmp/cloud-worker.yml"
@@ -121,9 +121,9 @@ expect fail "override: only control may receive secrets" "$tmp/ok.yml" --overrid
 expect fail "control: the egress network belongs in the cloud override" "$(case_file egress-base 's|^    networks: \[edges, model\]|    networks: [edges, model, egress]|; s|^networks: {edges: {internal: true}, model: {internal: true}}|networks: {edges: {internal: true}, model: {internal: true}, egress: {}}|')"
 sed 's|    networks: \[edges, model, egress\]|    networks: [edges, model]|' "$tmp/cloud.yml" > "$tmp/cloud-noegress.yml"
 expect fail "override: control needs the egress network in cloud mode" "$tmp/ok.yml" --override "$tmp/cloud-noegress.yml"
-sed 's|SIDGED_API_KEY_FILE: /run/secrets/xai_api_key|SIDGED_API_KEY_FILE: /keys/x|' "$tmp/cloud.yml" > "$tmp/cloud-keyfile.yml"
-expect fail "override: SIDGED_API_KEY_FILE must name a declared secret under /run/secrets/" "$tmp/ok.yml" --override "$tmp/cloud-keyfile.yml"
-sed 's|SIDGED_API_KEY_FILE: /run/secrets/xai_api_key|XAI_API_KEY: abc|' "$tmp/cloud.yml" > "$tmp/cloud-envkey.yml"
+sed 's|VAIKOR_API_KEY_FILE: /run/secrets/xai_api_key|VAIKOR_API_KEY_FILE: /keys/x|' "$tmp/cloud.yml" > "$tmp/cloud-keyfile.yml"
+expect fail "override: VAIKOR_API_KEY_FILE must name a declared secret under /run/secrets/" "$tmp/ok.yml" --override "$tmp/cloud-keyfile.yml"
+sed 's|VAIKOR_API_KEY_FILE: /run/secrets/xai_api_key|XAI_API_KEY: abc|' "$tmp/cloud.yml" > "$tmp/cloud-envkey.yml"
 expect fail "override: secret-like environment variable XAI_API_KEY" "$tmp/ok.yml" --override "$tmp/cloud-envkey.yml"
 
 # llama only on its own internal network with control.
@@ -149,8 +149,8 @@ expect fail "secret file must be a regular file, not a symlink" "$tmp/me.yml" --
 # Approver model (0004 R9/R9c): separate approver uid, operator-provisioned dir.
 expect fail "approver uid must differ from every service uid" "$(case_file appr-same 's|^  approver_uid: 65540|  approver_uid: 65533|')"
 expect fail "approver uid must be a non-zero numeric uid" "$(case_file appr-zero 's|^  approver_uid: 65540|  approver_uid: 0|')"
-expect fail "x-sidged-approval is required" "$(case_file appr-miss '/^x-sidged-approval:/,/^  dir:/d')"
-expect fail "control: the approval dir is operator-provisioned" "$(case_file appr-mount 's|^      - {type: volume, source: s1, target: /home/nonroot/state}|      - {type: volume, source: s1, target: /home/nonroot/state}\n      - {type: tmpfs, target: /run/sidged/approval}|')"
+expect fail "x-vaikor-approval is required" "$(case_file appr-miss '/^x-vaikor-approval:/,/^  dir:/d')"
+expect fail "control: the approval dir is operator-provisioned" "$(case_file appr-mount 's|^      - {type: volume, source: s1, target: /home/nonroot/state}|      - {type: volume, source: s1, target: /home/nonroot/state}\n      - {type: tmpfs, target: /run/vaikor/approval}|')"
 
 # The init script applies exactly the table (dry run).
 plan="$(scripts/compose-init.sh --dry-run "$tmp/ok.yml")"

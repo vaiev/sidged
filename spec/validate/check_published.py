@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # Copyright 2026 VAIEV
 # SPDX-License-Identifier: Apache-2.0
-"""Check a published copy of the Sidged spec against this commit.
+"""Check a published copy of the Vaikor spec against this commit.
 
-A site that serves the schemas and registries (sidged.com/spec/) fetches them into a
+A site that serves the schemas and registries (vaikor.com/spec/) fetches them into a
 directory with `schemas/` and `registries/` and runs this check on it:
 
   python spec/validate/check_published.py <published-dir>
@@ -11,7 +11,7 @@ directory with `schemas/` and `registries/` and runs this check on it:
 It passes only when the published copy is exactly this commit's spec:
   1. every schema and registry file of this commit is there, byte for byte, and nothing else;
   2. every schema is a valid JSON Schema 2020-12 whose $id is
-     https://sidged.com/spec/schemas/<name>.schema.json;
+     https://vaikor.com/spec/schemas/<name>.schema.json;
   3. every $ref resolves within the published schemas, with no network access;
   4. every example under spec/examples validates (or fails, for *.invalid.json) against the
      published schemas exactly as against the repository's.

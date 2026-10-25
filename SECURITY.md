@@ -1,6 +1,6 @@
 # Security policy
 
-Sidged is a pre-alpha research preview (see the status in [README.md](README.md)). It has had no external security
+Vaikor is a pre-alpha research preview (see the status in [README.md](README.md)). It has had no external security
 review yet, and it is not ready to protect real data or real money.
 
 ## Reporting a vulnerability

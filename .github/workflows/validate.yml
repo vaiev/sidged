@@ -56,14 +56,14 @@ jobs:
       - uses: dtolnay/rust-toolchain@b725eda525362e7cf34af9a7243cac1e3f01a7ec # stable
         with:
           toolchain: stable
-      # The local-mode no-socket tests (0004 R9) need strace (SIDGED_REQUIRE_STRACE).
+      # The local-mode no-socket tests (0004 R9) need strace (VAIKOR_REQUIRE_STRACE).
       - name: Install strace
         run: |
           command -v strace || { sudo apt-get update -qq && sudo apt-get install -y -qq strace; }
           command -v strace
       - name: Test the runtime crates
         env:
-          SIDGED_REQUIRE_STRACE: "1"
+          VAIKOR_REQUIRE_STRACE: "1"
         run: cargo test --manifest-path runtime/Cargo.toml --locked
 
   musl:
@@ -82,10 +82,10 @@ jobs:
         run: |
           command -v musl-gcc || { sudo apt-get update -qq && sudo apt-get install -y -qq musl-tools; }
           command -v musl-gcc
-      - name: Build the static sidged binary
-        run: cargo build --manifest-path runtime/Cargo.toml --locked --release --target x86_64-unknown-linux-musl -p sidged-guard
+      - name: Build the static vaikor binary
+        run: cargo build --manifest-path runtime/Cargo.toml --locked --release --target x86_64-unknown-linux-musl -p vaikor-guard
       - name: The binary is statically linked
-        run: ldd runtime/target/x86_64-unknown-linux-musl/release/sidged | grep -q 'statically linked'
+        run: ldd runtime/target/x86_64-unknown-linux-musl/release/vaikor | grep -q 'statically linked'
 
   dco:
     name: DCO sign-off

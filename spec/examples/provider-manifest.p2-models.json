@@ -9,10 +9,10 @@
   "profile_claim": {
     "profile": "P2",
     "basis": "self-assessment",
-    "against": "Sidged L7 draft v0.1",
-    "self_assessment": "https://models.example.net/sidged/self-assessment-p2.html"
+    "against": "Vaikor L7 draft v0.1",
+    "self_assessment": "https://models.example.net/vaikor/self-assessment-p2.html"
   },
-  "runtime_request_header": "Sidged-Request",
+  "runtime_request_header": "Vaikor-Request",
   "model_identity": {
     "carrier": "envelope"
   },
@@ -81,7 +81,7 @@
     "versions": [
       "0.1"
     ],
-    "endpoint": "https://models.example.net/sidged/v0"
+    "endpoint": "https://models.example.net/vaikor/v0"
   },
   "ohttp": {
     "supported": true,
@@ -97,7 +97,7 @@
     "reports": "https://models.example.net/transparency",
     "audit": {
       "auditor": "Example Audit GmbH",
-      "summary": "https://models.example.net/sidged/audit-2026.html",
+      "summary": "https://models.example.net/vaikor/audit-2026.html",
       "issued": "2026-06-01T00:00:00Z",
       "valid_until": "2028-06-01T00:00:00Z"
     }

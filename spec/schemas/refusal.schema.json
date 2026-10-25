@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sidged.com/spec/schemas/refusal.schema.json",
-  "title": "Sidged Refusal (v0.1)",
-  "description": "Standard machine-readable refusal (Sidged L6; Sidged L7, section 9). Sent as the data of an envelope with intent sdg.refused and payload_type application/vnd.sidged.refusal+json, or, by a provider without envelope support, as an HTTP response body with that media type. A refusal carries a reason code and references to the refused message, never free text, so it cannot include memory, Adaptation Profile data, or other content not already in the request. Status: Draft, not for implementation.",
+  "$id": "https://vaikor.com/spec/schemas/refusal.schema.json",
+  "title": "Vaikor Refusal (v0.1)",
+  "description": "Standard machine-readable refusal (Vaikor L6; Vaikor L7, section 9). Sent as the data of an envelope with intent vkr.refused and payload_type application/vnd.vaikor.refusal+json, or, by a provider without envelope support, as an HTTP response body with that media type. A refusal carries a reason code and references to the refused message, never free text, so it cannot include memory, Adaptation Profile data, or other content not already in the request. Status: Draft, not for implementation.",
   "type": "object",
   "required": [
     "v",

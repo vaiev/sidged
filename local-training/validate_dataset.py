@@ -7,7 +7,7 @@ content is one JSON tool call {"component", "route", "props"} against the v1
 A2UI registry (5 components) and the ratified routes local-ui, worker-tool,
 cloud:grok. The model only proposes; residency, approvals and grants come from
 the Core (0001 R8, 0009 R1/R2), so such fields are refused anywhere. IP
-literals and every sdg.pii/1 detector (0007 R12) are refused in all text.
+literals and every vkr.pii/1 detector (0007 R12) are refused in all text.
 
 Usage: python3 -I validate_dataset.py <data.jsonl>   (exit 1 on any error)
 """
@@ -45,7 +45,7 @@ DETECTORS = [
         r"-----BEGIN [A-Z ]*PRIVATE KEY-----|\bsk-[A-Za-z0-9_-]{16,}|\bgh[pousr]_[A-Za-z0-9]{20,}"
         r"|\bAKIA[0-9A-Z]{16}\b|\bxox[abpr]-[A-Za-z0-9-]{10,}", _I)),
 ]
-# Not part of sdg.pii/1: IPv6 literals (the training data names no hosts).
+# Not part of vkr.pii/1: IPv6 literals (the training data names no hosts).
 IPV6 = re.compile(r"(?<![0-9a-f:])(?:[0-9a-f]{1,4}:){2,7}[0-9a-f]{0,4}(?![0-9a-f:])|"
                   r"(?<![0-9a-f:])[0-9a-f]{0,4}::[0-9a-f]{0,4}(?![0-9a-f:])", _I)
 
@@ -62,7 +62,7 @@ def _luhn(digits):
 
 
 def detect(text):
-    """sdg.pii/1 detector ids (plus ipv6) that match the NFKC text."""
+    """vkr.pii/1 detector ids (plus ipv6) that match the NFKC text."""
     text = unicodedata.normalize("NFKC", text)
     hits = []
     for name, pattern in DETECTORS:

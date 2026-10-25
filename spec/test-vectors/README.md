@@ -1,6 +1,6 @@
 # Test Vectors
 
-> **Status: Draft, not for implementation.** Shared conformance test vectors for the Sidged drafts, phase 1. Licensed under Apache-2.0 ([LICENSE-CODE](../../LICENSE-CODE)).
+> **Status: Draft, not for implementation.** Shared conformance test vectors for the Vaikor drafts, phase 1. Licensed under Apache-2.0 ([LICENSE-CODE](../../LICENSE-CODE)).
 
 Each vector is a fixed input with an expected result, so that the validator in [../validate](../validate), the Python reference recorded in the [migration note](../../docs/analyse/02-SELFKIN-MIGRATION.md), and any other implementation can check themselves against the same files.
 
@@ -11,13 +11,13 @@ Each vector is a fixed input with an expected result, so that the validator in [
 | `VERSION` | Suite version, the only place it is recorded |
 | `vector.schema.json` | JSON Schema 2020-12 for every vector file |
 | `keys/rfc8032-test-keys.json` | Ed25519 test keys copied from [RFC 8032, section 7.1](https://www.rfc-editor.org/rfc/rfc8032#section-7.1). **TEST ONLY** |
-| `resource-matching/` | Whether a right resource covers a requested resource (Sidged L2) |
-| `tokens/` | Capability token lifetime, attenuation rules (a) to (f), budgets and constraints (Sidged L2) |
-| `envelope/` | Envelope structure and token binding (Sidged L6/L2), and receive sequences (§A5, §A6, §A9) |
-| `residency/` | Residency tag syntax and intersection (Sidged L7) |
-| `signatures/` | RFC 8032 known answers, `jcs` signing input, signing, and verification (Sidged L6) |
+| `resource-matching/` | Whether a right resource covers a requested resource (Vaikor L2) |
+| `tokens/` | Capability token lifetime, attenuation rules (a) to (f), budgets and constraints (Vaikor L2) |
+| `envelope/` | Envelope structure and token binding (Vaikor L6/L2), and receive sequences (§A5, §A6, §A9) |
+| `residency/` | Residency tag syntax and intersection (Vaikor L7) |
+| `signatures/` | RFC 8032 known answers, `jcs` signing input, signing, and verification (Vaikor L6) |
 | `intent/` | The intent linguist boundary: reply verification, intent plans, spoken times and durations (spec 0017) |
-| `slice/` | Vertical slice: a session record in a Core-signed envelope, one privacy report per egress, and the Core-rendered effective tier display (Sidged L4/L7/L5) |
+| `slice/` | Vertical slice: a session record in a Core-signed envelope, one privacy report per egress, and the Core-rendered effective tier display (Vaikor L4/L7/L5) |
 
 ## Vector Format
 
@@ -41,8 +41,8 @@ Each vector has one fault, so the expected result does not depend on check order
 | Operation | Input | Output |
 |---|---|---|
 | `resource-covers` | `right`, `resource` (strings) | `value`: true if the right resource covers the resource |
-| `capability-check` | `descriptor` | accept or refuse: SDG-L1 schema plus consequential and egress rules. No grants |
-| `plan-check` | `plan`, `catalog`, optional `allow` | accept or refuse: SDG-L3 effects, labels, bounded map, approval, and cost. Runners without `cel` skip vectors that require it |
+| `capability-check` | `descriptor` | accept or refuse: VKR-L1 schema plus consequential and egress rules. No grants |
+| `plan-check` | `plan`, `catalog`, optional `allow` | accept or refuse: VKR-L3 effects, labels, bounded map, approval, and cost. Runners without `cel` skip vectors that require it |
 | `token-check` | `token` | accept or refuse: schema, lifetime (at most 1 hour, `exp` after `iat`, `nbf` before `exp`) and attenuation of every link. No clock, signatures, `cnf`, or trust anchors |
 | `envelope-check` | `envelope` | accept or refuse: version, schema, `expires` after `issued`, the token as in `token-check`, and token binding (`sub`, `aud`, rights cover the instruction). No clock, signatures, replay, or session state |
 | `residency-regions` | optional `tags` (missing or empty is the intersection identity; not egress permission), optional `owner_tags` (tag to list of regions), optional `provider_region` | `value`: sorted regions where the data may go (`CH` for Switzerland, `EU` for EU and EEA member states), `"any"` for explicit `unrestricted`, or refuse; optional `allowed` checks provider matching |
@@ -64,14 +64,14 @@ Each vector has one fault, so the expected result does not depend on check order
 | `dcbor-decode` | `hex` | `value`: the decoded JSON value, or refuse `malformed` when the bytes are not exactly dcbor v0.1 (spec 0012 R4) |
 | `record-check` | `record`, `trusted_core_keys` (names in the key file) | accept or refuse: spec 0012 §3 members, class grammar, `kid` equal to `signer`, `signer` a trusted Core key, and an Ed25519 `dcbor` signature by it |
 | `record-derive` | `inputs` (array of `{class, tags}`) | `value`: `{class, tags, regions}` for a derived Record (spec 0012 R10), or refuse `data-class-forbidden` |
-| `record-resource` | `class` | `value`: the SDG-L2 resource of the class (spec 0012 R9), or refuse `malformed` |
+| `record-resource` | `class` | `value`: the VKR-L2 resource of the class (spec 0012 R9), or refuse `malformed` |
 | `record-retention` | `record`, `now` | `value`: `live` or `expired` (spec 0012 R8) |
 | `plan-digest` | `plan` | `value`: `{digest, dcbor_hex}` of the plan (spec 0013 R2), or refuse `malformed` (float) |
 | `stored-plan-signing-input` | `stored` | `value`: hex of the `dcbor` bytes of the stored plan without `sig` |
 | `stored-plan-check` | `stored`, `catalog`, `owner_key` (name in the key file of the configured owner key), `now` | accept or refuse: spec 0013 R3-R6 (owner binding and Ed25519 `dcbor` signature, digests, lifetime, not-before, expiry) |
 | `flow-check` | `plan`, `catalog`, `policies` (Cedar sources) | accept or refuse `data-class-forbidden` (spec 0013 §4). The runner derives labels, `sensitive` and each egress step's destination itself. Requires `cedar` |
-| `linguist-verify` | optional `utterance`, `reply` (the model's JSON object) or `reply_text` (its raw text) | `value`: `{envelope, corrections}`, the envelope the Core keeps (0017 L2 to L7) and the correction codes in order; or refuse. Catalog: `runtime/sidged-cli/assets/intent-catalog.json`. Requires `intent` |
-| `intent-plan` | `utterance`, `reply`, optional `plan` (a planner's SDG-L3 plan; absent: the intent's catalog plan) | `value`: `{verdict: "accept", plan_digest}` or `{verdict: "refuse", stage}` with stage `envelope`, `intent`, `bound`, `catalog`, `grounding`, `schema`, `structure`, `verifier` or `flow` (0017 PL1 to PL5; default capability catalog, `default-flow`). Requires `intent` and `cedar` |
+| `linguist-verify` | optional `utterance`, `reply` (the model's JSON object) or `reply_text` (its raw text) | `value`: `{envelope, corrections}`, the envelope the Core keeps (0017 L2 to L7) and the correction codes in order; or refuse. Catalog: `runtime/vaikor-cli/assets/intent-catalog.json`. Requires `intent` |
+| `intent-plan` | `utterance`, `reply`, optional `plan` (a planner's VKR-L3 plan; absent: the intent's catalog plan) | `value`: `{verdict: "accept", plan_digest}` or `{verdict: "refuse", stage}` with stage `envelope`, `intent`, `bound`, `catalog`, `grounding`, `schema`, `structure`, `verifier` or `flow` (0017 PL1 to PL5; default capability catalog, `default-flow`). Requires `intent` and `cedar` |
 | `time-resolve` | `text`, `now` (RFC 3339 UTC), `tz` (IANA zone) | `value`: the instant as RFC 3339 with the zone's offset, or `null` when the words are refused (0017 X6). Requires `intent` |
 | `duration-read` | `text` | `value`: seconds, or `null` when refused (0017 X6). Requires `intent` |
 | `receive` (sequence steps) | `envelope`; state `receiver` (its identity), optional `seen_nonces` | accept or refuse, and `executed`. Everything `envelope-check` covers, plus `aud` against the receiver, `expires` against `now`, replayed nonces, `idem_key` at most once, and usage counting. Signatures, sender identity, pairing, residency, `cnf`, root issuer trust, and local policy are assumed to pass; the requested action has a local handler |
@@ -94,7 +94,7 @@ The validator runs `resource-covers`, `token-check`, `envelope-check`, `residenc
 
 ## Status and Versioning
 
-Phase 1 covers rules already in the drafts, and the slice covers the rules it adds to Sidged L5: 373 vectors, 369 normative and 4 provisional. `scripts/spec-coverage.py` lists which numbered rules have a vector.
+Phase 1 covers rules already in the drafts, and the slice covers the rules it adds to Vaikor L5: 373 vectors, 369 normative and 4 provisional. `scripts/spec-coverage.py` lists which numbered rules have a vector.
 
 | Category | Normative | Provisional |
 |---|---|---|
@@ -113,8 +113,8 @@ Phase 1 covers rules already in the drafts, and the slice covers the rules it ad
 | Approval binding (spec 0004 R9b) | 7 | 0 |
 | Intent linguist, intent plans, times and durations (spec 0017) | 41 | 0 |
 
-Resource matching and the two binding vectors that depend on it are normative under SDG-L2 R9 (`docs/specs/0002-grant.md`): a `/*` prefix does not cover an empty remainder, `.`, `..`, or percent-encoding. `open_issue` says in one sentence what is still open. Receive sequences about how a repeated `idem_key` is answered and how usage is counted are provisional; replay, expiry, audience, and at-most-once execution are normative. Later phases add `dcbor` and chain signatures, root issuers and `cnf`, and more stateful receiver checks such as sequence windows, clock skew, nonce retention, and chain-wide budget counting.
+Resource matching and the two binding vectors that depend on it are normative under VKR-L2 R9 (`docs/specs/0002-grant.md`): a `/*` prefix does not cover an empty remainder, `.`, `..`, or percent-encoding. `open_issue` says in one sentence what is still open. Receive sequences about how a repeated `idem_key` is answered and how usage is counted are provisional; replay, expiry, audience, and at-most-once execution are normative. Later phases add `dcbor` and chain signatures, root issuers and `cnf`, and more stateful receiver checks such as sequence windows, clock skew, nonce retention, and chain-wide budget counting.
 
-The current suite version is `0.13.1`. Suite `0.3.0` is the Sidged identifier rename of suite `0.2.0`: the same vectors, with `sdg.*` intents, `application/vnd.sidged.*` media types, and layer ids `L0` to `L8` in `spec.doc`. Accept and refuse outcomes are unchanged. Real Ed25519 signatures over JCS were recomputed for the renamed payloads. Section numbers inside `spec.section` still cite the source-draft section; the crosswalk is in the migration note. `VERSION` is its only source, and a test checks that this sentence matches it, so a version bump changes `VERSION` and this line and nothing else. The suite follows semantic versioning: patch for new vectors, minor for new operations or fields, major for changed expectations. A vector whose expectation changes gets a new `id`; old ids are never reused. [examples/](../examples/) stay as readable whole documents; vectors are minimal checks with expected results and do not refer to example files.
+The current suite version is `0.13.1`. Suite `0.3.0` is the Vaikor identifier rename of suite `0.2.0`: the same vectors, with `vkr.*` intents, `application/vnd.vaikor.*` media types, and layer ids `L0` to `L8` in `spec.doc`. Accept and refuse outcomes are unchanged. Real Ed25519 signatures over JCS were recomputed for the renamed payloads. Section numbers inside `spec.section` still cite the source-draft section; the crosswalk is in the migration note. `VERSION` is its only source, and a test checks that this sentence matches it, so a version bump changes `VERSION` and this line and nothing else. The suite follows semantic versioning: patch for new vectors, minor for new operations or fields, major for changed expectations. A vector whose expectation changes gets a new `id`; old ids are never reused. [examples/](../examples/) stay as readable whole documents; vectors are minimal checks with expected results and do not refer to example files.
 
 `residency-destination`: input `tags` (optional), `destination` (`CH`, `EU`, `GLOBAL`, or unknown), and optional `owner_tags`; expected `result` (`accept` or `refuse`) with refusal `reason`. R8a to R8e govern egress separately from region-set intersection. All normative vectors are in `residency/destination.json`.

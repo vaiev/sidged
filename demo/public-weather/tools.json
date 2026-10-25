@@ -23,9 +23,9 @@
         "additionalProperties": false
       },
       "_meta": {
-        "io.sidged/capability": {
+        "com.vaikor/capability": {
           "v": "0.1",
-          "id": "urn:sidged:capability:weather.lookup",
+          "id": "tag:vaikor.com,2026:capability:weather.lookup",
           "title": "Public weather lookup",
           "description": "Fetch public city weather through the privacy gateway using literal latitude, longitude and current=temperature_2m; no personal location.",
           "input_schema": {
@@ -81,9 +81,9 @@
         ]
       },
       "_meta": {
-        "io.sidged/capability": {
+        "com.vaikor/capability": {
           "v": "0.1",
-          "id": "urn:sidged:capability:model.complete",
+          "id": "tag:vaikor.com,2026:capability:model.complete",
           "title": "Summarize public weather",
           "description": "Summarize public city weather using the configured global provider.",
           "input_schema": {

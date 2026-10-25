@@ -1,0 +1,31 @@
+# Copyright 2026 VAIEV
+# SPDX-License-Identifier: Apache-2.0
+#
+# Egress profile for vaikor-run@.service (example, not installed as active).
+# To use it, copy it to /etc/systemd/system/vaikor-run@<name>.service.d/egress.conf,
+# replace the @...@ placeholders with numeric uids and run systemctl daemon-reload.
+#
+# What changes against the local default:
+# - the process may open AF_INET/AF_INET6 sockets for the Privacy Gateway
+#   (0007 R1: the gateway is the only HTTP path, and it decides destination,
+#   residency and the privacy report);
+# - no IPAddressAllow list: systemd IP filters cannot name hosts, so the
+#   gateway registry stays the control (0007 R3); IPAddressDeny is reset;
+# - the approval socket directory /run/vaikor/approval (tmpfiles, 2750
+#   vaikor:vaikor-approver, 0004 R9c) becomes writable so the Core can bind
+#   its approval socket there. Nothing else listens.
+#
+# @APPROVER_UID@      uid of vaikor-approver (never 0, never the vaikor uid)
+# @NON_APPROVER_UIDS@ comma-separated uids of every agent, launcher, worker
+#                     and model process (0004 R9c); none may be 0
+# Planner credentials: VAIKOR_API_KEY_FILE pointing at a 0600 file owned by
+# vaikor (e.g. under /var/lib/vaikor/credentials/), never the key itself.
+
+[Service]
+Environment=VAIKOR_LOCAL=0
+PrivateNetwork=no
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+IPAddressDeny=
+ReadWritePaths=/run/vaikor/approval
+ExecStart=
+ExecStart=/usr/local/bin/vaikor guard /var/lib/vaikor/scenarios/%i --keys /var/lib/vaikor/keys --log /var/lib/vaikor/audit/%i.log --log-key /var/lib/vaikor/log-key/issuer.key --approve unix:/run/vaikor/approval/control.sock --approve-uid @APPROVER_UID@ --non-approver-uid @NON_APPROVER_UIDS@

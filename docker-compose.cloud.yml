@@ -9,8 +9,8 @@
 services:
   control:
     environment:
-      SIDGED_LOCAL: "0"
-      SIDGED_API_KEY_FILE: /run/secrets/xai_api_key
+      VAIKOR_LOCAL: "0"
+      VAIKOR_API_KEY_FILE: /run/secrets/xai_api_key
     networks: [edges, model, egress]
     secrets:
       - source: xai_api_key
@@ -22,4 +22,4 @@ networks:
 
 secrets:
   xai_api_key:
-    file: ${SIDGED_XAI_API_KEY_FILE:-./secrets/xai_api_key}
+    file: ${VAIKOR_XAI_API_KEY_FILE:-./secrets/xai_api_key}

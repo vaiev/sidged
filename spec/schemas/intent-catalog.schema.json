@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sidged.com/spec/schemas/intent-catalog.schema.json",
-  "title": "Sidged intent catalog (v0.1)",
+  "$id": "https://vaikor.com/spec/schemas/intent-catalog.schema.json",
+  "title": "Vaikor intent catalog (v0.1)",
   "description": "Generic catalog of user intents read by the companion linguist (Model -1) and by the Core. Each intent declares its slots as a JSON Schema 2020-12 object, a canonical English template, the capabilities it needs, its data classes, and its route. The linguist only proposes an intent and slot values; the Core re-derives missing slots, the clarification question, the route, and the data classes from this catalog. Not a grant. Status: Draft v0.1.",
   "type": "object",
   "additionalProperties": false,
@@ -176,7 +176,7 @@
           "uniqueItems": true,
           "items": {
             "type": "string",
-            "pattern": "^urn:sidged:capability:[A-Za-z0-9._-]{1,128}$"
+            "pattern": "^tag:vaikor\\.com,2026:capability:[A-Za-z0-9._-]{1,128}$"
           }
         },
         "data_classes": {
@@ -188,14 +188,14 @@
         },
         "artifact_mime": {
           "type": "string",
-          "pattern": "^application/vnd\\.sidged\\.artifact\\.[a-z0-9.-]+\\+json$"
+          "pattern": "^application/vnd\\.vaikor\\.artifact\\.[a-z0-9.-]+\\+json$"
         },
         "route": {
           "$ref": "#/$defs/route"
         },
         "plan": {
           "$ref": "#/$defs/planTemplate",
-          "description": "Declarative SDG-L3 plan the Core instantiates from the verified slots (0017 §2b)."
+          "description": "Declarative VKR-L3 plan the Core instantiates from the verified slots (0017 §2b)."
         }
       }
     },
@@ -231,7 +231,7 @@
         },
         "capability": {
           "type": "string",
-          "pattern": "^urn:sidged:capability:[A-Za-z0-9._-]{1,128}$"
+          "pattern": "^tag:vaikor\\.com,2026:capability:[A-Za-z0-9._-]{1,128}$"
         },
         "approval": {
           "type": "boolean"

@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sidged.com/spec/schemas/capability-descriptor.schema.json",
-  "title": "Sidged capability descriptor (v0.1)",
-  "description": "Protocol-neutral description of one capability (SDG-L1). It declares arguments, result shape, effects, data classes, residency, cost, and whether a call is consequential. It is not a grant. Status: Draft v0.1.",
+  "$id": "https://vaikor.com/spec/schemas/capability-descriptor.schema.json",
+  "title": "Vaikor capability descriptor (v0.1)",
+  "description": "Protocol-neutral description of one capability (VKR-L1). It declares arguments, result shape, effects, data classes, residency, cost, and whether a call is consequential. It is not a grant. Status: Draft v0.1.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -20,8 +20,8 @@
     },
     "id": {
       "type": "string",
-      "pattern": "^urn:sidged:capability:[A-Za-z0-9._-]{1,128}$",
-      "description": "Capability identifier (SDG-L1 R1)."
+      "pattern": "^tag:vaikor\\.com,2026:capability:[A-Za-z0-9._-]{1,128}$",
+      "description": "Capability identifier (VKR-L1 R1)."
     },
     "title": {
       "type": "string",
@@ -34,11 +34,11 @@
     },
     "input_schema": {
       "type": "object",
-      "description": "JSON Schema 2020-12 for arguments. type, when present, is object (SDG-L1 R4)."
+      "description": "JSON Schema 2020-12 for arguments. type, when present, is object (VKR-L1 R4)."
     },
     "output_schema": {
       "type": "object",
-      "description": "JSON Schema 2020-12 for a successful result (SDG-L1 R5)."
+      "description": "JSON Schema 2020-12 for a successful result (VKR-L1 R5)."
     },
     "effects": {
       "type": "array",
@@ -53,7 +53,7 @@
           "egress"
         ]
       },
-      "description": "Effect codes from registries/effects.md (SDG-L1 R6)."
+      "description": "Effect codes from registries/effects.md (VKR-L1 R6)."
     },
     "data_classes": {
       "type": "array",
@@ -61,7 +61,7 @@
       "items": {
         "$ref": "common.schema.json#/$defs/dataClass"
       },
-      "description": "Data classes touched by the capability. Empty when no personal data is involved (SDG-L1 R7, R10)."
+      "description": "Data classes touched by the capability. Empty when no personal data is involved (VKR-L1 R7, R10)."
     },
     "residency": {
       "type": "object",
@@ -78,7 +78,7 @@
           }
         }
       },
-      "description": "Residency tags (SDG-L1 R8 v0.2). Missing or empty tags fail closed at egress; a publisher that sets no limit uses the single tag unrestricted. Required with at least one tag when effects include egress."
+      "description": "Residency tags (VKR-L1 R8 v0.2). Missing or empty tags fail closed at egress; a publisher that sets no limit uses the single tag unrestricted. Required with at least one tag when effects include egress."
     },
     "cost": {
       "type": "object",
@@ -135,11 +135,11 @@
           }
         }
       ],
-      "description": "Upper bound on cost (SDG-L1 R11)."
+      "description": "Upper bound on cost (VKR-L1 R11)."
     },
     "consequential": {
       "type": "boolean",
-      "description": "True when a call needs Trusted UI approval. Required true for delete, execute, and egress (SDG-L1 R9)."
+      "description": "True when a call needs Trusted UI approval. Required true for delete, execute, and egress (VKR-L1 R9)."
     }
   },
   "allOf": [

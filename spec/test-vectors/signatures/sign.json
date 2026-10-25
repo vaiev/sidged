@@ -1,6 +1,6 @@
 {
   "category": "signatures",
-  "description": "Producing sig.value for canon jcs (Sidged L6) with the RFC 8032 test keys. Ed25519 signatures are deterministic, so the expected base64url value is exact.",
+  "description": "Producing sig.value for canon jcs (Vaikor L6) with the RFC 8032 test keys. Ed25519 signatures are deterministic, so the expected base64url value is exact.",
   "vectors": [
     {
       "id": "signature.sign.001",
@@ -27,7 +27,7 @@
           "session": "sess-4b1d0e9a77",
           "seq": 4,
           "attestation_ref": null,
-          "intent": "sdg.refused",
+          "intent": "vkr.refused",
           "data": {
             "v": "0.1",
             "reason": "rate-limited",
@@ -38,7 +38,7 @@
             },
             "retry_after": "PT10M"
           },
-          "payload_type": "application/vnd.sidged.refusal+json",
+          "payload_type": "application/vnd.vaikor.refusal+json",
           "residency": {
             "tags": [],
             "data_classes": []
@@ -58,7 +58,7 @@
         "canon": "jcs"
       },
       "expected": {
-        "value": "_0ZpEgNnbENUhbgUL4CaN-b_-xNrte3w4TluvZKU8IJDCI7te-XaDIFojymv4TnftmlijvjNkQ245MJ7xGkxDg"
+        "value": "ElOUYnQq8GPH4XcVVEkSuinRMiyUey3EiocO5yS3Lm-10cbnWQE3MEpVeZTK_jmxaokc5eqNOfnc7q9GQ4nyAA"
       },
       "status": "normative",
       "note": "Refusal example signed with test key 1. Ed25519 is deterministic, so sig.value is fixed"
@@ -88,7 +88,7 @@
           "session": "pair-91c2d7aa10",
           "seq": 0,
           "attestation_ref": null,
-          "intent": "sdg.pairing.request",
+          "intent": "vkr.pairing.request",
           "residency": {
             "tags": [],
             "data_classes": []
@@ -103,7 +103,7 @@
             ],
             "sas_commitment": "b3Jhbmdlcy1hbmQtbGVtb25z"
           },
-          "payload_type": "application/vnd.sidged.pairing+json",
+          "payload_type": "application/vnd.vaikor.pairing+json",
           "provenance": [],
           "sig": {
             "alg": "EdDSA",
@@ -116,7 +116,7 @@
         "canon": "jcs"
       },
       "expected": {
-        "value": "AvOZvCXeMMCghoMuSZdk3NCc3WgpkYz7CHgfgxwWrVtKQj-KUqrNs2-l33grCImDNfxCfZWTfywPh5aRCC3aAw"
+        "value": "wBpS_NocDw6K_QmaSUxhXtSlUwuE0Zw3cpULw5w0QMrZSZsNiZCQDFzjqkFngDN-k00PmQguWTl1yyfapWpqCA"
       },
       "status": "normative",
       "note": "Pairing example signed with test key 2. Ed25519 is deterministic, so sig.value is fixed"

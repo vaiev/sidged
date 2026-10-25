@@ -26,7 +26,7 @@ fi
 # Storage trust split: in trusted runs a throwaway store, so no local manifest list a PR
 # left behind can answer for a base digest.
 . scripts/podman-store.sh
-if command -v podman >/dev/null; then sidged_store_open; trap sidged_store_close EXIT; fi
+if command -v podman >/dev/null; then vaikor_store_open; trap vaikor_store_close EXIT; fi
 
 raw() { # the digest is authoritative; drop the tag (podman rejects tag+digest)
   local repo="${1%@*}" digest="${1#*@}" last

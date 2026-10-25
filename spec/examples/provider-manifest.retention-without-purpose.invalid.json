@@ -10,13 +10,13 @@
   "profile_claim": {
     "profile": "P1",
     "basis": "self-assessment",
-    "against": "Sidged L7 draft v0.1",
-    "self_assessment": "https://search.example.com/sidged/self-assessment-p1.html"
+    "against": "Vaikor L7 draft v0.1",
+    "self_assessment": "https://search.example.com/vaikor/self-assessment-p1.html"
   },
   "models": [],
   "model_identity": {
     "carrier": "header",
-    "header": "Sidged-Model"
+    "header": "Vaikor-Model"
   },
   "tools": [
     "search.web"

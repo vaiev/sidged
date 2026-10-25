@@ -1,6 +1,6 @@
 {
   "category": "signatures",
-  "description": "Signing input for canon jcs (Sidged L6): the RFC 8785 canonical JSON of the object with its sig member removed, as a UTF-8 string.",
+  "description": "Signing input for canon jcs (Vaikor L6): the RFC 8785 canonical JSON of the object with its sig member removed, as a UTF-8 string.",
   "vectors": [
     {
       "id": "signature.jcs-input.001",
@@ -197,7 +197,7 @@
           "session": "sess-4b1d0e9a77",
           "seq": 4,
           "attestation_ref": null,
-          "intent": "sdg.refused",
+          "intent": "vkr.refused",
           "data": {
             "v": "0.1",
             "reason": "rate-limited",
@@ -208,7 +208,7 @@
             },
             "retry_after": "PT10M"
           },
-          "payload_type": "application/vnd.sidged.refusal+json",
+          "payload_type": "application/vnd.vaikor.refusal+json",
           "residency": {
             "tags": [],
             "data_classes": []
@@ -226,7 +226,7 @@
         }
       },
       "expected": {
-        "value": "{\"attestation_ref\":null,\"aud\":\"did:example:alice-phone#agent-assistant\",\"data\":{\"reason\":\"rate-limited\",\"ref\":{\"idem_key\":\"idem-2026-10-09-0001-a7c3\",\"seq\":3,\"session\":\"sess-4b1d0e9a77\"},\"retry_after\":\"PT10M\",\"v\":\"0.1\"},\"expires\":\"2026-10-09T08:15:02Z\",\"form\":\"F2\",\"intent\":\"sdg.refused\",\"issued\":\"2026-10-09T08:10:02Z\",\"nonce\":\"Mn5Bv4Cx3Zl2Kj1Hg0Fd9Sa8\",\"payload_type\":\"application/vnd.sidged.refusal+json\",\"provenance\":[],\"residency\":{\"data_classes\":[],\"tags\":[]},\"sender_agent\":\"did:example:bob-homeserver#agent-calendar\",\"sender_device\":\"did:example:bob-homeserver\",\"seq\":4,\"session\":\"sess-4b1d0e9a77\",\"v\":\"0.1\"}"
+        "value": "{\"attestation_ref\":null,\"aud\":\"did:example:alice-phone#agent-assistant\",\"data\":{\"reason\":\"rate-limited\",\"ref\":{\"idem_key\":\"idem-2026-10-09-0001-a7c3\",\"seq\":3,\"session\":\"sess-4b1d0e9a77\"},\"retry_after\":\"PT10M\",\"v\":\"0.1\"},\"expires\":\"2026-10-09T08:15:02Z\",\"form\":\"F2\",\"intent\":\"vkr.refused\",\"issued\":\"2026-10-09T08:10:02Z\",\"nonce\":\"Mn5Bv4Cx3Zl2Kj1Hg0Fd9Sa8\",\"payload_type\":\"application/vnd.vaikor.refusal+json\",\"provenance\":[],\"residency\":{\"data_classes\":[],\"tags\":[]},\"sender_agent\":\"did:example:bob-homeserver#agent-calendar\",\"sender_device\":\"did:example:bob-homeserver\",\"seq\":4,\"session\":\"sess-4b1d0e9a77\",\"v\":\"0.1\"}"
       },
       "status": "normative",
       "note": "Signing input of the refusal example (all of sig removed)"

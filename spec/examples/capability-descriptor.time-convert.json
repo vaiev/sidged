@@ -1,6 +1,6 @@
 {
   "v": "0.1",
-  "id": "urn:sidged:capability:convert_time",
+  "id": "tag:vaikor.com,2026:capability:convert_time",
   "title": "Convert time",
   "description": "Convert time between timezones. Source: mcp-server-time tool convert_time.",
   "input_schema": {

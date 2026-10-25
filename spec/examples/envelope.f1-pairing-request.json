@@ -7,7 +7,7 @@
   "session": "pair-91c2d7aa10",
   "seq": 0,
   "attestation_ref": null,
-  "intent": "sdg.pairing.request",
+  "intent": "vkr.pairing.request",
   "residency": {
     "tags": [],
     "data_classes": []
@@ -22,7 +22,7 @@
     ],
     "sas_commitment": "b3Jhbmdlcy1hbmQtbGVtb25z"
   },
-  "payload_type": "application/vnd.sidged.pairing+json",
+  "payload_type": "application/vnd.vaikor.pairing+json",
   "provenance": [],
   "sig": {
     "alg": "EdDSA",

@@ -1,22 +1,22 @@
 [workspace]
 resolver = "2"
 members = [
-    "sidged-core",
-    "sidged-record",
-    "sidged-capability",
-    "sidged-grant",
-    "sidged-verify",
-    "sidged-mcp",
-    "sidged-gateway",
-    "sidged-log",
-    "sidged-cli",
-    "sidged-model",
-    "sidged-guard",
-    "sidged-tui",
+    "vaikor-core",
+    "vaikor-record",
+    "vaikor-capability",
+    "vaikor-grant",
+    "vaikor-verify",
+    "vaikor-mcp",
+    "vaikor-gateway",
+    "vaikor-log",
+    "vaikor-cli",
+    "vaikor-model",
+    "vaikor-guard",
+    "vaikor-tui",
 ]
 
 # Shipped artifacts (VM disk, host install): `--profile dist`. Whole-program LTO, one codegen unit
-# and no symbols take the static musl `sidged` from 16.6 MB to 11.3 MB; `release` stays fast for CI.
+# and no symbols take the static musl `vaikor` from 16.6 MB to 11.3 MB; `release` stays fast for CI.
 [profile.dist]
 inherits = "release"
 lto = true

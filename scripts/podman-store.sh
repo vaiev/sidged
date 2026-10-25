@@ -5,24 +5,24 @@
 # Storage trust split, sourced by every script that runs podman.
 # PR runs and trusted runs share the runner user's podman storage, so PR
 # code could tamper with stored base layers that a later trusted build
-# reuses even with --no-cache. Trusted runs (SIDGED_CI_RUN set, empty
-# SIDGED_CACHE_SCOPE: push to main, schedule, release, workflow_dispatch)
+# reuses even with --no-cache. Trusted runs (VAIKOR_CI_RUN set, empty
+# VAIKOR_CACHE_SCOPE: push to main, schedule, release, workflow_dispatch)
 # therefore get a fresh, throwaway store per job under $RUNNER_TEMP:
 # $PODMAN is a wrapper that adds --root/--runroot to every call, and the
 # base images are pulled by their pinned digests. PR runs and local use keep
 # the shared store ($PODMAN=podman).
 #
 #   . scripts/podman-store.sh
-#   sidged_store_open            # sets PODMAN (reuses a parent's store)
-#   sidged_store_pull_bases <platform> [containerfile]
-#   sidged_store_close           # removes the store this process opened
-#   sidged_store_remove <dir>    # removes a leftover store (always() sweep)
-#   dir="$(sidged_scratch_dir <name>)"   # scratch for podman; caller removes it
+#   vaikor_store_open            # sets PODMAN (reuses a parent's store)
+#   vaikor_store_pull_bases <platform> [containerfile]
+#   vaikor_store_close           # removes the store this process opened
+#   vaikor_store_remove <dir>    # removes a leftover store (always() sweep)
+#   dir="$(vaikor_scratch_dir <name>)"   # scratch for podman; caller removes it
 # podman-compose: pass --podman-path "$PODMAN" (it runs every podman call,
 # including its --version probe, through that path).
 
 PODMAN=podman
-SIDGED_STORE_OWNED=""
+VAIKOR_STORE_OWNED=""
 
 # Scratch directory for files podman reads or writes (a generated
 # Containerfile, build output), under $RUNNER_TEMP in CI. Not /tmp: rootless
@@ -30,21 +30,21 @@ SIDGED_STORE_OWNED=""
 # its pause process, and when that process was started from another session
 # (a runner service with a private /tmp) its /tmp is not the caller's, so a
 # file the caller made there is missing for podman.
-sidged_scratch_dir() { # name
+vaikor_scratch_dir() { # name
   [[ "$1" =~ ^[a-z]+$ ]] || { echo "FAIL: scratch name must be [a-z]+: '$1'" >&2; return 1; }
-  mktemp -d "${RUNNER_TEMP:-${TMPDIR:-/tmp}}/sidged-$1.XXXXXX"
+  mktemp -d "${RUNNER_TEMP:-${TMPDIR:-/tmp}}/vaikor-$1.XXXXXX"
 }
 
-sidged_store_trusted() { [ -n "${SIDGED_CI_RUN:-}" ] && [ -z "${SIDGED_CACHE_SCOPE:-}" ]; }
+vaikor_store_trusted() { [ -n "${VAIKOR_CI_RUN:-}" ] && [ -z "${VAIKOR_CACHE_SCOPE:-}" ]; }
 
-sidged_store_open() {
-  sidged_store_trusted || { PODMAN=podman; return 0; }
-  if [ -n "${SIDGED_PODMAN_WRAPPER:-}" ] && [ -x "$SIDGED_PODMAN_WRAPPER" ]; then
-    PODMAN="$SIDGED_PODMAN_WRAPPER"; return 0   # the parent owns the store
+vaikor_store_open() {
+  vaikor_store_trusted || { PODMAN=podman; return 0; }
+  if [ -n "${VAIKOR_PODMAN_WRAPPER:-}" ] && [ -x "$VAIKOR_PODMAN_WRAPPER" ]; then
+    PODMAN="$VAIKOR_PODMAN_WRAPPER"; return 0   # the parent owns the store
   fi
   local real store base="${RUNNER_TEMP:-${TMPDIR:-/tmp}}" major
   real="$(command -v podman)" || { echo "FAIL: podman is required" >&2; return 1; }
-  store="$(mktemp -d "$base/sidged-store.XXXXXX")"
+  store="$(mktemp -d "$base/vaikor-store.XXXXXX")"
   mkdir -p "$store/root" "$store/run"
   # The runroot holds the rootless network namespace. Podman 4.9 joins it
   # with slirp4netns; podman 5 uses pasta, and the Debian/Ubuntu AppArmor
@@ -59,7 +59,7 @@ sidged_store_open() {
   major="${major##* }"; major="${major%%.*}"
   if [[ "$major" =~ ^[0-9]+$ ]] && [ "$major" -ge 5 ]; then
     local run
-    if ! run="$(mktemp -d "$(sidged_store_runbase)/sidged-run.XXXXXX")" \
+    if ! run="$(mktemp -d "$(vaikor_store_runbase)/vaikor-run.XXXXXX")" \
        || ! rmdir "$store/run" || ! ln -s "$run" "$store/run"; then
       echo "FAIL: cannot place the podman 5 runroot" >&2
       rm -rf "$store" ${run:+"$run"}; return 1
@@ -68,13 +68,13 @@ sidged_store_open() {
   printf '#!/bin/sh\nexec %q --root %q --runroot %q "$@"\n' \
     "$real" "$store/root" "$store/run" > "$store/podman"
   chmod 0700 "$store/podman"
-  SIDGED_STORE_OWNED="$store"
-  export SIDGED_PODMAN_WRAPPER="$store/podman"
+  VAIKOR_STORE_OWNED="$store"
+  export VAIKOR_PODMAN_WRAPPER="$store/podman"
   PODMAN="$store/podman"
 }
 
-sidged_store_pull_bases() { # platform [containerfile]
-  sidged_store_trusted || return 0
+vaikor_store_pull_bases() { # platform [containerfile]
+  vaikor_store_trusted || return 0
   local ref
   # podman cannot pull tag+digest; the digest is the pin.
   while read -r ref; do
@@ -84,7 +84,7 @@ sidged_store_pull_bases() { # platform [containerfile]
 }
 
 # Where a podman 5 runroot is made: $XDG_RUNTIME_DIR, else /tmp.
-sidged_store_runbase() {
+vaikor_store_runbase() {
   if [ -n "${XDG_RUNTIME_DIR:-}" ] && [ -d "$XDG_RUNTIME_DIR" ] && [ -w "$XDG_RUNTIME_DIR" ]; then
     printf '%s\n' "$XDG_RUNTIME_DIR"
   else
@@ -92,14 +92,14 @@ sidged_store_runbase() {
   fi
 }
 
-sidged_store_remove() { # store-dir
+vaikor_store_remove() { # store-dir
   local d=$1 run="$1/run" real
   [ -d "$d" ] || return 0
   real="$(command -v podman)" || real=podman
   # A linked runroot is removed only if it is one this script makes.
   if [ -L "$d/run" ]; then
     run="$(readlink "$d/run")"
-    [[ "$run" =~ ^(/tmp|"${XDG_RUNTIME_DIR:-/tmp}")/sidged-run\.[A-Za-z0-9]{6}$ ]] || run=""
+    [[ "$run" =~ ^(/tmp|"${XDG_RUNTIME_DIR:-/tmp}")/vaikor-run\.[A-Za-z0-9]{6}$ ]] || run=""
   fi
   # Rootless store files belong to sub-uids: remove them inside the user
   # namespace, then the directory itself.
@@ -107,9 +107,9 @@ sidged_store_remove() { # store-dir
   rm -rf "$d" ${run:+"$run"} 2>/dev/null || true
 }
 
-sidged_store_close() {
-  [ -n "$SIDGED_STORE_OWNED" ] || return 0
-  sidged_store_remove "$SIDGED_STORE_OWNED"
-  unset SIDGED_PODMAN_WRAPPER
-  SIDGED_STORE_OWNED=""
+vaikor_store_close() {
+  [ -n "$VAIKOR_STORE_OWNED" ] || return 0
+  vaikor_store_remove "$VAIKOR_STORE_OWNED"
+  unset VAIKOR_PODMAN_WRAPPER
+  VAIKOR_STORE_OWNED=""
 }

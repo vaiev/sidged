@@ -1,6 +1,6 @@
 {
   "category": "signatures",
-  "description": "Verification of jcs signatures (Sidged L6) with the RFC 8032 section 7.1 test keys. public_key names a key in keys/rfc8032-test-keys.json; checking that the key belongs to the expected signer is out of scope here.",
+  "description": "Verification of jcs signatures (Vaikor L6) with the RFC 8032 section 7.1 test keys. public_key names a key in keys/rfc8032-test-keys.json; checking that the key belongs to the expected signer is out of scope here.",
   "vectors": [
     {
       "id": "signature.verify.001",
@@ -27,7 +27,7 @@
           "session": "sess-4b1d0e9a77",
           "seq": 4,
           "attestation_ref": null,
-          "intent": "sdg.refused",
+          "intent": "vkr.refused",
           "data": {
             "v": "0.1",
             "reason": "rate-limited",
@@ -38,7 +38,7 @@
             },
             "retry_after": "PT10M"
           },
-          "payload_type": "application/vnd.sidged.refusal+json",
+          "payload_type": "application/vnd.vaikor.refusal+json",
           "residency": {
             "tags": [],
             "data_classes": []
@@ -51,7 +51,7 @@
             "alg": "EdDSA",
             "kid": "urn:example:test-key:rfc8032-test-1",
             "canon": "jcs",
-            "value": "_0ZpEgNnbENUhbgUL4CaN-b_-xNrte3w4TluvZKU8IJDCI7te-XaDIFojymv4TnftmlijvjNkQ245MJ7xGkxDg"
+            "value": "ElOUYnQq8GPH4XcVVEkSuinRMiyUey3EiocO5yS3Lm-10cbnWQE3MEpVeZTK_jmxaokc5eqNOfnc7q9GQ4nyAA"
           }
         },
         "public_key": "rfc8032-test-1"
@@ -87,7 +87,7 @@
           "session": "sess-4b1d0e9a77",
           "seq": 5,
           "attestation_ref": null,
-          "intent": "sdg.refused",
+          "intent": "vkr.refused",
           "data": {
             "v": "0.1",
             "reason": "rate-limited",
@@ -98,7 +98,7 @@
             },
             "retry_after": "PT10M"
           },
-          "payload_type": "application/vnd.sidged.refusal+json",
+          "payload_type": "application/vnd.vaikor.refusal+json",
           "residency": {
             "tags": [],
             "data_classes": []
@@ -148,7 +148,7 @@
           "session": "sess-4b1d0e9a77",
           "seq": 4,
           "attestation_ref": null,
-          "intent": "sdg.refused",
+          "intent": "vkr.refused",
           "data": {
             "v": "0.1",
             "reason": "rate-limited",
@@ -159,7 +159,7 @@
             },
             "retry_after": "PT10M"
           },
-          "payload_type": "application/vnd.sidged.refusal+json",
+          "payload_type": "application/vnd.vaikor.refusal+json",
           "residency": {
             "tags": [],
             "data_classes": []
@@ -209,7 +209,7 @@
           "session": "sess-4b1d0e9a77",
           "seq": 4,
           "attestation_ref": null,
-          "intent": "sdg.refused",
+          "intent": "vkr.refused",
           "data": {
             "v": "0.1",
             "reason": "rate-limited",
@@ -220,7 +220,7 @@
             },
             "retry_after": "PT10M"
           },
-          "payload_type": "application/vnd.sidged.refusal+json",
+          "payload_type": "application/vnd.vaikor.refusal+json",
           "residency": {
             "tags": [],
             "data_classes": []
@@ -233,7 +233,7 @@
             "alg": "EdDSA",
             "kid": "urn:example:test-key:rfc8032-test-1",
             "canon": "jcs",
-            "value": "_0ZpEgNnbENUhbgUL4CaN-b_-xNrte3w4TluvZKU8IJDCI7te-XaDIFojymv4TnftmlijvjNkQ245MJ7xGkxDg"
+            "value": "ElOUYnQq8GPH4XcVVEkSuinRMiyUey3EiocO5yS3Lm-10cbnWQE3MEpVeZTK_jmxaokc5eqNOfnc7q9GQ4nyAA"
           }
         },
         "public_key": "rfc8032-test-2"
@@ -270,7 +270,7 @@
           "session": "sess-4b1d0e9a77",
           "seq": 4,
           "attestation_ref": null,
-          "intent": "sdg.refused",
+          "intent": "vkr.refused",
           "data": {
             "v": "0.1",
             "reason": "rate-limited",
@@ -281,7 +281,7 @@
             },
             "retry_after": "PT10M"
           },
-          "payload_type": "application/vnd.sidged.refusal+json",
+          "payload_type": "application/vnd.vaikor.refusal+json",
           "residency": {
             "tags": [],
             "data_classes": []
@@ -331,7 +331,7 @@
           "session": "sess-4b1d0e9a77",
           "seq": 4,
           "attestation_ref": null,
-          "intent": "sdg.refused",
+          "intent": "vkr.refused",
           "data": {
             "v": "0.1",
             "reason": "rate-limited",
@@ -342,7 +342,7 @@
             },
             "retry_after": "PT10M"
           },
-          "payload_type": "application/vnd.sidged.refusal+json",
+          "payload_type": "application/vnd.vaikor.refusal+json",
           "residency": {
             "tags": [],
             "data_classes": []
@@ -355,7 +355,7 @@
             "alg": "EdDSA",
             "kid": "urn:example:other-kid",
             "canon": "jcs",
-            "value": "_0ZpEgNnbENUhbgUL4CaN-b_-xNrte3w4TluvZKU8IJDCI7te-XaDIFojymv4TnftmlijvjNkQ245MJ7xGkxDg"
+            "value": "ElOUYnQq8GPH4XcVVEkSuinRMiyUey3EiocO5yS3Lm-10cbnWQE3MEpVeZTK_jmxaokc5eqNOfnc7q9GQ4nyAA"
           }
         },
         "public_key": "rfc8032-test-1"

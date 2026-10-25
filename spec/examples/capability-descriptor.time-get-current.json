@@ -1,6 +1,6 @@
 {
   "v": "0.1",
-  "id": "urn:sidged:capability:get_current_time",
+  "id": "tag:vaikor.com,2026:capability:get_current_time",
   "title": "Get current time",
   "description": "Get current time in a specific timezone. Source: mcp-server-time tool get_current_time.",
   "input_schema": {

@@ -5,7 +5,7 @@
       "id": "weather",
       "kind": "call",
       "approval": true,
-      "capability": "urn:sidged:capability:weather.lookup",
+      "capability": "tag:vaikor.com,2026:capability:weather.lookup",
       "args": {
         "latitude": {
           "lit": "47.3769"
@@ -22,7 +22,7 @@
       "id": "model",
       "kind": "call",
       "approval": true,
-      "capability": "urn:sidged:capability:model.complete",
+      "capability": "tag:vaikor.com,2026:capability:model.complete",
       "args": {
         "prompt": {
           "ref": "weather"

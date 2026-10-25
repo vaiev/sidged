@@ -1,0 +1,12 @@
+[package]
+name = "vaikor-model"
+version = "0.2.0"
+edition = "2021"
+license = "Apache-2.0"
+publish = false
+description = "Pluggable plan providers. The stub is deterministic. The HTTP provider speaks the OpenAI chat API."
+
+[dependencies]
+serde_json = "1"
+# Provider HTTP is egress and goes through the privacy gateway.
+vaikor-gateway = { path = "../vaikor-gateway" }

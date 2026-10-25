@@ -6,7 +6,7 @@
 //! A case starts from a shared vector, applies one to three tree mutations (a value replaced,
 //! a member dropped, an element duplicated, a node wrapped in an array) and runs the target
 //! under `catch_unwind` with a time limit. The case count is fixed per test and raised with
-//! `SIDGED_FUZZ_ITERS`; the seed is fixed, so every failure reproduces.
+//! `VAIKOR_FUZZ_ITERS`; the seed is fixed, so every failure reproduces.
 #![allow(dead_code)]
 
 use std::panic::{catch_unwind, AssertUnwindSafe};
@@ -66,7 +66,7 @@ pub const STRINGS: &[&str] = &[
     "dcbor",
     "EdDSA",
     "delete",
-    "urn:sidged:capability:message.send",
+    "tag:vaikor.com,2026:capability:message.send",
     "free.slots",
     "free.filter(x, x > 0)",
     "a.b.c(",
@@ -251,7 +251,7 @@ pub fn mutate_text(text: &str, rng: &mut Rng) -> String {
 }
 
 pub fn iterations(default: usize) -> usize {
-    std::env::var("SIDGED_FUZZ_ITERS")
+    std::env::var("VAIKOR_FUZZ_ITERS")
         .ok()
         .and_then(|n| n.parse().ok())
         .unwrap_or(default)

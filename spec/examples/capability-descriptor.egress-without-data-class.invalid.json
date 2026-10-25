@@ -1,6 +1,6 @@
 {
   "v": "0.1",
-  "id": "urn:sidged:capability:send_note",
+  "id": "tag:vaikor.com,2026:capability:send_note",
   "title": "Send a note",
   "input_schema": {
     "type": "object",

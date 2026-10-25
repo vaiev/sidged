@@ -1,27 +1,27 @@
 # 0015 – Swarm: edges of one owner (proposal)
 
-> **Status:** Draft v0.1. Implemented in `runtime/sidged-cli/src/swarm.rs` (`S1–S16`, `sidged swarm measure`, technocratic worker culling & replacement, and autonomous `SwarmWorkQueue`).
+> **Status:** Draft v0.1. Implemented in `runtime/vaikor-cli/src/swarm.rs` (`S1–S16`, `vaikor swarm measure`, technocratic worker culling & replacement, and autonomous `SwarmWorkQueue`).
 > **Date:** 2026-10-18
-> **Spec:** SDG-L6 profile "owner swarm"
+> **Spec:** VKR-L6 profile "owner swarm"
 > **Basis:** [VISION.md](../vision/VISION.md) section 5 (invariants 1–9), [0006-exchange.md](0006-exchange.md)
 > R2 and R4, [0002-grant.md](0002-grant.md), [0005-core.md](0005-core.md), and [0010-deployment.md](0010-deployment.md) §3.
 
 The key words MUST, MUST NOT, SHOULD, and MAY are to be interpreted as in BCP 14 (RFC 2119 and RFC 8174) when
 they appear in capitals.
 
-A **swarm** is a set of Sidged runtimes ("edges") that belong to one owner and cooperate on that owner's
+A **swarm** is a set of Vaikor runtimes ("edges") that belong to one owner and cooperate on that owner's
 tasks. **Edge 1** holds the owner's personal state, Model Zero and the interface. **Edges 2..n** run work that
-Edge 1 delegates. Each edge is a full Sidged Core with its own audit log; there is no shared Core.
+Edge 1 delegates. Each edge is a full Vaikor Core with its own audit log; there is no shared Core.
 
 ## 1. What an edge is
 
-**S1.** An edge MUST be an instance of the same signed `sidged` core image as Edge 1, identified by the image
+**S1.** An edge MUST be an instance of the same signed `vaikor` core image as Edge 1, identified by the image
 digest. Edges MUST NOT run third-party worker containers or worker processes outside that image. *Rationale:
-v1 spec "Edges 2..n are instances of the signed sidged core container itself". A worker that is not the Core
+v1 spec "Edges 2..n are instances of the signed vaikor core container itself". A worker that is not the Core
 would be a second trust boundary that no Core checks (invariant 8). Modules arrive only as WASM components in
 v1.1 (0011 R6/R7) and then run inside a Core.*
 
-**S2.** Each edge MUST have its own device key and `did:key`, generated on that edge by `sidged keygen` or its
+**S2.** Each edge MUST have its own device key and `did:key`, generated on that edge by `vaikor keygen` or its
 successor. An edge key MUST NOT be copied to another edge, and no repository, image or configuration MAY carry
 a default or placeholder `did:key`. *Rationale: a shared or placeholder key makes edges indistinguishable, so a
 signature proves nothing (invariants 3 and 9; pre-review checklist "no repo constants for identities").*
@@ -117,5 +117,5 @@ HTTP channel; 0007 R10a keeps credentials with the user; the v1 edge rule exclud
 - Container engine or hypervisor control by the Core.
 - HTTP, WebSocket or gRPC control APIs; key vault endpoints.
 - A2A peers of other owners and MLS groups (0006 R5); legacy bindings (0006 R6).
-- QUIC, Noise and envelope wire details and test vectors (0006, SDG-L0).
+- QUIC, Noise and envelope wire details and test vectors (0006, VKR-L0).
 - WireGuard (deferred by the v1 spec).

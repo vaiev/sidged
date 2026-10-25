@@ -1,0 +1,9 @@
+[package]
+name = "vaikor-core"
+version = "0.2.0"
+edition = "2021"
+license = "Apache-2.0"
+publish = false
+description = "Shared records for the hosted Vaikor runtime."
+
+[dependencies]

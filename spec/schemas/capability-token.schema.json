@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sidged.com/spec/schemas/capability-token.schema.json",
-  "title": "Sidged Capability Token (v0.1)",
-  "description": "Capability token that grants specific actions on specific resources for a specific audience and time window (Sidged L2). Tokens are short-lived and sender-bound through the cnf member (proof of possession, for example DPoP RFC 9449 or mTLS-bound RFC 8705). On delegation (F6) each hop may only narrow rights, lifetime, and budget, and the full chain is carried so it can be verified end to end (Sidged L2, [C2]). The narrowing rules and the 1 hour maximum lifetime are defined in Sidged L2; they cannot be fully expressed in JSON Schema, so spec/validate performs them as semantic checks. Tokens never override the receiver's local policy. Normative rules are in docs/specs/0002-grant.md. Status: Draft v0.1.",
+  "$id": "https://vaikor.com/spec/schemas/capability-token.schema.json",
+  "title": "Vaikor Capability Token (v0.1)",
+  "description": "Capability token that grants specific actions on specific resources for a specific audience and time window (Vaikor L2). Tokens are short-lived and sender-bound through the cnf member (proof of possession, for example DPoP RFC 9449 or mTLS-bound RFC 8705). On delegation (F6) each hop may only narrow rights, lifetime, and budget, and the full chain is carried so it can be verified end to end (Vaikor L2, [C2]). The narrowing rules and the 1 hour maximum lifetime are defined in Vaikor L2; they cannot be fully expressed in JSON Schema, so spec/validate performs them as semantic checks. Tokens never override the receiver's local policy. Normative rules are in docs/specs/0002-grant.md. Status: Draft v0.1.",
   "type": "object",
   "$ref": "#/$defs/tokenFields",
   "properties": {
@@ -59,7 +59,7 @@
           "$ref": "common.schema.json#/$defs/identifier"
         },
         "aud": {
-          "description": "Audience: exactly one agent, device, or provider that accepts the token. Unchanged along a delegation chain (Sidged L2).",
+          "description": "Audience: exactly one agent, device, or provider that accepts the token. Unchanged along a delegation chain (Vaikor L2).",
           "$ref": "common.schema.json#/$defs/identifier"
         },
         "iat": {
@@ -71,7 +71,7 @@
           "$ref": "common.schema.json#/$defs/timestamp"
         },
         "exp": {
-          "description": "Expiry. At most 1 hour after iat; owner policy MAY set a shorter maximum (Sidged L2). Checked by spec/validate.",
+          "description": "Expiry. At most 1 hour after iat; owner policy MAY set a shorter maximum (Vaikor L2). Checked by spec/validate.",
           "$ref": "common.schema.json#/$defs/timestamp"
         },
         "cnf": {
@@ -159,7 +159,7 @@
       }
     },
     "budget": {
-      "description": "Per-token budget (Sidged L6 rate limits and budgets). A delegated token may only lower each limit, and may not drop a limit the parent set.",
+      "description": "Per-token budget (Vaikor L6 rate limits and budgets). A delegated token may only lower each limit, and may not drop a limit the parent set.",
       "type": "object",
       "minProperties": 1,
       "additionalProperties": false,
